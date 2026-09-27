@@ -33,12 +33,12 @@
 | ID | Ítem | Fase | Cómo se resuelve |
 |---|---|---|---|
 | ETF-23 · US-BACK-05 | Sin autenticación en ningún endpoint | 1 ✅ | Dependencia `require_api_key` (`X-API-Key`) en todas las rutas salvo `/api/health`; el navegador nunca ve la key (BFF). |
-| ETF-24 · US-BACK-02 | Sin rate limiting | 1 ✅ (global) / 4–5 (endpoints costosos) | `slowapi` en endpoints costosos (`/run`, `/evaluate`, portafolio) + allowlist de IP del servidor frontend. |
+| ETF-24 · US-BACK-02 | Sin rate limiting | 1 ✅ (global) / 4 ✅ (EEUU) / 5 (ETF `/run`) | `rate_limit()` de `core/ratelimit.py` en endpoints costosos (`/run`, `/evaluate`, portafolio) + allowlist de IP del servidor frontend. |
 | ETF-26 | CORS amplio; revisar si hay cookies | 1 ✅ | `ALLOWED_ORIGINS` explícito. El login con cookies (si lo hay) vive en SvelteKit; el backend sigue con API key, sin credenciales CORS. |
 | ETF-27 | `/docs` y `/openapi.json` públicos | 1 ✅ | Deshabilitados en producción (`docs_url=None` según `settings.ENV`); disponibles en dev para `npm run gen:api`. |
 | ETF-28 | Sin HTTPS forzado ni cabeceras de seguridad | 8 | Caddy (HTTPS automático + HSTS) en ambos servidores; CSP y cabeceras en `hooks.server.ts`. |
 | US-SEC-01 · CL (infra) | CORS hardcodeado a localhost | 1 ✅ | `settings.py` + `.env`. |
-| US-SEC-02 | Path param `ticker` sin validar | 4 | `Path(..., pattern=r"^[A-Z0-9.\-^=]{1,15}$")` (permite `.SN`, `.TW`, `^`, `=X`). |
+| US-SEC-02 | Path param `ticker` sin validar | 4 ✅ | `Path(..., pattern=r"^[A-Z0-9.\-^=]{1,15}$")` (permite `.SN`, `.TW`, `^`, `=X`). |
 | ETF-20 | Host del backend / plan Vercel | 8 | **Reemplazado** por la arquitectura decidida: 2 servidores (front Node + back FastAPI) con disco persistente para `data/` y cron en el backend. |
 
 ### Calidad, CI y operación
@@ -61,7 +61,7 @@
 | ID | Ítem | Fase | Cómo se resuelve |
 |---|---|---|---|
 | CL (CSV corrupto) | Manejo de CSV con columnas faltantes | 3 ✅ | Validación al cargar + `response_model` Pydantic; 503 `invalid_data` con el nombre de las columnas faltantes. |
-| US-BACK-01 | Sin caché en `/evaluate` | 4 | `TTLCache` de 5 min por ticker. |
+| US-BACK-01 | Sin caché en `/evaluate` | 4 ✅ | `TTLCache` de 5 min por ticker. |
 | TD-MODEL-3 | Sin validación de factibilidad de la configuración | 6 | Validadores de pydantic-settings (`TOP_N <= universo`, `MAX_WEIGHT * TOP_N >= 1`). |
 | TD-DATA-1 | FX limitado a 6 monedas + sin aviso visible | 6–7 (`core/fx.py` ✅ en Fase 3) | `core/fx.py` común (lo usan Chile y Tendencia); advertencia visible en la UI cuando se excluyen tickers por moneda. |
 | TD-OPS-2 | `excluded_tickers.txt` sin encabezado | 6 | Se expone por API y como CSV con encabezado. |

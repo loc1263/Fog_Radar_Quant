@@ -31,10 +31,17 @@ def _cl_stocks(settings, **opts) -> str | None:  # noqa: ANN001 - import diferid
     return run(settings, **opts)
 
 
+def _us_stocks(settings, **opts) -> str | None:  # noqa: ANN001 - import diferido
+    from fog_radar.modules.us_stocks.pipeline import run
+
+    return run(settings, **opts)
+
+
 # modulo -> pipeline. Se completa al portar cada módulo (Fases 3-6).
 PIPELINES: dict[str, Pipeline] = {
     "cl_stocks": Pipeline(
         _cl_stocks,
         (PipelineOption("--solo-scoring", "Re-puntúa el último CSV de indicadores sin descargar de Yahoo."),),
     ),
+    "us_stocks": Pipeline(_us_stocks),
 }

@@ -17,7 +17,12 @@ export async function tryCall<T>(promise: ApiResult<T>): Promise<Loaded<T>> {
 		return { ok: true, data: await call(promise) };
 	} catch (e) {
 		if (isHttpError(e)) {
-			return { ok: false, message: e.body.message, code: e.body.code ?? `http_${e.status}` };
+			return {
+				ok: false,
+				message: e.body.message,
+				code: e.body.code ?? `http_${e.status}`,
+				status: e.status
+			};
 		}
 		throw e;
 	}

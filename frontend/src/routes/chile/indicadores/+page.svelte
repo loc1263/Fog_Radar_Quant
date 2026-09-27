@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import type { ClColumnaInfo } from '$lib/api/types';
 	import { DataTable, ErrorState, Notice, Section, TickerLink } from '$lib/components/shared';
 	import { fmtDate } from '$lib/format';
@@ -11,9 +13,14 @@
 	const ind = $derived(data.indicadores.ok ? data.indicadores.data : null);
 
 	const TODOS = 'Todos';
-	let grupoElegido = $state<string | null>(null);
+	// El grupo va en la URL (?grupo=…): enlace compartible y funciona sin JavaScript.
+	const grupoElegido = $derived(page.url.searchParams.get('grupo'));
 	// Por defecto, el primer grupo con datos de mercado (Valoración).
-	const grupo = $derived(grupoElegido ?? ind?.grupos.find((g) => g !== 'Identificación') ?? TODOS);
+	const grupo = $derived(
+		grupoElegido && (grupoElegido === TODOS || ind?.grupos.includes(grupoElegido))
+			? grupoElegido
+			: (ind?.grupos.find((g) => g !== 'Identificación') ?? TODOS)
+	);
 
 	type Fila = { simbolo: string; nombre: string | null; sector: string | null } & Record<
 		string,
@@ -70,21 +77,22 @@
 			Datos crudos de Yahoo Finance antes del scoring ({ind.filas.length} acciones, {ind.columnas
 				.length} indicadores) · {fmtDate(ind.generado_en, true)} · {ind.generado_desde}
 		</p>
-		<div class="flex flex-wrap gap-1.5" role="group" aria-label="Grupo de indicadores">
+		<nav class="flex flex-wrap gap-1.5" aria-label="Grupo de indicadores">
 			{#each [...ind.grupos, TODOS] as g (g)}
-				<button
-					type="button"
-					onclick={() => (grupoElegido = g)}
-					aria-pressed={grupo === g}
+				<a
+					href="{resolve('/chile/indicadores')}?grupo={encodeURIComponent(g)}"
+					data-sveltekit-noscroll
+					data-sveltekit-replacestate
+					aria-current={grupo === g ? 'true' : undefined}
 					class={cn(
 						'rounded border px-2.5 py-0.5 text-xs font-bold',
 						grupo === g
 							? 'border-brand-strong bg-brand-strong text-white'
 							: 'border-brand-border bg-brand-bg text-brand-label hover:bg-brand-card'
-					)}>{g}</button
+					)}>{g}</a
 				>
 			{/each}
-		</div>
+		</nav>
 		<DataTable
 			rows={filas}
 			{columns}

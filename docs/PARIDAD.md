@@ -30,3 +30,27 @@ el proyecto original. Las diferencias intencionales quedan anotadas.
   top 10 en gráfico, exportación CSV, fecha de los datos, modo oscuro.
 - Las acciones sin ningún pilar con dato quedan con puesto vacío (en el original tomaban el
   número de fila).
+
+## EEUU (`Stock_Choice_EEUU`) — ✅ 2026-09-27
+
+| Ítem | Cómo se verificó | Estado |
+|---|---|---|
+| Lógica portada | Los 110 tests originales (`test_fundamentals`, `test_indicators`, `test_portfolio`, `test_scanner`, `test_scoring`, `test_ticker_eval`, `test_universe`) pasan sin cambios de aserciones | ✅ |
+| Score de salud | `test_parity.py`: `evaluate_score` reproduce el score guardado de los 60 candidatos de la corrida 2026-09-25T21-00-01Z | ✅ |
+| Momentum 12-1 y retornos | Recalculados desde `prices.json` = valores de `candidates.json` (rel. 1e-9) | ✅ |
+| Markowitz, frontera, Black-Litterman, HRP | Pesos/retornos iguales a los del `portfolio.py` original sobre el top 15 real (`fixtures/portfolio_expected.json`) | ✅ |
+| Mejor combinación (3 métodos) | Mismas combinaciones, mismo orden y mismos pesos | ✅ |
+| API | `test_api.py` (port de `test_main.py`): mismas respuestas, con prefijo `/api/us`, API key y errores `{detail, code}` | ✅ |
+| Corridas históricas | Las 12 corridas del original validan contra los esquemas Pydantic | ✅ |
+| Vistas | Top 15, Candidatos, Evaluación, Performance, Markowitz/BL/HRP (+ mejor combinación) y evaluación en vivo: E2E `eeuu.e2e.ts` | ✅ |
+| Corrida completa contra Yahoo / evaluación en vivo | Pendiente en Windows (sin acceso a Yahoo en esta sesión) | ⏳ |
+
+**Diferencias intencionales**
+
+- Sin corridas: **503 `no_data`** (antes 404). Ticker inválido: 422/404 sin llamar a Yahoo.
+- `/evaluate` con caché de 5 min (`cached: true` en la respuesta) y rate limit.
+- `risk_free_rate` acepta `null` (= 4 % por defecto).
+- `prices` acepta `?days=` y `?tickers=`: las sparklines piden solo 60 días (antes se enviaban ~14 meses de todos los tickers).
+- `k` por defecto 4 (antes 5): con el top 15, C(15,5) = 3.003 superaba el tope y el botón arrancaba deshabilitado.
+- Nuevo: tabla π / Q / posterior de Black-Litterman, enlace "evaluar" en cada ticker, filtro "crecientes" en la URL, página `/eeuu/ticker` con buscador sin JavaScript.
+- La vista "Performance" se llama "Rendimiento".

@@ -40,6 +40,8 @@
 		searchPlaceholder?: string;
 		/** Nombre del CSV (sin extensión). Sin valor, no se muestra el botón. */
 		csvFilename?: string;
+		/** Columnas del CSV si difieren de las visibles (p. ej. exportar todos los campos). */
+		csvColumns?: Column<T>[];
 		emptyText?: string;
 		caption?: string;
 		class?: string;
@@ -56,6 +58,7 @@
 		searchKeys,
 		searchPlaceholder = 'Buscar…',
 		csvFilename,
+		csvColumns,
 		emptyText = 'Sin datos para mostrar.',
 		caption,
 		class: className
@@ -101,7 +104,9 @@
 	}
 
 	function downloadCsv() {
-		const blob = new Blob([toCsv(visible, columns)], { type: 'text/csv;charset=utf-8' });
+		const blob = new Blob([toCsv(visible, csvColumns ?? columns)], {
+			type: 'text/csv;charset=utf-8'
+		});
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement('a');
 		a.href = url;

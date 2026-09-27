@@ -30,7 +30,16 @@ export const MODULES: ModuleNav[] = [
 		label: 'EEUU',
 		href: '/eeuu',
 		description: 'Screener de momentum y salud financiera de large caps de EEUU.',
-		sections: []
+		sections: [
+			{ label: 'Top 15', href: '/eeuu' },
+			{ label: 'Candidatos', href: '/eeuu/candidatos' },
+			{ label: 'Evaluación', href: '/eeuu/evaluacion' },
+			{ label: 'Rendimiento', href: '/eeuu/rendimiento' },
+			{ label: 'Markowitz', href: '/eeuu/portafolio/markowitz' },
+			{ label: 'Black-Litterman', href: '/eeuu/portafolio/black-litterman' },
+			{ label: 'HRP', href: '/eeuu/portafolio/hrp' },
+			{ label: 'Evaluar ticker', href: '/eeuu/ticker' }
+		]
 	},
 	{
 		key: 'etf',

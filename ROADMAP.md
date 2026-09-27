@@ -111,9 +111,10 @@ Fog_Radar_Quant/
 | `/` | **Hub**: 4 tarjetas (una por módulo) con fecha de última corrida, KPI principal y top 3; accesos directos | Nuevo |
 | `/etf` → `/etf/resumen` | Resumen de la corrida | ETF |
 | `/etf/[seccion]` | top15 · universo · excluidos · rotacion · diversificacion · categorias · top15-simple · top15-vanguard · momentum · russell3000 · historial · descargar | ETF (13 pestañas) |
-| `/eeuu` → `/eeuu/top15` | Top 15 momentum + score de salud | Stock_Choice_EEUU |
-| `/eeuu/candidatos` · `/eeuu/rendimiento` · `/eeuu/evaluar` · `/eeuu/portafolio` · `/eeuu/mejor-combinacion` | Vistas del screener | Stock_Choice_EEUU |
-| `/eeuu/ticker/[ticker]` | Detalle / evaluación en vivo de un ticker | Stock_Choice_EEUU |
+| `/eeuu` | Top 15 momentum + datos de la corrida | Stock_Choice_EEUU ✅ |
+| `/eeuu/candidatos` · `/eeuu/evaluacion` · `/eeuu/rendimiento` | Vistas del screener | Stock_Choice_EEUU ✅ |
+| `/eeuu/portafolio/[metodo]` | markowitz · black-litterman · hrp (optimizar + mejor combinación) | Stock_Choice_EEUU ✅ |
+| `/eeuu/ticker` · `/eeuu/ticker/[ticker]` | Buscador + evaluación en vivo de un ticker | Stock_Choice_EEUU ✅ |
 | `/chile` | Ranking IPSA + panel de pesos ajustables | Stock_Choice_Nacional |
 | `/chile/indicadores` | Tabla de indicadores crudos | Stock_Choice_Nacional |
 | `/tendencia/[seccion]?analisis=…` | resumen · portafolio · tendencia · sectores · momentum | Stock_Tendencia |
@@ -204,10 +205,16 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 7. **Errores de datos:** `no_data` (aún no hay corrida) e `invalid_data` (archivo corrupto) → 503; las páginas muestran `ErrorState` sin tumbar el sitio (`tryCall`).
 8. **E2E con datos:** CI copia los fixtures del módulo a `data/<modulo>/` antes de levantar el backend.
 
-### Fase 4 — Módulo EEUU (≈2–3 sesiones)
-- Backend: `scanner.py` (7 pasos), `fundamentals`, `indicators`, `scoring`, `portfolio`, `ticker_eval`, `universe` → `modules/us_stocks/`; mover los 8 archivos de tests.
-- Frontend: top15, candidatos (búsqueda), rendimiento, evaluar ticker (en vivo), portafolio (optimización + gráfico de pesos + frontera eficiente), mejor combinación, detalle de ticker; los hooks React (`use-portfolio`, `use-run`…) pasan a `$state` de Svelte; la optimización de portafolio y la evaluación de ticker pasan por *form actions* del servidor SvelteKit (el navegador nunca llama directo a FastAPI).
-- **Listo cuando:** tests pytest pasan y las 7 vistas replican el original.
+### Fase 4 — Módulo EEUU ✅ completada 2026-09-27
+- [x] Backend `modules/us_stocks/`: `universe`, `indicators`, `fundamentals`, `scoring`, `portfolio`, `ticker_eval`, `scanner` portados **sin cambios de lógica** (solo imports, logger y `pd.Timedelta(n, unit="D")`, que elimina el `DeprecationWarning` de NumPy anotado en la Fase 0). Nuevos: `storage.py`, `schemas.py` (Pydantic completo, bloques vacíos → nulos), `router.py`, `pipeline.py`.
+- [x] Endpoints `/api/us/`: `rankings/latest[/candidates|/prices?days=&tickers=]`, `rankings/runs`, `tickers/{t}/evaluate`, `portfolio/optimize`, `portfolio/best_combination`, `portfolio/limits`.
+- [x] Seguridad/robustez: ticker validado en path y body (US-SEC-02), caché TTL de 5 min en `/evaluate` (US-BACK-01), rate limit por endpoint (`/evaluate` 20/min, optimizar 30/min, mejor combinación 6/min), errores `no_data` 503 · `portfolio_data` 400 · `ticker_not_found` 404 · `upstream_error` 502.
+- [x] Pipeline `python -m fog_radar.jobs us_stocks` (7 pasos; si la corrida termina con `status: error`, el job queda en error). Las 12 corridas del original copiadas a `data/us_stocks/runs/`.
+- [x] Frontend: `/eeuu` (Top 15 + datos de la corrida + buscador), `/eeuu/candidatos`, `/eeuu/evaluacion`, `/eeuu/rendimiento` (filtro "crecientes" en la URL), `/eeuu/portafolio/[metodo]` (markowitz · black-litterman · hrp: universo, optimizar, frontera eficiente, tabla π/Q/posterior de BL, mejor combinación) y `/eeuu/ticker/[ticker]` (evaluación en vivo). Tendencia 3 m con `Sparkline` (LayerChart), CSV con los 41 campos.
+- [x] Mutaciones con **form actions** + `use:enhance` (un `<form>` con dos `formaction`: funciona sin JavaScript y conserva selección y resultados). Remote functions revisadas: siguen experimentales → se mantiene ADR 0001.
+- [x] Tests: los **110 tests originales** migrados (`tests/us_stocks/`) + 8 de paridad + 34 de API/pipeline (**227 pytest** en total, sin warnings). Front: 8 Vitest nuevos (**38**), **6 E2E** de EEUU (**13** en total).
+- [x] **Paridad verificada** con la corrida real del 25-09 (`docs/PARIDAD.md`): score idéntico en los 60 candidatos, momentum y retornos recalculados desde `prices.json` iguales, pesos de Markowitz/BL/HRP y mejores combinaciones iguales a los del `portfolio.py` original.
+- ⚠️ Pendiente del usuario: correr una corrida completa contra Yahoo en Windows (`uv run python -m fog_radar.jobs us_stocks`, ~12 min) y probar `/eeuu/ticker/AAPL` (aquí no hubo acceso a Yahoo).
 
 ### Fase 5 — Módulo ETF (≈3 sesiones)
 - Backend: `analysis/` (ranking, momentum, categorías, rotación, archivado), `Screener_Data_ETF_Script`, `actualizar_datos_semanal.py` → `pipeline.py`; `POST /api/etf/run` pasa a registrar el job en `core/jobs.py`; `/api/etf/pdf` usa el módulo PDF común.
@@ -250,7 +257,7 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 | 1 | Esqueleto backend | 1 | 2 |
 | 2 | Esqueleto frontend | 1–2 | 4 |
 | 3 | Chile (piloto) ✅ | 1–2 | 6 |
-| 4 | EEUU | 2–3 | 9 |
+| 4 | EEUU ✅ | 2–3 | 9 |
 | 5 | ETF | 3 | 12 |
 | 6 | Tendencia | 3 | 15 |
 | 7 | Consolidación | 2–3 | 18 |
@@ -295,4 +302,4 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 
 1. ~~Orden de módulos~~ ✅ confirmado (Chile → EEUU → ETF → Tendencia) · ~~Librería de gráficos~~ ✅ LayerChart · ~~Modo de despliegue~~ ✅ SvelteKit con `adapter-node` (SSR) + FastAPI en **2 servidores separados**, patrón BFF.
 2. Pendiente de definir más adelante (no bloquea): proveedor de hosting, dominio, y si el sitio tendrá login o será público. Repositorio: **privado** ✅.
-3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅ · ~~Fase 2~~ ✅ · ~~Fase 3~~ ✅ (Chile, paridad byte a byte). **Siguiente: Fase 4 — módulo EEUU**, aplicando las convenciones de la revisión de arquitectura (ADR 0002). Antes: correr el pipeline de Chile completo contra Yahoo en Windows.
+3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅ · ~~Fase 2~~ ✅ · ~~Fase 3~~ ✅ Chile · ~~Fase 4~~ ✅ EEUU. **Siguiente: Fase 5 — módulo ETF.** Antes: correr los pipelines de Chile y EEUU contra Yahoo en Windows.

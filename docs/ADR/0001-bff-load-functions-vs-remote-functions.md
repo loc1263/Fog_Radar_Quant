@@ -1,7 +1,7 @@
 # ADR 0001 — BFF con load functions (no remote functions, por ahora)
 
 - **Fecha:** 2026-09-27 (Fase 2)
-- **Estado:** aceptada; revisar al iniciar la Fase 4
+- **Estado:** aceptada; revisada en la Fase 4 (2026-09-27): remote functions siguen experimentales en SvelteKit 2.63 → EEUU usa form actions + `use:enhance`. Revisar de nuevo en la Fase 8.
 
 ## Contexto
 

@@ -37,6 +37,12 @@ tests/<modulo>/
   Cuando la tabla es dinámica (indicadores), el backend manda el catálogo de columnas con
   su **unidad** (`pct`, `pct_pts`, `multiplo`, `monto`, `fecha`…) y el front formatea por unidad.
 
+- *(Fase 4)* Los modelos de **respuesta** heredan de una base con
+  `json_schema_serialization_defaults_required=True`: un campo con valor por defecto
+  siempre viene en la respuesta y el tipo TS generado no lo marca como opcional.
+  Los parámetros opcionales de **request** se declaran `X | None = None` (null = valor
+  por defecto del backend) para no duplicar constantes en el front.
+
 ### 3. Parámetros del modelo vienen de la API
 
 Pesos, umbrales y listas de métricas se envían en la respuesta (`modelo`). El front no

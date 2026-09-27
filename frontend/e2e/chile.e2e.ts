@@ -53,7 +53,8 @@ test('indicadores: cambia de grupo de columnas', async ({ page }) => {
 	await page.goto('/chile/indicadores');
 	const table = page.getByRole('table', { name: 'Indicadores financieros del IPSA' });
 	await expect(table.getByRole('button', { name: 'EV/EBITDA' })).toBeVisible();
-	await page.getByRole('button', { name: 'Rentabilidad' }).click();
+	await page.getByRole('link', { name: 'Rentabilidad', exact: true }).click();
+	await expect(page).toHaveURL(/grupo=Rentabilidad/);
 	await expect(table.getByRole('button', { name: 'ROE' })).toBeVisible();
 	await expect(table.getByRole('button', { name: 'EV/EBITDA' })).toHaveCount(0);
 	const nav = page.getByRole('navigation', { name: 'Navegación principal' });

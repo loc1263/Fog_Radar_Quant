@@ -140,6 +140,142 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/us/rankings/latest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Top 15 por momentum (última corrida) */
+        get: operations["latest_ranking_api_us_rankings_latest_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/rankings/latest/candidates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Todos los candidatos evaluados (última corrida) */
+        get: operations["latest_candidates_api_us_rankings_latest_candidates_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/rankings/latest/prices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Matriz de cierres (última corrida) */
+        get: operations["latest_prices_api_us_rankings_latest_prices_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/rankings/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Corridas disponibles (más reciente primero) */
+        get: operations["list_runs_api_us_rankings_runs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/tickers/{ticker}/evaluate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Evalúa un ticker en vivo (Yahoo Finance) */
+        get: operations["evaluate_api_us_tickers__ticker__evaluate_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/portfolio/limits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Límites del optimizador */
+        get: operations["portfolio_limits_api_us_portfolio_limits_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/portfolio/optimize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Optimiza un portafolio (Markowitz, Black-Litterman o HRP) */
+        post: operations["optimize_api_us_portfolio_optimize_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/portfolio/best_combination": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Mejores portafolios de exactamente k tickers */
+        post: operations["best_combination_api_us_portfolio_best_combination_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/etf/status": {
         parameters: {
             query?: never;
@@ -178,6 +314,90 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** BestCombinationRequest */
+        BestCombinationRequest: {
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "markowitz" | "black_litterman" | "hrp";
+            /** Tickers */
+            tickers: string[];
+            /** K */
+            k: number;
+            /**
+             * Risk Free Rate
+             * @description Tasa libre de riesgo anual; null = valor por defecto.
+             */
+            risk_free_rate?: number | null;
+            /**
+             * Rank By
+             * @default expected_return
+             * @enum {string}
+             */
+            rank_by: "expected_return" | "sharpe";
+            /**
+             * Top N
+             * @default 5
+             */
+            top_n: number;
+        };
+        /** BestCombinationResult */
+        BestCombinationResult: {
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "markowitz" | "black_litterman" | "hrp";
+            /** Run Id */
+            run_id: string;
+            /** K */
+            k: number;
+            /**
+             * Rank By
+             * @enum {string}
+             */
+            rank_by: "expected_return" | "sharpe";
+            /** Universe Size */
+            universe_size: number;
+            /** Combinations Evaluated */
+            combinations_evaluated: number;
+            /** Results */
+            results: components["schemas"]["Combination"][];
+        };
+        /** CandidateRow */
+        CandidateRow: {
+            /** Ticker */
+            ticker: string;
+            /** Name */
+            name: string | null;
+            /** Sector */
+            sector: string | null;
+            /** Market Cap */
+            market_cap: number | null;
+            /** Price */
+            price: number;
+            /** Momentum 12 1 */
+            momentum_12_1: number;
+            /** Return 1D */
+            return_1d: number | null;
+            /** Return 5D */
+            return_5d: number | null;
+            /** Return 3M */
+            return_3m: number | null;
+            /** Return 6M */
+            return_6m: number | null;
+            /** Return 1Y */
+            return_1y: number | null;
+            /** Return Ytd */
+            return_ytd: number | null;
+            technical: components["schemas"]["Technical"];
+            valuation: components["schemas"]["Valuation"];
+            profitability: components["schemas"]["Profitability"];
+            financial_health: components["schemas"]["FinancialHealth"];
+            shareholder_return: components["schemas"]["ShareholderReturn"];
+            score: components["schemas"]["Score"];
+        };
         /** ColumnaInfo */
         ColumnaInfo: {
             /** Key */
@@ -194,12 +414,38 @@ export interface components {
             /** Descripcion */
             descripcion?: string | null;
         };
+        /** Combination */
+        Combination: {
+            /** Tickers */
+            tickers: string[];
+            /** Weights */
+            weights: {
+                [key: string]: number;
+            };
+            metrics: components["schemas"]["PortfolioMetrics"];
+        };
         /** ErrorResponse */
         ErrorResponse: {
             /** Detail */
             detail: string;
             /** Code */
             code: string;
+        };
+        /** FinancialHealth */
+        FinancialHealth: {
+            /** Debt To Equity */
+            debt_to_equity: number | null;
+            /** Current Ratio */
+            current_ratio: number | null;
+            /** Free Cash Flow */
+            free_cash_flow: number | null;
+        };
+        /** FrontierPoint */
+        FrontierPoint: {
+            /** Return */
+            return: number;
+            /** Volatility */
+            volatility: number;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -278,6 +524,15 @@ export interface components {
             /** Message */
             message?: string | null;
         };
+        /** Macd */
+        Macd: {
+            /** Macd */
+            macd: number;
+            /** Signal */
+            signal: number;
+            /** Histogram */
+            histogram: number;
+        };
         /**
          * ModeloInfo
          * @description Parámetros del modelo con que se generó el ranking (punto de partida de los sliders).
@@ -341,6 +596,102 @@ export interface components {
             dividendo: number | null;
             /** Momentum */
             momentum: number | null;
+        };
+        /**
+         * PortfolioLimits
+         * @description Límites del optimizador (para validar en el cliente antes de enviar).
+         */
+        PortfolioLimits: {
+            /** Min Tickers */
+            min_tickers: number;
+            /** Min Combination Size */
+            min_combination_size: number;
+            /** Max Combination Size */
+            max_combination_size: number;
+            /** Max Combinations */
+            max_combinations: number;
+            /** Default Risk Free Rate */
+            default_risk_free_rate: number;
+        };
+        /** PortfolioMetrics */
+        PortfolioMetrics: {
+            /** Expected Return */
+            expected_return: number;
+            /** Volatility */
+            volatility: number;
+            /** Sharpe */
+            sharpe: number;
+        };
+        /** PortfolioRequest */
+        PortfolioRequest: {
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "markowitz" | "black_litterman" | "hrp";
+            /** Tickers */
+            tickers: string[];
+            /**
+             * Risk Free Rate
+             * @description Tasa libre de riesgo anual; null = valor por defecto.
+             */
+            risk_free_rate?: number | null;
+            /**
+             * Views
+             * @description Retorno anual esperado por ticker (fracción) para Black-Litterman.
+             */
+            views?: {
+                [key: string]: number;
+            } | null;
+        };
+        /** PortfolioResult */
+        PortfolioResult: {
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "markowitz" | "black_litterman" | "hrp";
+            /** Run Id */
+            run_id: string;
+            /** Tickers */
+            tickers: string[];
+            /** Weights */
+            weights: {
+                [key: string]: number;
+            };
+            metrics: components["schemas"]["PortfolioMetrics"];
+            /** Efficient Frontier */
+            efficient_frontier: components["schemas"]["FrontierPoint"][] | null;
+            /** Prior Returns */
+            prior_returns: {
+                [key: string]: number;
+            } | null;
+            /** Views */
+            views: {
+                [key: string]: number;
+            } | null;
+            /** Posterior Returns */
+            posterior_returns: {
+                [key: string]: number;
+            } | null;
+        };
+        /** PriceMatrix */
+        PriceMatrix: {
+            /** Dates */
+            dates: string[];
+            /** Prices */
+            prices: {
+                [key: string]: (number | null)[];
+            };
+        };
+        /** Profitability */
+        Profitability: {
+            /** Roe */
+            roe: number | null;
+            /** Roa */
+            roa: number | null;
+            /** Net Margin */
+            net_margin: number | null;
         };
         /**
          * RankingMetricas
@@ -427,6 +778,77 @@ export interface components {
             grupo_duplicado: number | null;
             metricas: components["schemas"]["RankingMetricas"];
         };
+        /** RunResponse */
+        RunResponse: {
+            /** Run Id */
+            run_id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "done" | "error";
+            /** Error */
+            error: string | null;
+            /**
+             * Started At
+             * Format: date-time
+             */
+            started_at: string;
+            /**
+             * Finished At
+             * Format: date-time
+             */
+            finished_at: string;
+            /** Min Market Cap */
+            min_market_cap: number;
+            /** Pause Seconds */
+            pause_seconds: number;
+            /** Universe Total */
+            universe_total: number;
+            /** Candidates Total */
+            candidates_total: number;
+            /** Top N */
+            top_n: number;
+            /** Rows */
+            rows: components["schemas"]["CandidateRow"][];
+        };
+        /** RunsList */
+        RunsList: {
+            /** Runs */
+            runs: string[];
+        };
+        /** Score */
+        Score: {
+            /** Overall */
+            overall: number | null;
+            /**
+             * Label
+             * @default Sin datos
+             */
+            label: string;
+            categories: components["schemas"]["ScoreCategories"];
+        };
+        /** ScoreCategories */
+        ScoreCategories: {
+            /** Valuation */
+            valuation: number | null;
+            /** Profitability */
+            profitability: number | null;
+            /** Financial Health */
+            financial_health: number | null;
+            /** Shareholder Return */
+            shareholder_return: number | null;
+            /** Technical */
+            technical: number | null;
+        };
+        /** ShareholderReturn */
+        ShareholderReturn: {
+            /**
+             * Dividend Yield
+             * @description Fracción (0.012 = 1,2 %).
+             */
+            dividend_yield: number | null;
+        };
         /** SystemStatus */
         SystemStatus: {
             /** App */
@@ -437,6 +859,54 @@ export interface components {
             env: string;
             /** Modules */
             modules: components["schemas"]["ModuleStatus"][];
+        };
+        /** Technical */
+        Technical: {
+            /** Sma 50 */
+            sma_50: number | null;
+            /** Sma 200 */
+            sma_200: number | null;
+            /** Rsi 14 */
+            rsi_14: number | null;
+            macd: components["schemas"]["Macd"] | null;
+            /** Volume */
+            volume: number | null;
+            /** Average Volume */
+            average_volume: number | null;
+        };
+        /** TickerEvaluation */
+        TickerEvaluation: {
+            /** Ticker */
+            ticker: string;
+            /** Name */
+            name: string;
+            /** Sector */
+            sector: string;
+            /** Industry */
+            industry: string;
+            /** Currency */
+            currency: string;
+            /** Price */
+            price: number | null;
+            /** Market Cap */
+            market_cap: number | null;
+            /**
+             * Fetched At
+             * Format: date-time
+             */
+            fetched_at: string;
+            valuation: components["schemas"]["Valuation"];
+            profitability: components["schemas"]["Profitability"];
+            financial_health: components["schemas"]["FinancialHealth"];
+            shareholder_return: components["schemas"]["ShareholderReturn"];
+            technical: components["schemas"]["Technical"];
+            score: components["schemas"]["Score"];
+            /**
+             * Cached
+             * @description True si salió de la caché de 5 minutos.
+             * @default false
+             */
+            cached: boolean;
         };
         /** ValidationError */
         ValidationError: {
@@ -450,6 +920,23 @@ export interface components {
             input?: unknown;
             /** Context */
             ctx?: Record<string, never>;
+        };
+        /** Valuation */
+        Valuation: {
+            /** Per Trailing */
+            per_trailing: number | null;
+            /** Per Forward */
+            per_forward: number | null;
+            /** Peg Ratio */
+            peg_ratio: number | null;
+            /** Ev To Ebitda */
+            ev_to_ebitda: number | null;
+            /** Price To Book */
+            price_to_book: number | null;
+            /** Eps Trailing */
+            eps_trailing: number | null;
+            /** Eps Forward */
+            eps_forward: number | null;
         };
     };
     responses: never;
@@ -748,6 +1235,360 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    latest_ranking_api_us_rankings_latest_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunResponse"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    latest_candidates_api_us_rankings_latest_candidates_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunResponse"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    latest_prices_api_us_rankings_latest_prices_get: {
+        parameters: {
+            query?: {
+                /** @description Solo los últimos N días. */
+                days?: number | null;
+                tickers?: string[] | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PriceMatrix"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    list_runs_api_us_rankings_runs_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunsList"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    evaluate_api_us_tickers__ticker__evaluate_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                ticker: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TickerEvaluation"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    portfolio_limits_api_us_portfolio_limits_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PortfolioLimits"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    optimize_api_us_portfolio_optimize_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PortfolioRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PortfolioResult"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    best_combination_api_us_portfolio_best_combination_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BestCombinationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BestCombinationResult"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
             /** @description Sin datos disponibles */
