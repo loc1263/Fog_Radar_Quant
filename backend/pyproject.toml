@@ -1,0 +1,62 @@
+[project]
+name = "fog-radar"
+version = "0.1.0"
+description = "Backend unificado de Fog Radar Quant: ETF, acciones EEUU, acciones Chile (IPSA) y Tendencia/Markowitz."
+requires-python = ">=3.12,<3.14"   # Stock_Tendencia exige <3.14
+license = { text = "Proprietary" }
+
+# Unión de los requirements de los 4 proyectos originales. Pisos = el más
+# exigente de los 4; techos en la próxima versión mayor (política de ETF_Choice).
+dependencies = [
+    # --- API ---
+    "fastapi>=0.115,<1.0",
+    "uvicorn[standard]>=0.30,<1.0",
+    "pydantic-settings>=2.4,<3.0",
+    "python-multipart>=0.0.9,<1.0",          # ETF
+    "slowapi>=0.1.9,<1.0",                   # rate limit (BACKLOG A)
+    "cachetools>=5.3,<7.0",                  # caché /evaluate (US-BACK-01)
+    "python-dotenv>=1.0,<2.0",
+    # --- Datos / cálculo ---
+    "pandas>=2.2.3,<3.0",
+    "numpy>=2.0,<3.0",
+    "scipy>=1.13,<2.0",
+    "PyPortfolioOpt>=1.5.5,<2.0",            # Tendencia
+    # --- Fuentes de datos ---
+    "yfinance>=0.2.60,<2.0",
+    "curl_cffi>=0.7,<1.0",                   # Tendencia (robust_yf)
+    "requests>=2.32,<3.0",
+    "lxml>=5.2",                             # EEUU (scraping Wikipedia)
+    "beautifulsoup4>=4.12,<5.0",             # Tendencia
+    "fredapi>=0.5.2,<1.0",                   # Tendencia (macro)
+    # --- Archivos / reportes ---
+    "openpyxl>=3.1,<4.0",                    # ETF + Chile (xlsx)
+    "filelock>=3.16,<4.0",                   # ETF (lock entre API y pipeline)
+    "reportlab>=4.0,<5.0",                   # PDF (ETF + Tendencia)
+    "matplotlib>=3.7,<4.0",                  # gráficos del PDF de Tendencia
+    "pypdf>=4.0,<7.0",                       # Tendencia
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27",                           # TestClient de FastAPI
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fog_radar"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+src = ["src", "tests"]
+line-length = 110
+
+[tool.ruff.lint]
+select = ["E9", "F", "I", "B", "UP"]

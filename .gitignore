@@ -1,0 +1,48 @@
+# --- Respaldos y basura local ---
+_backups/
+_to_delete/
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# --- Datos (viven fuera del código; se respaldan aparte) ---
+data/*
+!data/.gitkeep
+*.db
+*.sqlite
+
+# --- Secretos ---
+.env
+.env.*
+!.env.example
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+.coverage
+htmlcov/
+
+# --- Node / SvelteKit ---
+node_modules/
+.svelte-kit/
+build/
+dist/
+.vite/
+test-results/
+playwright-report/
+
+# --- Logs / salidas ---
+logs/
+*.log
+output/
+
+# --- Editores ---
+.vscode/*
+!.vscode/extensions.json
+.idea/

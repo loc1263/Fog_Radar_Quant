@@ -1,0 +1,15 @@
+Proyectos
+
+1. D:\Claude\ETF_Choice
+2. D:\Claude\Stock_Choice_EEUU
+3. D:\Claude\Stock_Choice_Nacional
+4. D:\Claude\Stock_Tendencia
+
+
+Cómo agregarlo
+
+En esta app: Configuración → Conectores → "Add Custom Connector", con el nombre svelte y la URL https://mcp.svelte.dev/mcp. Después aparece en tus sesiones y lo uso directamente.
+En Claude Code, si programas desde ahí en tus PCs:
+  claude mcp add -t http -s project svelte https://mcp.svelte.dev/mcp
+
+Con -s project queda configurado para Fog_Radar_Quant.
