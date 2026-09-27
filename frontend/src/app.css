@@ -1,0 +1,128 @@
+/*
+ * Fog Radar Quant — sistema "Dashboard ejecutivo" (docs/DESIGN_SYSTEM.md).
+ * Todo color sale de un token brand-* / viz-*. El modo oscuro solo redefine
+ * variables (clase .dark en <html>), así los componentes no llevan dark:.
+ */
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	--color-brand-bg: #ffffff;
+	--color-brand-text: #000000;
+	--color-brand-muted: #3f4a5a;
+	--color-brand-strong: #1b3a6b;
+	--color-brand-neutral: #6b7280;
+	--color-brand-label: #1b3a6b;
+	--color-brand-accent: #9a6e00;
+	--color-brand-red: #b83232;
+	--color-brand-green: #1a7a55;
+	--color-brand-blue: #1b5ea5;
+	--color-brand-border: #d8dce3;
+	--color-brand-card: #f7f8fa;
+	--color-brand-amber-bg: #fdfaf0;
+	--color-brand-blue-bg: #f2f6fd;
+	--color-brand-green-solid: #1a7a55;
+	--color-brand-red-solid: #b83232;
+	--color-brand-accent-solid: #9a6e00;
+	--color-viz-grid: #e1e0d9;
+	--color-viz-axis: #898781;
+
+	/* Paleta categórica para series (2.2), en este orden. */
+	--color-viz-1: #2a78d6;
+	--color-viz-2: #eb6834;
+	--color-viz-3: #1baf7a;
+	--color-viz-4: #eda100;
+	--color-viz-5: #e87ba4;
+	--color-viz-6: #008300;
+	--color-viz-7: #4a3aa7;
+	--color-viz-8: #e34948;
+
+	--radius: 0.25rem;
+}
+
+html {
+	color-scheme: light;
+}
+
+html.dark {
+	color-scheme: dark;
+	--color-brand-bg: #0f141b;
+	--color-brand-text: #e6e9ee;
+	--color-brand-muted: #a9b3c1;
+	--color-brand-label: #a9c3ec;
+	--color-brand-accent: #e3b341;
+	--color-brand-red: #f07878;
+	--color-brand-green: #4cc592;
+	--color-brand-blue: #6aa8ee;
+	--color-brand-border: #2c3643;
+	--color-brand-card: #18202a;
+	--color-brand-amber-bg: #1c1810;
+	--color-brand-blue-bg: #121b28;
+	--color-brand-strong: #25406b;
+	--color-brand-neutral: #5b6472;
+	--color-viz-grid: #2a323d;
+	--color-viz-axis: #8d96a3;
+}
+
+/*
+ * Puente shadcn-svelte → tokens de marca. Los componentes de
+ * $lib/components/ui usan nombres semánticos de shadcn (bg-primary,
+ * text-muted-foreground…); acá se mapean a brand-* para que respeten
+ * el Dashboard ejecutivo en ambos modos.
+ */
+@theme inline {
+	--color-background: var(--color-brand-bg);
+	--color-foreground: var(--color-brand-text);
+	--color-card: var(--color-brand-card);
+	--color-card-foreground: var(--color-brand-text);
+	--color-popover: var(--color-brand-bg);
+	--color-popover-foreground: var(--color-brand-text);
+	--color-primary: var(--color-brand-strong);
+	--color-primary-foreground: #ffffff;
+	--color-secondary: var(--color-brand-bg);
+	--color-secondary-foreground: var(--color-brand-label);
+	--color-muted: var(--color-brand-card);
+	--color-muted-foreground: var(--color-brand-muted);
+	--color-accent: var(--color-brand-card);
+	--color-accent-foreground: var(--color-brand-accent);
+	--color-destructive: var(--color-brand-red-solid);
+	--color-border: var(--color-brand-border);
+	--color-input: var(--color-brand-border);
+	--color-ring: var(--color-brand-blue);
+	--color-chart-1: var(--color-viz-1);
+	--color-chart-2: var(--color-viz-2);
+	--color-chart-3: var(--color-viz-3);
+	--color-chart-4: var(--color-viz-4);
+	--color-chart-5: var(--color-viz-5);
+	--radius-sm: calc(var(--radius) - 1px);
+	--radius-md: var(--radius);
+	--radius-lg: calc(var(--radius) + 2px);
+	--radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+	/* Variables que usa el ChartContainer de shadcn (var(--chart-n)). */
+	--chart-1: var(--color-viz-1);
+	--chart-2: var(--color-viz-2);
+	--chart-3: var(--color-viz-3);
+	--chart-4: var(--color-viz-4);
+	--chart-5: var(--color-viz-5);
+	--chart-6: var(--color-viz-6);
+	--chart-7: var(--color-viz-7);
+	--chart-8: var(--color-viz-8);
+}
+
+@layer base {
+	* {
+		@apply border-brand-border;
+	}
+	body {
+		@apply bg-brand-bg text-brand-text antialiased;
+	}
+}
+
+@utility section-header {
+	@apply mb-3 border-b border-brand-border pb-1.5 text-xs font-bold tracking-wide text-brand-accent uppercase;
+}

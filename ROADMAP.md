@@ -95,7 +95,7 @@ Fog_Radar_Quant/
 | Dev | 2 procesos: `vite dev` (:5173) + `uvicorn` (:8000); `PRIVATE_API_URL=http://localhost:8000` | Replica la topología de producción desde el primer día. |
 | Deploy | Docker por servidor + **Caddy** (HTTPS automático). Ej.: `quant.midominio.cl` (front) y `api.midominio.cl` (back) | Despliegues independientes: se puede actualizar el front sin tocar el back y viceversa. |
 | UI | **Tailwind v4** + **shadcn-svelte** (bits-ui) + tokens del *Dashboard ejecutivo* | Continuidad con shadcn (EEUU, Nacional) y con el diseño ya consensuado. |
-| Gráficos | **LayerChart** (✅ decidido 2026-09-27) | Librería nativa de Svelte (sobre D3/Layer Cake), componible, estilable con clases Tailwind y tokens `brand-*`. Reemplaza Recharts (ETF) y Chart.js (Tendencia). Cubre línea, barras, área, scatter (frontera eficiente) y sparklines. |
+| Gráficos | **LayerChart 2.5** (✅ decidido 2026-09-27; integrado vía el `chart` de shadcn-svelte) | Librería nativa de Svelte (sobre D3/Layer Cake), componible, estilable con clases Tailwind y tokens `brand-*`. Reemplaza Recharts (ETF) y Chart.js (Tendencia). Cubre línea, barras, área, scatter (frontera eficiente) y sparklines. |
 | Tablas | Componente `DataTable` genérico propio (orden, filtro, CSV) | Casi todas las pestañas son tablas; hoy hay 4 implementaciones distintas. |
 | Pipelines | Siguen siendo **batch fuera del proceso web** (CLI). En dev: Programador de tareas de Windows. En producción: **cron en el servidor backend** (donde viven los datos); la API solo lee | Mantiene el diseño actual (evita bloqueos de Yahoo en requests web). |
 | Estado de corridas | `core/jobs.py` + endpoint `/api/jobs` (última corrida, duración, estado, log) | Permite al hub mostrar "datos al día / desactualizados" de los 4 módulos. |
@@ -164,20 +164,22 @@ Orden de migración de módulos: **Chile → EEUU → ETF → Tendencia**
 - [x] Smoke test real con uvicorn: health 200, sin key 401, con key 200, `/docs` 200, rate limit 429 al superar el límite.
 - ⏭️ Movido a Fase 8: probar descargas de Yahoo desde el servidor productivo (requiere tener el servidor).
 
-### Fase 2 — Esqueleto del frontend (≈1–2 sesiones)
-- [ ] `npx sv create frontend` (SvelteKit, TS estricto, Tailwind v4, ESLint, Prettier, Vitest, Playwright) con **`adapter-node`**.
-- [ ] `$lib/server/api.ts`: cliente del backend que solo corre en el servidor (lee `PRIVATE_API_URL` y `PRIVATE_API_KEY`, timeout, reintentos, errores tipados). Convención: toda carga de datos va en `+page.server.ts`; las acciones (POST) en *form actions* o `+server.ts`.
-- [ ] Evaluar **Remote functions** de SvelteKit (`query`/`form`/`command` en `.remote.ts`) como alternativa tipada a form actions + `+server.ts` para el BFF.
-- [ ] Streaming de promesas en `load` para endpoints lentos (la página aparece de inmediato con skeletons y los datos llegan después).
-- [ ] `hooks.server.ts`: headers de seguridad (CSP, HSTS), logging de requests.
-- [ ] `app.css` con los tokens `brand-*` claro/oscuro y script anti-flash del tema.
-- [ ] shadcn-svelte: Card, Table, Badge, Tabs, Button, Input, Alert, Skeleton.
-- [ ] Componentes compartidos: `DataTable` (orden + filtro + CSV), `KpiCard`, `ScoreBar`, `TickerLink`, `SignalBadge`, `Sparkline`, `ErrorState`, `EmptyState`.
-- [ ] Componentes de gráfico base con LayerChart (`LineChart`, `BarChart`, `ScatterChart`, `Sparkline`) con tema claro/oscuro desde los tokens.
-- [ ] Cliente API tipado: script `npm run gen:api` → `openapi-typescript http://localhost:8000/openapi.json`.
-- [ ] Layout global, menú de módulos, página `/` con placeholders.
-- [ ] `scripts/iniciar_dev.py` que levanta back + front juntos (como los `start_dev.py` actuales).
-- **Listo cuando:** navegación entre los 4 módulos vacía funciona, tema claro/oscuro OK, tipos generados.
+### Fase 2 — Esqueleto del frontend ✅ completada 2026-09-27
+- [x] SvelteKit 2.63 + Svelte 5.56 (runes forzado) + TypeScript + Tailwind 4.3 + **adapter-node**, con ESLint, Prettier, Vitest (Node + navegador) y Playwright (`sv create` 0.17). La configuración de SvelteKit vive en `vite.config.ts` (formato nuevo, sin `svelte.config.js`).
+- [x] **Cliente BFF** `src/lib/server/api.ts`: `backend(event)` tipado por ruta con `openapi-fetch` + `call()` / `tryCall()` (timeout 15 s, errores `{message, code}`, 401 del backend → 502 "el sitio no pudo autenticarse"). Envía `X-API-Key` y `X-Forwarded-For` con la IP del usuario final.
+- [x] Tipos generados desde el OpenAPI de FastAPI (`npm run gen:api` → `src/lib/api/schema.d.ts`).
+- [x] `hooks.server.ts` con cabeceras de seguridad + **CSP con nonce** (el script anti-flash del tema lleva nonce). HSTS queda para Caddy (Fase 8).
+- [x] Remote functions evaluadas → **no por ahora** (siguen experimentales). Decisión en `docs/ADR/0001-bff-load-functions-vs-remote-functions.md`; se revisa en la Fase 4.
+- [x] Tokens `brand-*`/`viz-*` claro/oscuro en `src/app.css` + puente a las variables semánticas de shadcn; tema persistente sin destello.
+- [x] shadcn-svelte (v1.0.12, adaptado al diseño): button, card, table, badge, input, alert, skeleton, tabs, separator, tooltip, label, select, chart. *El registro de shadcn-svelte.com no es accesible desde este entorno; los componentes se tomaron del repositorio en GitHub.*
+- [x] Componentes compartidos: `DataTable` (orden por clic en todas las columnas, búsqueda sin tildes, CSV con `;` + BOM para Excel), `KpiCard`, `KpiGrid`, `Section`, `SectionHeader`, `ScoreBar`, `WeightBar`, `CompositionBar`, `SignalBadge`, `TickerLink`, `Notice`, `EmptyState`, `ErrorState`, `ThemeToggle`, `ModuleCard`, `ModuleStatusPanel`.
+- [x] Gráficos LayerChart 2.5: `LineChart`, `BarChart`, `ScatterChart`, `Sparkline`, `ChartEmpty` (paleta categórica del sistema, ejes en `viz-axis`, sin redibujar al cambiar de tema).
+- [x] Rutas: `/` (hub con datos reales de `/api/status`), `/chile`, `/eeuu`, `/etf`, `/tendencia` (estado de migración), `/estado` (backend + jobs), `/componentes` (vitrina, **solo en dev**), página de error.
+- [x] `scripts/iniciar_dev.py` (back + front con salida combinada; Windows y Linux).
+- [x] **`npm run autofix`**: el autofixer oficial de Svelte (paquete `@sveltejs/mcp`) sobre todo `src/`, sin red. 31/31 archivos sin observaciones.
+- [x] CI: job `frontend` (autofix, check, lint, tests, e2e con backend levantado). `.mcp.json` con el Svelte MCP para Claude Code.
+- [x] Verificación: svelte-check 0 errores · ESLint/Prettier OK · **16 tests Vitest** (13 lógica + 3 de componente en Chromium) · **4 E2E Playwright** · build de producción · capturas claro/oscuro sin errores de consola (`docs/screenshots/`).
+- Nota Windows: `node_modules` no se versiona; en cada PC correr `npm install` en `frontend/` (Node ≥ 22).
 
 ### Fase 3 — Módulo Chile / IPSA (piloto, ≈1–2 sesiones)
 - Backend: portar `pyYahooStockAnalisis.py` → `extractor.py`, `scoring_acciones.py` → `scoring.py`, `api.py` → `router.py` con schemas Pydantic; pipeline `python -m fog_radar.jobs cl`.
@@ -278,4 +280,4 @@ Orden de migración de módulos: **Chile → EEUU → ETF → Tendencia**
 
 1. ~~Orden de módulos~~ ✅ confirmado (Chile → EEUU → ETF → Tendencia) · ~~Librería de gráficos~~ ✅ LayerChart · ~~Modo de despliegue~~ ✅ SvelteKit con `adapter-node` (SSR) + FastAPI en **2 servidores separados**, patrón BFF.
 2. Pendiente de definir más adelante (no bloquea): proveedor de hosting, dominio, y si el sitio tendrá login o será público. Repositorio: **privado** ✅.
-3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅. **Siguiente: Fase 2 — esqueleto del frontend (SvelteKit).** TD-LIC-1 decidido: repo privado, sin LICENSE.
+3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅ · ~~Fase 2~~ ✅. **Siguiente: Fase 3 — módulo Chile / IPSA (piloto).** TD-LIC-1 decidido: repo privado, sin LICENSE.

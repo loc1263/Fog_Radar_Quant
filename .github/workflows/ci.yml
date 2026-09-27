@@ -31,4 +31,43 @@ jobs:
       - name: Tests
         run: uv run pytest -q
 
-  # El job "frontend" (svelte-check, eslint, vitest, build) se agrega en la Fase 2.
+  frontend:
+    name: Frontend (autofix + check + lint + tests + e2e)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Navegador para tests de componentes y e2e
+        run: npx playwright install --with-deps chromium
+      - name: Svelte autofixer
+        run: npm run autofix
+      - name: Tipos (svelte-check)
+        run: npm run check
+      - name: Lint
+        run: npm run lint
+      - name: Tests unitarios y de componentes
+        run: npm test
+      - name: Levantar backend para e2e
+        working-directory: backend
+        run: |
+          uv sync --frozen
+          nohup uv run uvicorn fog_radar.main:app --port 8000 > /tmp/backend.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://localhost:8000/api/health && break; sleep 1; done
+      - name: E2E (Playwright)
+        run: npm run test:e2e
+        env:
+          CI: 'true'
+          PRIVATE_API_URL: http://localhost:8000

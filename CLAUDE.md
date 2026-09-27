@@ -18,15 +18,21 @@ estado de avance: **ROADMAP.md**. Backlog: **docs/BACKLOG.md**.
 2. Usar el **Svelte MCP** (`https://mcp.svelte.dev/mcp`) para consultar documentación
    (`list-sections` → `get-documentation`) ante cualquier duda de API.
 3. **Todo archivo `.svelte` / `.svelte.ts` debe pasar por `svelte-autofixer`** y
-   corregirse hasta que no reporte issues antes de darlo por terminado.
-4. `npm run check` (svelte-check) sin errores antes de cada commit del frontend.
+   corregirse hasta que no reporte issues antes de darlo por terminado. En local:
+   `npm run autofix` (mismo autofixer del MCP, sin red; omite `components/ui`).
+4. Antes de cada commit del frontend: `npm run autofix && npm run check && npm run lint && npm test`.
+5. Enlaces internos con `resolve()` de `$app/paths`; externos con `href` literal.
+6. Componentes base de shadcn-svelte en `src/lib/components/ui` (copiados de la versión
+   1.0.12, adaptados a los tokens); los propios del sitio en `components/shared` y
+   gráficos en `src/lib/charts` (LayerChart).
 
 ## Arquitectura front ↔ back (patrón BFF)
 - El navegador **nunca** llama a FastAPI directamente. Toda carga de datos va en
   `+page.server.ts` / `+layout.server.ts`; mutaciones en form actions, `+server.ts`
   o remote functions.
-- El cliente del backend vive en `src/lib/server/api.ts` y usa
-  `$env/dynamic/private` (`PRIVATE_API_URL`, `PRIVATE_API_KEY`).
+- El cliente del backend vive en `src/lib/server/api.ts` (`backend(event)`, `call`,
+  `tryCall`) y usa `$env/dynamic/private` (`PRIVATE_API_URL`, `PRIVATE_API_KEY`).
+- Remote functions: no por ahora (experimentales). Ver `docs/ADR/0001-*.md`.
 - Los tipos TS de la API se **generan** desde el OpenAPI de FastAPI
   (`npm run gen:api`); no escribir tipos de respuesta a mano.
 - Todo endpoint FastAPI declara `response_model` Pydantic.

@@ -45,9 +45,9 @@
 
 | ID | Ítem | Fase | Cómo se resuelve |
 |---|---|---|---|
-| US-TEST-01 · US-DEVOPS-01 | Tests sin CI | 1 ✅ (backend) / 2 (frontend) | GitHub Actions: jobs `backend` (ruff + pytest) y `frontend` (check + lint + vitest + build). |
-| US-TEST-03 | Sin linting obligatorio | 1 ✅ (ruff) / 2 (frontend) | Ruff (back) + ESLint/Prettier + `svelte-check` (front) en CI. |
-| US-TEST-02 | Frontend sin tests | 2 | Vitest para lógica (`DataTable`, scoring de Chile) + Playwright smoke por módulo (Fase 8). |
+| US-TEST-01 · US-DEVOPS-01 | Tests sin CI | 1–2 ✅ | GitHub Actions: jobs `backend` (ruff + pytest) y `frontend` (check + lint + vitest + build). |
+| US-TEST-03 | Sin linting obligatorio | 1–2 ✅ | Ruff (back) + ESLint/Prettier + `svelte-check` (front) en CI. |
+| US-TEST-02 | Frontend sin tests | 2 ✅ (base) | Vitest para lógica (`DataTable`, scoring de Chile) + Playwright smoke por módulo (Fase 8). |
 | CL (tests) | Sin tests de API ni de scoring IPSA | 3 | pytest de `winsorizar`, `calcular_zscore`, duplicados, FX + tests de paridad contra el original. |
 | US-DEVOPS-02 | Sin Docker | 8 | `deploy/backend` y `deploy/frontend` con Dockerfile + compose. |
 | US-DEVOPS-03 | Solo Task Scheduler de Windows | 7 | `crontab` en el servidor backend; Task Scheduler solo para dev local. |
@@ -71,10 +71,10 @@
 
 | ID | Ítem | Fase | Cómo se resuelve |
 |---|---|---|---|
-| CL (CSV) | Exportar vista filtrada a CSV | 2–3 | `DataTable` común con botón CSV. |
+| CL (CSV) | Exportar vista filtrada a CSV | 2 ✅ (en `DataTable`) | `DataTable` común con botón CSV. |
 | ETF-15/16 (retirados por decisión previa) | Búsqueda y CSV faltantes en Excluidos/Categorías | 5 | Sin trabajo extra: `DataTable` los trae por defecto. |
-| DESIGN (ETF) | Orden por click solo en "Top 15 Vanguard" | 2 | Todas las tablas ordenables (regla del DESIGN_SYSTEM). |
-| CL (dark mode) | Falta toggle de modo oscuro | 2 | Tema común del sitio. |
+| DESIGN (ETF) | Orden por click solo en "Top 15 Vanguard" | 2 ✅ | Todas las tablas ordenables (regla del DESIGN_SYSTEM). |
+| CL (dark mode) | Falta toggle de modo oscuro | 2 ✅ | Tema común del sitio. |
 | CL (ranking.json) | Snapshot huérfano `src/data/ranking.json` | 3 | No se porta. |
 
 ---

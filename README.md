@@ -4,11 +4,17 @@ Sitio unificado de análisis cuantitativo: ETFs, acciones EEUU, acciones Chile (
 y tendencia/Markowitz Asia + EEUU. Repositorio privado.
 
 - `backend/`  — FastAPI (Python 3.12, uv)
-- `frontend/` — SvelteKit + TypeScript + Tailwind v4 (Fase 2)
+- `frontend/` — SvelteKit + TypeScript + Tailwind v4 + LayerChart (ver `frontend/README.md`)
 - `docs/`     — sistema de diseño, backlog, metodologías
 - `deploy/`   — Docker/Caddy para los 2 servidores productivos
 
 Plan y estado: [ROADMAP.md](ROADMAP.md) · Convenciones: [CLAUDE.md](CLAUDE.md)
+
+## Todo junto (desarrollo)
+
+```bash
+python scripts/iniciar_dev.py      # backend :8000 + frontend :5173
+```
 
 ## Backend (desarrollo)
 
