@@ -63,6 +63,8 @@ jobs:
       - name: Levantar backend para e2e
         working-directory: backend
         run: |
+          mkdir -p ../data/cl_stocks
+          cp tests/cl_stocks/fixtures/*_20260925_183129.csv ../data/cl_stocks/
           uv sync --frozen
           nohup uv run uvicorn fog_radar.main:app --port 8000 > /tmp/backend.log 2>&1 &
           for i in $(seq 1 30); do curl -sf http://localhost:8000/api/health && break; sleep 1; done

@@ -1,6 +1,8 @@
 /** Formateo común (es-CL). Todas las celdas numéricas pasan por acá. */
 
 const LOCALE = 'es-CL';
+/** Zona fija: el servidor SSR y el navegador deben mostrar la misma hora (sin desajuste de hidratación). */
+export const TIME_ZONE = 'America/Santiago';
 const EMPTY = '—';
 
 function isNum(v: unknown): v is number {
@@ -40,6 +42,7 @@ export function fmtDate(v: string | Date | null | undefined, withTime = false): 
 		day: '2-digit',
 		month: 'short',
 		year: 'numeric',
+		timeZone: TIME_ZONE,
 		...(withTime ? { hour: '2-digit', minute: '2-digit' } : {})
 	});
 }

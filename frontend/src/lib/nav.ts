@@ -20,7 +20,10 @@ export const MODULES: ModuleNav[] = [
 		label: 'Chile',
 		href: '/chile',
 		description: 'Ranking multi-factor de acciones del IPSA.',
-		sections: []
+		sections: [
+			{ label: 'Ranking', href: '/chile' },
+			{ label: 'Indicadores', href: '/chile/indicadores' }
+		]
 	},
 	{
 		key: 'us_stocks',

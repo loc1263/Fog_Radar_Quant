@@ -25,6 +25,15 @@
 		 * para que las columnas sin tratamiento especial muestren `{text}`.
 		 */
 		cell?: Snippet<[{ column: Column<T>; row: T; value: unknown; text: string }]>;
+		/**
+		 * Detalle desplegable bajo cada fila. Agrega una columna inicial con un
+		 * botón ▸/▾ (una fila abierta a la vez). Requiere `rowKey`.
+		 */
+		detail?: Snippet<[{ row: T }]>;
+		/** Identificador estable de la fila (para el detalle desplegable). */
+		rowKey?: (row: T) => string;
+		/** Texto accesible del botón de detalle. */
+		detailLabel?: (row: T) => string;
 		initialSort?: SortState;
 		/** Columnas donde busca el filtro de texto (sin filtro si se omite). */
 		searchKeys?: string[];
@@ -40,6 +49,9 @@
 		rows,
 		columns,
 		cell,
+		detail,
+		rowKey,
+		detailLabel = () => 'Ver detalle',
 		initialSort = null,
 		searchKeys,
 		searchPlaceholder = 'Buscar…',
@@ -52,6 +64,15 @@
 	let sort = $state<SortState>(null);
 	let query = $state('');
 	let sortTouched = $state(false);
+	let openKey = $state<string | null>(null);
+
+	const expandable = $derived(!!detail && !!rowKey);
+	const colCount = $derived(columns.length + (expandable ? 1 : 0));
+
+	function toggleDetail(row: T) {
+		const key = rowKey?.(row) ?? null;
+		openKey = openKey === key ? null : key;
+	}
 
 	const effectiveSort = $derived(sortTouched ? sort : initialSort);
 	const filtered = $derived(searchKeys ? filterRows(rows, query, searchKeys) : rows);
@@ -122,6 +143,11 @@
 			{#if caption}<caption class="sr-only">{caption}</caption>{/if}
 			<thead>
 				<tr>
+					{#if expandable}
+						<th scope="col" class="w-8 bg-brand-strong px-1 py-2"
+							><span class="sr-only">Detalle</span></th
+						>
+					{/if}
 					{#each columns as column (column.key)}
 						<th
 							scope="col"
@@ -153,7 +179,25 @@
 			</thead>
 			<tbody>
 				{#each visible as row, i (i)}
-					<tr class="border-b border-brand-border odd:bg-brand-bg even:bg-brand-card">
+					{@const isOpen = expandable && openKey === rowKey?.(row)}
+					<tr
+						class={cn(
+							'border-b border-brand-border',
+							i % 2 === 0 ? 'bg-brand-bg' : 'bg-brand-card'
+						)}
+					>
+						{#if expandable}
+							<td class="px-1 py-2 text-center">
+								<button
+									type="button"
+									onclick={() => toggleDetail(row)}
+									aria-expanded={isOpen}
+									aria-label={detailLabel(row)}
+									class="rounded px-1.5 text-brand-label hover:bg-brand-border"
+									>{isOpen ? '▾' : '▸'}</button
+								>
+							</td>
+						{/if}
 						{#each columns as column (column.key)}
 							<td
 								class={cn(
@@ -176,9 +220,14 @@
 							</td>
 						{/each}
 					</tr>
+					{#if isOpen && detail}
+						<tr class="border-b border-brand-border bg-brand-blue-bg">
+							<td colspan={colCount} class="px-4 py-4">{@render detail({ row })}</td>
+						</tr>
+					{/if}
 				{:else}
 					<tr>
-						<td colspan={columns.length} class="bg-brand-card p-6 text-center text-brand-muted">
+						<td colspan={colCount} class="bg-brand-card p-6 text-center text-brand-muted">
 							{emptyText}
 						</td>
 					</tr>

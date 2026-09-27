@@ -89,6 +89,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/cl/ranking": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Último ranking multi-factor del IPSA */
+        get: operations["get_ranking_api_cl_ranking_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/cl/indicadores": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Indicadores financieros crudos (antes del scoring) */
+        get: operations["get_indicadores_api_cl_indicadores_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/us/status": {
         parameters: {
             query?: never;
@@ -144,6 +178,22 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** ColumnaInfo */
+        ColumnaInfo: {
+            /** Key */
+            key: string;
+            /** Label */
+            label: string;
+            /** Grupo */
+            grupo: string;
+            /**
+             * Unidad
+             * @enum {string}
+             */
+            unidad: "texto" | "numero" | "multiplo" | "pct" | "pct_pts" | "monto" | "cantidad" | "fecha";
+            /** Descripcion */
+            descripcion?: string | null;
+        };
         /** ErrorResponse */
         ErrorResponse: {
             /** Detail */
@@ -170,6 +220,34 @@ export interface components {
             version: string;
             /** Env */
             env: string;
+        };
+        /** IndicadorRow */
+        IndicadorRow: {
+            /** Simbolo */
+            simbolo: string;
+            /** Nombre */
+            nombre: string | null;
+            /** Sector */
+            sector: string | null;
+            /** Industria */
+            industria: string | null;
+            /** Valores */
+            valores: {
+                [key: string]: number | string | null;
+            };
+        };
+        /** IndicadoresResponse */
+        IndicadoresResponse: {
+            /** Generado Desde */
+            generado_desde: string;
+            /** Generado En */
+            generado_en: string | null;
+            /** Grupos */
+            grupos: string[];
+            /** Columnas */
+            columnas: components["schemas"]["ColumnaInfo"][];
+            /** Filas */
+            filas: components["schemas"]["IndicadorRow"][];
         };
         /** JobRecord */
         JobRecord: {
@@ -200,6 +278,19 @@ export interface components {
             /** Message */
             message?: string | null;
         };
+        /**
+         * ModeloInfo
+         * @description Parámetros del modelo con que se generó el ranking (punto de partida de los sliders).
+         */
+        ModeloInfo: {
+            /** Pilares */
+            pilares: components["schemas"]["PilarInfo"][];
+            /** Winsor */
+            winsor: [
+                number,
+                number
+            ];
+        };
         /** ModuleStatus */
         ModuleStatus: {
             /** Key */
@@ -218,6 +309,123 @@ export interface components {
             data_available: boolean;
             latest_job?: components["schemas"]["JobRecord"] | null;
             last_success?: components["schemas"]["JobRecord"] | null;
+        };
+        /** PilarInfo */
+        PilarInfo: {
+            /**
+             * Key
+             * @enum {string}
+             */
+            key: "valor" | "calidad" | "crecimiento" | "salud_financiera" | "dividendo" | "momentum";
+            /** Label */
+            label: string;
+            /** Peso */
+            peso: number;
+            /** Metricas */
+            metricas: string[];
+        };
+        /**
+         * PilarScores
+         * @description z-score promedio de cada pilar (None si la acción no tiene métricas en ese pilar).
+         */
+        PilarScores: {
+            /** Valor */
+            valor: number | null;
+            /** Calidad */
+            calidad: number | null;
+            /** Crecimiento */
+            crecimiento: number | null;
+            /** Salud Financiera */
+            salud_financiera: number | null;
+            /** Dividendo */
+            dividendo: number | null;
+            /** Momentum */
+            momentum: number | null;
+        };
+        /**
+         * RankingMetricas
+         * @description Métricas crudas que alimentan el score (mismas unidades que el CSV).
+         */
+        RankingMetricas: {
+            /** Trailing Pe */
+            trailing_pe: number | null;
+            /** Price Book */
+            price_book: number | null;
+            /** Price Sales */
+            price_sales: number | null;
+            /** Ev Ebitda */
+            ev_ebitda: number | null;
+            /** Ev Revenue */
+            ev_revenue: number | null;
+            /** Profit Margin */
+            profit_margin: number | null;
+            /** Operating Margin */
+            operating_margin: number | null;
+            /** Roa */
+            roa: number | null;
+            /** Roe */
+            roe: number | null;
+            /** Revenue Growth Q */
+            revenue_growth_q: number | null;
+            /** Earnings Growth Q */
+            earnings_growth_q: number | null;
+            /** Debt Equity */
+            debt_equity: number | null;
+            /** Current Ratio */
+            current_ratio: number | null;
+            /**
+             * Dividend Yield
+             * @description En puntos porcentuales (5.1 = 5,1 %).
+             */
+            dividend_yield: number | null;
+            /** Ret 5D */
+            ret_5d: number | null;
+            /** Ret 1M */
+            ret_1m: number | null;
+            /** Ret 3M */
+            ret_3m: number | null;
+            /** Ret 6M */
+            ret_6m: number | null;
+            /** Ret Ytd */
+            ret_ytd: number | null;
+            /** Ret 1A */
+            ret_1a: number | null;
+        };
+        /** RankingResponse */
+        RankingResponse: {
+            /** Generado Desde */
+            generado_desde: string;
+            /** Generado En */
+            generado_en: string | null;
+            modelo: components["schemas"]["ModeloInfo"];
+            /** Filas */
+            filas: components["schemas"]["RankingRow"][];
+        };
+        /** RankingRow */
+        RankingRow: {
+            /** Ranking */
+            ranking: number | null;
+            /** Simbolo */
+            simbolo: string;
+            /** Nombre */
+            nombre: string | null;
+            /** Sector */
+            sector: string | null;
+            /** Industria */
+            industria: string | null;
+            /** Score Compuesto */
+            score_compuesto: number | null;
+            pilares: components["schemas"]["PilarScores"];
+            /** Metricas Disponibles */
+            metricas_disponibles: number;
+            /** Metricas Totales */
+            metricas_totales: number;
+            /**
+             * Grupo Duplicado
+             * @description Mismo id = estados financieros casi idénticos (holding/filial): riesgo de doble conteo.
+             */
+            grupo_duplicado: number | null;
+            metricas: components["schemas"]["RankingMetricas"];
         };
         /** SystemStatus */
         SystemStatus: {
@@ -417,6 +625,82 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ModuleStatus"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_ranking_api_cl_ranking_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RankingResponse"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_indicadores_api_cl_indicadores_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IndicadoresResponse"];
                 };
             };
             /** @description API key inválida o ausente */

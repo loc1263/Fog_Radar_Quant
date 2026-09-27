@@ -4,6 +4,7 @@ Ejemplos::
 
     uv run python -m fog_radar.jobs --list
     uv run python -m fog_radar.jobs cl_stocks --trigger cron
+    uv run python -m fog_radar.jobs cl_stocks --solo-scoring
 """
 
 from __future__ import annotations
@@ -18,12 +19,22 @@ from fog_radar.modules import MODULES, MODULES_BY_KEY
 from fog_radar.settings import get_settings
 
 
-def main(argv: list[str] | None = None) -> int:
+def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="fog_radar.jobs", description="Ejecuta el pipeline de un módulo.")
     parser.add_argument("module", nargs="?", choices=sorted(MODULES_BY_KEY))
     parser.add_argument("--trigger", choices=["cli", "cron", "api"], default="cli")
     parser.add_argument("--list", action="store_true", help="Lista módulos y si su pipeline ya está portado.")
-    args = parser.parse_args(argv)
+    seen: set[str] = set()
+    for key, pipeline in PIPELINES.items():
+        for opt in pipeline.options:
+            if opt.flag not in seen:
+                parser.add_argument(opt.flag, action="store_true", help=f"[{key}] {opt.help}")
+                seen.add(opt.flag)
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = _parser().parse_args(argv)
 
     settings = get_settings()
     configure_logging(settings.log_level)
@@ -43,12 +54,21 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 2
 
+    # Opciones de otros módulos no aplican a este.
+    allowed = {o.dest for o in pipeline.options}
+    all_dests = {o.dest for p in PIPELINES.values() for o in p.options}
+    invalid = [d for d in all_dests - allowed if getattr(args, d, False)]
+    if invalid:
+        print(f"Opciones no válidas para '{args.module}': {', '.join(invalid)}", file=sys.stderr)
+        return 2
+    opts = {d: True for d in allowed if getattr(args, d, False)}
+
     registry = JobRegistry(settings.jobs_dir)
     if registry.is_running(args.module):
         print(f"Ya hay una corrida de '{args.module}' en curso.", file=sys.stderr)
         return 3
-    with registry.track(args.module, trigger=args.trigger):
-        pipeline(settings=settings)
+    with registry.track(args.module, trigger=args.trigger) as job:
+        job.message = pipeline.run(settings, **opts)
     return 0
 
 

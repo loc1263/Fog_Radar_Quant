@@ -1,7 +1,9 @@
 import { page } from 'vitest/browser';
+import { createRawSnippet } from 'svelte';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import DataTable from './DataTable.svelte';
+import type { Row } from '$lib/table';
 
 const rows = [
 	{ ticker: 'AAA', score: 10 },
@@ -39,5 +41,26 @@ describe('DataTable', () => {
 	it('muestra el texto de vacío', async () => {
 		render(DataTable, { rows: [], columns, emptyText: 'Nada por aquí' });
 		await expect.element(page.getByText('Nada por aquí')).toBeInTheDocument();
+	});
+
+	it('despliega el detalle de una fila (una a la vez)', async () => {
+		const detail = createRawSnippet<[{ row: Row }]>((args) => ({
+			render: () => `<p>Detalle de ${String(args().row.ticker)}</p>`
+		}));
+		render(DataTable, {
+			rows,
+			columns,
+			rowKey: (r: Row) => String(r.ticker),
+			detailLabel: (r: Row) => `Ver ${String(r.ticker)}`,
+			detail
+		});
+		const btn = page.getByRole('button', { name: 'Ver BBB' });
+		await expect.element(btn).toHaveAttribute('aria-expanded', 'false');
+		await btn.click();
+		await expect.element(page.getByText('Detalle de BBB')).toBeInTheDocument();
+		await expect.element(btn).toHaveAttribute('aria-expanded', 'true');
+		await page.getByRole('button', { name: 'Ver AAA' }).click();
+		await expect.element(page.getByText('Detalle de AAA')).toBeInTheDocument();
+		await expect.element(page.getByText('Detalle de BBB')).not.toBeInTheDocument();
 	});
 });

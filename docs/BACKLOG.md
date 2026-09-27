@@ -48,7 +48,7 @@
 | US-TEST-01 · US-DEVOPS-01 | Tests sin CI | 1–2 ✅ | GitHub Actions: jobs `backend` (ruff + pytest) y `frontend` (check + lint + vitest + build). |
 | US-TEST-03 | Sin linting obligatorio | 1–2 ✅ | Ruff (back) + ESLint/Prettier + `svelte-check` (front) en CI. |
 | US-TEST-02 | Frontend sin tests | 2 ✅ (base) | Vitest para lógica (`DataTable`, scoring de Chile) + Playwright smoke por módulo (Fase 8). |
-| CL (tests) | Sin tests de API ni de scoring IPSA | 3 | pytest de `winsorizar`, `calcular_zscore`, duplicados, FX + tests de paridad contra el original. |
+| CL (tests) | Sin tests de API ni de scoring IPSA | 3 ✅ | pytest de `winsorizar`, `calcular_zscore`, duplicados, FX + tests de paridad contra el original. |
 | US-DEVOPS-02 | Sin Docker | 8 | `deploy/backend` y `deploy/frontend` con Dockerfile + compose. |
 | US-DEVOPS-03 | Solo Task Scheduler de Windows | 7 | `crontab` en el servidor backend; Task Scheduler solo para dev local. |
 | US-DEVOPS-04 | Sin alertas si falla un pipeline | 7 | `core/jobs.py` registra estado; webhook/correo al fallar + página `/estado`. |
@@ -60,10 +60,10 @@
 
 | ID | Ítem | Fase | Cómo se resuelve |
 |---|---|---|---|
-| CL (CSV corrupto) | Manejo de CSV con columnas faltantes | 3 | Validación al cargar + `response_model` Pydantic; error claro 422/503. |
+| CL (CSV corrupto) | Manejo de CSV con columnas faltantes | 3 ✅ | Validación al cargar + `response_model` Pydantic; 503 `invalid_data` con el nombre de las columnas faltantes. |
 | US-BACK-01 | Sin caché en `/evaluate` | 4 | `TTLCache` de 5 min por ticker. |
 | TD-MODEL-3 | Sin validación de factibilidad de la configuración | 6 | Validadores de pydantic-settings (`TOP_N <= universo`, `MAX_WEIGHT * TOP_N >= 1`). |
-| TD-DATA-1 | FX limitado a 6 monedas + sin aviso visible | 6–7 | `core/fx.py` común (lo usan Chile y Tendencia); advertencia visible en la UI cuando se excluyen tickers por moneda. |
+| TD-DATA-1 | FX limitado a 6 monedas + sin aviso visible | 6–7 (`core/fx.py` ✅ en Fase 3) | `core/fx.py` común (lo usan Chile y Tendencia); advertencia visible en la UI cuando se excluyen tickers por moneda. |
 | TD-OPS-2 | `excluded_tickers.txt` sin encabezado | 6 | Se expone por API y como CSV con encabezado. |
 | TD-CFG-1 | Parámetros del modelo solo editables en código | 6 | Overrides por CLI en `python -m fog_radar.jobs tendencia --top-n 10`. |
 
@@ -75,7 +75,7 @@
 | ETF-15/16 (retirados por decisión previa) | Búsqueda y CSV faltantes en Excluidos/Categorías | 5 | Sin trabajo extra: `DataTable` los trae por defecto. |
 | DESIGN (ETF) | Orden por click solo en "Top 15 Vanguard" | 2 ✅ | Todas las tablas ordenables (regla del DESIGN_SYSTEM). |
 | CL (dark mode) | Falta toggle de modo oscuro | 2 ✅ | Tema común del sitio. |
-| CL (ranking.json) | Snapshot huérfano `src/data/ranking.json` | 3 | No se porta. |
+| CL (ranking.json) | Snapshot huérfano `src/data/ranking.json` | 3 ✅ | No se porta. |
 
 ---
 

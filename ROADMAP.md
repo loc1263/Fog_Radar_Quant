@@ -181,13 +181,28 @@ Orden de migración de módulos: **Chile → EEUU → ETF → Tendencia**
 - [x] Verificación: svelte-check 0 errores · ESLint/Prettier OK · **16 tests Vitest** (13 lógica + 3 de componente en Chromium) · **4 E2E Playwright** · build de producción · capturas claro/oscuro sin errores de consola (`docs/screenshots/`).
 - Nota Windows: `node_modules` no se versiona; en cada PC correr `npm install` en `frontend/` (Node ≥ 22).
 
-### Fase 3 — Módulo Chile / IPSA (piloto, ≈1–2 sesiones)
-- Backend: portar `pyYahooStockAnalisis.py` → `extractor.py`, `scoring_acciones.py` → `scoring.py`, `api.py` → `router.py` con schemas Pydantic; pipeline `python -m fog_radar.jobs cl`.
-- Frontend: `/chile` con `RankingTable` → `DataTable`, `PanelPesos` con recalculado del score en el cliente (`lib/scoring.ts` se porta tal cual a TS puro), `/chile/indicadores`.
-- Aplicar el Dashboard ejecutivo (este módulo hoy no lo usa).
-- Tests: agregar pytest para scoring (hoy no tiene) — winsorización, sostenibilidad del dividendo, conversión FX.
-- **Listo cuando:** los mismos datos muestran el mismo ranking que el proyecto original (comparación fila a fila).
-- 👉 **Revisión de arquitectura**: ajustar convenciones antes de seguir con los otros módulos.
+### Fase 3 — Módulo Chile / IPSA (piloto) ✅ completada 2026-09-27
+- [x] Backend `modules/cl_stocks/`: `extractor.py` (port de `pyYahooStockAnalisis.py`, funciones testeables con dobles de `yf.Ticker`), `scoring.py` (port fiel de `scoring_acciones.py`), `storage.py` (último CSV, validación de columnas, escritura atómica `.tmp` → rename), `columnas.py` (catálogo de 61 indicadores: clave, etiqueta, grupo, unidad), `schemas.py` + `service.py` + `router.py`.
+- [x] Endpoints `GET /api/cl/ranking` (incluye `modelo`: pilares, pesos por defecto y métricas) y `GET /api/cl/indicadores` (columnas con unidad para formatear en el front). Sin datos → 503 `no_data`; CSV corrupto o con columnas faltantes → 503 `invalid_data`.
+- [x] `core/fx.py` (`FxRates`, caché por par, fuente inyectable) — adelantado de la Fase 7; lo reutilizará Tendencia.
+- [x] Pipeline `python -m fog_radar.jobs cl_stocks [--solo-scoring]`. El CLI ahora acepta opciones por módulo y guarda el resumen del pipeline en el registro de jobs. `--solo-scoring` conserva el timestamp de los indicadores de origen.
+- [x] Datos del original copiados a `data/cl_stocks/` (11 CSV). Mismo formato de archivo que el original.
+- [x] Frontend: `/chile` (KPIs, panel de pesos con recálculo en el navegador, top 10, ranking con filtro de sector, búsqueda, CSV y detalle desplegable por acción, metodología) y `/chile/indicadores` (9 grupos de columnas + "Todos"). Sub-navegación Ranking · Indicadores. Dashboard ejecutivo aplicado.
+- [x] `DataTable` ganó filas desplegables (`detail` + `rowKey`), reutilizable en EEUU/ETF.
+- [x] Tests: **44 pytest nuevos** (77 en total): scoring (winsorización, z-score, duplicados, dividendo sostenible, múltiplos ≤ 0, empates), FX, extractor (conversión de moneda, yields, retornos, pausas), API, pipeline y CLI. **13 Vitest nuevos + 1 de componente** (30 en total) y **3 E2E** de Chile (7 en total).
+- [x] **Paridad verificada** (`docs/PARIDAD.md`): con los mismos indicadores, el `ranking_acciones_*.csv` generado es **byte a byte idéntico** al del original (2 corridas: 24-09 y 25-09). El recálculo en TS reproduce el orden y el puesto del backend.
+- ⚠️ Pendiente del usuario: correr una vez el pipeline completo contra Yahoo en Windows (`uv run python -m fog_radar.jobs cl_stocks`, ~10 min). El entorno de esta sesión no tenía acceso a Yahoo.
+
+#### 👉 Revisión de arquitectura (cierre de Fase 3) — convenciones para las Fases 4-6
+Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
+1. **Estructura de módulo backend:** `scoring.py` o subpaquete (lógica pura, nombres del original) · `storage.py` (archivos) · `schemas.py` (Pydantic) · `service.py` (archivo → schema) · `router.py` (solo HTTP) · `pipeline.py` (batch). Fixtures del original en `tests/<modulo>/fixtures/` + `test_parity.py`.
+2. **Formato de datos en disco = el del original** (se copian los históricos sin convertir). **Claves de la API = snake_case estables**; el catálogo de columnas (clave, etiqueta, grupo, unidad) vive en el backend.
+3. **Parámetros del modelo los entrega la API** (p. ej. pesos por defecto): el front no los duplica.
+4. **Zona horaria explícita:** `Settings.timezone` (America/Santiago) para timestamps en nombres de archivo; la API devuelve fechas con offset; `fmtDate` formatea siempre en esa zona (SSR = navegador).
+5. **Pipelines:** `Pipeline(run, options)` en `fog_radar.jobs`; `run()` devuelve un resumen que queda en `/api/jobs`. Escritura atómica de archivos de datos.
+6. **Front por módulo:** `src/lib/modules/<modulo>/` (lógica TS + componentes propios); lo reutilizable sube a `components/shared`. Tipos solo desde `schema.d.ts` (alias en `api/types.ts` con prefijo de módulo: `Cl…`, `Us…`).
+7. **Errores de datos:** `no_data` (aún no hay corrida) e `invalid_data` (archivo corrupto) → 503; las páginas muestran `ErrorState` sin tumbar el sitio (`tryCall`).
+8. **E2E con datos:** CI copia los fixtures del módulo a `data/<modulo>/` antes de levantar el backend.
 
 ### Fase 4 — Módulo EEUU (≈2–3 sesiones)
 - Backend: `scanner.py` (7 pasos), `fundamentals`, `indicators`, `scoring`, `portfolio`, `ticker_eval`, `universe` → `modules/us_stocks/`; mover los 8 archivos de tests.
@@ -234,7 +249,7 @@ Orden de migración de módulos: **Chile → EEUU → ETF → Tendencia**
 | 0 | Preparación | 1 | 1 |
 | 1 | Esqueleto backend | 1 | 2 |
 | 2 | Esqueleto frontend | 1–2 | 4 |
-| 3 | Chile (piloto) | 1–2 | 6 |
+| 3 | Chile (piloto) ✅ | 1–2 | 6 |
 | 4 | EEUU | 2–3 | 9 |
 | 5 | ETF | 3 | 12 |
 | 6 | Tendencia | 3 | 15 |
@@ -280,4 +295,4 @@ Orden de migración de módulos: **Chile → EEUU → ETF → Tendencia**
 
 1. ~~Orden de módulos~~ ✅ confirmado (Chile → EEUU → ETF → Tendencia) · ~~Librería de gráficos~~ ✅ LayerChart · ~~Modo de despliegue~~ ✅ SvelteKit con `adapter-node` (SSR) + FastAPI en **2 servidores separados**, patrón BFF.
 2. Pendiente de definir más adelante (no bloquea): proveedor de hosting, dominio, y si el sitio tendrá login o será público. Repositorio: **privado** ✅.
-3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅ · ~~Fase 2~~ ✅. **Siguiente: Fase 3 — módulo Chile / IPSA (piloto).** TD-LIC-1 decidido: repo privado, sin LICENSE.
+3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅ · ~~Fase 2~~ ✅ · ~~Fase 3~~ ✅ (Chile, paridad byte a byte). **Siguiente: Fase 4 — módulo EEUU**, aplicando las convenciones de la revisión de arquitectura (ADR 0002). Antes: correr el pipeline de Chile completo contra Yahoo en Windows.

@@ -10,6 +10,7 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 from typing import Annotated, Literal
+from zoneinfo import ZoneInfo
 
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
@@ -40,6 +41,8 @@ class Settings(BaseSettings):
 
     # --- Datos ---
     data_dir: Path = REPO_ROOT / "data"
+    # Zona horaria de los timestamps en nombres de archivo (los pipelines corren para Chile).
+    timezone: str = "America/Santiago"
 
     # --- Fuentes externas ---
     fred_api_key: SecretStr | None = None
@@ -75,6 +78,10 @@ class Settings(BaseSettings):
     def module_data_dir(self, module: ModuleKey) -> Path:
         """Carpeta de datos de un módulo (``data/<modulo>``)."""
         return self.data_dir / module
+
+    @property
+    def tzinfo(self) -> ZoneInfo:
+        return ZoneInfo(self.timezone)
 
     @property
     def jobs_dir(self) -> Path:

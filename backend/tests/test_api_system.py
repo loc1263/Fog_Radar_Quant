@@ -32,7 +32,13 @@ def test_status_lists_four_modules(client: TestClient, auth: dict[str, str]) -> 
     body = client.get("/api/status", headers=auth).json()
     keys = [m["key"] for m in body["modules"]]
     assert keys == ["cl_stocks", "us_stocks", "etf", "tendencia"]
-    assert all(m["migrated"] is False and m["data_available"] is False for m in body["modules"])
+    assert {m["key"]: m["migrated"] for m in body["modules"]} == {
+        "cl_stocks": True,  # Fase 3
+        "us_stocks": False,
+        "etf": False,
+        "tendencia": False,
+    }
+    assert all(m["data_available"] is False for m in body["modules"])
     assert body["modules"][0]["api_prefix"] == "/api/cl"
 
 

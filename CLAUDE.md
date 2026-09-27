@@ -46,6 +46,15 @@ estado de avance: **ROADMAP.md**. Backlog: **docs/BACKLOG.md**.
 - Ruff + pytest. Al portar lógica de un proyecto original, agregar **test de
   paridad** (mismo input → mismo output que el original).
 
+## Convenciones de módulos (ADR 0002)
+- Backend: `modules/<modulo>/{scoring|scanner…, extractor, storage, schemas, service, router, pipeline}.py`;
+  fixtures del original en `tests/<modulo>/fixtures/` + `test_parity.py`. Referencia: `cl_stocks`.
+- En disco, el formato del proyecto original; en la API, claves snake_case. Parámetros del
+  modelo (pesos, umbrales) viajan en la respuesta: el front no los duplica.
+- Fechas con zona (`Settings.timezone`); en el front, `fmtDate` (zona fija).
+- Front: `src/lib/modules/<modulo>/` para lógica y componentes propios del módulo.
+- Paridad firmada en `docs/PARIDAD.md` antes de dar un módulo por terminado.
+
 ## Diseño
 - Sistema **"Dashboard ejecutivo"**: `docs/DESIGN_SYSTEM.md`. Todo color sale de
   tokens `brand-*`; nada de colores sueltos ni clases `dark:` en componentes.
