@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (ruff + pytest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+      - name: Instalar dependencias (lock exacto)
+        run: uv sync --frozen
+      - name: Lint
+        run: uv run ruff check .
+      - name: Formato
+        run: uv run ruff format --check .
+      - name: Tests
+        run: uv run pytest -q
+
+  # El job "frontend" (svelte-check, eslint, vitest, build) se agrega en la Fase 2.

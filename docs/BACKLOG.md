@@ -9,6 +9,7 @@
 
 - **A — Durante la migración:** se resuelve en la fase indicada, casi siempre porque la nueva arquitectura ya lo exige (seguridad, CI, Docker, componentes comunes).
 - **B — Después:** mejoras de producto o de modelo. No entran hasta cerrar la Fase 6 (paridad de los 4 módulos).
+- ✅ en la columna Fase = resuelto.
 - **C — Descartar / cerrar:** obsoleto con la nueva arquitectura, o se documenta como límite conocido.
 
 **IDs nuevos:** `CL-` (Chile), `US-` (EEUU, conserva el ID original), `ETF-` (conserva el número original), `TD-` (Tendencia, conserva el ID original).
@@ -20,7 +21,7 @@
 | A — Durante la migración | 34 |
 | B — Después | 23 |
 | C — Descartar / cerrar | 3 |
-| Decisión pendiente del usuario | 1 |
+| Decidido (TD-LIC-1: repo privado) | 1 |
 | **Total** | **61** (16 Chile · 22 EEUU · 9 ETF · 13 Tendencia · 1 del sistema de diseño) |
 
 ---
@@ -31,12 +32,12 @@
 
 | ID | Ítem | Fase | Cómo se resuelve |
 |---|---|---|---|
-| ETF-23 · US-BACK-05 | Sin autenticación en ningún endpoint | 1 | Dependencia `require_api_key` (`X-API-Key`) en todas las rutas salvo `/api/health`; el navegador nunca ve la key (BFF). |
-| ETF-24 · US-BACK-02 | Sin rate limiting | 1 / 8 | `slowapi` en endpoints costosos (`/run`, `/evaluate`, portafolio) + allowlist de IP del servidor frontend. |
-| ETF-26 | CORS amplio; revisar si hay cookies | 1 | `ALLOWED_ORIGINS` explícito. El login con cookies (si lo hay) vive en SvelteKit; el backend sigue con API key, sin credenciales CORS. |
-| ETF-27 | `/docs` y `/openapi.json` públicos | 8 | Deshabilitados en producción (`docs_url=None` según `settings.ENV`); disponibles en dev para `npm run gen:api`. |
+| ETF-23 · US-BACK-05 | Sin autenticación en ningún endpoint | 1 ✅ | Dependencia `require_api_key` (`X-API-Key`) en todas las rutas salvo `/api/health`; el navegador nunca ve la key (BFF). |
+| ETF-24 · US-BACK-02 | Sin rate limiting | 1 ✅ (global) / 4–5 (endpoints costosos) | `slowapi` en endpoints costosos (`/run`, `/evaluate`, portafolio) + allowlist de IP del servidor frontend. |
+| ETF-26 | CORS amplio; revisar si hay cookies | 1 ✅ | `ALLOWED_ORIGINS` explícito. El login con cookies (si lo hay) vive en SvelteKit; el backend sigue con API key, sin credenciales CORS. |
+| ETF-27 | `/docs` y `/openapi.json` públicos | 1 ✅ | Deshabilitados en producción (`docs_url=None` según `settings.ENV`); disponibles en dev para `npm run gen:api`. |
 | ETF-28 | Sin HTTPS forzado ni cabeceras de seguridad | 8 | Caddy (HTTPS automático + HSTS) en ambos servidores; CSP y cabeceras en `hooks.server.ts`. |
-| US-SEC-01 · CL (infra) | CORS hardcodeado a localhost | 1 | `settings.py` + `.env`. |
+| US-SEC-01 · CL (infra) | CORS hardcodeado a localhost | 1 ✅ | `settings.py` + `.env`. |
 | US-SEC-02 | Path param `ticker` sin validar | 4 | `Path(..., pattern=r"^[A-Z0-9.\-^=]{1,15}$")` (permite `.SN`, `.TW`, `^`, `=X`). |
 | ETF-20 | Host del backend / plan Vercel | 8 | **Reemplazado** por la arquitectura decidida: 2 servidores (front Node + back FastAPI) con disco persistente para `data/` y cron en el backend. |
 
@@ -44,15 +45,15 @@
 
 | ID | Ítem | Fase | Cómo se resuelve |
 |---|---|---|---|
-| US-TEST-01 · US-DEVOPS-01 | Tests sin CI | 1 | GitHub Actions: jobs `backend` (ruff + pytest) y `frontend` (check + lint + vitest + build). |
-| US-TEST-03 | Sin linting obligatorio | 1–2 | Ruff (back) + ESLint/Prettier + `svelte-check` (front) en CI. |
+| US-TEST-01 · US-DEVOPS-01 | Tests sin CI | 1 ✅ (backend) / 2 (frontend) | GitHub Actions: jobs `backend` (ruff + pytest) y `frontend` (check + lint + vitest + build). |
+| US-TEST-03 | Sin linting obligatorio | 1 ✅ (ruff) / 2 (frontend) | Ruff (back) + ESLint/Prettier + `svelte-check` (front) en CI. |
 | US-TEST-02 | Frontend sin tests | 2 | Vitest para lógica (`DataTable`, scoring de Chile) + Playwright smoke por módulo (Fase 8). |
 | CL (tests) | Sin tests de API ni de scoring IPSA | 3 | pytest de `winsorizar`, `calcular_zscore`, duplicados, FX + tests de paridad contra el original. |
 | US-DEVOPS-02 | Sin Docker | 8 | `deploy/backend` y `deploy/frontend` con Dockerfile + compose. |
 | US-DEVOPS-03 | Solo Task Scheduler de Windows | 7 | `crontab` en el servidor backend; Task Scheduler solo para dev local. |
 | US-DEVOPS-04 | Sin alertas si falla un pipeline | 7 | `core/jobs.py` registra estado; webhook/correo al fallar + página `/estado`. |
 | US-DATA-04 | El batch no reintenta la corrida completa | 7 | Reintento con backoff en el runner común de jobs. |
-| TD-OPS-1 | Sin lockfile | 0 | `uv.lock` en el monorepo. |
+| TD-OPS-1 | Sin lockfile | 0 ✅ | `uv.lock` en el monorepo. |
 | CL (reintentos) | Sin reintento por ticker ante errores transitorios | 7 | Cliente yfinance común (`core/yf_client.py`, base: `robust_yf.py` de Tendencia). |
 
 ### Datos y robustez
@@ -138,8 +139,8 @@ Pedido en los 4 proyectos. Depende de B1 (hacen falta corridas acumuladas).
 | US-DATA-06 | Views de Black-Litterman heurísticas: se documenta como límite conocido en `docs/METODOLOGIAS.md`. |
 | TD-DISC-3 | Umbrales del screener "no validados": ya hay 6 corridas reales en `output/`. Revisar los logs una vez y cerrar. |
 
-## Decisión pendiente del usuario
+## Decisiones tomadas
 
-| ID | Pregunta |
-|---|---|
-| TD-LIC-1 | Licencia del monorepo: ¿repo **privado** en GitHub sin LICENSE (todos los derechos reservados), o público con alguna licencia? Recomendado: privado, sin LICENSE. |
+| ID | Decisión | Fecha |
+|---|---|---|
+| TD-LIC-1 | Repositorio **privado** en GitHub, **sin archivo LICENSE** (todos los derechos reservados). `pyproject.toml` declara `license = "Proprietary"`. | 2026-09-27 |

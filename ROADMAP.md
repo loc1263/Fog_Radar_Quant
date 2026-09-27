@@ -146,20 +146,23 @@ Orden de migración de módulos: **Chile → EEUU → ETF → Tendencia**
 - [x] `CLAUDE.md` del monorepo con las convenciones (Svelte 5 runes, uso obligatorio del Svelte MCP + `svelte-autofixer`, patrón BFF, tokens `brand-*`) + `README.md`.
 - [x] Svelte MCP conectado en Cowork ✅ (probado: `list-sections` y `svelte-autofixer`). En Claude Code: `claude mcp add -t http -s project svelte https://mcp.svelte.dev/mcp`.
 - [x] Respaldo de los 4 proyectos en `_backups/<Proyecto>_2026-09-27.zip` (sin node_modules/venv/caches; integridad verificada con `unzip -t`). Los originales no se modifican.
-- [x] Triage → `docs/BACKLOG.md`: 61 ítems abiertos → **34 A** (durante la migración) · **23 B** (después) · **3 C** (descartar) · **1 decisión pendiente** (licencia, TD-LIC-1).
+- [x] Triage → `docs/BACKLOG.md`: 61 ítems abiertos → **34 A** (durante la migración) · **23 B** (después) · **3 C** (descartar) · **1 decisión** (TD-LIC-1: repo privado, sin LICENSE ✅).
 - [x] `docs/DESIGN_SYSTEM.md` único (base: Stock_Tendencia; adaptado a SvelteKit + LayerChart; módulo de tema Svelte 5 validado con `svelte-autofixer`).
 - [x] `backend/pyproject.toml` + `uv.lock` (Python 3.12, 88 paquetes). Resuelve e instala en venv limpio. Versiones clave: fastapi 0.141 · pandas 2.3.3 · numpy 2.5 · scipy 1.18 · yfinance 1.7 · PyPortfolioOpt 1.6 · reportlab 4.5.
 - [x] **Compatibilidad verificada** corriendo los tests originales contra el entorno unificado: EEUU 137/137 ✅ · Tendencia 75/75 ✅ · ETF 10/10 ✅ · Chile (sin tests) imports ✅. Las 4 apps FastAPI originales importan sin error.
 - Nota: aparecen `DeprecationWarning` de NumPy por `Timedelta` con unidad genérica (EEUU `scanner.py` y pandas `resample`). No rompe hoy; corregir al portar (Fases 4 y 6).
 
-### Fase 1 — Esqueleto del backend (≈1 sesión)
-- [ ] `create_app()` con logging, manejo de errores uniforme (`{detail, code}`), `/api/health` (público, sin datos) y resto de rutas protegidas por dependencia `require_api_key`.
-- [ ] CORS restringido a `ALLOWED_ORIGINS` (en BFF casi no se usa, pero queda cerrado por defecto).
-- [ ] `settings.py` (pydantic-settings) con rutas `data/<modulo>` y claves desde `.env`.
-- [ ] `core/runs.py` (buscar última corrida, lock de archivo) y `core/jobs.py` (registro de ejecuciones).
-- [ ] Routers vacíos de los 4 módulos montados; OpenAPI visible en `/docs`.
-- [ ] Ruff + pytest + CI (job backend).
-- **Listo cuando:** `uvicorn fog_radar.main:app` levanta y `/docs` muestra los 4 grupos.
+### Fase 1 — Esqueleto del backend ✅ completada 2026-09-27
+- [x] `create_app()` (`backend/src/fog_radar/main.py`) con logging, errores uniformes `{detail, code}` (`core/errors.py`, oculta detalles internos en prod), `/api/health` público y el resto protegido por `require_api_key` (`X-API-Key`, comparación en tiempo constante).
+- [x] CORS restringido a `ALLOWED_ORIGINS` (solo GET/POST, sin credenciales).
+- [x] `settings.py` (pydantic-settings): `ENV` dev/test/prod, `API_KEY`, `ALLOWED_ORIGINS` (lista o "a,b"), `DATA_DIR`, `RATE_LIMIT_DEFAULT`. En prod exige API key ≥ 24 caracteres y prohíbe orígenes localhost; `/docs` y `/openapi.json` se apagan.
+- [x] Rate limiting como dependencia (`core/ratelimit.py`, librería `limits`): límite global por usuario final (IP reenviada por el BFF en `X-Forwarded-For`) + `rate_limit("N/minute", scope=…)` para endpoints costosos. *slowapi se descartó: su middleware no reconoce las rutas con FastAPI 0.14x y no limitaba nada.*
+- [x] `core/runs.py` (última corrida por nombre o mtime, carpetas de corridas, `data_lock` con filelock) y `core/jobs.py` (`JobRegistry` en `data/_jobs/<modulo>.jsonl`, `track()` como context manager, detección de corridas colgadas > 6 h).
+- [x] CLI `python -m fog_radar.jobs [--list | <modulo> --trigger cron]` (los pipelines se registran al portar cada módulo).
+- [x] Routers de los 4 módulos montados (`/api/cl`, `/api/us`, `/api/etf`, `/api/tendencia`), cada uno con `GET /status`; sistema: `/api/health`, `/api/status`, `/api/jobs`, `/api/jobs/{modulo}`.
+- [x] Ruff (lint + formato) + **33 tests pytest** ✅ + GitHub Actions (`.github/workflows/ci.yml`, job backend con `uv sync --frozen`).
+- [x] Smoke test real con uvicorn: health 200, sin key 401, con key 200, `/docs` 200, rate limit 429 al superar el límite.
+- ⏭️ Movido a Fase 8: probar descargas de Yahoo desde el servidor productivo (requiere tener el servidor).
 
 ### Fase 2 — Esqueleto del frontend (≈1–2 sesiones)
 - [ ] `npx sv create frontend` (SvelteKit, TS estricto, Tailwind v4, ESLint, Prettier, Vitest, Playwright) con **`adapter-node`**.
@@ -249,7 +252,7 @@ Orden de migración de módulos: **Chile → EEUU → ETF → Tendencia**
 | Diferencias numéricas al portar (scoring, Markowitz) | Alto | Tests de paridad: mismo input → mismo output que el original, antes de dar un módulo por terminado. |
 | Mezcla de sintaxis Svelte 4/5 en código generado por IA | Medio → Bajo | Svelte MCP + `svelte-autofixer` obligatorio; `sv check` en CI. |
 | Reescritura de ~70 componentes React/Vue a Svelte | Medio | Componentes compartidos primero (Fase 2); la mayoría de pestañas son "tabla + KPIs + gráfico". |
-| Yahoo Finance bloquea más seguido las IPs de datacenter | Alto | Probar los pipelines desde el servidor backend en la Fase 1; si hay bloqueos: `curl_cffi` (ya usado en Tendencia), pausas más largas, o correr los pipelines en local y sincronizar `data/` al servidor (rsync). |
+| Yahoo Finance bloquea más seguido las IPs de datacenter | Alto | Probar los pipelines desde el servidor backend apenas exista (Fase 8, o antes si se contrata el servidor); si hay bloqueos: `curl_cffi` (ya usado en Tendencia), pausas más largas, o correr los pipelines en local y sincronizar `data/` al servidor (rsync). |
 | Backend expuesto en internet | Alto | API key + allowlist de IP + HTTPS; endpoints costosos (`/run`, portafolio, evaluación) con rate-limit. |
 | Latencia extra por el salto front → back (SSR) | Bajo | Ambos servidores en la misma región/proveedor; caché corta en el backend para "última corrida". |
 | Costo y mantención de 2 servidores | Bajo-Medio | VPS pequeños (el front casi no consume); imágenes Docker idénticas en dev y producción. |
@@ -274,5 +277,5 @@ Orden de migración de módulos: **Chile → EEUU → ETF → Tendencia**
 ## 7. Próximo paso inmediato
 
 1. ~~Orden de módulos~~ ✅ confirmado (Chile → EEUU → ETF → Tendencia) · ~~Librería de gráficos~~ ✅ LayerChart · ~~Modo de despliegue~~ ✅ SvelteKit con `adapter-node` (SSR) + FastAPI en **2 servidores separados**, patrón BFF.
-2. Pendiente de definir más adelante (no bloquea la Fase 0): proveedor de hosting, dominio, y si el sitio tendrá login o será público.
-3. ~~Fase 0~~ ✅. **Siguiente: Fase 1 — esqueleto del backend.** Pendiente de decidir: TD-LIC-1 (licencia / visibilidad del repo).
+2. Pendiente de definir más adelante (no bloquea): proveedor de hosting, dominio, y si el sitio tendrá login o será público. Repositorio: **privado** ✅.
+3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅. **Siguiente: Fase 2 — esqueleto del frontend (SvelteKit).** TD-LIC-1 decidido: repo privado, sin LICENSE.
