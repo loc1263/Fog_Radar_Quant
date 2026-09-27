@@ -175,7 +175,7 @@ Orden de migración de módulos: **Chile → EEUU → ETF → Tendencia**
 - [x] Componentes compartidos: `DataTable` (orden por clic en todas las columnas, búsqueda sin tildes, CSV con `;` + BOM para Excel), `KpiCard`, `KpiGrid`, `Section`, `SectionHeader`, `ScoreBar`, `WeightBar`, `CompositionBar`, `SignalBadge`, `TickerLink`, `Notice`, `EmptyState`, `ErrorState`, `ThemeToggle`, `ModuleCard`, `ModuleStatusPanel`.
 - [x] Gráficos LayerChart 2.5: `LineChart`, `BarChart`, `ScatterChart`, `Sparkline`, `ChartEmpty` (paleta categórica del sistema, ejes en `viz-axis`, sin redibujar al cambiar de tema).
 - [x] Rutas: `/` (hub con datos reales de `/api/status`), `/chile`, `/eeuu`, `/etf`, `/tendencia` (estado de migración), `/estado` (backend + jobs), `/componentes` (vitrina, **solo en dev**), página de error.
-- [x] `scripts/iniciar_dev.py` (back + front con salida combinada; Windows y Linux).
+- [x] `iniciar_dev.py` + `iniciar.bat` en la raíz (back + front con salida combinada; instala dependencias faltantes la primera vez; Windows y Linux).
 - [x] **`npm run autofix`**: el autofixer oficial de Svelte (paquete `@sveltejs/mcp`) sobre todo `src/`, sin red. 31/31 archivos sin observaciones.
 - [x] CI: job `frontend` (autofix, check, lint, tests, e2e con backend levantado). `.mcp.json` con el Svelte MCP para Claude Code.
 - [x] Verificación: svelte-check 0 errores · ESLint/Prettier OK · **16 tests Vitest** (13 lógica + 3 de componente en Chromium) · **4 E2E Playwright** · build de producción · capturas claro/oscuro sin errores de consola (`docs/screenshots/`).

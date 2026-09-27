@@ -46,3 +46,6 @@ output/
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# Archivos que la app de Claude deja en la carpeta
+Claude outputs/

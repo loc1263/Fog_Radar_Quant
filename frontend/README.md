@@ -12,7 +12,7 @@ copy .env.example .env        # (Windows) PRIVATE_API_URL / PRIVATE_API_KEY
 npm run dev                   # http://localhost:5173 (el backend debe estar en :8000)
 ```
 
-O levantar backend + frontend juntos desde la raíz: `python scripts/iniciar_dev.py`.
+O levantar backend + frontend juntos desde la raíz: doble clic en `iniciar.bat` o `python iniciar_dev.py`.
 
 - Vitrina de componentes (solo dev): http://localhost:5173/componentes
 

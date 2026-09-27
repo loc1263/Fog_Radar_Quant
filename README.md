@@ -12,8 +12,11 @@ Plan y estado: [ROADMAP.md](ROADMAP.md) · Convenciones: [CLAUDE.md](CLAUDE.md)
 
 ## Todo junto (desarrollo)
 
+Requiere Python, [uv](https://docs.astral.sh/uv/) y Node.js 22+. La primera vez instala solo lo que falte.
+
 ```bash
-python scripts/iniciar_dev.py      # backend :8000 + frontend :5173
+python iniciar_dev.py              # backend :8000 + frontend :5173
+# En Windows también: doble clic en iniciar.bat
 ```
 
 ## Backend (desarrollo)

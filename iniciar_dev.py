@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Levanta backend (FastAPI) y frontend (SvelteKit) juntos para desarrollo.
 
-Uso (desde la raíz del repo):
+Uso (desde la raíz del repo, o doble clic en iniciar.bat en Windows):
 
-    python scripts/iniciar_dev.py
-    python scripts/iniciar_dev.py --backend-port 8001 --sin-reload
+    python iniciar_dev.py
+    python iniciar_dev.py --backend-port 8001 --sin-reload
+    python iniciar_dev.py --sin-instalar     # no instala dependencias faltantes
 
 Salida combinada con prefijos [BACKEND]/[FRONTEND]; Ctrl+C detiene ambos.
-Requiere haber corrido una vez `uv sync` en backend/ y `npm install` en frontend/.
+La primera vez instala lo que falte: `uv sync` en backend/ y `npm install` en frontend/.
 """
 
 from __future__ import annotations
@@ -21,7 +22,7 @@ import sys
 import threading
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parent
 BACKEND = ROOT / "backend"
 FRONTEND = ROOT / "frontend"
 IS_WINDOWS = os.name == "nt"
@@ -34,15 +35,28 @@ def _pump(proc: subprocess.Popen[str], prefix: str) -> None:
         sys.stdout.flush()
 
 
-def _check_prereqs() -> list[str]:
+def _check_tools() -> list[str]:
     problemas = []
     if shutil.which("uv") is None:
-        problemas.append("No se encontró 'uv' (https://docs.astral.sh/uv/).")
+        problemas.append("No se encontró 'uv'. Instalar: https://docs.astral.sh/uv/getting-started/installation/")
     if shutil.which("npm") is None:
-        problemas.append("No se encontró 'npm' (Node.js 22+).")
-    if not (FRONTEND / "node_modules").is_dir():
-        problemas.append("Falta frontend/node_modules: corre 'npm install' en frontend/.")
+        problemas.append("No se encontró 'npm'. Instalar Node.js 22 o superior: https://nodejs.org/")
     return problemas
+
+
+def _install_missing() -> bool:
+    """Instala dependencias si faltan. Devuelve False si algo falló."""
+    pasos = []
+    if not (BACKEND / ".venv").is_dir():
+        pasos.append(("backend", ["uv", "sync"], BACKEND))
+    if not (FRONTEND / "node_modules").is_dir():
+        pasos.append(("frontend", ["npm", "install"], FRONTEND))
+    for nombre, cmd, cwd in pasos:
+        print(f"[SETUP] Instalando dependencias del {nombre}: {' '.join(cmd)} (solo la primera vez)...")
+        if subprocess.call(cmd, cwd=cwd, shell=IS_WINDOWS) != 0:
+            print(f"[ERROR] Falló '{' '.join(cmd)}' en {cwd}.", file=sys.stderr)
+            return False
+    return True
 
 
 def main() -> int:
@@ -50,12 +64,19 @@ def main() -> int:
     parser.add_argument("--backend-port", type=int, default=8000)
     parser.add_argument("--frontend-port", type=int, default=5173)
     parser.add_argument("--sin-reload", action="store_true", help="uvicorn sin autorecarga")
+    parser.add_argument("--sin-instalar", action="store_true", help="no instalar dependencias faltantes")
     args = parser.parse_args()
 
-    problemas = _check_prereqs()
+    problemas = _check_tools()
     if problemas:
         for p in problemas:
             print(f"[ERROR] {p}", file=sys.stderr)
+        return 1
+    if args.sin_instalar:
+        if not (FRONTEND / "node_modules").is_dir() or not (BACKEND / ".venv").is_dir():
+            print("[ERROR] Faltan dependencias: corre sin --sin-instalar o instala a mano.", file=sys.stderr)
+            return 1
+    elif not _install_missing():
         return 1
 
     backend_cmd = ["uv", "run", "uvicorn", "fog_radar.main:app", "--port", str(args.backend_port)]
