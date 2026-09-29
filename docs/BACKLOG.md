@@ -66,6 +66,7 @@
 | TD-DATA-1 | FX limitado a 6 monedas + sin aviso visible | 6 ✅ (aviso) / 7 (FX común) | Aviso visible en el resumen y lista en Limitaciones cuando se excluyen tickers por moneda ✅. Pasar `build_dataset` a `core/fx.py` queda para la Fase 7 (consolidación). |
 | TD-OPS-2 | `excluded_tickers.txt` sin encabezado | 6 ✅ | `GET /api/tendencia/excluidos` (ticker, nombre, motivo) + tabla con CSV en `/tendencia/limitaciones`. |
 | TD-CFG-1 | Parámetros del modelo solo editables en código | 7 | Requiere opciones con valor en el CLI de jobs (hoy solo banderas): pasa a la Fase 7 junto con `run_all_pipelines.py`. Los parámetros ya viajan por la API (`parametros`). |
+| TD-MACRO-1 | Datos macro (FRED) solo se actualizan con `--macro` manual | 7 | Agregar `--macro` a Tendencia en el programa `diario` (lun–vie 18:00) para que la macro esté siempre al día. Requiere `FRED_API_KEY` en el servidor; +segundos de descarga. Pendiente, no implementado. |
 
 ### Frontend (lo resuelven los componentes comunes)
 
