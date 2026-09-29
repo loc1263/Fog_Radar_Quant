@@ -25,10 +25,11 @@
 </Section>
 
 <Section title="Estado del proyecto">
-	<Notice kind="info" title="Sitio en construcción">
+	<Notice kind="info" title="Migración completa">
 		<p>
-			Los cuatro proyectos originales se están migrando a este sitio, un módulo a la vez: Chile →
-			EEUU → ETFs → Tendencia. Mientras tanto, cada módulo muestra su estado de migración.
+			Los cuatro proyectos originales (Chile, EEUU, ETFs y Tendencia) ya funcionan en este sitio,
+			con paridad verificada contra cada original. Siguen la consolidación (cliente de Yahoo común,
+			un comando para actualizar todo) y el despliegue en producción.
 		</p>
 	</Notice>
 </Section>

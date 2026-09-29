@@ -40,6 +40,7 @@ test('rotación y categorías', async ({ page }) => {
 	).toHaveCount(8);
 
 	await page.goto('/etf/categorias');
+	await page.waitForLoadState('networkidle'); // el desplegable de tickers necesita la hidratación
 	await page.getByRole('button', { name: /Ver los 7 ETFs de Commodities Broad Basket/ }).click();
 	await expect(page.getByText('7 ETFs en la categoría')).toBeVisible();
 });

@@ -55,13 +55,13 @@ describe('CSV (etfExportColumns del original)', () => {
 	});
 	it('usa la columna Score por defecto', () => {
 		const csv = toCsv([FILA], csvColumnas());
-		const [header, fila] = csv.replace(/^﻿/, '').split(/\r?\n/);
+		const [header, fila] = csv.replace(/^\uFEFF/, '').split(/\r?\n/);
 		expect(header.split(';').at(-1)).toBe('Score');
 		expect(fila).toContain('85.4');
 	});
 	it('usa Score_comp cuando se pide (tabla de Momentum)', () => {
 		const csv = toCsv([FILA], csvColumnas('score_comp', 'Score_comp'));
-		const fila = csv.replace(/^﻿/, '').split(/\r?\n/)[1];
+		const fila = csv.replace(/^\uFEFF/, '').split(/\r?\n/)[1];
 		expect(fila).toContain('70.2');
 		expect(fila).not.toContain('85.4');
 	});

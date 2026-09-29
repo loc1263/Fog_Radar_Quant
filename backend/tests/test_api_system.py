@@ -36,7 +36,7 @@ def test_status_lists_four_modules(client: TestClient, auth: dict[str, str]) -> 
         "cl_stocks": True,  # Fase 3
         "us_stocks": True,  # Fase 4
         "etf": True,  # Fase 5
-        "tendencia": False,
+        "tendencia": True,  # Fase 6
     }
     assert all(m["data_available"] is False for m in body["modules"])
     assert body["modules"][0]["api_prefix"] == "/api/cl"

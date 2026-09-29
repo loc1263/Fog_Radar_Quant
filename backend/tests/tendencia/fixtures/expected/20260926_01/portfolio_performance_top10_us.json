@@ -1,0 +1,18 @@
+{
+  "n_acciones": 10,
+  "retorno_esperado_anual": 0.4158255171297397,
+  "volatilidad_anual": 0.19182382295064285,
+  "sharpe_ratio": 1.9467108484529776,
+  "tickers_seleccionados": [
+    "LLY",
+    "MU",
+    "XOM",
+    "ABBV",
+    "PM",
+    "ANET",
+    "NVDA",
+    "DELL",
+    "GE",
+    "AVGO"
+  ]
+}

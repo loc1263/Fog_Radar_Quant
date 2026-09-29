@@ -33,7 +33,7 @@
 | ID | Ítem | Fase | Cómo se resuelve |
 |---|---|---|---|
 | ETF-23 · US-BACK-05 | Sin autenticación en ningún endpoint | 1 ✅ | Dependencia `require_api_key` (`X-API-Key`) en todas las rutas salvo `/api/health`; el navegador nunca ve la key (BFF). |
-| ETF-24 · US-BACK-02 | Sin rate limiting | 1 ✅ (global) / 4 ✅ (EEUU) / 5 (ETF `/run`) | `rate_limit()` de `core/ratelimit.py` en endpoints costosos (`/run`, `/evaluate`, portafolio) + allowlist de IP del servidor frontend. |
+| ETF-24 · US-BACK-02 | Sin rate limiting | 1 ✅ (global) / 4 ✅ (EEUU) / 5 ✅ (ETF `/run` 3/min, `/pdf` 10/min) | `rate_limit()` de `core/ratelimit.py` en endpoints costosos (`/run`, `/evaluate`, portafolio) + allowlist de IP del servidor frontend. |
 | ETF-26 | CORS amplio; revisar si hay cookies | 1 ✅ | `ALLOWED_ORIGINS` explícito. El login con cookies (si lo hay) vive en SvelteKit; el backend sigue con API key, sin credenciales CORS. |
 | ETF-27 | `/docs` y `/openapi.json` públicos | 1 ✅ | Deshabilitados en producción (`docs_url=None` según `settings.ENV`); disponibles en dev para `npm run gen:api`. |
 | ETF-28 | Sin HTTPS forzado ni cabeceras de seguridad | 8 | Caddy (HTTPS automático + HSTS) en ambos servidores; CSP y cabeceras en `hooks.server.ts`. |
@@ -62,17 +62,17 @@
 |---|---|---|---|
 | CL (CSV corrupto) | Manejo de CSV con columnas faltantes | 3 ✅ | Validación al cargar + `response_model` Pydantic; 503 `invalid_data` con el nombre de las columnas faltantes. |
 | US-BACK-01 | Sin caché en `/evaluate` | 4 ✅ | `TTLCache` de 5 min por ticker. |
-| TD-MODEL-3 | Sin validación de factibilidad de la configuración | 6 | Validadores de pydantic-settings (`TOP_N <= universo`, `MAX_WEIGHT * TOP_N >= 1`). |
-| TD-DATA-1 | FX limitado a 6 monedas + sin aviso visible | 6–7 (`core/fx.py` ✅ en Fase 3) | `core/fx.py` común (lo usan Chile y Tendencia); advertencia visible en la UI cuando se excluyen tickers por moneda. |
-| TD-OPS-2 | `excluded_tickers.txt` sin encabezado | 6 | Se expone por API y como CSV con encabezado. |
-| TD-CFG-1 | Parámetros del modelo solo editables en código | 6 | Overrides por CLI en `python -m fog_radar.jobs tendencia --top-n 10`. |
+| TD-MODEL-3 | Sin validación de factibilidad de la configuración | 6 ✅ | `config.validar_configuracion()` antes de cada corrida (`top_n × MAX_WEIGHT ≥ 1`, `top_n ≤ universo`, portafolios reducidos < `top_n`); el pipeline falla con el detalle. |
+| TD-DATA-1 | FX limitado a 6 monedas + sin aviso visible | 6 ✅ (aviso) / 7 (FX común) | Aviso visible en el resumen y lista en Limitaciones cuando se excluyen tickers por moneda ✅. Pasar `build_dataset` a `core/fx.py` queda para la Fase 7 (consolidación). |
+| TD-OPS-2 | `excluded_tickers.txt` sin encabezado | 6 ✅ | `GET /api/tendencia/excluidos` (ticker, nombre, motivo) + tabla con CSV en `/tendencia/limitaciones`. |
+| TD-CFG-1 | Parámetros del modelo solo editables en código | 7 | Requiere opciones con valor en el CLI de jobs (hoy solo banderas): pasa a la Fase 7 junto con `run_all_pipelines.py`. Los parámetros ya viajan por la API (`parametros`). |
 
 ### Frontend (lo resuelven los componentes comunes)
 
 | ID | Ítem | Fase | Cómo se resuelve |
 |---|---|---|---|
 | CL (CSV) | Exportar vista filtrada a CSV | 2 ✅ (en `DataTable`) | `DataTable` común con botón CSV. |
-| ETF-15/16 (retirados por decisión previa) | Búsqueda y CSV faltantes en Excluidos/Categorías | 5 | Sin trabajo extra: `DataTable` los trae por defecto. |
+| ETF-15/16 (retirados por decisión previa) | Búsqueda y CSV faltantes en Excluidos/Categorías | 5 ✅ | Sin trabajo extra: `DataTable` los trae por defecto. |
 | DESIGN (ETF) | Orden por click solo en "Top 15 Vanguard" | 2 ✅ | Todas las tablas ordenables (regla del DESIGN_SYSTEM). |
 | CL (dark mode) | Falta toggle de modo oscuro | 2 ✅ | Tema común del sitio. |
 | CL (ranking.json) | Snapshot huérfano `src/data/ranking.json` | 3 ✅ | No se porta. |

@@ -78,3 +78,28 @@ el proyecto original. Las diferencias intencionales quedan anotadas.
 - Todas las tablas ordenables y con CSV (antes solo "Top 15 Vanguard" ordenaba; Excluidos y Categorías no exportaban). Universo completo: 50 filas por página y búsqueda.
 - La lista de tickers de una categoría se abre con clic (antes, hover).
 - PDF con tildes y encabezado "ETFs — Informe Ejecutivo".
+
+## Tendencia (`Stock_Tendencia`) — ✅ 2026-09-28
+
+| Ítem | Cómo se verificó | Estado |
+|---|---|---|
+| Markowitz (universo, top 15, portafolios de 5 y 10), proyección GBM 6 m, momentum mensual y semanal, notas de régimen | `test_parity.py`: con `data/processed` + universo + macro de la corrida real **20260926_01**, los 23 CSV/JSON/TXT de salida son iguales al original (rtol 1e-7: Windows y Linux difieren en el último dígito de algunos floats). Pesos redondeados y textos: idénticos | ✅ |
+| `dashboard_data.json` (payload completo, 2 análisis) | Igual al archivado por el original (salvo `generated_at` / `run_dir`) | ✅ |
+| Armado del dataset (`build_dataset`, paso 3) | Verificado a mano con `data/raw` completo del original: `prices_usd.csv`, `weekly_returns.csv`, `risk_free_rate.txt` y `excluded_tickers.txt` iguales (no se versiona: 3,3 MB de precios crudos) | ✅ |
+| Tests del original | Los 12 archivos de `backend/tests` migrados (**73 tests**; se quitaron `test_health` y `test_cors`, cubiertos por los tests comunes) | ✅ |
+| API histórica | `/analyses`, `/runs`, `/runs/{run_dir}`, `/history/*` bajo `/api/tendencia` con el mismo SQL sobre `history.db` (6 corridas copiadas) | ✅ |
+| Última corrida sin JSON estático | `GET /api/tendencia/latest` (reemplaza `frontend/public/data/latest/dashboard_data.json`) | ✅ |
+| PDFs / archivos de `output/` | `GET /api/tendencia/runs/{run_dir}/files/{nombre}` (reemplaza el servidor estático en :8000) | ✅ |
+| Pipeline | `python -m fog_radar.jobs tendencia` con las opciones del original + `--macro` y `--backfill`; test de integración sin Yahoo (PDF incluido) | ✅ |
+| Vistas | resumen, portafolio (5/10/15), tendencia 6 m, sectores, momentum, limitaciones, historial, descargar: E2E `tendencia.e2e.ts` + revisión visual | ✅ |
+| Corrida completa contra Yahoo / FRED | Pendiente en Windows (`uv run python -m fog_radar.jobs tendencia --macro`, ~10 min) | ⏳ |
+
+**Diferencias intencionales**
+
+- Datos en `data/tendencia/` (`raw`, `processed`, `macro`, `universe`, `output`, `logs`, `history.db`); `settings.py` pasa a `config.py` y su raíz sale de `Settings` (`paths.py`).
+- El pipeline ya no copia el JSON a `frontend/public`: el sitio lo pide a la API. Sin corridas: **503 `no_data`**.
+- Un nombre de corrida que no es `YYYYMMDD_NN` → 422 (antes 404); archivos solo `.pdf/.csv/.json/.txt` de la carpeta de la corrida.
+- Carlito vive en `core/pdf/fonts` (compartida con el PDF de ETF).
+- Nuevo: `/api/tendencia/excluidos` y aviso visible de tickers excluidos por moneda (TD-OPS-2, TD-DATA-1); validación de factibilidad de la configuración antes de correr (TD-MODEL-3).
+- La sección "Tendencia 6m" vive en `/tendencia/proyeccion`; el análisis y el tamaño del portafolio van en la URL (`?analisis=us&n=5`); los filtros del historial también (formulario GET, sin JavaScript).
+- Gráficos del historial por corrida (dos corridas del mismo día se distinguen: `24/09 #2`).

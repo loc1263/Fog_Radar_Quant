@@ -216,19 +216,32 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 - [x] **Paridad verificada** con la corrida real del 25-09 (`docs/PARIDAD.md`): score idéntico en los 60 candidatos, momentum y retornos recalculados desde `prices.json` iguales, pesos de Markowitz/BL/HRP y mejores combinaciones iguales a los del `portfolio.py` original.
 - ⚠️ Pendiente del usuario: correr una corrida completa contra Yahoo en Windows (`uv run python -m fog_radar.jobs us_stocks`, ~12 min) y probar `/eeuu/ticker/AAPL` (aquí no hubo acceso a Yahoo).
 
-### Fase 5 — Módulo ETF (≈3 sesiones)
-- Backend: `analysis/` (ranking, momentum, categorías, rotación, archivado), `Screener_Data_ETF_Script`, `actualizar_datos_semanal.py` → `pipeline.py`; `POST /api/etf/run` pasa a registrar el job en `core/jobs.py`; `/api/etf/pdf` usa el módulo PDF común.
-- Frontend: 13 secciones como rutas `/etf/[seccion]`; `TendenciaChart`, `Rango52SemanasBar` → LayerChart/componentes propios; portar los tests Vitest.
-- **Listo cuando:** las 13 secciones y la descarga del PDF funcionan igual que en el original.
+### Fase 5 — Módulo ETF ✅ completada 2026-09-28
+- [x] Backend `modules/etf/`: `analysis/` (ranking, momentum, categorías, Top 15 Cap., rotación, archivado) portado **sin cambios de lógica** (solo imports relativos, logger y sin los `main()` de CLI); `screener/` (el `Screener_Data_ETF_Script`) como paquete **dentro del mismo proceso** (el subproceso existía por el choque de nombres `config.py`); rutas por parámetro. Nuevos: `storage.py` (staging + lock `filelock`, 503 `busy`), `schemas.py` (claves snake_case, prefijo `Etf`), `service.py`, `router.py`, `pipeline.py`, `informe_pdf.py`.
+- [x] Datos en `data/etf/{current,hist,screener}` (= `backend/data`, `data_hist` y `src/` del screener). Históricos copiados sin convertir.
+- [x] 14 endpoints `/api/etf/*` (el `GET /api/status` del original es `/api/etf/resumen`, con los parámetros del modelo). `POST /api/etf/run` re-analiza el CSV vigente en *staging*, queda en `/api/jobs` (`trigger: api`), 409 si ya hay una corrida, rate limit 3/min.
+- [x] Pipeline `python -m fog_radar.jobs etf [--solo-analisis]`: screener → análisis en staging → archivo con secuencia `_2` → instalación → respaldo de salidas crudas > 30 días.
+- [x] **`core/pdf/`**: paleta, fuentes (Calibri → Carlito incluida → Helvetica), tablas y encabezado/pie comunes; `GET /api/etf/pdf` lo usa. Descarga por BFF (`/etf/descargar/informe.pdf`).
+- [x] Frontend: 13 secciones con URL propia (`/etf`, `/etf/top15`, `/universo`, `/excluidos`, `/rotacion`, `/diversificacion`, `/categorias`, `/top15-simple`, `/top15-vanguard`, `/momentum`, `/top15-cap`, `/historial`, `/descargar`). `EtfTable` (celdas comunes), `Rango52` (ex `Rango52SemanasBar`), gráfico de tendencia del Top 5 con eje categórico en `LineChart` (ex `TendenciaChart`), `DataTable` con paginación (`pageSize`), `BarChart` con `labelWidth`.
+- [x] Tests: **59 pytest** (paridad, 8 tests originales migrados, API, pipeline, screener) · **12 Vitest** (port de los tests del original) · **5 E2E**.
+- [x] **Paridad verificada** (`docs/PARIDAD.md`): los 10 CSV de salida **byte a byte idénticos** al original; rotación igual al `rotacion.py` original.
+- ⚠️ Pendiente del usuario: correr el screener completo contra Yahoo en Windows (`uv run python -m fog_radar.jobs etf`, ~30 min).
+- Nota: con 27+ rutas TypeScript ya no resuelve `resolve()` sobre una unión de rutas; los menús usan `resolve(ruta(href))` (`lib/nav-href.ts`).
 
-### Fase 6 — Módulo Tendencia (≈3 sesiones)
-- Backend: `step00…step07`, `robust_yf.py` (→ base de `core/yf_client.py`), `fetch_macro_data.py`, `backfill_history.py`, `history.db`; nuevo `/api/tendencia/latest` que reemplaza el JSON en `public/`; los PDFs de `output/` se sirven vía `/api/tendencia/runs/{dir}/files/...` en lugar del servidor estático en :8000.
-- Frontend: resumen, portafolio (selector 5/10), tendencia 6m, sectores, momentum (mensual/semanal), limitaciones, historial; selector `?analisis=` (Asia+EEUU / solo EEUU) como parámetro de URL.
-- Migrar pytest + Ruff existentes.
-- **Listo cuando:** vista "última corrida" e "historial" idénticas al original, sin JSON estático.
+### Fase 6 — Módulo Tendencia ✅ completada 2026-09-28
+- [x] Backend `modules/tendencia/`: el paquete `stock_tendencia` completo (universe, ingestion, modeling, net/robust_yf, reporting, storage) portado **sin cambios de lógica**; `settings.py` → `config.py` con raíz en `data/tendencia` (`paths.py`, sobrevive al `importlib.reload` del pipeline). `fetch_macro_data.py` → `macro.py` (FRED_API_KEY desde `Settings`); `backfill_history.py` → `backfill.py`. `run_files.py` = el "storage" de ADR 0002 (el nombre `storage/` ya lo usa el paquete SQLite).
+- [x] Datos en `data/tendencia/` (raw, processed, macro, universe, output, logs, `history.db`); las 6 corridas y la base del original copiadas.
+- [x] API `/api/tendencia/*`: `latest` y `runs/{run_dir}/dashboard` (**reemplaza el JSON estático en `public/`**), `runs/{run_dir}/files[/{nombre}]` (**reemplaza el servidor estático en :8000**), `excluidos`, y los endpoints históricos del original (`analyses`, `runs`, `runs/{run_dir}`, `history/*`) con el mismo SQL, en solo lectura.
+- [x] Pipeline `python -m fog_radar.jobs tendencia [--skip-fetch] [--force-refresh] [--force-discovery] [--static-universe] [--macro] [--backfill]`; valida la configuración antes de correr (TD-MODEL-3) y falla si la corrida no deja `dashboard_data.json`.
+- [x] Frontend: resumen, portafolio (5 / 10 / 15 en `?n=`), tendencia 6 m (`/tendencia/proyeccion`), sectores, momentum mensual y semanal, limitaciones (con tickers excluidos), descargar (PDF y CSV de la corrida por BFF) e historial (filtros en la URL, gráficos por corrida, trayectoria de un ticker). `?analisis=us` como parámetro de URL que la sub-navegación conserva (`keepParams`).
+- [x] Tests: los **73 tests originales** migrados + 24 de paridad + 11 de integración (**395 pytest** en total) · 8 Vitest (**58**) · 5 E2E (**23**). Ruff aplicado al código portado.
+- [x] **Paridad verificada** (`docs/PARIDAD.md`): las 23 salidas de la corrida 20260926_01 y el `dashboard_data.json` iguales al original (rtol 1e-7).
+- [x] `scripts/fixtures_e2e.py`: instala en `data/` los fixtures de los 4 módulos (+ `history.db` por backfill) para CI o una demo local.
+- ⚠️ Pendiente del usuario: correr el pipeline completo contra Yahoo/FRED en Windows (`uv run python -m fog_radar.jobs tendencia --macro`, ~10 min).
 
 ### Fase 7 — Consolidación y valor agregado (≈2–3 sesiones)
-- [ ] Extraer código repetido a `core/`: cliente yfinance único (rate-limit, reintentos, caché en disco), FX, stats, estilos PDF (Calibri/Carlito + paleta ejecutiva).
+- [ ] Extraer código repetido a `core/`: cliente yfinance único (rate-limit, reintentos, caché en disco), FX (incl. `build_dataset` de Tendencia), stats, estilos PDF (`core/pdf` ✅ ya existe y lo usa ETF; falta migrar `reporting/theme.py` de Tendencia).
+- [ ] Opciones con valor en el CLI de jobs (TD-CFG-1: `--top-n`).
 - [ ] `scripts/run_all_pipelines.py` + calendario de ejecución (ETF lunes; resto según frecuencia actual): Programador de tareas en local y `crontab` en el servidor backend.
 - [ ] Página `/estado` y el **Hub** con datos reales (fecha, frescura, top 3 por módulo).
 - [ ] Funciones transversales (opcionales): **buscador global de ticker** (en qué módulos aparece y con qué score), comparador EEUU vs. Tendencia, informe PDF consolidado semanal de los 4 módulos.
@@ -258,8 +271,8 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 | 2 | Esqueleto frontend | 1–2 | 4 |
 | 3 | Chile (piloto) ✅ | 1–2 | 6 |
 | 4 | EEUU ✅ | 2–3 | 9 |
-| 5 | ETF | 3 | 12 |
-| 6 | Tendencia | 3 | 15 |
+| 5 | ETF ✅ | 3 | 12 |
+| 6 | Tendencia ✅ | 3 | 15 |
 | 7 | Consolidación | 2–3 | 18 |
 | 8 | Calidad, despliegue en 2 servidores y cierre | 2–3 | 21 |
 
@@ -302,4 +315,4 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 
 1. ~~Orden de módulos~~ ✅ confirmado (Chile → EEUU → ETF → Tendencia) · ~~Librería de gráficos~~ ✅ LayerChart · ~~Modo de despliegue~~ ✅ SvelteKit con `adapter-node` (SSR) + FastAPI en **2 servidores separados**, patrón BFF.
 2. Pendiente de definir más adelante (no bloquea): proveedor de hosting, dominio, y si el sitio tendrá login o será público. Repositorio: **privado** ✅.
-3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅ · ~~Fase 2~~ ✅ · ~~Fase 3~~ ✅ Chile · ~~Fase 4~~ ✅ EEUU. **Siguiente: Fase 5 — módulo ETF.** Antes: correr los pipelines de Chile y EEUU contra Yahoo en Windows.
+3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅ · ~~Fase 2~~ ✅ · ~~Fase 3~~ ✅ Chile · ~~Fase 4~~ ✅ EEUU · ~~Fase 5~~ ✅ ETF · ~~Fase 6~~ ✅ Tendencia (**paridad total de los 4 módulos**). **Siguiente: Fase 7 — consolidación.** Antes: correr los 4 pipelines contra Yahoo en Windows (`uv run python -m fog_radar.jobs <modulo>`).

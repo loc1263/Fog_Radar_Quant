@@ -63,15 +63,8 @@ jobs:
       - name: Levantar backend para e2e
         working-directory: backend
         run: |
-          mkdir -p ../data/cl_stocks
-          cp tests/cl_stocks/fixtures/*_20260925_183129.csv ../data/cl_stocks/
-          mkdir -p ../data/us_stocks/runs
-          cp -r tests/us_stocks/fixtures/runs/* ../data/us_stocks/runs/
-          mkdir -p ../data/etf/current ../data/etf/hist
-          cp tests/etf/fixtures/hist/* ../data/etf/hist/
-          cp tests/etf/fixtures/input/* tests/etf/fixtures/expected/*.csv* ../data/etf/current/
-          gunzip -f ../data/etf/hist/*.gz ../data/etf/current/*.gz
           uv sync --frozen
+          uv run python ../scripts/fixtures_e2e.py
           nohup uv run uvicorn fog_radar.main:app --port 8000 > /tmp/backend.log 2>&1 &
           for i in $(seq 1 30); do curl -sf http://localhost:8000/api/health && break; sleep 1; done
       - name: E2E (Playwright)

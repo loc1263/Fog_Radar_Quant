@@ -548,6 +548,227 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/tendencia/latest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Última corrida completa */
+        get: operations["latest_api_tendencia_latest_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/runs/{run_dir}/dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Una corrida completa */
+        get: operations["run_dashboard_api_tendencia_runs__run_dir__dashboard_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/runs/{run_dir}/files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Archivos de una corrida */
+        get: operations["run_files_api_tendencia_runs__run_dir__files_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/runs/{run_dir}/files/{nombre}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Descarga un archivo de una corrida (PDF, CSV, JSON, TXT) */
+        get: operations["run_file_api_tendencia_runs__run_dir__files__nombre__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/excluidos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Tickers excluidos en el último armado del dataset (con motivo) */
+        get: operations["excluidos_api_tendencia_excluidos_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/analyses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Análisis vistos en el historial */
+        get: operations["list_analyses_api_tendencia_analyses_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Performance por corrida (ascendente) */
+        get: operations["list_runs_api_tendencia_runs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/runs/{run_dir}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Corrida reconstruida desde history.db */
+        get: operations["get_run_api_tendencia_runs__run_dir__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/history/performance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Serie de performance */
+        get: operations["history_performance_api_tendencia_history_performance_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/history/tickers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Tickers seleccionados alguna vez */
+        get: operations["history_tickers_api_tendencia_history_tickers_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/history/ticker/{ticker}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Trayectoria de un ticker */
+        get: operations["history_ticker_api_tendencia_history_ticker__ticker__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/history/sectors": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Peso por sector en el tiempo */
+        get: operations["history_sectors_api_tendencia_history_sectors_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/history/momentum-leaders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Líderes de momentum por corrida */
+        get: operations["history_momentum_leaders_api_tendencia_history_momentum_leaders_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1616,6 +1837,427 @@ export interface components {
             env: string;
             /** Modules */
             modules: components["schemas"]["ModuleStatus"][];
+        };
+        /** TdAnalisis */
+        TdAnalisis: {
+            /** Key */
+            key: string;
+            /** Label */
+            label: string;
+            /** Universe Size */
+            universe_size: number;
+            /** N Selected */
+            n_selected: number;
+            performance: components["schemas"]["TdPerformance"];
+            /** Holdings */
+            holdings: components["schemas"]["TdHolding"][];
+            /** Sectors */
+            sectors: components["schemas"]["TdSector"][];
+            /**
+             * Momentum
+             * @default []
+             */
+            momentum: components["schemas"]["TdMomentumMensual"][];
+            /**
+             * Momentum Semanal
+             * @default []
+             */
+            momentum_semanal: components["schemas"]["TdMomentumSemanal"][];
+            /**
+             * Portfolio Options
+             * @default []
+             */
+            portfolio_options: components["schemas"]["TdPortafolioReducido"][];
+        };
+        /** TdAnalisisDisponible */
+        TdAnalisisDisponible: {
+            /** Analysis Key */
+            analysis_key: string;
+            /** Label */
+            label: string;
+        };
+        /** TdArchivo */
+        TdArchivo: {
+            /** Nombre */
+            nombre: string;
+            /** Tipo */
+            tipo: string;
+            /** Bytes */
+            bytes: number;
+        };
+        /**
+         * TdDashboard
+         * @description Una corrida completa (mismo contenido que ``dashboard_data.json``).
+         */
+        TdDashboard: {
+            /**
+             * Generated At
+             * Format: date-time
+             */
+            generated_at: string;
+            /** Run Dir */
+            run_dir: string;
+            /** Universe Source */
+            universe_source: string | null;
+            /**
+             * Market Regime Notes
+             * @default []
+             */
+            market_regime_notes: string[];
+            /** Analyses */
+            analyses: components["schemas"]["TdAnalisis"][];
+            /**
+             * Archivos
+             * @default []
+             */
+            archivos: components["schemas"]["TdArchivo"][];
+            parametros: components["schemas"]["TdParametros"] | null;
+            /**
+             * Excluidos
+             * @default []
+             */
+            excluidos: components["schemas"]["TdExcluido"][];
+        };
+        /**
+         * TdExcluido
+         * @description Ticker del universo que quedó fuera del análisis (falta de historia, de FX…).
+         */
+        TdExcluido: {
+            /** Ticker */
+            ticker: string;
+            /** Nombre */
+            nombre: string;
+            /** Motivo */
+            motivo: string;
+        };
+        /** TdHolding */
+        TdHolding: {
+            /** Ticker */
+            ticker: string;
+            /** Peso Final */
+            peso_final: number;
+            /** Nombre */
+            nombre: string | null;
+            /** Pais */
+            pais: string | null;
+            /** Sector */
+            sector: string | null;
+            /** Precio Actual Usd */
+            precio_actual_usd: number | null;
+            /** Senal Tecnica */
+            senal_tecnica: string | null;
+            /** Ma 10S */
+            ma_10s: number | null;
+            /** Ma 40S */
+            ma_40s: number | null;
+            /** Senal Tecnica 3M */
+            senal_tecnica_3m: string | null;
+            /** Ma 4S */
+            ma_4s: number | null;
+            /** Ma 13S */
+            ma_13s: number | null;
+            /** Momentum 26S Pct */
+            momentum_26s_pct: number | null;
+            /** Retorno Esperado Anual Pct */
+            retorno_esperado_anual_pct: number | null;
+            /** Volatilidad Anual Pct */
+            volatilidad_anual_pct: number | null;
+            /** Precio Proyectado 6M Usd */
+            precio_proyectado_6m_usd: number | null;
+            /** Precio Min 90Pct 6M Usd */
+            precio_min_90pct_6m_usd: number | null;
+            /** Precio Max 90Pct 6M Usd */
+            precio_max_90pct_6m_usd: number | null;
+            /** Retorno Esperado 6M Pct */
+            retorno_esperado_6m_pct: number | null;
+        };
+        /** TdMetricas */
+        TdMetricas: {
+            /** Retorno Esperado Anual */
+            retorno_esperado_anual: number;
+            /** Volatilidad Anual */
+            volatilidad_anual: number;
+            /** Sharpe Ratio */
+            sharpe_ratio: number;
+        };
+        /** TdMomentumLider */
+        TdMomentumLider: {
+            /**
+             * Run Date
+             * Format: date
+             */
+            run_date: string;
+            /** Run Dir */
+            run_dir: string;
+            /** Ticker */
+            ticker: string | null;
+            /** Momentum Rank */
+            momentum_rank: number | null;
+            /** Momentum Score Pct */
+            momentum_score_pct: number | null;
+        };
+        /** TdMomentumMensual */
+        TdMomentumMensual: {
+            /** Rank */
+            rank: number;
+            /** Ticker */
+            ticker: string;
+            /** Nombre */
+            nombre: string | null;
+            /** Pais */
+            pais: string | null;
+            /** Sector */
+            sector: string | null;
+            /** Precio Actual Usd */
+            precio_actual_usd: number | null;
+            /** Momentum 1M Pct */
+            momentum_1m_pct: number | null;
+            /** Momentum 3M Pct */
+            momentum_3m_pct: number | null;
+            /** Momentum 6M Pct */
+            momentum_6m_pct: number | null;
+            /** Momentum 12M Pct */
+            momentum_12m_pct: number | null;
+            /** Pct Meses Positivos 12M */
+            pct_meses_positivos_12m: number | null;
+            /** Momentum Score Pct */
+            momentum_score_pct: number | null;
+        };
+        /** TdMomentumSemanal */
+        TdMomentumSemanal: {
+            /** Rank */
+            rank: number;
+            /** Ticker */
+            ticker: string;
+            /** Nombre */
+            nombre: string | null;
+            /** Pais */
+            pais: string | null;
+            /** Sector */
+            sector: string | null;
+            /** Precio Actual Usd */
+            precio_actual_usd: number | null;
+            /** Momentum 1S Pct */
+            momentum_1s_pct: number | null;
+            /** Momentum 2S Pct */
+            momentum_2s_pct: number | null;
+            /** Momentum 3S Pct */
+            momentum_3s_pct: number | null;
+            /** Momentum 4S Pct */
+            momentum_4s_pct: number | null;
+            /** Pct Semanas Positivas 4S */
+            pct_semanas_positivas_4s: number | null;
+            /** Momentum Score Pct */
+            momentum_score_pct: number | null;
+        };
+        /**
+         * TdParametros
+         * @description Parámetros del modelo (de ``config``), para los textos de metodología.
+         */
+        TdParametros: {
+            /** Top N */
+            top_n: number;
+            /** Top N Us */
+            top_n_us: number;
+            /** Max Peso Por Activo */
+            max_peso_por_activo: number;
+            /** L2 Gamma */
+            l2_gamma: number;
+            /** Semanas Minimas */
+            semanas_minimas: number;
+            /** Horizonte Semanas */
+            horizonte_semanas: number;
+            /** Ma Corta */
+            ma_corta: number;
+            /** Ma Larga */
+            ma_larga: number;
+            /** Ma Corta 3M */
+            ma_corta_3m: number;
+            /** Ma Larga 3M */
+            ma_larga_3m: number;
+            /** Top N Momentum */
+            top_n_momentum: number;
+            /** Tamanos Portafolio */
+            tamanos_portafolio: number[];
+        };
+        /** TdPerformance */
+        TdPerformance: {
+            universo_completo: components["schemas"]["TdMetricas"];
+            portafolio_15_finales: components["schemas"]["TdMetricas"];
+            /** Tasa Libre Riesgo Anual */
+            tasa_libre_riesgo_anual: number;
+            /**
+             * Tickers Seleccionados
+             * @default []
+             */
+            tickers_seleccionados: string[];
+        };
+        /** TdPerformanceReducida */
+        TdPerformanceReducida: {
+            /** Retorno Esperado Anual */
+            retorno_esperado_anual: number;
+            /** Volatilidad Anual */
+            volatilidad_anual: number;
+            /** Sharpe Ratio */
+            sharpe_ratio: number;
+            /** N Acciones */
+            n_acciones: number | null;
+            /**
+             * Tickers Seleccionados
+             * @default []
+             */
+            tickers_seleccionados: string[];
+        };
+        /** TdPortafolioReducido */
+        TdPortafolioReducido: {
+            /** N */
+            n: number;
+            performance: components["schemas"]["TdPerformanceReducida"];
+            /** Holdings */
+            holdings: components["schemas"]["TdHolding"][];
+        };
+        /**
+         * TdRunDetalle
+         * @description Corrida reconstruida desde ``history.db`` (endpoint ``/runs/{run_dir}``).
+         */
+        TdRunDetalle: {
+            /** Id */
+            id: number;
+            /** Run Dir */
+            run_dir: string;
+            /**
+             * Run Date
+             * Format: date
+             */
+            run_date: string;
+            /**
+             * Generated At
+             * Format: date-time
+             */
+            generated_at: string;
+            /** Universe Source */
+            universe_source: string | null;
+            /**
+             * Market Regime Notes
+             * @default []
+             */
+            market_regime_notes: string[];
+            /** Stored At */
+            stored_at: string | null;
+            /** Analyses */
+            analyses: {
+                [key: string]: unknown;
+            }[];
+        } & {
+            [key: string]: unknown;
+        };
+        /** TdRunPerformance */
+        TdRunPerformance: {
+            /** Run Dir */
+            run_dir: string;
+            /**
+             * Run Date
+             * Format: date
+             */
+            run_date: string;
+            /**
+             * Generated At
+             * Format: date-time
+             */
+            generated_at: string;
+            /** Universe Source */
+            universe_source: string | null;
+            /** Analysis Key */
+            analysis_key: string;
+            /** Label */
+            label: string;
+            /** Universe Size */
+            universe_size: number | null;
+            /** N Selected */
+            n_selected: number | null;
+            /** Retorno Universo Anual */
+            retorno_universo_anual: number | null;
+            /** Volatilidad Universo Anual */
+            volatilidad_universo_anual: number | null;
+            /** Sharpe Universo */
+            sharpe_universo: number | null;
+            /** Retorno Portafolio Anual */
+            retorno_portafolio_anual: number | null;
+            /** Volatilidad Portafolio Anual */
+            volatilidad_portafolio_anual: number | null;
+            /** Sharpe Portafolio */
+            sharpe_portafolio: number | null;
+            /** Tasa Libre Riesgo Anual */
+            tasa_libre_riesgo_anual: number | null;
+        };
+        /** TdSector */
+        TdSector: {
+            /** Sector */
+            sector: string;
+            /** N Acciones */
+            n_acciones: number;
+            /** Peso Total */
+            peso_total: number;
+            /** Retorno 6M Prom */
+            retorno_6m_prom: number | null;
+            /** Senal Predominante */
+            senal_predominante: string | null;
+            /**
+             * Tickers
+             * @default
+             */
+            tickers: string;
+        };
+        /** TdSectorHistoria */
+        TdSectorHistoria: {
+            /**
+             * Run Date
+             * Format: date
+             */
+            run_date: string;
+            /** Run Dir */
+            run_dir: string;
+            /** Sector */
+            sector: string | null;
+            /** Peso Total */
+            peso_total: number | null;
+            /** N Acciones */
+            n_acciones: number | null;
+            /** Retorno 6M Prom */
+            retorno_6m_prom: number | null;
+        };
+        /** TdTickerHistoria */
+        TdTickerHistoria: {
+            /**
+             * Run Date
+             * Format: date
+             */
+            run_date: string;
+            /** Run Dir */
+            run_dir: string;
+            /** Peso Final */
+            peso_final: number | null;
+            /** Precio Actual Usd */
+            precio_actual_usd: number | null;
+            /** Senal Tecnica */
+            senal_tecnica: string | null;
+            /** Momentum 26S Pct */
+            momentum_26s_pct: number | null;
+            /** Retorno Esperado 6M Pct */
+            retorno_esperado_6m_pct: number | null;
+            /** Precio Proyectado 6M Usd */
+            precio_proyectado_6m_usd: number | null;
+            /** Precio Min 90Pct 6M Usd */
+            precio_min_90pct_6m_usd: number | null;
+            /** Precio Max 90Pct 6M Usd */
+            precio_max_90pct_6m_usd: number | null;
+        };
+        /** TdTickerNombre */
+        TdTickerNombre: {
+            /** Ticker */
+            ticker: string;
+            /** Nombre */
+            nombre: string | null;
         };
         /** Technical */
         Technical: {
@@ -2954,6 +3596,630 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    latest_api_tendencia_latest_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdDashboard"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    run_dashboard_api_tendencia_runs__run_dir__dashboard_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description YYYYMMDD_NN */
+                run_dir: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdDashboard"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    run_files_api_tendencia_runs__run_dir__files_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description YYYYMMDD_NN */
+                run_dir: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdArchivo"][];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    run_file_api_tendencia_runs__run_dir__files__nombre__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description YYYYMMDD_NN */
+                run_dir: string;
+                nombre: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/pdf": unknown;
+                    "text/csv": unknown;
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    excluidos_api_tendencia_excluidos_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdExcluido"][];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    list_analyses_api_tendencia_analyses_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdAnalisisDisponible"][];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    list_runs_api_tendencia_runs_get: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+                from?: string | null;
+                to?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdRunPerformance"][];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_run_api_tendencia_runs__run_dir__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description YYYYMMDD_NN */
+                run_dir: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdRunDetalle"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    history_performance_api_tendencia_history_performance_get: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+                from?: string | null;
+                to?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdRunPerformance"][];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    history_tickers_api_tendencia_history_tickers_get: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdTickerNombre"][];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    history_ticker_api_tendencia_history_ticker__ticker__get: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+            };
+            header?: never;
+            path: {
+                ticker: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdTickerHistoria"][];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    history_sectors_api_tendencia_history_sectors_get: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdSectorHistoria"][];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    history_momentum_leaders_api_tendencia_history_momentum_leaders_get: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+                top?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdMomentumLider"][];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
             /** @description Sin datos disponibles */

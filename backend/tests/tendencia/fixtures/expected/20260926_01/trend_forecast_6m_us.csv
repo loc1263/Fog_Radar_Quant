@@ -1,0 +1,16 @@
+ticker,nombre,pais,sector,precio_actual_usd,senal_tecnica,ma_10s,ma_40s,senal_tecnica_3m,ma_4s,ma_13s,momentum_26s_pct,retorno_esperado_anual_pct,volatilidad_anual_pct,precio_proyectado_6m_usd,precio_min_90pct_6m_usd,precio_max_90pct_6m_usd,retorno_esperado_6m_pct
+MU,"Micron Technology, Inc.",EEUU,Technology,1082.28,Alcista,958.28,682.85,Alcista,1022.48,952.8,203.15,73.26,55.95,1443.54,752.98,2767.43,33.38
+NVDA,NVIDIA Corporation,EEUU,Technology,225.07,Alcista,218.33,199.95,Alcista,223.93,214.71,34.66,61.24,47.99,288.6,165.16,504.32,28.23
+DELL,Dell Technologies Inc.,EEUU,Technology,562.89,Alcista,490.81,294.25,Alcista,555.6,471.67,229.18,63.14,54.38,716.85,380.8,1349.46,27.35
+ANET,"Arista Networks, Inc.",EEUU,Technology,206.55,Alcista,192.52,158.27,Alcista,199.83,187.75,71.03,56.64,48.6,258.45,146.85,454.84,25.13
+AVGO,Broadcom Inc.,EEUU,Technology,352.81,Lateral / mixta,375.33,366.49,Bajista,357.09,375.58,17.74,51.22,44.88,433.41,257.14,730.52,22.85
+LLY,Eli Lilly and Company,EEUU,Healthcare,1183.46,Alcista,1173.71,1071.33,Lateral / mixta,1150.36,1177.97,35.18,40.08,33.56,1405.92,951.5,2077.36,18.8
+GE,GE Aerospace,EEUU,Industrials,327.09,Lateral / mixta,344.53,324.3,Lateral / mixta,325.53,348.5,15.8,38.4,31.8,386.43,266.96,559.37,18.14
+CAT,Caterpillar Inc.,EEUU,Industrials,821.58,Lateral / mixta,829.35,796.62,Lateral / mixta,815.77,852.66,18.59,35.73,31.16,958.75,667.24,1377.6,16.7
+PANW,"Palo Alto Networks, Inc.",EEUU,Technology,374.74,Alcista,353.54,247.97,Lateral / mixta,350.56,351.39,154.89,35.82,41.59,429.27,264.63,696.34,14.55
+XOM,ExxonMobil Holdings Corporation,EEUU,Energy,160.59,Alcista,159.29,147.64,Lateral / mixta,162.4,154.89,-4.83,25.72,27.75,179.15,129.73,247.39,11.56
+ABBV,AbbVie Inc.,EEUU,Healthcare,264.34,Alcista,256.81,229.12,Alcista,260.47,256.01,28.19,23.83,24.77,293.25,219.84,391.18,10.94
+WMT,Walmart Inc.,EEUU,Consumer Defensive,107.98,Bajista,108.25,118.06,Lateral / mixta,107.25,109.36,-11.75,20.27,23.07,117.92,90.17,154.2,9.2
+PM,Philip Morris International Inc.,EEUU,Consumer Defensive,190.48,Alcista,189.66,176.89,Lateral / mixta,188.17,188.73,17.44,19.86,23.32,207.52,158.22,272.19,8.95
+JNJ,Johnson & Johnson,EEUU,Healthcare,271.22,Alcista,265.32,240.12,Alcista,270.5,263.27,14.01,14.21,17.74,288.91,235.05,355.12,6.52
+KO,The Coca-Cola Company,EEUU,Consumer Defensive,87.81,Alcista,87.36,79.29,Lateral / mixta,87.84,86.26,17.43,13.9,16.47,93.49,77.19,113.24,6.47

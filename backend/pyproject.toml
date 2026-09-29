@@ -53,6 +53,12 @@ packages = ["src/fog_radar"]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
+filterwarnings = [
+    # pandas 2.3 (resample) usa Timedelta con unidad genérica; no es código nuestro (ver ROADMAP Fase 0).
+    "ignore:The 'generic' unit for NumPy timedelta is deprecated:DeprecationWarning",
+    # PyPortfolioOpt avisa siempre que max_sharpe se combina con L2 (comportamiento del original).
+    "ignore:max_sharpe transforms the optimization problem:UserWarning",
+]
 
 [tool.ruff]
 src = ["src", "tests"]

@@ -12,6 +12,8 @@ export interface ModuleNav extends NavItem {
 	description: string;
 	/** Secciones del módulo (se completan al migrar cada uno). */
 	sections: NavItem[];
+	/** Parámetros de la URL que se conservan al cambiar de sección (p. ej. `analisis`). */
+	keepParams?: string[];
 }
 
 export const MODULES: ModuleNav[] = [
@@ -67,7 +69,17 @@ export const MODULES: ModuleNav[] = [
 		label: 'Tendencia',
 		href: '/tendencia',
 		description: 'Portafolio Markowitz, tendencia a 6 meses y momentum Asia + EEUU.',
-		sections: []
+		sections: [
+			{ label: 'Resumen', href: '/tendencia' },
+			{ label: 'Portafolio', href: '/tendencia/portafolio' },
+			{ label: 'Tendencia 6m', href: '/tendencia/proyeccion' },
+			{ label: 'Sectores', href: '/tendencia/sectores' },
+			{ label: 'Momentum', href: '/tendencia/momentum' },
+			{ label: 'Limitaciones', href: '/tendencia/limitaciones' },
+			{ label: 'Descargar', href: '/tendencia/descargar' },
+			{ label: 'Historial', href: '/tendencia/historial' }
+		],
+		keepParams: ['analisis']
 	}
 ];
 
@@ -77,4 +89,16 @@ export const EXTRA_NAV: NavItem[] = [{ label: 'Estado', href: '/estado' }];
 export function isActive(pathname: string, href: string): boolean {
 	if (href === '/') return pathname === '/';
 	return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/** `?a=1` con los parámetros de `url` que la sección conserva (o "" si ninguno). */
+export function keptQuery(url: URL, keep: string[] | undefined): string {
+	if (!keep?.length) return '';
+	const params = new URLSearchParams();
+	for (const k of keep) {
+		const v = url.searchParams.get(k);
+		if (v) params.set(k, v);
+	}
+	const q = params.toString();
+	return q ? `?${q}` : '';
 }

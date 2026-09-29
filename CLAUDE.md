@@ -21,7 +21,9 @@ estado de avance: **ROADMAP.md**. Backlog: **docs/BACKLOG.md**.
    corregirse hasta que no reporte issues antes de darlo por terminado. En local:
    `npm run autofix` (mismo autofixer del MCP, sin red; omite `components/ui`).
 4. Antes de cada commit del frontend: `npm run autofix && npm run check && npm run lint && npm test`.
-5. Enlaces internos con `resolve()` de `$app/paths`; externos con `href` literal.
+5. Enlaces internos con `resolve()` de `$app/paths`; externos con `href` literal. Para hrefs que
+   vienen de una unión de rutas (menús), `resolve(ruta(href))` de `$lib/nav-href` (con > 25 rutas
+   TypeScript no resuelve la sobrecarga).
 6. Componentes base de shadcn-svelte en `src/lib/components/ui` (copiados de la versión
    1.0.12, adaptados a los tokens); los propios del sitio en `components/shared` y
    gráficos en `src/lib/charts` (LayerChart).
@@ -45,6 +47,7 @@ estado de avance: **ROADMAP.md**. Backlog: **docs/BACKLOG.md**.
   (pydantic-settings) + `.env`.
 - Ruff + pytest. Al portar lógica de un proyecto original, agregar **test de
   paridad** (mismo input → mismo output que el original).
+- PDFs: estilo común en `core/pdf` (paleta, Carlito incluida, tablas, encabezado/pie).
 
 ## Convenciones de módulos (ADR 0002)
 - Backend: `modules/<modulo>/{scoring|scanner…, extractor, storage, schemas, service, router, pipeline}.py`;

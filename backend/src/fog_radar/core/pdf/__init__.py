@@ -47,6 +47,9 @@ HEX_AMBAR = "#9A6E00"
 
 DISCLAIMER = "Análisis cuantitativo generado automáticamente. No constituye asesoramiento financiero."
 
+# Carlito (SIL OFL) viaja con el código: el PDF se ve igual en un servidor sin fuentes.
+FONTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fonts")
+
 _FUENTES_CANDIDATAS = (
     ("Calibri", r"C:\Windows\Fonts\calibri.ttf", r"C:\Windows\Fonts\calibrib.ttf"),
     (
@@ -55,6 +58,7 @@ _FUENTES_CANDIDATAS = (
         "/usr/share/fonts/truetype/crosextra/Carlito-Bold.ttf",
     ),
     ("Calibri", "/Library/Fonts/Calibri.ttf", "/Library/Fonts/Calibri Bold.ttf"),
+    ("Carlito", os.path.join(FONTS_DIR, "Carlito-Regular.ttf"), os.path.join(FONTS_DIR, "Carlito-Bold.ttf")),
 )
 
 

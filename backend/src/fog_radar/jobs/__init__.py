@@ -43,6 +43,12 @@ def _etf(settings, **opts) -> str | None:  # noqa: ANN001 - import diferido
     return run(settings, **opts)
 
 
+def _tendencia(settings, **opts) -> str | None:  # noqa: ANN001 - import diferido
+    from fog_radar.modules.tendencia.pipeline import run
+
+    return run(settings, **opts)
+
+
 # modulo -> pipeline. Se completa al portar cada módulo (Fases 3-6).
 PIPELINES: dict[str, Pipeline] = {
     "cl_stocks": Pipeline(
@@ -53,5 +59,16 @@ PIPELINES: dict[str, Pipeline] = {
     "etf": Pipeline(
         _etf,
         (PipelineOption("--solo-analisis", "Re-analiza el CSV vigente sin descargar de Yahoo."),),
+    ),
+    "tendencia": Pipeline(
+        _tendencia,
+        (
+            PipelineOption("--skip-fetch", "Reutiliza los precios/FX ya descargados (sin Yahoo)."),
+            PipelineOption("--force-refresh", "Ignora la caché de precios y vuelve a descargar todo."),
+            PipelineOption("--force-discovery", "Ignora el snapshot de universo de hoy."),
+            PipelineOption("--static-universe", "Usa la lista fija de respaldo en vez del screener."),
+            PipelineOption("--macro", "Descarga antes los datos macro de FRED (requiere FRED_API_KEY)."),
+            PipelineOption("--backfill", "Solo carga en history.db las corridas de output/ que falten."),
+        ),
     ),
 }

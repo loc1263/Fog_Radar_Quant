@@ -1,0 +1,11 @@
+rank,ticker,nombre,pais,sector,precio_actual_usd,momentum_1m_pct,momentum_3m_pct,momentum_6m_pct,momentum_12m_pct,pct_meses_positivos_12m,momentum_score_pct
+1,009150.KS,"Samsung Electro-Mechanics Co., Ltd.",Corea del Sur,Technology,1112.67,6.79,-14.56,268.51,703.18,83.3,220.9
+2,MU,"Micron Technology, Inc.",EEUU,Technology,1082.28,16.02,-4.41,203.15,589.27,83.3,184.26
+3,402340.KS,"SK Square Co., Ltd.",Corea del Sur,Technology,878.62,13.49,-15.55,175.09,415.24,83.3,134.81
+4,DELL,Dell Technologies Inc.,EEUU,Technology,562.89,23.38,41.13,229.18,335.96,66.7,131.18
+5,AMD,"Advanced Micro Devices, Inc.",EEUU,Technology,630.63,35.45,20.91,212.21,295.48,66.7,117.51
+6,000660.KS,SK hynix Inc.,Corea del Sur,Technology,1374.78,12.24,-13.4,137.11,390.02,75.0,115.06
+7,INTC,Intel Corporation,EEUU,Technology,123.0,37.48,-4.15,185.18,246.48,58.3,92.03
+8,MRVL,"Marvell Technology, Inc.",EEUU,Technology,261.93,20.92,-1.79,176.28,215.61,66.7,85.63
+9,005930.KS,"Samsung Electronics Co., Ltd.",Corea del Sur,Technology,210.79,10.93,4.02,71.16,232.78,66.7,66.44
+10,CRWD,"CrowdStrike Holdings, Inc.",EEUU,Technology,252.13,15.44,43.85,172.88,109.49,50.0,64.06

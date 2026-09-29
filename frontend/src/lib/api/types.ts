@@ -57,3 +57,21 @@ export type EtfCategoriaFila = Schemas['EtfCategoriaFila'];
 export type EtfCap = Schemas['EtfCap'];
 export type EtfCapFila = Schemas['EtfCapFila'];
 export type EtfCapBucket = Schemas['EtfCapBucket'];
+
+// --- Módulo Tendencia ---
+export type TdDashboard = Schemas['TdDashboard'];
+export type TdAnalisis = Schemas['TdAnalisis'];
+export type TdHolding = Schemas['TdHolding'];
+export type TdSector = Schemas['TdSector'];
+export type TdMomentumMensual = Schemas['TdMomentumMensual'];
+export type TdMomentumSemanal = Schemas['TdMomentumSemanal'];
+export type TdPortafolioReducido = Schemas['TdPortafolioReducido'];
+export type TdParametros = Schemas['TdParametros'];
+export type TdArchivo = Schemas['TdArchivo'];
+export type TdRunPerformance = Schemas['TdRunPerformance'];
+export type TdSectorHistoria = Schemas['TdSectorHistoria'];
+export type TdTickerHistoria = Schemas['TdTickerHistoria'];
+export type TdTickerNombre = Schemas['TdTickerNombre'];
+export type TdMomentumLider = Schemas['TdMomentumLider'];
+export type TdAnalisisDisponible = Schemas['TdAnalisisDisponible'];
+export type TdExcluido = Schemas['TdExcluido'];

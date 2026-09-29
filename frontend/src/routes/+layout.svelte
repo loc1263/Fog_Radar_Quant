@@ -3,7 +3,7 @@
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import { ThemeToggle } from '$lib/components/shared';
-	import { EXTRA_NAV, MODULES, isActive, type NavItem } from '$lib/nav';
+	import { EXTRA_NAV, MODULES, isActive, keptQuery, type NavItem } from '$lib/nav';
 	import { ruta } from '$lib/nav-href';
 	import { cn } from '$lib/utils';
 
@@ -67,7 +67,7 @@
 				{#each current.sections as section (section.href)}
 					{@const active = page.url.pathname === section.href}
 					<a
-						href={resolve(ruta(section.href))}
+						href="{resolve(ruta(section.href))}{keptQuery(page.url, current.keepParams)}"
 						class={cn(
 							'rounded border px-2.5 py-0.5 text-xs font-bold',
 							active
