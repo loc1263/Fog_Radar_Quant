@@ -241,3 +241,27 @@ def test_api_programas(client, auth) -> None:  # noqa: ANN001
     assert body[1]["modulos"] == ["cl_stocks", "us_stocks", "tendencia"]
     assert body[0]["zona"] == "America/Santiago"
     assert datetime.fromisoformat(body[0]["proxima"]).weekday() == 0
+
+
+def test_cli_opciones_con_valor(env: None, llamadas: Llamadas) -> None:
+    """TD-CFG-1: --top-n N llega como kwarg entero; fuera de rango es error de uso."""
+    assert cli.main(["tendencia", "--top-n", "20", "--max-weight", "0.1", "--skip-fetch"]) == 0
+    assert llamadas[-1] == ("tendencia", {"top_n": 20, "max_weight": 0.1, "skip_fetch": True})
+    with pytest.raises(SystemExit) as exc:
+        cli.main(["tendencia", "--top-n", "1"])
+    assert exc.value.code == 2
+    with pytest.raises(SystemExit):
+        cli.main(["tendencia", "--max-weight", "abc"])
+    assert cli.main(["etf", "--top-n", "20"]) == 2  # opción de otro módulo
+
+
+def test_programa_anterior() -> None:
+    diario = PROGRAMAS_BY_KEY["diario"]
+    # Domingo → la última diaria fue el viernes 18:00.
+    assert diario.anterior(datetime(2026, 9, 27, 12, 0, tzinfo=SCL)) == datetime(
+        2026, 9, 25, 18, 0, tzinfo=SCL
+    )
+    # Justo a la hora cuenta como ya ocurrida.
+    assert diario.anterior(datetime(2026, 9, 28, 18, 0, tzinfo=SCL)) == datetime(
+        2026, 9, 28, 18, 0, tzinfo=SCL
+    )

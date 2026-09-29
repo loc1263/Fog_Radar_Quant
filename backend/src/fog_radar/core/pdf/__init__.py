@@ -80,6 +80,49 @@ def registrar_fuente() -> tuple[str, str]:
 
 FUENTE, FUENTE_BOLD = registrar_fuente()
 
+_CURSIVAS_CANDIDATAS = (
+    r"C:\Windows\Fonts\calibrii.ttf",
+    "/usr/share/fonts/truetype/crosextra/Carlito-Italic.ttf",
+    "/Library/Fonts/Calibri Italic.ttf",
+    os.path.join(FONTS_DIR, "Carlito-Italic.ttf"),
+)
+
+
+def _registrar_cursiva() -> str:
+    """Cursiva de la familia registrada (o la oblicua de Helvetica como respaldo)."""
+    if FUENTE == "Helvetica":
+        return "Helvetica-Oblique"
+    nombre = FUENTE + "-Italic"
+    for ruta in _CURSIVAS_CANDIDATAS:
+        if os.path.exists(ruta):
+            try:
+                pdfmetrics.registerFont(TTFont(nombre, ruta))
+                return nombre
+            except Exception:
+                continue
+    return FUENTE
+
+
+FUENTE_ITALIC = _registrar_cursiva()
+
+
+def configurar_matplotlib() -> str:
+    """Usa Carlito (métricamente igual a Calibri, incluida en ``fonts/``) en los gráficos.
+
+    Devuelve la familia configurada (``sans-serif`` si no se pudo cargar).
+    """
+    import matplotlib.font_manager as fm
+    import matplotlib.pyplot as plt
+
+    try:
+        for archivo in ("Carlito-Regular.ttf", "Carlito-Bold.ttf", "Carlito-Italic.ttf"):
+            fm.fontManager.addfont(os.path.join(FONTS_DIR, archivo))
+        plt.rcParams["font.family"] = "Carlito"
+        return "Carlito"
+    except Exception:
+        plt.rcParams["font.family"] = "sans-serif"
+        return "sans-serif"
+
 
 def estilos() -> dict[str, ParagraphStyle]:
     """Estilos de párrafo comunes (piso de 9-10 pt, nunca texto gris)."""
@@ -114,7 +157,7 @@ def estilos() -> dict[str, ParagraphStyle]:
         "celda_ticker": ParagraphStyle(
             "celda_ticker", fontName=FUENTE_BOLD, fontSize=10, textColor=NAVY, leading=12
         ),
-        "celda_cat": ParagraphStyle("celda_cat", fontName=FUENTE, fontSize=9, textColor=NAVY, leading=11),
+        "celda_cat": ParagraphStyle("celda_cat", fontName=FUENTE, fontSize=10, textColor=NAVY, leading=12),
     }
 
 

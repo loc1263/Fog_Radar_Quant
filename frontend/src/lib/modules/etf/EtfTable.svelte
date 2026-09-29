@@ -33,6 +33,7 @@
 		csvColumns?: Column<T>[];
 		searchKeys?: string[];
 		searchPlaceholder?: string;
+		initialQuery?: string;
 		initialSort?: SortState;
 		pageSize?: number;
 		emptyText?: string;

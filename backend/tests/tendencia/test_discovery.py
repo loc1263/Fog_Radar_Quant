@@ -330,3 +330,20 @@ def test_to_ticker_dict_excludes_unconfigured_currency(monkeypatch):
     out = discovery._to_ticker_dict(candidates)
     assert "OK.T" in out
     assert "NOPE.XX" not in out
+
+
+def test_to_ticker_dict_acepta_cualquier_moneda_iso(monkeypatch):
+    """TD-DATA-1: monedas fuera de las 6 históricas usan USDXXX=X (core.fx)."""
+    from fog_radar.modules.tendencia import config
+
+    monkeypatch.setattr(config, "CURRENCY_FX_TICKER", {"JPY": "USDJPY=X"})
+    base = {"market_cap": 10.0, "country": "X", "sector": "Tech"}
+    candidates = [
+        {**base, "symbol": "D05.SI", "name": "DBS", "currency": "SGD"},
+        {**base, "symbol": "HSBA.L", "name": "HSBC", "currency": "GBp"},
+    ]
+    out = discovery._to_ticker_dict(candidates)
+    assert set(out) == {"D05.SI", "HSBA.L"}
+    assert config.fx_ticker_for("SGD") == "USDSGD=X"
+    assert config.fx_ticker_for("GBp") == "USDGBP=X"
+    assert config.fx_ticker_for("JPY") == "USDJPY=X"

@@ -1,35 +1,68 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { ErrorState, ModuleCard, Notice, Section } from '$lib/components/shared';
 	import { MODULES } from '$lib/nav';
+	import { fmtDate } from '$lib/format';
 
 	let { data } = $props();
 
 	const byKey = $derived(
-		data.status.ok ? Object.fromEntries(data.status.data.modules.map((m) => [m.key, m])) : {}
+		data.hub.ok ? Object.fromEntries(data.hub.data.modulos.map((m) => [m.key, m])) : {}
+	);
+	const atrasados = $derived(
+		data.hub.ok ? data.hub.data.modulos.filter((m) => m.frescura !== 'al_dia') : []
 	);
 </script>
 
+<Section title="Buscar un ticker en los 4 módulos">
+	<form
+		method="GET"
+		action={resolve('/buscar')}
+		class="flex flex-wrap items-end gap-2"
+		role="search"
+	>
+		<label class="block">
+			<span class="mb-1 block text-sm font-bold text-brand-label">Ticker o nombre</span>
+			<input
+				type="search"
+				name="q"
+				required
+				maxlength="40"
+				placeholder="p. ej. NVDA, SQM-B, Samsung"
+				class="w-72 rounded border border-brand-border bg-brand-bg px-2 py-1.5 text-sm"
+			/>
+		</label>
+		<button
+			type="submit"
+			class="rounded bg-brand-strong px-3 py-1.5 text-sm font-bold text-white hover:opacity-90"
+		>
+			Buscar
+		</button>
+	</form>
+</Section>
+
 <Section title="Módulos">
-	{#if !data.status.ok}
-		<ErrorState
-			title="Backend no disponible"
-			message={data.status.message}
-			code={data.status.code}
-		/>
+	{#if !data.hub.ok}
+		<ErrorState title="Backend no disponible" message={data.hub.message} code={data.hub.code} />
+	{:else}
+		<p class="mb-3 text-sm text-brand-label">
+			Consultado el {fmtDate(data.hub.data.generado_en, true)} · "Datos al día" significa que son posteriores
+			a la última corrida programada.
+		</p>
 	{/if}
 	<div class="flex flex-wrap gap-3">
 		{#each MODULES as nav (nav.key)}
-			<ModuleCard {nav} status={byKey[nav.key]} />
+			<ModuleCard {nav} modulo={byKey[nav.key]} />
 		{/each}
 	</div>
-</Section>
-
-<Section title="Estado del proyecto">
-	<Notice kind="info" title="Migración completa">
-		<p>
-			Los cuatro proyectos originales (Chile, EEUU, ETFs y Tendencia) ya funcionan en este sitio,
-			con paridad verificada contra cada original. Siguen la consolidación (cliente de Yahoo común,
-			un comando para actualizar todo) y el despliegue en producción.
-		</p>
-	</Notice>
+	{#if atrasados.length > 0}
+		<div class="mt-3">
+			<Notice kind="warning" title="Hay módulos sin actualizar">
+				<p>
+					{atrasados.map((m) => m.titulo).join(', ')}: en desarrollo se actualizan a pedido con
+					<code>python scripts/run_all_pipelines.py</code> (o <code>correr_pipelines.bat</code>).
+				</p>
+			</Notice>
+		</div>
+	{/if}
 </Section>

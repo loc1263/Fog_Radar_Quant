@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import type { ClPilarKey, ClRankingRow } from '$lib/api/types';
 	import { BarChart } from '$lib/charts';
 	import {
@@ -191,6 +192,7 @@
 			rows={visibles}
 			{columns}
 			searchKeys={['simbolo', 'nombre']}
+			initialQuery={page.url.searchParams.get('q') ?? ''}
 			searchPlaceholder="Símbolo o nombre…"
 			csvFilename="ranking_ipsa"
 			caption="Ranking multi-factor del IPSA"

@@ -82,13 +82,16 @@ def _today_strings():
 def _bar_chart(labels, values, colors_, xlabel, label_offset, out_path, legend_handles=None):
     """Barras horizontales con el estilo del informe (fondo blanco, sin
     bordes superior/derecho, grilla suave) y el valor al final de cada barra."""
-    fig, ax = plt.subplots(figsize=(6.8, 3.6), dpi=200)
+    # Fog Radar: textos >= 10 pt (preferencia de formato); la altura crece con
+    # la cantidad de barras para que las etiquetas no se encimen.
+    height_in = chart_height_in(len(values))
+    fig, ax = plt.subplots(figsize=(6.8, height_in), dpi=200)
     fig.patch.set_facecolor("white")
     ax.set_facecolor("white")
 
     ax.barh(labels, values, color=colors_, height=0.6)
     ax.set_xlabel(xlabel, fontsize=10, color="#000000")
-    ax.tick_params(axis="both", labelsize=8.5, colors="#000000")
+    ax.tick_params(axis="both", labelsize=10, colors="#000000")
     for spine in ["top", "right"]:
         ax.spines[spine].set_visible(False)
     for spine in ["left", "bottom"]:
@@ -97,18 +100,24 @@ def _bar_chart(labels, values, colors_, xlabel, label_offset, out_path, legend_h
     ax.set_axisbelow(True)
 
     for i, v in enumerate(values):
-        ax.text(v + label_offset, i, f"{v:.1f}%", va="center", fontsize=8, color=theme.MPL_HEX_LABEL)
+        ax.text(v + label_offset, i, f"{v:.1f}%", va="center", fontsize=10, color=theme.MPL_HEX_LABEL)
     if legend_handles:
-        ax.legend(handles=legend_handles, loc="lower right", fontsize=7.5, frameon=False)
+        ax.legend(handles=legend_handles, loc="lower right", fontsize=10, frameon=False)
 
     fig.tight_layout()
     fig.savefig(out_path, facecolor="white")
     plt.close(fig)
+    return height_in
+
+
+def chart_height_in(n_bars):
+    """Alto (pulgadas) del gráfico de barras: 3.6 como mínimo, ~0.27 por barra."""
+    return max(3.6, 0.27 * n_bars + 1.0)
 
 
 def make_weights_chart(merged, out_path):
     data = merged.sort_values("peso_final", ascending=True)
-    _bar_chart(
+    return _bar_chart(
         data["nombre"],
         list(data["peso_final"] * 100),
         theme.MPL_HEX_BLUE,
@@ -128,7 +137,7 @@ def make_forecast_chart(merged, out_path):
         Patch(color=theme.MPL_HEX_ACCENT, label="Lateral / mixta"),
         Patch(color=theme.MPL_HEX_RED, label="Bajista"),
     ]
-    _bar_chart(
+    return _bar_chart(
         data["nombre"],
         list(data["retorno_esperado_6m_pct"]),
         bar_colors,
@@ -143,12 +152,14 @@ def make_forecast_chart(merged, out_path):
 # Construcción del documento
 # ---------------------------------------------------------------------------
 def _data_table_style(*extra):
-    """Estilo común de las tablas de datos: encabezado azul oscuro, filas
+    """Estilo común de las tablas de datos: encabezado claro, filas
     alternadas, grilla suave. `extra` agrega reglas propias de cada tabla
     (alineaciones, tamaño de fuente)."""
     return TableStyle(
         [
-            ("BACKGROUND", (0, 0), (-1, 0), theme.COLOR_LABEL),
+            # Fog Radar: encabezado claro (preferencia de formato: sin fondos oscuros).
+            ("BACKGROUND", (0, 0), (-1, 0), theme.COLOR_CARD_BG),
+            ("LINEBELOW", (0, 0), (-1, 0), 1, theme.COLOR_LABEL),
             ("ROWBACKGROUNDS", (0, 1), (-1, -1), [theme.COLOR_WHITE, theme.COLOR_CARD_BG]),
             ("GRID", (0, 0), (-1, -1), 0.5, theme.COLOR_BORDER),
             ("TOPPADDING", (0, 0), (-1, -1), 6),
@@ -227,6 +238,25 @@ def build_metric_cards(styles, perf):
     return cards
 
 
+def _alinear(rows, derecha=(), centro=()):
+    """Alinea las celdas Paragraph de las columnas dadas (el ``ALIGN`` de
+    TableStyle no afecta a un Paragraph, que usa su propio estilo). Fog Radar:
+    los números van a la derecha, como en el resto de los informes."""
+    from reportlab.lib.enums import TA_CENTER, TA_RIGHT
+
+    cache = {}
+    for fila in rows:
+        for col, modo in [*((c, TA_RIGHT) for c in derecha), *((c, TA_CENTER) for c in centro)]:
+            celda = fila[col]
+            if not isinstance(celda, Paragraph):
+                continue
+            key = (id(celda.style), modo)
+            if key not in cache:
+                cache[key] = ParagraphStyle(f"{celda.style.name}_a{modo}", parent=celda.style, alignment=modo)
+            fila[col] = Paragraph(celda.text, cache[key])
+    return rows
+
+
 def build_portfolio_table(styles, merged):
     header_cells = [
         Paragraph(h, styles["TableHeader"])
@@ -254,8 +284,8 @@ def build_portfolio_table(styles, merged):
         )
 
     portfolio_table = Table(
-        table_data,
-        colWidths=[0.78 * inch, 1.35 * inch, 0.55 * inch, 1.55 * inch, 0.45 * inch, 0.9 * inch, 0.9 * inch],
+        _alinear(table_data, derecha=(4, 5)),
+        colWidths=[0.78 * inch, 1.35 * inch, 0.55 * inch, 1.4 * inch, 0.6 * inch, 0.9 * inch, 0.9 * inch],
         repeatRows=1,
     )
     portfolio_table.setStyle(_data_table_style(("ALIGN", (4, 0), (5, -1), "RIGHT")))
@@ -282,7 +312,9 @@ def build_forecast_table(styles, merged):
             ]
         )
     fc_table = Table(
-        fc_data, colWidths=[0.8 * inch, 1.15 * inch, 1.15 * inch, 2.2 * inch, 1.1 * inch], repeatRows=1
+        _alinear(fc_data, derecha=(1, 2, 3, 4)),
+        colWidths=[0.8 * inch, 1.15 * inch, 1.15 * inch, 2.2 * inch, 1.1 * inch],
+        repeatRows=1,
     )
     fc_table.setStyle(
         _data_table_style(
@@ -343,7 +375,9 @@ def build_sector_table(styles, sector_summary):
             ]
         )
     sector_table = Table(
-        sector_data, colWidths=[2.3 * inch, 0.85 * inch, 0.95 * inch, 1.2 * inch, 1.5 * inch], repeatRows=1
+        _alinear(sector_data, derecha=(1, 2, 3)),
+        colWidths=[2.3 * inch, 0.85 * inch, 0.95 * inch, 1.2 * inch, 1.5 * inch],
+        repeatRows=1,
     )
     sector_table.setStyle(_data_table_style(("ALIGN", (1, 0), (3, -1), "RIGHT")))
     return sector_table
@@ -373,11 +407,11 @@ def build_momentum_table(styles, momentum):
             ]
         )
     mom_table = Table(
-        mom_data,
+        _alinear(mom_data, derecha=(3, 4, 5, 6, 7), centro=(0,)),
         colWidths=[
             0.35 * inch,
-            0.75 * inch,
-            1.9 * inch,
+            0.9 * inch,
+            1.75 * inch,
             0.72 * inch,
             0.72 * inch,
             0.72 * inch,
@@ -390,7 +424,7 @@ def build_momentum_table(styles, momentum):
         _data_table_style(
             ("ALIGN", (0, 0), (0, -1), "CENTER"),
             ("ALIGN", (3, 0), (7, -1), "RIGHT"),
-            ("FONTSIZE", (0, 0), (-1, -1), 9.5),
+            ("FONTSIZE", (0, 0), (-1, -1), 10),
         )
     )
     return mom_table
@@ -433,8 +467,8 @@ def build_universe_section(
     story.append(Spacer(1, 10))
 
     weights_chart_path = os.path.join(charts_dir, f"{chart_prefix}_weights_chart.png")
-    make_weights_chart(merged, weights_chart_path)
-    story.append(Image(weights_chart_path, width=6.8 * inch, height=3.6 * inch))
+    h = make_weights_chart(merged, weights_chart_path)
+    story.append(Image(weights_chart_path, width=6.8 * inch, height=h * inch))
 
     story.append(Paragraph(f"PROYECCIÓN DE TENDENCIA A 6 MESES{section_suffix}", styles["SectionHeader"]))
     story.append(
@@ -451,8 +485,8 @@ def build_universe_section(
     story.append(Spacer(1, 10))
 
     forecast_chart_path = os.path.join(charts_dir, f"{chart_prefix}_forecast_chart.png")
-    make_forecast_chart(merged, forecast_chart_path)
-    story.append(Image(forecast_chart_path, width=6.8 * inch, height=3.6 * inch))
+    h = make_forecast_chart(merged, forecast_chart_path)
+    story.append(Image(forecast_chart_path, width=6.8 * inch, height=h * inch))
 
     story.append(Paragraph(f"SECTOR EN TENDENCIA{section_suffix}", styles["SectionHeader"]))
     sector_summary = compute_sector_summary(merged)

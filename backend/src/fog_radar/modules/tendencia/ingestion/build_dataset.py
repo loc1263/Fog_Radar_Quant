@@ -24,6 +24,7 @@ import os
 
 import pandas as pd
 
+from fog_radar.core.fx import serie_a_usd
 from fog_radar.modules.tendencia import config
 from fog_radar.modules.tendencia.logging_utils import get_logger
 from fog_radar.modules.tendencia.net.robust_yf import cache_path
@@ -51,9 +52,8 @@ def load_fx_rates():
     # ningún ticker de hoy usa).
     currencies_needed = {currency for _, (_, _, currency) in config.ALL_TICKERS.items() if currency != "USD"}
     fx_rates = {}
-    for currency, fx_ticker in config.CURRENCY_FX_TICKER.items():
-        if currency not in currencies_needed:
-            continue
+    for currency in sorted(currencies_needed):
+        fx_ticker = config.fx_ticker_for(currency)
         path = cache_path(config.RAW_FX_DIR, fx_ticker)
         if not os.path.exists(path):
             logger.warning(
@@ -88,8 +88,8 @@ def build_price_matrix():
             if currency not in fx_rates:
                 excluded.append((ticker, name, f"falta FX para {currency}"))
                 continue
-            fx = fx_rates[currency].reindex(s.index).ffill()
-            s = s / fx  # precio_local / (moneda_local por USD) = precio_USD
+            # precio_local / (moneda_local por USD) = precio_USD (core.fx, con subunidades GBp/ZAc/ILA)
+            s = serie_a_usd(s, fx_rates[currency], currency)
 
         if len(s.dropna()) < config.MIN_WEEKS_REQUIRED:
             excluded.append((ticker, name, f"historia insuficiente ({len(s.dropna())} semanas)"))

@@ -55,3 +55,74 @@ class SystemStatus(BaseModel):
     version: str
     env: str
     modules: list[ModuleStatus]
+
+
+# --- Transversal: hub y buscador global (Fase 7) --------------------------------
+
+Unidad = Literal["fraccion", "numero"]
+"""Cómo formatear ``valor``: ``fraccion`` → porcentaje (0.12 = 12 %), ``numero`` → tal cual."""
+
+
+class HubItem(Out):
+    ticker: str
+    nombre: str | None = None
+    valor: float | None = None
+
+
+class ResumenModulo(Out):
+    """Lo que cada módulo aporta al hub: fecha de sus datos y su top 3."""
+
+    datos_al: datetime | None = None
+    metrica: str
+    unidad: Unidad
+    top: list[HubItem]
+    universo: int | None = None
+    """Cuántos instrumentos cubre la última corrida (acciones, ETFs…)."""
+
+
+Frescura = Literal["al_dia", "atrasado", "sin_datos", "error"]
+
+
+class HubModulo(ResumenModulo):
+    key: str
+    titulo: str
+    frescura: Frescura
+    edad_horas: float | None = None
+    programa: str | None = None
+    """Cuándo se actualiza en producción (p. ej. "de lunes a viernes a las 18:00")."""
+    proxima: datetime | None = None
+    mensaje: str | None = None
+    """Motivo si no hay datos o no se pudieron leer."""
+    ultimo_job: JobRecord | None = None
+
+
+class HubResponse(Out):
+    generado_en: datetime
+    modulos: list[HubModulo]
+
+
+class EntradaBusqueda(Out):
+    """Un instrumento en el índice de búsqueda de un módulo."""
+
+    ticker: str
+    nombre: str | None = None
+    posicion: int | None = None
+    """Posición en el ranking del módulo (1 = mejor), si aplica."""
+    total: int | None = None
+    valor: float | None = None
+    metrica: str
+    unidad: Unidad
+    contexto: str | None = None
+    """Dónde aparece (p. ej. "Top 15", "Portafolio Asia + EEUU")."""
+
+
+class ResultadoBusqueda(EntradaBusqueda):
+    modulo: str
+    titulo_modulo: str
+    exacto: bool
+    """El ticker coincide exactamente con la consulta (va primero)."""
+
+
+class BusquedaResponse(Out):
+    consulta: str
+    resultados: list[ResultadoBusqueda]

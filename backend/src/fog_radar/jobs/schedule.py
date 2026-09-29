@@ -60,6 +60,15 @@ class Programa:
                 return candidata
         raise ValueError(f"El programa {self.key} no tiene días válidos")
 
+    def anterior(self, ahora: datetime) -> datetime:
+        """Última ejecución programada en o antes de ``ahora`` (misma zona horaria)."""
+        base = ahora.replace(hour=self.hora, minute=self.minuto, second=0, microsecond=0)
+        for delta in range(8):
+            candidata = base - timedelta(days=delta)
+            if candidata.weekday() in self.dias and candidata <= ahora:
+                return candidata
+        raise ValueError(f"El programa {self.key} no tiene días válidos")
+
 
 PROGRAMAS: tuple[Programa, ...] = (
     Programa("semanal", "ETFs", ("etf",), dias=(0,), hora=6),
@@ -72,6 +81,7 @@ PROGRAMAS: tuple[Programa, ...] = (
     ),
 )
 PROGRAMAS_BY_KEY = {p.key: p for p in PROGRAMAS}
+PROGRAMA_DE_MODULO: dict[str, Programa] = {m: p for p in PROGRAMAS for m in p.modulos}
 
 # Corrida manual de "todo" (desarrollo): los diarios primero y ETF (el más largo, ~30 min) al final.
 ORDEN_TODOS: tuple[str, ...] = ("cl_stocks", "us_stocks", "tendencia", "etf")

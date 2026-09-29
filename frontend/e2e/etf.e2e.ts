@@ -27,7 +27,7 @@ test('universo completo: paginado y búsqueda', async ({ page }) => {
 	const table = page.getByRole('table', { name: 'Universo depurado' });
 	await expect(table.locator('tbody tr')).toHaveCount(50);
 	await expect(page.getByText('Página 1 de 14')).toBeVisible();
-	await page.getByRole('searchbox').fill('semiconductor');
+	await page.getByRole('searchbox', { name: 'Buscar', exact: true }).fill('semiconductor');
 	await expect(page.getByText('Página 1 de 14')).toBeHidden();
 	expect(await table.locator('tbody tr').count()).toBeGreaterThan(0);
 });

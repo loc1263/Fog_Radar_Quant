@@ -188,6 +188,27 @@ CURRENCY_FX_TICKER = {
     "TWD": "USDTWD=X",  # Taiwán — solo puede aparecer con el universo dinámico
 }
 
+
+def fx_ticker_for(currency):
+    """Par FX de Yahoo para ``currency`` (None si es USD o no es una moneda válida).
+
+    Fog Radar (TD-DATA-1): los pares de CURRENCY_FX_TICKER tienen prioridad;
+    cualquier otra moneda ISO 4217 (o subunidad de Yahoo, p. ej. GBp) usa
+    ``USDXXX=X`` vía ``fog_radar.core.fx``.
+    """
+    from fog_radar.core import fx as _fx
+
+    if currency == "USD":
+        return "USD"
+    if currency in CURRENCY_FX_TICKER:
+        return CURRENCY_FX_TICKER[currency]
+    normal = _fx.normalizar_moneda(currency)
+    if normal is None:
+        return None
+    iso, _ = normal
+    return CURRENCY_FX_TICKER.get(iso) or _fx.par_usd(iso)
+
+
 # Tickers auxiliares de referencia (no forman parte del universo invertible,
 # se usan para régimen de mercado / tasa libre de riesgo de respaldo).
 REFERENCE_TICKERS = {
@@ -228,6 +249,12 @@ TOP_N_SELECTION_US = 15  # número de acciones a seleccionar dentro del universo
 # repartan el 100% entre sí. Ver modeling.markowitz.run_reduced_portfolios.
 PORTFOLIO_SIZE_OPTIONS = (5, 10)
 MIN_US_TICKERS_FOR_SEPARATE_ANALYSIS = 5  # si hay menos tickers de EEUU con datos, se omite esta sección
+
+# Fog Radar (TD-CFG-1): valores pasados por el CLI para esta corrida
+# (``python -m fog_radar.jobs tendencia --top-n 20``). Se aplican antes de
+# armar ANALYSES y de validar la configuración.
+PARAMETROS_SOBRESCRITOS = _paths.overrides()
+globals().update(PARAMETROS_SOBRESCRITOS)
 
 # ---------------------------------------------------------------------------
 # Parámetros del modelo de tendencia a 6 meses

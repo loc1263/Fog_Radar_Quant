@@ -4,5 +4,5 @@ import { tryCall } from '$lib/server/safe';
 
 export const load: PageServerLoad = async (event) => {
 	const api = backend(event);
-	return { status: await tryCall(api.GET('/api/status')) };
+	return { hub: await tryCall(api.GET('/api/hub')) };
 };

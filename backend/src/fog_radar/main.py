@@ -18,6 +18,8 @@ from fastapi import Depends, FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 from fog_radar.api.system import APP_VERSION, protected_router, public_router
+from fog_radar.api.transversal import router as transversal_router
+from fog_radar.core import yahoo
 from fog_radar.core.errors import ErrorResponse, register_error_handlers
 from fog_radar.core.logging import configure_logging, get_logger
 from fog_radar.core.ratelimit import default_rate_limit
@@ -45,6 +47,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
         settings.data_dir.mkdir(parents=True, exist_ok=True)
+        if settings.env != "test":
+            # Evaluaciones en vivo (/api/us/tickers/…/evaluate) y re-análisis usan la sesión común.
+            yahoo.instalar(settings)
         if settings.api_key is None:
             log.warning("API_KEY no configurada: la API acepta requests sin autenticación (solo dev/test).")
         log.info(
@@ -91,6 +96,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(public_router, prefix="/api", dependencies=limited)
     protected = [Depends(require_api_key), *limited]
     app.include_router(protected_router, prefix="/api", dependencies=protected, responses=_ERROR_RESPONSES)
+    app.include_router(transversal_router, prefix="/api", dependencies=protected, responses=_ERROR_RESPONSES)
     for router in MODULE_ROUTERS:
         app.include_router(router, prefix="/api", dependencies=protected, responses=_ERROR_RESPONSES)
 

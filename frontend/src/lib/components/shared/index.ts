@@ -5,7 +5,6 @@ export { default as ErrorState } from './ErrorState.svelte';
 export { default as KpiCard } from './KpiCard.svelte';
 export { default as KpiGrid } from './KpiGrid.svelte';
 export { default as ModuleCard } from './ModuleCard.svelte';
-export { default as ModuleStatusPanel } from './ModuleStatusPanel.svelte';
 export { default as Notice } from './Notice.svelte';
 export { default as ScoreBar } from './ScoreBar.svelte';
 export { default as Section } from './Section.svelte';

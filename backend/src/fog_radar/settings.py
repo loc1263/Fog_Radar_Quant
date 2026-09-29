@@ -55,6 +55,16 @@ class Settings(BaseSettings):
     # Webhook (Slack/Discord/Teams) que recibe un aviso cuando un pipeline falla (US-DEVOPS-04).
     alert_webhook_url: SecretStr | None = None
 
+    # --- Yahoo Finance (fog_radar.core.yahoo): reglas globales del proceso ---
+    # Intervalo mínimo entre dos requests (todos los módulos e hilos) + jitter aleatorio.
+    yahoo_min_intervalo_s: float = Field(0.35, ge=0)
+    yahoo_jitter_s: float = Field(0.25, ge=0)
+    # Reintentos ante HTTP 429 con backoff exponencial (base·2^n, con tope) y reintentos de red de yfinance.
+    yahoo_reintentos_429: int = Field(3, ge=0, le=10)
+    yahoo_backoff_base_s: float = Field(5.0, ge=0)
+    yahoo_backoff_max_s: float = Field(60.0, ge=0)
+    yahoo_reintentos_red: int = Field(2, ge=0, le=10)
+
     # --- Fuentes externas ---
     fred_api_key: SecretStr | None = None
 

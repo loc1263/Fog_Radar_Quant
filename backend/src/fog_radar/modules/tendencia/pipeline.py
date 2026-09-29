@@ -205,20 +205,50 @@ def run(
     skip_discovery=False,
     macro=False,
     backfill=False,
+    top_n=None,
+    top_n_us=None,
+    max_weight=None,
 ):
     """Punto de entrada de Fog Radar (``python -m fog_radar.jobs tendencia``).
 
     Mismas opciones que ``run_pipeline.py`` del original, más ``--macro``
     (descarga los datos macro de FRED antes de correr) y ``--backfill`` (solo
     carga en ``history.db`` las corridas de ``output/`` que falten). Devuelve un
-    resumen para el registro de jobs.
+    resumen para el registro de jobs. ``top_n``/``top_n_us``/``max_weight``
+    sobrescriben los parámetros del modelo solo para esta corrida (TD-CFG-1) y
+    quedan registrados en ``run_manifest.json``.
     """
-    import json
-    import os
-
     from fog_radar.modules.tendencia import config, paths
 
     paths.set_root(settings.module_data_dir("tendencia"))
+    # TD-CFG-1: parámetros del modelo para esta corrida (se limpian al terminar).
+    paths.set_overrides(
+        {"TOP_N_SELECTION": top_n, "TOP_N_SELECTION_US": top_n_us, "MAX_WEIGHT_PER_ASSET": max_weight}
+    )
+    try:
+        return _run_fog(
+            settings,
+            macro=macro,
+            backfill=backfill,
+            args=argparse.Namespace(
+                skip_fetch=skip_fetch,
+                force_refresh=force_refresh,
+                force_discovery=force_discovery,
+                static_universe=static_universe,
+                skip_discovery=skip_discovery,
+            ),
+        )
+    finally:
+        paths.set_overrides(None)
+        importlib.reload(config)
+
+
+def _run_fog(settings, *, macro, backfill, args):
+    import json
+    import os
+
+    from fog_radar.modules.tendencia import config
+
     importlib.reload(config)
 
     problemas = config.validar_configuracion()
@@ -238,14 +268,8 @@ def run(
         out = macro_mod.main(api_key=key)
         partes.append(f"macro {os.path.basename(out)}")
 
-    args = argparse.Namespace(
-        skip_fetch=skip_fetch,
-        force_refresh=force_refresh,
-        force_discovery=force_discovery,
-        static_universe=static_universe,
-        skip_discovery=skip_discovery,
-    )
     run_dir = _run(args)
+    _registrar_parametros(run_dir, config)
 
     dashboard = os.path.join(run_dir, "dashboard_data.json")
     if not os.path.exists(dashboard):
@@ -260,6 +284,33 @@ def run(
         top = ", ".join(h["ticker"] for h in a["holdings"][:3])
         partes.append(f"{a['label']}: Sharpe {perf['sharpe_ratio']:.2f}, top {top}")
     return " · ".join(partes)
+
+
+def _registrar_parametros(run_dir, config):
+    """Deja en ``run_manifest.json`` los parámetros efectivos (reproducibilidad)."""
+    import json
+    import os
+
+    path = os.path.join(run_dir, "run_manifest.json")
+    try:
+        with open(path, encoding="utf-8") as f:
+            manifest = json.load(f)
+    except (OSError, ValueError):
+        manifest = {}
+    manifest["parametros"] = {
+        "top_n": config.TOP_N_SELECTION,
+        "top_n_us": config.TOP_N_SELECTION_US,
+        "max_weight_per_asset": config.MAX_WEIGHT_PER_ASSET,
+        "l2_gamma": config.L2_GAMMA,
+        "min_weeks_required": config.MIN_WEEKS_REQUIRED,
+        "universe_source": config.UNIVERSE_SOURCE,
+    }
+    if config.PARAMETROS_SOBRESCRITOS:
+        manifest["parametros_sobrescritos"] = dict(config.PARAMETROS_SOBRESCRITOS)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(manifest, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, path)
 
 
 def main():

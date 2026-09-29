@@ -19,7 +19,7 @@ test('candidatos: búsqueda', async ({ page }) => {
 	await page.goto('/eeuu/candidatos');
 	const table = page.getByRole('table', { name: 'Candidatos de la última corrida' });
 	expect(await table.locator('tbody tr').count()).toBeGreaterThan(20);
-	await page.getByRole('searchbox').fill('nvidia');
+	await page.getByRole('searchbox', { name: 'Buscar', exact: true }).fill('nvidia');
 	await expect(table.locator('tbody tr')).toHaveCount(1);
 	await expect(table.getByRole('link', { name: 'NVDA', exact: true })).toBeVisible();
 });

@@ -14,6 +14,15 @@ export type JobRecord = Schemas['JobRecord'];
 export type ProgramaInfo = Schemas['ProgramaInfo'];
 export type ErrorResponse = Schemas['ErrorResponse'];
 
+// --- Transversal: hub y buscador global ---
+export type HubResponse = Schemas['HubResponse'];
+export type HubModulo = Schemas['HubModulo'];
+export type HubItem = Schemas['HubItem'];
+export type Frescura = HubModulo['frescura'];
+export type Unidad = HubModulo['unidad'];
+export type BusquedaResponse = Schemas['BusquedaResponse'];
+export type ResultadoBusqueda = Schemas['ResultadoBusqueda'];
+
 /** Resultado de `tryCall` (lib/server/safe.ts): datos o error mostrable. */
 export type Loaded<T> =
 	{ ok: true; data: T } | { ok: false; message: string; code: string; status?: number };

@@ -3,7 +3,7 @@
   encabezados, búsqueda opcional y exportación a CSV de la vista filtrada.
 -->
 <script lang="ts" generics="T extends Row">
-	import type { Snippet } from 'svelte';
+	import { untrack, type Snippet } from 'svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
 	import { signedClass } from '$lib/format';
@@ -38,6 +38,8 @@
 		/** Columnas donde busca el filtro de texto (sin filtro si se omite). */
 		searchKeys?: string[];
 		searchPlaceholder?: string;
+		/** Texto inicial del filtro (p. ej. `?q=` de la URL, desde el buscador global). */
+		initialQuery?: string;
 		/** Nombre del CSV (sin extensión). Sin valor, no se muestra el botón. */
 		csvFilename?: string;
 		/** Columnas del CSV si difieren de las visibles (p. ej. exportar todos los campos). */
@@ -59,6 +61,7 @@
 		initialSort = null,
 		searchKeys,
 		searchPlaceholder = 'Buscar…',
+		initialQuery = '',
 		csvFilename,
 		csvColumns,
 		emptyText = 'Sin datos para mostrar.',
@@ -68,7 +71,8 @@
 	}: Props = $props();
 
 	let sort = $state<SortState>(null);
-	let query = $state('');
+	// Solo el valor inicial: después el filtro es del usuario.
+	let query = $state(untrack(() => initialQuery));
 	let sortTouched = $state(false);
 	let openKey = $state<string | null>(null);
 	let pageIndex = $state(0);

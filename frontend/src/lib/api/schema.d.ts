@@ -89,6 +89,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/hub": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Estado, frescura y top 3 de cada módulo */
+        get: operations["get_hub_api_hub_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/buscar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Buscador global: en qué módulos aparece un ticker y con qué puntaje */
+        get: operations["get_buscar_api_buscar_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/cl/status": {
         parameters: {
             query?: never;
@@ -841,6 +875,13 @@ export interface components {
             /** Results */
             results: components["schemas"]["Combination"][];
         };
+        /** BusquedaResponse */
+        BusquedaResponse: {
+            /** Consulta */
+            consulta: string;
+            /** Resultados */
+            resultados: components["schemas"]["ResultadoBusqueda"][];
+        };
         /** CandidateRow */
         CandidateRow: {
             /** Ticker */
@@ -1462,6 +1503,59 @@ export interface components {
             /** Env */
             env: string;
         };
+        /** HubItem */
+        HubItem: {
+            /** Ticker */
+            ticker: string;
+            /** Nombre */
+            nombre: string | null;
+            /** Valor */
+            valor: number | null;
+        };
+        /** HubModulo */
+        HubModulo: {
+            /** Datos Al */
+            datos_al: string | null;
+            /** Metrica */
+            metrica: string;
+            /**
+             * Unidad
+             * @enum {string}
+             */
+            unidad: "fraccion" | "numero";
+            /** Top */
+            top: components["schemas"]["HubItem"][];
+            /** Universo */
+            universo: number | null;
+            /** Key */
+            key: string;
+            /** Titulo */
+            titulo: string;
+            /**
+             * Frescura
+             * @enum {string}
+             */
+            frescura: "al_dia" | "atrasado" | "sin_datos" | "error";
+            /** Edad Horas */
+            edad_horas: number | null;
+            /** Programa */
+            programa: string | null;
+            /** Proxima */
+            proxima: string | null;
+            /** Mensaje */
+            mensaje: string | null;
+            ultimo_job: components["schemas"]["JobRecord"] | null;
+        };
+        /** HubResponse */
+        HubResponse: {
+            /**
+             * Generado En
+             * Format: date-time
+             */
+            generado_en: string;
+            /** Modulos */
+            modulos: components["schemas"]["HubModulo"][];
+        };
         /** IndicadorRow */
         IndicadorRow: {
             /** Simbolo */
@@ -1795,6 +1889,34 @@ export interface components {
              */
             grupo_duplicado: number | null;
             metricas: components["schemas"]["RankingMetricas"];
+        };
+        /** ResultadoBusqueda */
+        ResultadoBusqueda: {
+            /** Ticker */
+            ticker: string;
+            /** Nombre */
+            nombre: string | null;
+            /** Posicion */
+            posicion: number | null;
+            /** Total */
+            total: number | null;
+            /** Valor */
+            valor: number | null;
+            /** Metrica */
+            metrica: string;
+            /**
+             * Unidad
+             * @enum {string}
+             */
+            unidad: "fraccion" | "numero";
+            /** Contexto */
+            contexto: string | null;
+            /** Modulo */
+            modulo: string;
+            /** Titulo Modulo */
+            titulo_modulo: string;
+            /** Exacto */
+            exacto: boolean;
         };
         /** RunResponse */
         RunResponse: {
@@ -2542,6 +2664,95 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["JobRecord"][];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_hub_api_hub_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HubResponse"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_buscar_api_buscar_get: {
+        parameters: {
+            query: {
+                /** @description Ticker o parte del nombre */
+                q: string;
+                limite?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BusquedaResponse"];
                 };
             };
             /** @description API key inválida o ausente */

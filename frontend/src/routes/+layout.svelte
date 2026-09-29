@@ -61,6 +61,18 @@
 					aria-current={active ? 'page' : undefined}>{item.label}</a
 				>
 			{/each}
+			<form method="GET" action={resolve('/buscar')} class="ml-auto" role="search">
+				<label class="sr-only" for="buscar-global">Buscar ticker en los 4 módulos</label>
+				<input
+					id="buscar-global"
+					type="search"
+					name="q"
+					required
+					maxlength="40"
+					placeholder="Buscar ticker…"
+					class="w-44 rounded border border-brand-border bg-brand-bg px-2 py-1 text-sm"
+				/>
+			</form>
 		</div>
 		{#if current && current.sections.length > 0}
 			<div class="mt-2 flex flex-wrap items-center gap-1.5 border-t border-brand-border pt-2">

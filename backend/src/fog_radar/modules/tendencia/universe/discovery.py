@@ -484,9 +484,9 @@ def _exclude_foreign_hq(candidates, label=""):
 def _to_ticker_dict(candidates):
     out = {}
     for c in candidates:
-        currency = (
-            c["currency"] if c["currency"] == "USD" or c["currency"] in config.CURRENCY_FX_TICKER else None
-        )
+        # Fog Radar (TD-DATA-1): cualquier moneda ISO 4217 (o subunidad de Yahoo
+        # como GBp) tiene par FX USDXXX=X; antes solo las 6 de CURRENCY_FX_TICKER.
+        currency = c["currency"] if config.fx_ticker_for(c["currency"]) else None
         if currency is None:
             logger.warning(
                 f"  excluido {c['symbol']} ({c['name']}): moneda '{c['currency']}' sin par FX configurado"

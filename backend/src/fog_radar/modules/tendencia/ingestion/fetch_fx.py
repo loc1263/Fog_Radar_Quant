@@ -19,7 +19,7 @@ logger = get_logger("step02", config.LOGS_DIR, log_filename="step02_fetch_fx.log
 
 def main():
     currencies_in_use = {currency for _, (_, _, currency) in config.ASIA_TICKERS.items() if currency != "USD"}
-    fx_tickers = [config.CURRENCY_FX_TICKER[c] for c in currencies_in_use]
+    fx_tickers = sorted({config.fx_ticker_for(c) for c in currencies_in_use})
     logger.info(f"Monedas a convertir: {sorted(currencies_in_use)}")
     logger.info(f"Pares FX a descargar: {fx_tickers}")
 

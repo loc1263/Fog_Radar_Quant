@@ -185,3 +185,44 @@ def test_pipeline_rechaza_configuracion_no_factible(
     monkeypatch.setattr(importlib, "reload", lambda m: m)
     with pytest.raises(ValueError, match="no factible"):
         pipeline.run(settings)
+
+
+def test_pipeline_con_parametros_del_cli(
+    settings: Settings, raiz_temporal: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """TD-CFG-1: --top-n / --max-weight valen solo para esa corrida y quedan en el manifiesto."""
+    import json
+
+    copiar_arbol(FIXTURES / "data", raiz_temporal)
+    from fog_radar.modules.tendencia import config, pipeline
+    from fog_radar.modules.tendencia.ingestion import build_dataset
+    from fog_radar.modules.tendencia.universe import discovery
+
+    monkeypatch.setattr(discovery, "main", lambda force=False: None)
+    monkeypatch.setattr(build_dataset, "main", lambda: None)
+
+    pipeline.run(settings, skip_fetch=True, top_n=12, max_weight=0.2)
+    run_dir = next((raiz_temporal / "output").iterdir())
+    dash = json.loads((run_dir / "dashboard_data.json").read_text(encoding="utf-8"))
+    principal = dash["analyses"][0]
+    assert principal["n_selected"] == 12
+    assert max(h["peso_final"] for h in principal["holdings"]) <= 0.2 + 1e-6
+    manifest = json.loads((run_dir / "run_manifest.json").read_text(encoding="utf-8"))
+    assert manifest["parametros"]["top_n"] == 12
+    assert manifest["parametros_sobrescritos"] == {"TOP_N_SELECTION": 12, "MAX_WEIGHT_PER_ASSET": 0.2}
+    # Al terminar, la configuración vuelve a los valores por defecto.
+    assert config.TOP_N_SELECTION == 15 and config.MAX_WEIGHT_PER_ASSET == 0.15
+    assert paths.overrides() == {}
+
+
+def test_parametros_no_factibles_fallan_antes_de_correr(settings: Settings, raiz_temporal: Path) -> None:
+    from fog_radar.modules.tendencia import pipeline
+
+    with pytest.raises(ValueError, match="no pueden sumar 100 %"):
+        pipeline.run(settings, skip_fetch=True, top_n=6, max_weight=0.1)
+    assert paths.overrides() == {}
+
+
+def test_overrides_solo_parametros_conocidos() -> None:
+    with pytest.raises(ValueError, match="no ajustables"):
+        paths.set_overrides({"L2_GAMMA": 1.0})

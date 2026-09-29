@@ -8,14 +8,49 @@ from dataclasses import dataclass, field
 
 @dataclass(frozen=True)
 class PipelineOption:
-    """Bandera booleana del CLI (``--solo-scoring`` → kwarg ``solo_scoring=True``)."""
+    """Opción del CLI de un pipeline.
+
+    Sin ``tipo`` es una bandera (``--solo-scoring`` → kwarg ``solo_scoring=True``);
+    con ``tipo`` lleva valor (``--top-n 20`` → kwarg ``top_n=20``), validado
+    contra ``minimo``/``maximo`` (TD-CFG-1).
+    """
 
     flag: str
     help: str
+    tipo: type[int] | type[float] | None = None
+    minimo: float | None = None
+    maximo: float | None = None
+    kwarg: str | None = None
+    """Nombre del kwarg de ``run()`` si difiere del de la bandera."""
 
     @property
     def dest(self) -> str:
         return self.flag.lstrip("-").replace("-", "_")
+
+    @property
+    def destino(self) -> str:
+        return self.kwarg or self.dest
+
+    @property
+    def con_valor(self) -> bool:
+        return self.tipo is not None
+
+    def convertir(self, texto: str) -> int | float:
+        """Tipo para argparse: convierte y valida el rango (``ArgumentTypeError`` si no)."""
+        import argparse
+
+        assert self.tipo is not None
+        try:
+            valor = self.tipo(texto)
+        except ValueError as exc:
+            raise argparse.ArgumentTypeError(f"{self.flag}: '{texto}' no es un {self.tipo.__name__}") from exc
+        if (self.minimo is not None and valor < self.minimo) or (
+            self.maximo is not None and valor > self.maximo
+        ):
+            raise argparse.ArgumentTypeError(
+                f"{self.flag}: {valor} fuera de rango [{self.minimo}, {self.maximo}]"
+            )
+        return valor
 
 
 @dataclass(frozen=True)
@@ -70,6 +105,27 @@ PIPELINES: dict[str, Pipeline] = {
             PipelineOption("--skip-discovery", "Reutiliza el último snapshot de universo (sin screener)."),
             PipelineOption("--macro", "Descarga antes los datos macro de FRED (requiere FRED_API_KEY)."),
             PipelineOption("--backfill", "Solo carga en history.db las corridas de output/ que falten."),
+            PipelineOption(
+                "--top-n",
+                "Acciones a seleccionar en Asia + EEUU (por defecto 15).",
+                tipo=int,
+                minimo=2,
+                maximo=60,
+            ),
+            PipelineOption(
+                "--top-n-us",
+                "Acciones a seleccionar en el análisis solo EEUU (por defecto 15).",
+                tipo=int,
+                minimo=2,
+                maximo=60,
+            ),
+            PipelineOption(
+                "--max-weight",
+                "Tope de peso por activo, fracción en (0, 1] (por defecto 0.15).",
+                tipo=float,
+                minimo=0.01,
+                maximo=1.0,
+            ),
         ),
     ),
 }

@@ -4,6 +4,7 @@ Un módulo::
 
     uv run python -m fog_radar.jobs cl_stocks
     uv run python -m fog_radar.jobs etf --solo-analisis
+    uv run python -m fog_radar.jobs tendencia --top-n 20 --max-weight 0.10
 
 Varios en secuencia (nunca en paralelo, ver ``fog_radar.jobs.runner``)::
 
@@ -23,6 +24,7 @@ from __future__ import annotations
 import argparse
 import sys
 from datetime import datetime
+from typing import Any
 
 from fog_radar.core.logging import configure_logging
 from fog_radar.jobs import PIPELINES
@@ -72,9 +74,18 @@ def _parser() -> argparse.ArgumentParser:
     seen: set[str] = set()
     for key, pipeline in PIPELINES.items():
         for opt in pipeline.options:
-            if opt.flag not in seen:
+            if opt.flag in seen:
+                continue
+            if opt.con_valor:
+                parser.add_argument(
+                    opt.flag,
+                    type=opt.convertir,
+                    metavar="N" if opt.tipo is int else "X",
+                    help=f"[{key}] {opt.help}",
+                )
+            else:
                 parser.add_argument(opt.flag, action="store_true", help=f"[{key}] {opt.help}")
-                seen.add(opt.flag)
+            seen.add(opt.flag)
     return parser
 
 
@@ -123,17 +134,22 @@ def main(argv: list[str] | None = None) -> int:
             modulos = [m for m in ORDEN_TODOS if m in pedidos]
 
     # Banderas propias de cada módulo: solo con un módulo.
-    marcadas = {o.dest for p in PIPELINES.values() for o in p.options if getattr(args, o.dest, False)}
-    opciones: dict[str, dict[str, bool]] = {}
+    todas = {o.dest: o for p in PIPELINES.values() for o in p.options}
+    marcadas = {
+        d: getattr(args, d)
+        for d, o in todas.items()
+        if (getattr(args, d, None) is not None if o.con_valor else getattr(args, d, False))
+    }
+    opciones: dict[str, dict[str, Any]] = {}
     if args.module:
         permitidas = {o.dest for o in PIPELINES[args.module].options}
-        invalidas = marcadas - permitidas
+        invalidas = set(marcadas) - permitidas
         if invalidas:
             print(
                 f"Opciones no válidas para '{args.module}': {', '.join(sorted(invalidas))}", file=sys.stderr
             )
             return EXIT_USO
-        opciones[args.module] = dict.fromkeys(marcadas, True)
+        opciones[args.module] = {todas[d].destino: v for d, v in marcadas.items()}
     elif marcadas:
         print(
             "Las banderas de módulo (p. ej. --skip-fetch) van con un solo módulo; usa --offline.",

@@ -25,10 +25,11 @@ import urllib.request
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
-from typing import Literal
+from typing import Any, Literal
 
 from filelock import FileLock, Timeout
 
+from fog_radar.core import yahoo
 from fog_radar.core.jobs import JobRegistry, JobTrigger
 from fog_radar.core.logging import get_logger
 from fog_radar.jobs import PIPELINES
@@ -74,7 +75,7 @@ def correr_secuencia(
     modulos: list[str] | tuple[str, ...],
     *,
     trigger: JobTrigger = "cli",
-    opciones: dict[str, dict[str, bool]] | None = None,
+    opciones: dict[str, dict[str, Any]] | None = None,
     omitir: dict[str, str] | None = None,
     pausa_s: float | None = None,
     reintentos: int | None = None,
@@ -121,7 +122,7 @@ def _correr_modulo(
     registry: JobRegistry,
     modulo: str,
     trigger: JobTrigger,
-    opts: dict[str, bool],
+    opts: dict[str, Any],
     max_reintentos: int,
     espera: float,
     sleep: Callable[[float], None],
@@ -138,9 +139,14 @@ def _correr_modulo(
         log.info(
             "[%s] inicio (intento %d/%d)%s", modulo, intento, max_reintentos + 1, f" {opts}" if opts else ""
         )
+        yahoo.instalar(settings)
+        yahoo.reiniciar_estadisticas()
         try:
             with registry.track(modulo, trigger=trigger) as job:
                 job.message = pipeline.run(settings, **opts)
+                trafico = yahoo.estadisticas()
+                if trafico.requests:
+                    job.message = f"{job.message or 'OK'} · {trafico.resumen()}"
         except Exception as exc:
             res.mensaje = f"{type(exc).__name__}: {exc}"
             log.error("[%s] falló: %s", modulo, res.mensaje)

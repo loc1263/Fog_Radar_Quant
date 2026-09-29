@@ -27,6 +27,9 @@ def test_download_history_uses_fresh_cache_without_network_call(tmp_path, monkey
     df.index.name = "Date"
     df.to_csv(cache_file)
 
-    monkeypatch.setattr(robust_yf, "_sleep_jitter", lambda *a, **k: None)
+    def sin_red(*a, **k):
+        raise AssertionError("no debería llamar a Yahoo con caché fresca")
+
+    monkeypatch.setattr("fog_radar.core.yahoo._history_yfinance", sin_red)
     result = robust_yf.download_history("AAPL", cache_dir=str(tmp_path))
     assert len(result) == 3

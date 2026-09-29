@@ -13,6 +13,26 @@ from pathlib import Path
 
 _root: Path | None = None
 
+# Fog Radar (TD-CFG-1): parámetros del modelo que se sobrescriben para UNA
+# corrida desde el CLI de jobs (``--top-n``, ``--max-weight``…). Viven acá por
+# el mismo motivo que la raíz: ``config`` los vuelve a aplicar en cada reload.
+PARAMETROS_AJUSTABLES = ("TOP_N_SELECTION", "TOP_N_SELECTION_US", "MAX_WEIGHT_PER_ASSET")
+_overrides: dict[str, int | float] = {}
+
+
+def set_overrides(valores: dict[str, int | float | None] | None) -> None:
+    """Fija (o limpia, con ``None``/``{}``) los parámetros sobrescritos."""
+    global _overrides
+    limpios = {k: v for k, v in (valores or {}).items() if v is not None}
+    desconocidos = set(limpios) - set(PARAMETROS_AJUSTABLES)
+    if desconocidos:
+        raise ValueError(f"Parámetros no ajustables: {', '.join(sorted(desconocidos))}")
+    _overrides = limpios
+
+
+def overrides() -> dict[str, int | float]:
+    return dict(_overrides)
+
 
 def set_root(root: Path | str | None) -> None:
     global _root
