@@ -32,7 +32,9 @@ export const load: PageServerLoad = async (event) => {
 		tryCall(api.GET('/api/tendencia/history/tickers', { params: { query: { analysis } } }))
 	]);
 
-	const lista = tickers.ok ? tickers.data : [];
+	// history.db devuelve (ticker, nombre) distintos: un ticker cuyo nombre cambió entre
+	// corridas aparece dos veces. Se deja una entrada por ticker (el nombre más reciente).
+	const lista = [...new Map((tickers.ok ? tickers.data : []).map((t) => [t.ticker, t])).values()];
 	const pedido = q.get('ticker');
 	const ticker =
 		pedido && TICKER.test(pedido) && lista.some((t) => t.ticker === pedido)
