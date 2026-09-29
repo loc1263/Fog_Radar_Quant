@@ -41,3 +41,19 @@ export type UsBestCombinationRequest = Schemas['BestCombinationRequest'];
 export type UsBestCombinationResult = Schemas['BestCombinationResult'];
 export type UsRankBy = Schemas['BestCombinationRequest']['rank_by'];
 export type UsPortfolioLimits = Schemas['PortfolioLimits'];
+
+// --- Módulo ETF ---
+export type EtfFila = Schemas['EtfFila'];
+export type EtfTabla = Schemas['EtfTabla'];
+export type EtfResumen = Schemas['EtfResumen'];
+export type EtfModelo = Schemas['EtfModelo'];
+export type EtfPeso = Schemas['EtfPeso'];
+export type EtfHistorialFila = Schemas['EtfHistorialFila'];
+export type EtfRotacion = Schemas['EtfRotacion'];
+export type EtfRotacionFila = Schemas['EtfRotacionFila'];
+export type EtfDiversificacion = Schemas['EtfDiversificacion'];
+export type EtfCategorias = Schemas['EtfCategorias'];
+export type EtfCategoriaFila = Schemas['EtfCategoriaFila'];
+export type EtfCap = Schemas['EtfCap'];
+export type EtfCapFila = Schemas['EtfCapFila'];
+export type EtfCapBucket = Schemas['EtfCapBucket'];

@@ -14,6 +14,8 @@ from typing import Annotated, Literal
 
 from pydantic import AfterValidator, BaseModel, ConfigDict, Field
 
+from fog_radar.core.schemas import Out
+
 TICKER_PATTERN = r"^[A-Za-z0-9.\-^=]{1,15}$"
 _TICKER_RE = re.compile(TICKER_PATTERN)
 
@@ -28,14 +30,6 @@ def _ticker(v: str) -> str:
 Ticker = Annotated[str, AfterValidator(_ticker)]
 PortfolioMethod = Literal["markowitz", "black_litterman", "hrp"]
 RankBy = Literal["expected_return", "sharpe"]
-
-
-class Out(BaseModel):
-    """Base de las respuestas: los campos con valor por defecto se publican como
-    requeridos en el OpenAPI (siempre vienen en la respuesta), así los tipos TS
-    generados no los marcan como opcionales."""
-
-    model_config = ConfigDict(json_schema_serialization_defaults_required=True)
 
 
 # --- Bloques de datos por ticker --------------------------------------------

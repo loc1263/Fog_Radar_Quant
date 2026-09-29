@@ -4,6 +4,7 @@
 	import { resolve } from '$app/paths';
 	import { ThemeToggle } from '$lib/components/shared';
 	import { EXTRA_NAV, MODULES, isActive, type NavItem } from '$lib/nav';
+	import { ruta } from '$lib/nav-href';
 	import { cn } from '$lib/utils';
 
 	let { children } = $props();
@@ -46,7 +47,7 @@
 			{#each [home, ...MODULES] as item (item.href)}
 				{@const active = isActive(page.url.pathname, item.href)}
 				<a
-					href={resolve(item.href)}
+					href={resolve(ruta(item.href))}
 					class={cn(LINK, active ? ACTIVE : IDLE)}
 					aria-current={active ? 'page' : undefined}>{item.label}</a
 				>
@@ -55,7 +56,7 @@
 			{#each EXTRA_NAV as item (item.href)}
 				{@const active = isActive(page.url.pathname, item.href)}
 				<a
-					href={resolve(item.href)}
+					href={resolve(ruta(item.href))}
 					class={cn(LINK, active ? ACTIVE : IDLE)}
 					aria-current={active ? 'page' : undefined}>{item.label}</a
 				>
@@ -66,7 +67,7 @@
 				{#each current.sections as section (section.href)}
 					{@const active = page.url.pathname === section.href}
 					<a
-						href={resolve(section.href)}
+						href={resolve(ruta(section.href))}
 						class={cn(
 							'rounded border px-2.5 py-0.5 text-xs font-bold',
 							active

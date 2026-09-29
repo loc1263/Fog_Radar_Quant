@@ -1,6 +1,7 @@
 <!-- Tarjeta de un módulo en el hub: estado de datos y de la última corrida. -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { ruta } from '$lib/nav-href';
 	import type { ModuleStatus } from '$lib/api/types';
 	import type { ModuleNav } from '$lib/nav';
 	import { fmtDate } from '$lib/format';
@@ -20,7 +21,7 @@
 </script>
 
 <a
-	href={resolve(nav.href)}
+	href={resolve(ruta(nav.href))}
 	class="flex min-w-[240px] flex-1 flex-col gap-2 rounded border border-brand-border bg-brand-card p-4 hover:border-brand-label"
 >
 	<div class="flex items-start justify-between gap-2">

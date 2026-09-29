@@ -4,7 +4,7 @@
 -->
 <script lang="ts">
 	import { LineChart } from 'layerchart';
-	import { scaleUtc } from 'd3-scale';
+	import { scalePoint, scaleUtc } from 'd3-scale';
 	import { curveMonotoneX } from 'd3-shape';
 	import * as Chart from '$lib/components/ui/chart';
 	import ChartEmpty from './ChartEmpty.svelte';
@@ -12,8 +12,10 @@
 
 	interface Props {
 		data: Record<string, unknown>[];
-		/** Campo del eje X (fechas como Date). */
+		/** Campo del eje X (fechas como Date, o etiquetas si `categorical`). */
 		x: string;
+		/** Eje X de categorías (p. ej. ventanas 5D · 1M · 6M · 1Y) en vez de fechas. */
+		categorical?: boolean;
 		series: SeriesDef[];
 		height?: number;
 		yFormat?: (v: number) => string;
@@ -27,6 +29,7 @@
 	let {
 		data,
 		x,
+		categorical = false,
 		series,
 		height = 240,
 		yFormat,
@@ -38,6 +41,8 @@
 
 	const colored = $derived(withColors(series));
 	const config = $derived(chartConfig(series));
+	const xScale = $derived(categorical ? scalePoint().padding(0.3) : scaleUtc());
+	const fmtX = (v: unknown): string => (v instanceof Date ? xFormat(v) : String(v));
 </script>
 
 {#if data.length === 0}
@@ -47,7 +52,7 @@
 		<LineChart
 			{data}
 			{x}
-			xScale={scaleUtc()}
+			{xScale}
 			series={colored}
 			yBaseline={zeroBaseline ? 0 : null}
 			yNice
@@ -55,14 +60,12 @@
 			props={{
 				spline: { curve: curveMonotoneX, strokeWidth: 2 },
 				highlight: { points: { r: 5 } },
-				xAxis: { format: xFormat, ticks: xTicks },
+				xAxis: { format: fmtX, ticks: categorical ? undefined : xTicks },
 				yAxis: yFormat ? { format: yFormat } : {}
 			}}
 		>
 			{#snippet tooltip()}
-				<Chart.Tooltip
-					labelFormatter={(v: unknown) => (v instanceof Date ? xFormat(v) : String(v))}
-				/>
+				<Chart.Tooltip labelFormatter={fmtX} />
 			{/snippet}
 		</LineChart>
 	</Chart.Container>

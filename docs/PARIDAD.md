@@ -54,3 +54,27 @@ el proyecto original. Las diferencias intencionales quedan anotadas.
 - `k` por defecto 4 (antes 5): con el top 15, C(15,5) = 3.003 superaba el tope y el botón arrancaba deshabilitado.
 - Nuevo: tabla π / Q / posterior de Black-Litterman, enlace "evaluar" en cada ticker, filtro "crecientes" en la URL, página `/eeuu/ticker` con buscador sin JavaScript.
 - La vista "Performance" se llama "Rendimiento".
+
+## ETF (`ETF_Choice`) — ✅ 2026-09-28
+
+| Ítem | Cómo se verificó | Estado |
+|---|---|---|
+| Análisis (ranking, Top 15 simple, excluidos, momentum, categorías, Top 15 Cap., historial) | `test_parity.py`: con el `etf_perf_data_20260924.csv` real y el mismo histórico, los **10 CSV** de salida son **byte a byte idénticos** a los del original | ✅ |
+| Rotación (mantienen / nuevos / salidas, racha, procedencia, destino) y diversificación | Mismo resultado que `rotacion.py` original corrido sobre sus carpetas `data` y `data_hist` (`fixtures/expected/rotacion.json`) | ✅ |
+| Tests unitarios del original | `test_etf_ranking_analysis.py` migrado sin cambios de aserciones (`tests/etf/test_ranking_analysis.py`) | ✅ |
+| Pipeline (staging → archivo con secuencia `_2` → instalación, respaldo a `data_old/`) | `test_pipeline.py` con el screener reemplazado por un doble | ✅ |
+| API | 14 endpoints del original bajo `/api/etf` (`test_api.py`); `/api/status` → `/api/etf/resumen` | ✅ |
+| PDF | `GET /api/etf/pdf`: mismas 8 secciones y columnas, Letter apaisado, estilo común `core/pdf` | ✅ |
+| 13 secciones del panel | Rutas `/etf/*`, E2E `etf.e2e.ts` + revisión visual | ✅ |
+| Screener contra Yahoo | Pendiente en Windows (`uv run python -m fog_radar.jobs etf`, ~30 min) | ⏳ |
+
+**Diferencias intencionales**
+
+- Sin corrida: **503 `no_data`** (antes 404); lock ocupado: **503 `busy`**.
+- `POST /api/etf/run` re-analiza el CSV vigente en *staging* (antes escribía directo en `data/`) y queda en `/api/jobs` con `trigger: api`; rate limit 3/min; 409 si ya hay una corrida.
+- El screener corre **dentro del mismo proceso** (antes, subproceso por el choque de nombres `config.py`); rutas por parámetro.
+- Claves snake_case en la API (`perf_1y`, `sharpe`, `score_comp`…); los parámetros del modelo (pesos, umbrales, categorías excluidas) viajan en `/api/etf/resumen`.
+- Cada sección es una URL propia (`/etf/top15`, `/etf/rotacion`…) en vez de `#hash`.
+- Todas las tablas ordenables y con CSV (antes solo "Top 15 Vanguard" ordenaba; Excluidos y Categorías no exportaban). Universo completo: 50 filas por página y búsqueda.
+- La lista de tickers de una categoría se abre con clic (antes, hover).
+- PDF con tildes y encabezado "ETFs — Informe Ejecutivo".

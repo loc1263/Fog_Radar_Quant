@@ -14,6 +14,8 @@
 		orientation?: 'horizontal' | 'vertical';
 		height?: number;
 		valueFormat?: (v: number) => string;
+		/** Espacio (px) para las etiquetas de categoría en barras horizontales. */
+		labelWidth?: number;
 	}
 
 	let {
@@ -22,7 +24,8 @@
 		series,
 		orientation = 'horizontal',
 		height = 240,
-		valueFormat
+		valueFormat,
+		labelWidth = 110
 	}: Props = $props();
 
 	const colored = $derived(withColors(series));
@@ -44,7 +47,7 @@
 				series={colored}
 				seriesLayout="group"
 				legend={colored.length > 1}
-				padding={{ left: 110, bottom: 20 }}
+				padding={{ left: labelWidth, bottom: 20 }}
 				props={{ bars: { stroke: 'none', radius: 2 }, xAxis: valueAxis }}
 			>
 				{#snippet tooltip()}

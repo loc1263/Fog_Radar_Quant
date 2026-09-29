@@ -35,7 +35,7 @@ def test_status_lists_four_modules(client: TestClient, auth: dict[str, str]) -> 
     assert {m["key"]: m["migrated"] for m in body["modules"]} == {
         "cl_stocks": True,  # Fase 3
         "us_stocks": True,  # Fase 4
-        "etf": False,
+        "etf": True,  # Fase 5
         "tendencia": False,
     }
     assert all(m["data_available"] is False for m in body["modules"])

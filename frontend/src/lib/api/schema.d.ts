@@ -293,6 +293,244 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/etf/resumen": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Resumen de la corrida vigente + parámetros del modelo */
+        get: operations["resumen_api_etf_resumen_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/top15": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Top 15 recomendados (ranking principal) */
+        get: operations["top15_api_etf_top15_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/top15-simple": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Top 15 por rendimiento y Beta (20 % c/u) */
+        get: operations["top15_simple_api_etf_top15_simple_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/top15-vanguard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Top 15 del ranking principal, solo Vanguard */
+        get: operations["top15_vanguard_api_etf_top15_vanguard_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/ranking-completo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Universo depurado completo */
+        get: operations["ranking_completo_api_etf_ranking_completo_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/excluidos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Excluidos por distorsión (|z MAD| > umbral) */
+        get: operations["excluidos_api_etf_excluidos_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/diversificacion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Categorías dentro del Top 15 */
+        get: operations["diversificacion_api_etf_diversificacion_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/rotacion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Rotación del Top 15 vs. la corrida anterior */
+        get: operations["rotacion_api_etf_rotacion_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/momentum/top15": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Top 15 Momentum / crecimiento */
+        get: operations["momentum_top15_api_etf_momentum_top15_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/categorias/ranking": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ranking por categoría */
+        get: operations["categorias_ranking_api_etf_categorias_ranking_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/russell3000": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Top 15 Cap. (momentum factor tipo VFMO) */
+        get: operations["russell3000_api_etf_russell3000_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/historial": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Historial de corridas */
+        get: operations["historial_api_etf_historial_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/pdf": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Informe ejecutivo en PDF de la corrida vigente */
+        get: operations["descargar_pdf_api_etf_pdf_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/run": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Re-analiza el CSV vigente (no descarga de Yahoo) */
+        post: operations["run_api_etf_run_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/tendencia/status": {
         parameters: {
             query?: never;
@@ -430,6 +668,525 @@ export interface components {
             detail: string;
             /** Code */
             code: string;
+        };
+        /** EtfCap */
+        EtfCap: {
+            /** Fecha */
+            fecha: string | null;
+            /** Benchmark Ticker */
+            benchmark_ticker: string | null;
+            /** Benchmark Retorno 1Y */
+            benchmark_retorno_1y: number | null;
+            /** Filas */
+            filas: components["schemas"]["EtfCapFila"][];
+            /** Buckets */
+            buckets: components["schemas"]["EtfCapBucket"][];
+        };
+        /** EtfCapBucket */
+        EtfCapBucket: {
+            /** Cap Bucket */
+            cap_bucket: string;
+            /** N Universo */
+            n_universo: number;
+            /** Aum Total Bucket */
+            aum_total_bucket: number | null;
+            /** N Seleccionados */
+            n_seleccionados: number;
+            /** Aum Seleccionado */
+            aum_seleccionado: number | null;
+            /** Pct Aum Cubierto */
+            pct_aum_cubierto: number | null;
+        };
+        /** EtfCapFila */
+        EtfCapFila: {
+            /** Ticker */
+            ticker: string;
+            /** Nombre */
+            nombre: string | null;
+            /** Categoria */
+            categoria: string | null;
+            /** Proveedor */
+            proveedor: string | null;
+            /** Precio */
+            precio: number | null;
+            /** Volumen */
+            volumen: number | null;
+            /** Aum */
+            aum: number | null;
+            /** Expense Ratio */
+            expense_ratio: number | null;
+            /** Perf 5D */
+            perf_5d: number | null;
+            /** Perf 1M */
+            perf_1m: number | null;
+            /** Perf 6M */
+            perf_6m: number | null;
+            /** Perf Ytd */
+            perf_ytd: number | null;
+            /** Perf 1Y */
+            perf_1y: number | null;
+            /** Perf 5Y */
+            perf_5y: number | null;
+            /** Max 52S */
+            max_52s: number | null;
+            /** Min 52S */
+            min_52s: number | null;
+            /** Sharpe */
+            sharpe: number | null;
+            /** Treynor */
+            treynor: number | null;
+            /** Beta */
+            beta: number | null;
+            /** Dist Max 52S Pct */
+            dist_max_52s_pct: number | null;
+            /** Rango 52S Pct */
+            rango_52s_pct: number | null;
+            /** Periodos Positivos */
+            periodos_positivos: number | null;
+            /** Dispersion Periodos */
+            dispersion_periodos: number | null;
+            /** Pasos Crecientes */
+            pasos_crecientes: number | null;
+            /** S Sharpe */
+            s_sharpe: number | null;
+            /** S Treynor */
+            s_treynor: number | null;
+            /** S 1Y */
+            s_1y: number | null;
+            /** S 6M */
+            s_6m: number | null;
+            /** S Consistencia */
+            s_consistencia: number | null;
+            /** S Tendencia */
+            s_tendencia: number | null;
+            /** S Baja Dispersion */
+            s_baja_dispersion: number | null;
+            /** S Bajo Beta */
+            s_bajo_beta: number | null;
+            /** S Cerca Maximo */
+            s_cerca_maximo: number | null;
+            /** Score */
+            score: number | null;
+            /** Ss 5D */
+            ss_5d: number | null;
+            /** Ss 1M */
+            ss_1m: number | null;
+            /** Ss 6M */
+            ss_6m: number | null;
+            /** Ss 1Y */
+            ss_1y: number | null;
+            /** Ss Bajo Beta */
+            ss_bajo_beta: number | null;
+            /** Score Simple */
+            score_simple: number | null;
+            /** Ventana Atipica */
+            ventana_atipica: string | null;
+            /** Z Score */
+            z_score: number | null;
+            /** M Norm */
+            m_norm: number | null;
+            /** Q Norm */
+            q_norm: number | null;
+            /** Consist Norm */
+            consist_norm: number | null;
+            /** Score Comp */
+            score_comp: number | null;
+            /** Cap Bucket */
+            cap_bucket: string | null;
+            /** Comp T12T1 Aprox */
+            comp_t12t1_aprox: number | null;
+            /** Comp T7T1 Aprox */
+            comp_t7t1_aprox: number | null;
+            /** Alpha Capm Aprox */
+            alpha_capm_aprox: number | null;
+            /** Comp1 Norm */
+            comp1_norm: number | null;
+            /** Comp2 Norm */
+            comp2_norm: number | null;
+            /** Comp3 Norm */
+            comp3_norm: number | null;
+            /** Momentum Score */
+            momentum_score: number | null;
+            /** Peso Portfolio */
+            peso_portfolio: number | null;
+        };
+        /** EtfCategoriaFila */
+        EtfCategoriaFila: {
+            /** Categoria */
+            categoria: string;
+            /** N */
+            n: number;
+            /** Sharpe Promedio */
+            sharpe_promedio: number | null;
+            /** Treynor Mediana */
+            treynor_mediana: number | null;
+            /** Beta Promedio */
+            beta_promedio: number | null;
+            /** Perf 1Y Promedio */
+            perf_1y_promedio: number | null;
+            /** Perf 6M Promedio */
+            perf_6m_promedio: number | null;
+            /** Score Promedio */
+            score_promedio: number | null;
+            /** Pct Positivos 1Y */
+            pct_positivos_1y: number | null;
+            /**
+             * Tickers
+             * @default []
+             */
+            tickers: string[];
+        };
+        /** EtfCategorias */
+        EtfCategorias: {
+            /** Fecha */
+            fecha: string | null;
+            /** Min N Categoria */
+            min_n_categoria: number;
+            /** Filas */
+            filas: components["schemas"]["EtfCategoriaFila"][];
+        };
+        /** EtfDiversificacion */
+        EtfDiversificacion: {
+            /** Fecha */
+            fecha: string | null;
+            /** Filas */
+            filas: components["schemas"]["EtfDiversificacionFila"][];
+        };
+        /** EtfDiversificacionFila */
+        EtfDiversificacionFila: {
+            /** Categoria */
+            categoria: string;
+            /** Conteo */
+            conteo: number;
+            /** Pct */
+            pct: number;
+        };
+        /**
+         * EtfFila
+         * @description Un ETF en cualquiera de las tablas (cada tabla trae solo algunos campos).
+         */
+        EtfFila: {
+            /** Ticker */
+            ticker: string;
+            /** Nombre */
+            nombre: string | null;
+            /** Categoria */
+            categoria: string | null;
+            /** Proveedor */
+            proveedor: string | null;
+            /** Precio */
+            precio: number | null;
+            /** Volumen */
+            volumen: number | null;
+            /** Aum */
+            aum: number | null;
+            /** Expense Ratio */
+            expense_ratio: number | null;
+            /** Perf 5D */
+            perf_5d: number | null;
+            /** Perf 1M */
+            perf_1m: number | null;
+            /** Perf 6M */
+            perf_6m: number | null;
+            /** Perf Ytd */
+            perf_ytd: number | null;
+            /** Perf 1Y */
+            perf_1y: number | null;
+            /** Perf 5Y */
+            perf_5y: number | null;
+            /** Max 52S */
+            max_52s: number | null;
+            /** Min 52S */
+            min_52s: number | null;
+            /** Sharpe */
+            sharpe: number | null;
+            /** Treynor */
+            treynor: number | null;
+            /** Beta */
+            beta: number | null;
+            /** Dist Max 52S Pct */
+            dist_max_52s_pct: number | null;
+            /** Rango 52S Pct */
+            rango_52s_pct: number | null;
+            /** Periodos Positivos */
+            periodos_positivos: number | null;
+            /** Dispersion Periodos */
+            dispersion_periodos: number | null;
+            /** Pasos Crecientes */
+            pasos_crecientes: number | null;
+            /** S Sharpe */
+            s_sharpe: number | null;
+            /** S Treynor */
+            s_treynor: number | null;
+            /** S 1Y */
+            s_1y: number | null;
+            /** S 6M */
+            s_6m: number | null;
+            /** S Consistencia */
+            s_consistencia: number | null;
+            /** S Tendencia */
+            s_tendencia: number | null;
+            /** S Baja Dispersion */
+            s_baja_dispersion: number | null;
+            /** S Bajo Beta */
+            s_bajo_beta: number | null;
+            /** S Cerca Maximo */
+            s_cerca_maximo: number | null;
+            /** Score */
+            score: number | null;
+            /** Ss 5D */
+            ss_5d: number | null;
+            /** Ss 1M */
+            ss_1m: number | null;
+            /** Ss 6M */
+            ss_6m: number | null;
+            /** Ss 1Y */
+            ss_1y: number | null;
+            /** Ss Bajo Beta */
+            ss_bajo_beta: number | null;
+            /** Score Simple */
+            score_simple: number | null;
+            /** Ventana Atipica */
+            ventana_atipica: string | null;
+            /** Z Score */
+            z_score: number | null;
+            /** M Norm */
+            m_norm: number | null;
+            /** Q Norm */
+            q_norm: number | null;
+            /** Consist Norm */
+            consist_norm: number | null;
+            /** Score Comp */
+            score_comp: number | null;
+        };
+        /** EtfHistorial */
+        EtfHistorial: {
+            /** Filas */
+            filas: components["schemas"]["EtfHistorialFila"][];
+        };
+        /** EtfHistorialFila */
+        EtfHistorialFila: {
+            /**
+             * Fecha
+             * Format: date
+             */
+            fecha: string;
+            /** Universo Bruto */
+            universo_bruto: number;
+            /** Universo Depurado */
+            universo_depurado: number;
+            /** N Outliers */
+            n_outliers: number;
+            /** Sharpe Promedio */
+            sharpe_promedio: number | null;
+            /** Beta Promedio */
+            beta_promedio: number | null;
+            /** Top1 Ticker */
+            top1_ticker: string | null;
+            /** Top1 Score */
+            top1_score: number | null;
+        };
+        /**
+         * EtfModelo
+         * @description Parámetros de las metodologías (el front no los duplica).
+         */
+        EtfModelo: {
+            /** Top N */
+            top_n: number;
+            /** Pesos */
+            pesos: components["schemas"]["EtfPeso"][];
+            /** Pesos Simple */
+            pesos_simple: components["schemas"]["EtfPeso"][];
+            /** Pesos Momentum */
+            pesos_momentum: components["schemas"]["EtfPeso"][];
+            /** Pesos Momentum M */
+            pesos_momentum_m: components["schemas"]["EtfPeso"][];
+            /** Z Threshold */
+            z_threshold: number;
+            /** Liq Vol Min */
+            liq_vol_min: number;
+            /** Liq Aum Min */
+            liq_aum_min: number;
+            /** Categorias Excluidas */
+            categorias_excluidas: string[];
+            /** Categorias Excluidas Momentum */
+            categorias_excluidas_momentum: string[];
+            /** Min N Categoria */
+            min_n_categoria: number;
+            /** Cap N Por Bucket */
+            cap_n_por_bucket: number;
+            /** Cap Tope Peso Pct */
+            cap_tope_peso_pct: number;
+            /** Cap Benchmarks */
+            cap_benchmarks: string[];
+        };
+        /** EtfPeso */
+        EtfPeso: {
+            /** Clave */
+            clave: string;
+            /** Etiqueta */
+            etiqueta: string;
+            /** Peso */
+            peso: number;
+        };
+        /** EtfResumen */
+        EtfResumen: {
+            /** Fecha */
+            fecha: string | null;
+            /** Archivo Csv */
+            archivo_csv: string;
+            /** Generado En */
+            generado_en: string | null;
+            /** Tiene Corrida Anterior */
+            tiene_corrida_anterior: boolean;
+            resumen: components["schemas"]["EtfHistorialFila"] | null;
+            modelo: components["schemas"]["EtfModelo"];
+        };
+        /** EtfRotacion */
+        EtfRotacion: {
+            /** Disponible */
+            disponible: boolean;
+            /** Fecha */
+            fecha: string | null;
+            /** Fecha Previa */
+            fecha_previa: string | null;
+            /**
+             * Mantienen
+             * @default []
+             */
+            mantienen: components["schemas"]["EtfRotacionFila"][];
+            /**
+             * Nuevos
+             * @default []
+             */
+            nuevos: components["schemas"]["EtfRotacionFila"][];
+            /**
+             * Salidas
+             * @default []
+             */
+            salidas: components["schemas"]["EtfRotacionFila"][];
+        };
+        /** EtfRotacionFila */
+        EtfRotacionFila: {
+            /** Ticker */
+            ticker: string;
+            /** Nombre */
+            nombre: string | null;
+            /** Categoria */
+            categoria: string | null;
+            /** Proveedor */
+            proveedor: string | null;
+            /** Precio */
+            precio: number | null;
+            /** Volumen */
+            volumen: number | null;
+            /** Aum */
+            aum: number | null;
+            /** Expense Ratio */
+            expense_ratio: number | null;
+            /** Perf 5D */
+            perf_5d: number | null;
+            /** Perf 1M */
+            perf_1m: number | null;
+            /** Perf 6M */
+            perf_6m: number | null;
+            /** Perf Ytd */
+            perf_ytd: number | null;
+            /** Perf 1Y */
+            perf_1y: number | null;
+            /** Perf 5Y */
+            perf_5y: number | null;
+            /** Max 52S */
+            max_52s: number | null;
+            /** Min 52S */
+            min_52s: number | null;
+            /** Sharpe */
+            sharpe: number | null;
+            /** Treynor */
+            treynor: number | null;
+            /** Beta */
+            beta: number | null;
+            /** Dist Max 52S Pct */
+            dist_max_52s_pct: number | null;
+            /** Rango 52S Pct */
+            rango_52s_pct: number | null;
+            /** Periodos Positivos */
+            periodos_positivos: number | null;
+            /** Dispersion Periodos */
+            dispersion_periodos: number | null;
+            /** Pasos Crecientes */
+            pasos_crecientes: number | null;
+            /** S Sharpe */
+            s_sharpe: number | null;
+            /** S Treynor */
+            s_treynor: number | null;
+            /** S 1Y */
+            s_1y: number | null;
+            /** S 6M */
+            s_6m: number | null;
+            /** S Consistencia */
+            s_consistencia: number | null;
+            /** S Tendencia */
+            s_tendencia: number | null;
+            /** S Baja Dispersion */
+            s_baja_dispersion: number | null;
+            /** S Bajo Beta */
+            s_bajo_beta: number | null;
+            /** S Cerca Maximo */
+            s_cerca_maximo: number | null;
+            /** Score */
+            score: number | null;
+            /** Ss 5D */
+            ss_5d: number | null;
+            /** Ss 1M */
+            ss_1m: number | null;
+            /** Ss 6M */
+            ss_6m: number | null;
+            /** Ss 1Y */
+            ss_1y: number | null;
+            /** Ss Bajo Beta */
+            ss_bajo_beta: number | null;
+            /** Score Simple */
+            score_simple: number | null;
+            /** Ventana Atipica */
+            ventana_atipica: string | null;
+            /** Z Score */
+            z_score: number | null;
+            /** M Norm */
+            m_norm: number | null;
+            /** Q Norm */
+            q_norm: number | null;
+            /** Consist Norm */
+            consist_norm: number | null;
+            /** Score Comp */
+            score_comp: number | null;
+            /** Racha */
+            racha: number | null;
+            /** Rank Actual */
+            rank_actual: number | null;
+            /** Rank Previo */
+            rank_previo: number | null;
+            /** Delta Score */
+            delta_score: number | null;
+            /** Delta Rank */
+            delta_rank: number | null;
+            /** Score Previo */
+            score_previo: number | null;
+            /** Procedencia */
+            procedencia: string | null;
+            /** Destino */
+            destino: string | null;
+        };
+        /** EtfRunResult */
+        EtfRunResult: {
+            job: components["schemas"]["JobRecord"];
+        };
+        /** EtfTabla */
+        EtfTabla: {
+            /** Fecha */
+            fecha: string | null;
+            /** Filas */
+            filas: components["schemas"]["EtfFila"][];
         };
         /** FinancialHealth */
         FinancialHealth: {
@@ -1618,6 +2375,538 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ModuleStatus"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    resumen_api_etf_resumen_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfResumen"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    top15_api_etf_top15_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfTabla"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    top15_simple_api_etf_top15_simple_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfTabla"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    top15_vanguard_api_etf_top15_vanguard_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfTabla"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    ranking_completo_api_etf_ranking_completo_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfTabla"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    excluidos_api_etf_excluidos_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfTabla"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    diversificacion_api_etf_diversificacion_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfDiversificacion"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    rotacion_api_etf_rotacion_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfRotacion"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    momentum_top15_api_etf_momentum_top15_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfTabla"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    categorias_ranking_api_etf_categorias_ranking_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfCategorias"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    russell3000_api_etf_russell3000_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfCap"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    historial_api_etf_historial_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfHistorial"];
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    descargar_pdf_api_etf_pdf_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description PDF */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/pdf": unknown;
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    run_api_etf_run_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfRunResult"];
                 };
             };
             /** @description API key inválida o ausente */

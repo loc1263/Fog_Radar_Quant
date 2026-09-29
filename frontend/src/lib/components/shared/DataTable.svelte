@@ -44,6 +44,8 @@
 		csvColumns?: Column<T>[];
 		emptyText?: string;
 		caption?: string;
+		/** Filas por página (sin valor, todas). La búsqueda y el orden vuelven a la página 1. */
+		pageSize?: number;
 		class?: string;
 	}
 
@@ -61,6 +63,7 @@
 		csvColumns,
 		emptyText = 'Sin datos para mostrar.',
 		caption,
+		pageSize,
 		class: className
 	}: Props = $props();
 
@@ -68,6 +71,7 @@
 	let query = $state('');
 	let sortTouched = $state(false);
 	let openKey = $state<string | null>(null);
+	let pageIndex = $state(0);
 
 	const expandable = $derived(!!detail && !!rowKey);
 	const colCount = $derived(columns.length + (expandable ? 1 : 0));
@@ -80,11 +84,17 @@
 	const effectiveSort = $derived(sortTouched ? sort : initialSort);
 	const filtered = $derived(searchKeys ? filterRows(rows, query, searchKeys) : rows);
 	const visible = $derived(sortRows(filtered, effectiveSort));
+	const pageCount = $derived(pageSize ? Math.max(1, Math.ceil(visible.length / pageSize)) : 1);
+	const currentPage = $derived(Math.min(pageIndex, pageCount - 1));
+	const shown = $derived(
+		pageSize ? visible.slice(currentPage * pageSize, (currentPage + 1) * pageSize) : visible
+	);
 
 	function toggle(column: Column<T>) {
 		if (column.sortable === false) return;
 		sort = nextSort(effectiveSort, column.key, !!column.numeric);
 		sortTouched = true;
+		pageIndex = 0;
 	}
 
 	function indicator(column: Column<T>): string {
@@ -125,6 +135,7 @@
 					<input
 						type="search"
 						bind:value={query}
+						oninput={() => (pageIndex = 0)}
 						placeholder={searchPlaceholder}
 						class="w-64 rounded border border-brand-border bg-brand-bg px-2 py-1.5 text-sm"
 					/>
@@ -183,7 +194,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each visible as row, i (i)}
+				{#each shown as row, i (i)}
 					{@const isOpen = expandable && openKey === rowKey?.(row)}
 					<tr
 						class={cn(
@@ -240,4 +251,21 @@
 			</tbody>
 		</table>
 	</div>
+	{#if pageCount > 1}
+		<div class="flex items-center justify-between gap-2 text-sm text-brand-muted">
+			<Button
+				size="sm"
+				variant="default"
+				disabled={currentPage === 0}
+				onclick={() => (pageIndex = currentPage - 1)}>Anterior</Button
+			>
+			<span class="tabular-nums">Página {currentPage + 1} de {pageCount}</span>
+			<Button
+				size="sm"
+				variant="default"
+				disabled={currentPage >= pageCount - 1}
+				onclick={() => (pageIndex = currentPage + 1)}>Siguiente</Button
+			>
+		</div>
+	{/if}
 </div>
