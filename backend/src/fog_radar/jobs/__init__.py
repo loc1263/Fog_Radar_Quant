@@ -67,6 +67,7 @@ PIPELINES: dict[str, Pipeline] = {
             PipelineOption("--force-refresh", "Ignora la caché de precios y vuelve a descargar todo."),
             PipelineOption("--force-discovery", "Ignora el snapshot de universo de hoy."),
             PipelineOption("--static-universe", "Usa la lista fija de respaldo en vez del screener."),
+            PipelineOption("--skip-discovery", "Reutiliza el último snapshot de universo (sin screener)."),
             PipelineOption("--macro", "Descarga antes los datos macro de FRED (requiere FRED_API_KEY)."),
             PipelineOption("--backfill", "Solo carga en history.db las corridas de output/ que falten."),
         ),

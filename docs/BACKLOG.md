@@ -50,9 +50,9 @@
 | US-TEST-02 | Frontend sin tests | 2 ✅ (base) | Vitest para lógica (`DataTable`, scoring de Chile) + Playwright smoke por módulo (Fase 8). |
 | CL (tests) | Sin tests de API ni de scoring IPSA | 3 ✅ | pytest de `winsorizar`, `calcular_zscore`, duplicados, FX + tests de paridad contra el original. |
 | US-DEVOPS-02 | Sin Docker | 8 | `deploy/backend` y `deploy/frontend` con Dockerfile + compose. |
-| US-DEVOPS-03 | Solo Task Scheduler de Windows | 7 | `crontab` en el servidor backend; Task Scheduler solo para dev local. |
-| US-DEVOPS-04 | Sin alertas si falla un pipeline | 7 | `core/jobs.py` registra estado; webhook/correo al fallar + página `/estado`. |
-| US-DATA-04 | El batch no reintenta la corrida completa | 7 | Reintento con backoff en el runner común de jobs. |
+| US-DEVOPS-03 | Solo Task Scheduler de Windows | 7 ✅ | `crontab` en el servidor backend; Task Scheduler solo para dev local. |
+| US-DEVOPS-04 | Sin alertas si falla un pipeline | 7 ✅ | `core/jobs.py` registra estado; webhook/correo al fallar + página `/estado`. |
+| US-DATA-04 | El batch no reintenta la corrida completa | 7 ✅ | Reintento con backoff en el runner común de jobs. |
 | TD-OPS-1 | Sin lockfile | 0 ✅ | `uv.lock` en el monorepo. |
 | CL (reintentos) | Sin reintento por ticker ante errores transitorios | 7 | Cliente yfinance común (`core/yf_client.py`, base: `robust_yf.py` de Tendencia). |
 

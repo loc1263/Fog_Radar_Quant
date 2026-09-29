@@ -11,6 +11,7 @@ export type HealthResponse = Schemas['HealthResponse'];
 export type SystemStatus = Schemas['SystemStatus'];
 export type ModuleStatus = Schemas['ModuleStatus'];
 export type JobRecord = Schemas['JobRecord'];
+export type ProgramaInfo = Schemas['ProgramaInfo'];
 export type ErrorResponse = Schemas['ErrorResponse'];
 
 /** Resultado de `tryCall` (lib/server/safe.ts): datos o error mostrable. */

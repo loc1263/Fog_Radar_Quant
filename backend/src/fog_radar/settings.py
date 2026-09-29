@@ -44,6 +44,17 @@ class Settings(BaseSettings):
     # Zona horaria de los timestamps en nombres de archivo (los pipelines corren para Chile).
     timezone: str = "America/Santiago"
 
+    # --- Corridas batch (fog_radar.jobs.runner) ---
+    # Pausa entre un pipeline y el siguiente de una secuencia (respiro para Yahoo Finance).
+    pipeline_pausa_s: int = 60
+    # Reintentos de un pipeline que falla en una corrida programada (US-DATA-04) y espera entre intentos.
+    pipeline_reintentos: int = 1
+    pipeline_espera_reintento_s: int = 600
+    # Cuánto espera una corrida programada si otra secuencia tiene el lock (p. ej. un ETF que se alargó).
+    pipeline_lock_espera_s: int = 6 * 3600
+    # Webhook (Slack/Discord/Teams) que recibe un aviso cuando un pipeline falla (US-DEVOPS-04).
+    alert_webhook_url: SecretStr | None = None
+
     # --- Fuentes externas ---
     fred_api_key: SecretStr | None = None
 

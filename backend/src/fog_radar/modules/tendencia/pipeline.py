@@ -94,6 +94,10 @@ def _run(args):
             dict(config.FALLBACK_SECTOR_MAP),
             method="fallback_static_forced",
         )
+    elif getattr(args, "skip_discovery", False):
+        # Fog Radar (--skip-discovery / --offline): sin consultar el screener; config
+        # carga el snapshot de universo más reciente que haya en data/universe.
+        logger.info("--skip-discovery activo: se reutiliza el último snapshot de universo.")
     else:
         discovery.main(force=args.force_discovery)
 
@@ -198,6 +202,7 @@ def run(
     force_refresh=False,
     force_discovery=False,
     static_universe=False,
+    skip_discovery=False,
     macro=False,
     backfill=False,
 ):
@@ -238,6 +243,7 @@ def run(
         force_refresh=force_refresh,
         force_discovery=force_discovery,
         static_universe=static_universe,
+        skip_discovery=skip_discovery,
     )
     run_dir = _run(args)
 

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { ModuleStatus } from '$lib/api/types';
+	import type { ModuleStatus, ProgramaInfo } from '$lib/api/types';
+	import { MODULES } from '$lib/nav';
 	import {
 		DataTable,
 		ErrorState,
@@ -56,6 +57,21 @@
 		}
 	];
 
+	const NOMBRE = Object.fromEntries(MODULES.map((m) => [m.key, m.label])) as Record<string, string>;
+	const programas = $derived(data.programas.ok ? data.programas.data : []);
+	const colProgramas: Column<ProgramaInfo>[] = [
+		{ key: 'titulo', label: 'Programa' },
+		{
+			key: 'modulos',
+			label: 'Secuencia',
+			sortable: false,
+			format: (v) => (v as string[]).map((m) => NOMBRE[m] ?? m).join(' → ')
+		},
+		{ key: 'descripcion', label: 'Cuándo' },
+		{ key: 'cron', label: 'Cron' },
+		{ key: 'proxima', label: 'Próxima corrida', format: (v) => fmtDate(v as string, true) }
+	];
+
 	const JOB = {
 		success: { signal: 'positive', label: 'OK' },
 		error: { signal: 'negative', label: 'Error' },
@@ -107,5 +123,16 @@
 				{/if}
 			{/snippet}
 		</DataTable>
+	</Section>
+{/if}
+
+{#if programas.length > 0}
+	<Section title="Corridas programadas (producción)">
+		<p class="text-sm text-brand-muted">
+			Los pipelines corren uno detrás de otro, nunca en paralelo (Yahoo Finance bloquea las ráfagas
+			de requests). En desarrollo: <code>python scripts/run_all_pipelines.py</code> o
+			<code>correr_pipelines.bat</code>. Horas de {programas[0].zona}.
+		</p>
+		<DataTable rows={programas} columns={colProgramas} caption="Corridas programadas" />
 	</Section>
 {/if}

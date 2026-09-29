@@ -1,0 +1,11 @@
+# Fog Radar Quant — corridas batch (generado con: python -m fog_radar.jobs --crontab)
+# Horas de America/Santiago. CRON_TZ lo respeta cronie; con cron de Debian/Ubuntu
+# la zona del servidor debe ser America/Santiago (timedatectl set-timezone America/Santiago).
+CRON_TZ=America/Santiago
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+
+# ETFs: los lunes a las 06:00 (etf)
+0 6 * * 1 cd /opt/fog-radar/backend && /usr/local/bin/uv run --frozen python -m fog_radar.jobs --programa semanal --trigger cron >> /var/log/fog-radar/pipelines-semanal.log 2>&1
+# Chile, EEUU y Tendencia: de lunes a viernes a las 18:00 (cl_stocks → us_stocks → tendencia)
+0 18 * * 1-5 cd /opt/fog-radar/backend && /usr/local/bin/uv run --frozen python -m fog_radar.jobs --programa diario --trigger cron >> /var/log/fog-radar/pipelines-diario.log 2>&1

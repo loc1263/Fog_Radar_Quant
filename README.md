@@ -34,5 +34,6 @@ uv run uvicorn fog_radar.main:app --reload --port 8000
 - Salud: `GET /api/health` (público). El resto exige el header `X-API-Key` si `API_KEY` está definida.
 - Pipelines: `uv run python -m fog_radar.jobs --list` · `... jobs cl_stocks` · `... jobs us_stocks` ·
   `... jobs etf [--solo-analisis]` · `... jobs tendencia [--skip-fetch] [--macro] [--backfill]`
+- Todos los pipelines en secuencia, a pedido: `python scripts/run_all_pipelines.py` (o doble clic en `correr_pipelines.bat`); en producción los corre el cron (`deploy/backend/README.md`).
 - Datos de ejemplo (fixtures de los tests, para probar el sitio sin Yahoo): `uv run python ../scripts/fixtures_e2e.py`
 - Calidad: `uv run ruff check . && uv run ruff format --check . && uv run pytest`

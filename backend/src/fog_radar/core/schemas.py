@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
@@ -35,6 +36,18 @@ class ModuleStatus(BaseModel):
     data_available: bool
     latest_job: JobRecord | None = None
     last_success: JobRecord | None = None
+
+
+class ProgramaInfo(BaseModel):
+    """Una corrida programada del cron de producción (``fog_radar.jobs.schedule``)."""
+
+    key: str
+    titulo: str
+    modulos: list[str]
+    cron: str
+    descripcion: str
+    zona: str
+    proxima: datetime
 
 
 class SystemStatus(BaseModel):

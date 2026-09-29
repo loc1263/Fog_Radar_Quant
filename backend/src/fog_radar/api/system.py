@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, Query
 
 from fog_radar.core.errors import ApiError
 from fog_radar.core.jobs import JobRecord, JobRegistry
-from fog_radar.core.schemas import HealthResponse, SystemStatus
+from fog_radar.core.schemas import HealthResponse, ProgramaInfo, SystemStatus
 from fog_radar.core.status import build_module_status
 from fog_radar.modules import MODULES, MODULES_BY_KEY
 from fog_radar.settings import Settings, get_settings
@@ -46,6 +46,29 @@ def system_status(settings: SettingsDep) -> SystemStatus:
 def jobs_latest(settings: SettingsDep) -> dict[str, JobRecord | None]:
     registry = JobRegistry(settings.jobs_dir)
     return {m.key: registry.latest(m.key) for m in MODULES}
+
+
+@protected_router.get(
+    "/jobs/programas", response_model=list[ProgramaInfo], summary="Programación de las corridas batch"
+)
+def jobs_programas(settings: SettingsDep) -> list[ProgramaInfo]:
+    from datetime import datetime
+
+    from fog_radar.jobs.schedule import PROGRAMAS
+
+    ahora = datetime.now(settings.tzinfo)
+    return [
+        ProgramaInfo(
+            key=p.key,
+            titulo=p.titulo,
+            modulos=list(p.modulos),
+            cron=p.cron,
+            descripcion=p.descripcion,
+            zona=settings.timezone,
+            proxima=p.proxima(ahora),
+        )
+        for p in PROGRAMAS
+    ]
 
 
 @protected_router.get(

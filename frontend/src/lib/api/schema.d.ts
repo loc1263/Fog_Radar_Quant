@@ -55,6 +55,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/jobs/programas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Programación de las corridas batch */
+        get: operations["jobs_programas_api_jobs_programas_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/jobs/{module}": {
         parameters: {
             query?: never;
@@ -1672,6 +1689,29 @@ export interface components {
             net_margin: number | null;
         };
         /**
+         * ProgramaInfo
+         * @description Una corrida programada del cron de producción (``fog_radar.jobs.schedule``).
+         */
+        ProgramaInfo: {
+            /** Key */
+            key: string;
+            /** Titulo */
+            titulo: string;
+            /** Modulos */
+            modulos: string[];
+            /** Cron */
+            cron: string;
+            /** Descripcion */
+            descripcion: string;
+            /** Zona */
+            zona: string;
+            /**
+             * Proxima
+             * Format: date-time
+             */
+            proxima: string;
+        };
+        /**
          * RankingMetricas
          * @description Métricas crudas que alimentan el score (mismas unidades que el CSV).
          */
@@ -2422,6 +2462,44 @@ export interface operations {
                     "application/json": {
                         [key: string]: components["schemas"]["JobRecord"] | null;
                     };
+                };
+            };
+            /** @description API key inválida o ausente */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Sin datos disponibles */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    jobs_programas_api_jobs_programas_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProgramaInfo"][];
                 };
             };
             /** @description API key inválida o ausente */

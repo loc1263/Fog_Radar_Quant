@@ -75,7 +75,7 @@ Fog_Radar_Quant/
 ├── deploy/
 │   ├── backend/   Dockerfile · docker-compose.yml · Caddyfile · crontab (pipelines)
 │   └── frontend/  Dockerfile · docker-compose.yml · Caddyfile
-├── scripts/  iniciar_dev.py · iniciar.bat · run_all_pipelines.py
+├── scripts/  run_all_pipelines.py · fixtures_e2e.py   (raíz: iniciar_dev.py · iniciar.bat · correr_pipelines.bat)
 ├── docs/     DESIGN_SYSTEM.md · METODOLOGIAS.md · ADR/
 ├── .github/workflows/ci.yml
 └── ROADMAP.md
@@ -242,8 +242,12 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 ### Fase 7 — Consolidación y valor agregado (≈2–3 sesiones)
 - [ ] Extraer código repetido a `core/`: cliente yfinance único (rate-limit, reintentos, caché en disco), FX (incl. `build_dataset` de Tendencia), stats, estilos PDF (`core/pdf` ✅ ya existe y lo usa ETF; falta migrar `reporting/theme.py` de Tendencia).
 - [ ] Opciones con valor en el CLI de jobs (TD-CFG-1: `--top-n`).
-- [ ] `scripts/run_all_pipelines.py` + calendario de ejecución (ETF lunes; resto según frecuencia actual): Programador de tareas en local y `crontab` en el servidor backend.
-- [ ] Página `/estado` y el **Hub** con datos reales (fecha, frescura, top 3 por módulo).
+- [x] **Corridas batch en secuencia** (✅ 2026-09-28): `fog_radar/jobs/runner.py` (lock global entre procesos, pausa entre pipelines, reintento con espera, la secuencia sigue si un módulo falla, aviso por `ALERT_WEBHOOK_URL` — US-DATA-04 y US-DEVOPS-04) y `fog_radar/jobs/schedule.py` (única fuente de la programación). CLI: `--todos [--solo …] [--offline]`, `--programa semanal|diario`, `--esperar`, `--crontab`, `--list`.
+  - **Producción (Linux):** ETFs los **lunes 06:00**; Chile → EEUU → Tendencia de **lunes a viernes 18:00**, en secuencia. `deploy/backend/crontab` (generado y verificado por test) + `deploy/backend/README.md`.
+  - **Desarrollo (Windows):** `python scripts/run_all_pipelines.py` o doble clic en `correr_pipelines.bat`: corre los 4 a pedido (Chile → EEUU → Tendencia → ETF), con confirmación, `--solo`, `--offline` (sin Yahoo) y log en `data/_jobs/logs/`.
+  - Tendencia ganó `--skip-discovery` (reutiliza el último universo) para el modo offline.
+  - `/estado` muestra las corridas programadas y la próxima ejecución (`GET /api/jobs/programas`).
+- [ ] **Hub** con datos reales (fecha, frescura, top 3 por módulo). (`/estado` ya muestra jobs y programación.)
 - [ ] Funciones transversales (opcionales): **buscador global de ticker** (en qué módulos aparece y con qué score), comparador EEUU vs. Tendencia, informe PDF consolidado semanal de los 4 módulos.
 - **Listo cuando:** un solo comando actualiza todo y el hub refleja el estado real.
 
@@ -315,4 +319,4 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 
 1. ~~Orden de módulos~~ ✅ confirmado (Chile → EEUU → ETF → Tendencia) · ~~Librería de gráficos~~ ✅ LayerChart · ~~Modo de despliegue~~ ✅ SvelteKit con `adapter-node` (SSR) + FastAPI en **2 servidores separados**, patrón BFF.
 2. Pendiente de definir más adelante (no bloquea): proveedor de hosting, dominio, y si el sitio tendrá login o será público. Repositorio: **privado** ✅.
-3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅ · ~~Fase 2~~ ✅ · ~~Fase 3~~ ✅ Chile · ~~Fase 4~~ ✅ EEUU · ~~Fase 5~~ ✅ ETF · ~~Fase 6~~ ✅ Tendencia (**paridad total de los 4 módulos**). **Siguiente: Fase 7 — consolidación.** Antes: correr los 4 pipelines contra Yahoo en Windows (`uv run python -m fog_radar.jobs <modulo>`).
+3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅ · ~~Fase 2~~ ✅ · ~~Fase 3~~ ✅ Chile · ~~Fase 4~~ ✅ EEUU · ~~Fase 5~~ ✅ ETF · ~~Fase 6~~ ✅ Tendencia (**paridad total de los 4 módulos**). **En curso: Fase 7 — consolidación** (corridas batch ✅). Antes: correr los 4 pipelines contra Yahoo en Windows (`uv run python -m fog_radar.jobs <modulo>`).
