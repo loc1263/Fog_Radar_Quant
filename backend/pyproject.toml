@@ -25,7 +25,7 @@ dependencies = [
     "yfinance>=0.2.60,<2.0",
     "curl_cffi>=0.7,<1.0",                   # Tendencia (robust_yf)
     "requests>=2.32,<3.0",
-    "lxml>=5.2",                             # EEUU (scraping Wikipedia)
+    "lxml>=5.2,<7",                             # EEUU (scraping Wikipedia)
     "beautifulsoup4>=4.12,<5.0",             # Tendencia
     "fredapi>=0.5.2,<1.0",                   # Tendencia (macro)
     # --- Archivos / reportes ---

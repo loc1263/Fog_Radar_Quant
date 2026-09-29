@@ -71,9 +71,16 @@ export function filterRows<T extends Row>(rows: readonly T[], query: string, key
 	return rows.filter((r) => keys.some((k) => normalize(String(r[k] ?? '')).includes(q)));
 }
 
-function csvCell(v: unknown): string {
+/**
+ * Celda CSV. Los textos que empiezan con `= + - @` (o tab/CR) se prefijan con `'`
+ * para que Excel no los ejecute como fórmula (inyección CSV, OWASP); los números
+ * negativos, que son `number`, se exportan tal cual.
+ */
+export function csvCell(v: unknown): string {
 	if (v === null || v === undefined) return '';
-	const s = String(v);
+	if (typeof v === 'number') return String(v);
+	let s = String(v);
+	if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
 	return /[",;\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 

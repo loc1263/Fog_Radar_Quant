@@ -28,12 +28,14 @@ serializan con el lock global de ``fog_radar.jobs.runner``.
 
 from __future__ import annotations
 
+import contextvars
 import logging
 import os
 import random
 import threading
 import time
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Iterator
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
@@ -165,6 +167,20 @@ def _respuesta_429(resp: Any) -> bool:
     return getattr(resp, "status_code", None) == 429
 
 
+_sin_reintentos: contextvars.ContextVar[bool] = contextvars.ContextVar("yahoo_sin_reintentos", default=False)
+
+
+@contextmanager
+def interactivo() -> Iterator[None]:
+    """Dentro de una solicitud HTTP: un 429 de Yahoo se devuelve de inmediato (sin
+    esperar backoff de decenas de segundos con un hilo del servidor tomado)."""
+    token = _sin_reintentos.set(True)
+    try:
+        yield
+    finally:
+        _sin_reintentos.reset(token)
+
+
 class ControlTrafico:
     """Espaciado + reintento ante 429 alrededor de una función que hace el request.
 
@@ -180,15 +196,16 @@ class ControlTrafico:
 
     def ejecutar(self, hacer_request: Callable[[], Any], url: str = "") -> Any:
         p = self.politica
+        reintentos = 0 if _sin_reintentos.get() else p.reintentos_429
         resp = None
-        for intento in range(p.reintentos_429 + 1):
+        for intento in range(reintentos + 1):
             esperado = self.espaciador.esperar_turno()
             resp = hacer_request()
             _sumar(requests=1, espera_s=esperado)
             if not _respuesta_429(resp):
                 return resp
             _sumar(rate_limited=1)
-            if intento == p.reintentos_429:
+            if intento == reintentos:
                 break
             pausa = backoff_s(intento, p.backoff_base_s, p.backoff_max_s)
             log.warning(

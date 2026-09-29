@@ -6,8 +6,16 @@ import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { backend } from '$lib/server/api';
 
+// Mismas reglas que el backend (run_files.RUN_DIR_PATTERN / NOMBRE_ARCHIVO): se validan
+// antes de armar la URL (fetch normalizaría `..`) y para no reflejar texto arbitrario.
+const RUN = /^\d{8}_\d{2}$/;
+const ARCHIVO = /^[A-Za-z0-9][A-Za-z0-9_-]{0,126}\.[A-Za-z0-9]{1,5}$/;
+
 export const GET: RequestHandler = async (event) => {
 	const { run, archivo } = event.params;
+	if (!RUN.test(run) || !ARCHIVO.test(archivo)) {
+		error(404, { message: 'Archivo no disponible.', code: 'not_found' });
+	}
 	let res: Response;
 	try {
 		const r = await backend(event, { timeoutMs: 60_000 }).GET(
@@ -28,8 +36,7 @@ export const GET: RequestHandler = async (event) => {
 	return new Response(res.body, {
 		headers: {
 			'content-type': res.headers.get('content-type') ?? 'application/octet-stream',
-			'content-disposition':
-				res.headers.get('content-disposition') ?? `attachment; filename="${archivo}"`,
+			'content-disposition': `attachment; filename="${archivo}"`,
 			'cache-control': 'no-store'
 		}
 	});

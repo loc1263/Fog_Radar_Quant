@@ -29,6 +29,9 @@ JobTrigger = Literal["cli", "cron", "api"]
 
 # Una corrida "running" más vieja que esto se considera colgada.
 STALE_AFTER = timedelta(hours=6)
+# Rotación: al pasar de MAX_BYTES se conservan las últimas MAX_LINEAS líneas (~1 año de corridas diarias).
+MAX_BYTES = 512 * 1024
+MAX_LINEAS = 1000
 
 
 class JobRecord(BaseModel):
@@ -52,8 +55,19 @@ class JobRegistry:
     def _append(self, record: JobRecord) -> None:
         self.jobs_dir.mkdir(parents=True, exist_ok=True)
         path = self._path(record.module)
-        with FileLock(str(path) + ".lock", timeout=10), path.open("a", encoding="utf-8") as fh:
-            fh.write(record.model_dump_json() + "\n")
+        with FileLock(str(path) + ".lock", timeout=10):
+            with path.open("a", encoding="utf-8") as fh:
+                fh.write(record.model_dump_json() + "\n")
+            if path.stat().st_size > MAX_BYTES:
+                self._compactar(path)
+
+    @staticmethod
+    def _compactar(path: Path) -> None:
+        """Deja las últimas ``MAX_LINEAS`` líneas (el registro se lee entero en cada request)."""
+        lineas = path.read_text(encoding="utf-8").splitlines(keepends=True)[-MAX_LINEAS:]
+        tmp = path.with_suffix(".jsonl.tmp")
+        tmp.write_text("".join(lineas), encoding="utf-8")
+        tmp.replace(path)
 
     def _read(self, module: str) -> list[JobRecord]:
         path = self._path(module)

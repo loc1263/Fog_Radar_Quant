@@ -82,7 +82,10 @@ def _hub_modulo(settings: Settings, info: ModuleInfo, registry: JobRegistry, aho
             unidad="numero",
             top=[],
             frescura="error",
-            mensaje=f"{type(exc).__name__}: {exc}",
+            # En prod no se expone el detalle (rutas, mensajes internos): queda en el log.
+            mensaje="Los datos del módulo no se pudieron leer."
+            if settings.is_prod
+            else f"{type(exc).__name__}: {exc}",
         )
     datos_al = resumen.datos_al.astimezone(settings.tzinfo) if resumen.datos_al else None
     edad = round((ahora - datos_al).total_seconds() / 3600, 1) if datos_al else None

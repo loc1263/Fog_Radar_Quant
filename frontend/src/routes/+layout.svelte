@@ -75,11 +75,16 @@
 			</form>
 		</div>
 		{#if current && current.sections.length > 0}
-			<div class="mt-2 flex flex-wrap items-center gap-1.5 border-t border-brand-border pt-2">
+			<div
+				class="mt-2 flex flex-wrap items-center gap-1.5 border-t border-brand-border pt-2"
+				role="group"
+				aria-label="Secciones de {current.label}"
+			>
 				{#each current.sections as section (section.href)}
 					{@const active = page.url.pathname === section.href}
 					<a
 						href="{resolve(ruta(section.href))}{keptQuery(page.url, current.keepParams)}"
+						aria-current={active ? 'page' : undefined}
 						class={cn(
 							'rounded border px-2.5 py-0.5 text-xs font-bold',
 							active

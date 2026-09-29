@@ -94,7 +94,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     limited = [Depends(default_rate_limit)]
     app.include_router(public_router, prefix="/api", dependencies=limited)
-    protected = [Depends(require_api_key), *limited]
+    # El límite va antes de la autenticación: también frena intentos con claves inválidas.
+    protected = [*limited, Depends(require_api_key)]
     app.include_router(protected_router, prefix="/api", dependencies=protected, responses=_ERROR_RESPONSES)
     app.include_router(transversal_router, prefix="/api", dependencies=protected, responses=_ERROR_RESPONSES)
     for router in MODULE_ROUTERS:

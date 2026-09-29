@@ -63,3 +63,17 @@ def test_ignores_corrupt_lines(tmp_path: Path) -> None:
 def test_empty_registry(tmp_path: Path) -> None:
     reg = JobRegistry(tmp_path / "no-existe")
     assert reg.latest("etf") is None and reg.history("etf") == []
+
+
+def test_registro_se_compacta(tmp_path, monkeypatch) -> None:  # noqa: ANN001
+    from fog_radar.core import jobs
+
+    monkeypatch.setattr(jobs, "MAX_BYTES", 2000)
+    monkeypatch.setattr(jobs, "MAX_LINEAS", 6)
+    reg = jobs.JobRegistry(tmp_path)
+    for _ in range(20):
+        with reg.track("etf"):
+            pass
+    lineas = (tmp_path / "etf.jsonl").read_text(encoding="utf-8").splitlines()
+    assert len(lineas) < 40  # sin rotación serían 40 (2 por corrida)
+    assert reg.latest("etf").status == "success"

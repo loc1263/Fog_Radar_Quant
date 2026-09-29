@@ -151,3 +151,19 @@ def test_cache_vieja_no_se_usa(tmp_path: Path) -> None:
     os.utime(f, (viejo, viejo))
     assert not yahoo.cache_fresca(f, 20)
     assert yahoo.cache_fresca(f, 100)
+
+
+def test_modo_interactivo_no_reintenta_429() -> None:
+    r = Reloj()
+    control = yahoo.ControlTrafico(
+        yahoo.Politica(min_intervalo_s=0, jitter_s=0, reintentos_429=3), sleep=r.sleep, clock=r.clock
+    )
+    llamadas = []
+
+    def pedir() -> Resp:
+        llamadas.append(1)
+        return Resp(429)
+
+    with yahoo.interactivo():
+        assert control.ejecutar(pedir).status_code == 429
+    assert len(llamadas) == 1 and r.dormido == []

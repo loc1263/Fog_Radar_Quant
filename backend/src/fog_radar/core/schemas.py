@@ -3,11 +3,26 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import AfterValidator, BaseModel, ConfigDict
 
 from fog_radar.core.jobs import JobRecord
+
+
+def _con_zona(d: datetime) -> datetime:
+    """Fechas sin zona (``datetime.now().isoformat()`` de los pipelines portados) se
+    interpretan en ``Settings.timezone``: la API siempre publica el offset, así el SSR
+    y el navegador muestran la misma hora."""
+    if d.tzinfo is not None:
+        return d
+    from fog_radar.settings import get_settings
+
+    return d.replace(tzinfo=get_settings().tzinfo)
+
+
+FechaLocal = Annotated[datetime, AfterValidator(_con_zona)]
+"""``datetime`` que siempre sale con zona horaria (ver :func:`_con_zona`)."""
 
 
 class Out(BaseModel):

@@ -78,9 +78,23 @@ def test_black_litterman(returns_top15: pd.DataFrame) -> None:
     caps = {r["ticker"]: r["market_cap"] for r in CANDIDATES}
     scores = {r["ticker"]: r["score"]["overall"] for r in CANDIDATES}
     got = p.black_litterman_weights(returns_top15, caps, scores)
+    # Corrección de la Fase 7 (docs/PARIDAD.md): π, Q y el posterior son retornos
+    # totales (exceso + rf). Con P = I el posterior se desplaza exactamente en rf.
+    rf = p.DEFAULT_RISK_FREE_RATE
     for key in ("prior_returns", "views", "posterior_returns"):
-        _approx_dict(got[key], EXPECTED["black_litterman"][key], tol=1e-9)
-    _approx_dict(got["weights"], EXPECTED["black_litterman"]["weights"], tol=1e-5)
+        esperado = {t: v + rf for t, v in EXPECTED["black_litterman"][key].items()}
+        _approx_dict(got[key], esperado, tol=1e-9)
+    assert sum(got["weights"].values()) == pytest.approx(1.0)
+
+
+def test_black_litterman_con_views_neutras_recupera_el_mercado(returns_top15: pd.DataFrame) -> None:
+    """Propiedad básica de BL: sin views (scores = 50) el tangente es w_mkt.
+    El original (sin sumar rf al prior) daba otros pesos."""
+    caps = {r["ticker"]: r["market_cap"] for r in CANDIDATES if r["ticker"] in returns_top15.columns}
+    total = sum(caps.values())
+    got = p.black_litterman_weights(returns_top15, caps, dict.fromkeys(caps, 50.0))
+    for t, w in got["weights"].items():
+        assert w == pytest.approx(caps[t] / total, abs=2e-3), t
 
 
 def test_hrp(returns_top15: pd.DataFrame) -> None:
@@ -103,6 +117,8 @@ def test_best_combinations(key: str, method: str, kwargs: dict) -> None:
     got = p.best_combinations(rets, method, 3, **kwargs)
     exp = EXPECTED[key]
     assert got["combinations_evaluated"] == exp["combinations_evaluated"]
+    if method == "black_litterman":
+        return  # pesos distintos por la corrección de BL (Fase 7); ver test_black_litterman
     assert [r["tickers"] for r in got["results"]] == [r["tickers"] for r in exp["results"]]
     for g, e in zip(got["results"], exp["results"], strict=True):
         _approx_dict(g["weights"], e["weights"], tol=1e-5)

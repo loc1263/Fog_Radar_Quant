@@ -1,6 +1,18 @@
 """Cálculo de métricas de riesgo financiero."""
 
+import pandas as pd
+
 from ..config import RISK_FREE_RATE, TRADING_DAYS_PER_YEAR
+
+
+def _por_fecha(serie):
+    """Índice por fecha calendario (sin hora ni zona) para alinear dos series diarias."""
+    if not isinstance(serie.index, pd.DatetimeIndex):
+        return serie  # sin fechas (p. ej. tests): se alinea por la etiqueta tal cual
+    idx = serie.index.tz_localize(None) if serie.index.tz is not None else serie.index
+    out = serie.copy()
+    out.index = idx.normalize()
+    return out[~out.index.duplicated(keep="last")]
 
 
 class RiskAnalyzer:
@@ -31,16 +43,18 @@ class RiskAnalyzer:
         if etf_history_data.empty or market_history_data.empty:
             return None
 
-        etf_returns = etf_history_data["Close"].pct_change(fill_method=None).dropna()
-        market_returns = market_history_data["Close"].pct_change(fill_method=None).dropna()
-        min_len = min(len(etf_returns), len(market_returns))
+        # Fog Radar (Fase 7, corrección): los retornos se emparejan POR FECHA
+        # (join interno). El original tomaba los últimos N de cada serie por
+        # posición: si al ETF le faltaba un día, todo lo anterior quedaba
+        # desfasado un día respecto del mercado y el beta se sesgaba hacia 0.
+        etf_returns = _por_fecha(etf_history_data["Close"].pct_change(fill_method=None))
+        market_returns = _por_fecha(market_history_data["Close"].pct_change(fill_method=None))
+        pares = pd.concat([etf_returns, market_returns], axis=1, join="inner").dropna()
 
-        if min_len < 2:
+        if len(pares) < 2:
             return None
 
-        etf_returns = etf_returns[-min_len:]
-        market_returns = market_returns[-min_len:]
-
+        etf_returns, market_returns = pares.iloc[:, 0], pares.iloc[:, 1]
         cov = etf_returns.cov(market_returns)
         var = market_returns.var()
         beta = cov / var if var != 0 else None

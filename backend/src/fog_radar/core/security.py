@@ -27,7 +27,10 @@ def require_api_key(
     if expected is None:
         # Solo posible fuera de prod (Settings lo valida).
         return
-    if provided is None or not secrets.compare_digest(provided, expected.get_secret_value()):
+    # En bytes: compare_digest con str lanza TypeError si hay caracteres no ASCII (→ 500).
+    if provided is None or not secrets.compare_digest(
+        provided.encode("utf-8"), expected.get_secret_value().encode("utf-8")
+    ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="API key inválida o ausente.",

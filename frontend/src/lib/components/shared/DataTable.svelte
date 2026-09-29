@@ -125,8 +125,11 @@
 		const a = document.createElement('a');
 		a.href = url;
 		a.download = `${csvFilename}.csv`;
+		document.body.append(a);
 		a.click();
-		URL.revokeObjectURL(url);
+		a.remove();
+		// Revocar en el siguiente ciclo: algunos navegadores cancelan la descarga si es inmediato.
+		setTimeout(() => URL.revokeObjectURL(url), 0);
 	}
 </script>
 
@@ -198,7 +201,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each shown as row, i (i)}
+				{#each shown as row, i (rowKey ? rowKey(row) : i)}
 					{@const isOpen = expandable && openKey === rowKey?.(row)}
 					<tr
 						class={cn(

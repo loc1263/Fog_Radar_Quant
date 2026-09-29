@@ -18,9 +18,10 @@ from cachetools import TTLCache
 from fastapi import Depends, Query
 from fastapi import Path as PathParam
 
+from fog_radar.core import yahoo
 from fog_radar.core.errors import ApiError
 from fog_radar.core.logging import get_logger
-from fog_radar.core.ratelimit import rate_limit
+from fog_radar.core.ratelimit import limite_concurrente, rate_limit
 from fog_radar.modules._base import make_module_router
 from fog_radar.modules.us_stocks import portfolio, storage, ticker_eval
 from fog_radar.modules.us_stocks.schemas import (
@@ -97,7 +98,10 @@ def list_runs(settings: SettingsDep) -> RunsList:
     "/tickers/{ticker}/evaluate",
     response_model=TickerEvaluation,
     summary="Evalúa un ticker en vivo (Yahoo Finance)",
-    dependencies=[Depends(rate_limit("20/minute", scope="us-evaluate"))],
+    dependencies=[
+        Depends(rate_limit("20/minute", scope="us-evaluate")),
+        Depends(limite_concurrente(4, scope="us-evaluate")),
+    ],
 )
 def evaluate(ticker: Annotated[str, PathParam(pattern=TICKER_PATTERN)]) -> Any:
     key = ticker.strip().upper()
@@ -106,12 +110,13 @@ def evaluate(ticker: Annotated[str, PathParam(pattern=TICKER_PATTERN)]) -> Any:
     if cached is not None:
         return {**cached, "cached": True}
     try:
-        result = ticker_eval.evaluate_ticker(key)
+        with yahoo.interactivo():
+            result = ticker_eval.evaluate_ticker(key)
     except ticker_eval.TickerNotFoundError as exc:
         raise ApiError(404, "ticker_not_found", str(exc)) from exc
     except Exception as exc:
         log.warning("Error consultando Yahoo Finance para %s: %s", key, exc)
-        raise ApiError(502, "upstream_error", f"Error consultando Yahoo Finance: {exc}") from exc
+        raise ApiError(502, "upstream_error", "Error consultando Yahoo Finance. Intenta más tarde.") from exc
     with _eval_lock:
         _eval_cache[key] = result
     return result
@@ -162,7 +167,10 @@ def portfolio_limits() -> PortfolioLimits:
     "/portfolio/optimize",
     response_model=PortfolioResult,
     summary="Optimiza un portafolio (Markowitz, Black-Litterman o HRP)",
-    dependencies=[Depends(rate_limit("30/minute", scope="us-optimize"))],
+    dependencies=[
+        Depends(rate_limit("30/minute", scope="us-optimize")),
+        Depends(limite_concurrente(4, scope="us-optimize")),
+    ],
 )
 def optimize(request: PortfolioRequest, settings: SettingsDep) -> Any:
     run_dir = storage.latest_finished_run(settings)
@@ -199,7 +207,10 @@ def optimize(request: PortfolioRequest, settings: SettingsDep) -> Any:
     "/portfolio/best_combination",
     response_model=BestCombinationResult,
     summary="Mejores portafolios de exactamente k tickers",
-    dependencies=[Depends(rate_limit("6/minute", scope="us-best-combination"))],
+    dependencies=[
+        Depends(rate_limit("6/minute", scope="us-best-combination")),
+        Depends(limite_concurrente(2, scope="us-best-combination")),
+    ],
 )
 def best_combination(request: BestCombinationRequest, settings: SettingsDep) -> Any:
     run_dir = storage.latest_finished_run(settings)

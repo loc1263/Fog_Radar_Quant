@@ -394,7 +394,7 @@ requires-dist = [
     { name = "filelock", specifier = ">=3.16,<4.0" },
     { name = "fredapi", specifier = ">=0.5.2,<1.0" },
     { name = "limits", specifier = ">=3.13,<6.0" },
-    { name = "lxml", specifier = ">=5.2" },
+    { name = "lxml", specifier = ">=5.2,<7" },
     { name = "matplotlib", specifier = ">=3.7,<4.0" },
     { name = "numpy", specifier = ">=2.0,<3.0" },
     { name = "openpyxl", specifier = ">=3.1,<4.0" },

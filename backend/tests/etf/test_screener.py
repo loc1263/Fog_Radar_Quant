@@ -41,6 +41,13 @@ def test_performance_y_riesgo() -> None:
     mercado = _hist(list(100 * np.cumprod(1 + rng.normal(0, 0.01, 252))))
     etf = _hist(list(mercado["Close"] * 1.0))
     assert RiskAnalyzer.calculate_beta(etf, mercado) == pytest.approx(1.0)
+
+    # Fog Radar: el beta empareja por fecha. Si al ETF le falta un día, el resto
+    # no se desfasa (el original, por posición, daba un beta cercano a 0).
+    fechas = pd.bdate_range("2026-01-02", periods=252, tz="America/New_York")
+    mercado_f = pd.DataFrame({"Close": mercado["Close"].to_numpy()}, index=fechas)
+    etf_f = mercado_f.drop(fechas[100])
+    assert RiskAnalyzer.calculate_beta(etf_f, mercado_f) == pytest.approx(1.0, abs=0.05)
     assert RiskAnalyzer.calculate_sharpe_ratio(_hist([100.0])) is None
     assert RiskAnalyzer.calculate_treynor_ratio(etf, mercado) is not None
 

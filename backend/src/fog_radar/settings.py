@@ -20,6 +20,9 @@ REPO_ROOT = BACKEND_DIR.parent
 
 ModuleKey = Literal["etf", "us_stocks", "cl_stocks", "tendencia"]
 
+# Valores de ejemplo de .env.example: nunca válidos en prod.
+CLAVES_DE_EJEMPLO = frozenset({"cambiar-por-una-clave-larga-aleatoria"})
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -85,8 +88,12 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def _prod_requires_key(self) -> Settings:
         if self.env == "prod":
-            if self.api_key is None or len(self.api_key.get_secret_value()) < 24:
-                raise ValueError("En prod API_KEY es obligatoria y debe tener al menos 24 caracteres.")
+            clave = self.api_key.get_secret_value() if self.api_key else ""
+            if len(clave) < 32 or clave in CLAVES_DE_EJEMPLO or len(set(clave)) < 12:
+                raise ValueError(
+                    "En prod API_KEY es obligatoria, de al menos 32 caracteres y aleatoria "
+                    '(p. ej. python -c "import secrets; print(secrets.token_urlsafe(32))").'
+                )
             if any("localhost" in o or "127.0.0.1" in o for o in self.allowed_origins):
                 raise ValueError("En prod ALLOWED_ORIGINS no puede incluir localhost.")
         return self

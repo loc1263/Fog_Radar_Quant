@@ -34,9 +34,43 @@ export function fmtCompact(v: unknown, digits = 2): string {
 	}).format(v);
 }
 
+const ISO_SIN_ZONA = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?$/;
+
+/** Minutos que `TIME_ZONE` está adelantada respecto de UTC en el instante `d`. */
+function offsetMinutos(d: Date): number {
+	const p = Object.fromEntries(
+		new Intl.DateTimeFormat('en-US', {
+			timeZone: TIME_ZONE,
+			hourCycle: 'h23',
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+			hour: '2-digit',
+			minute: '2-digit',
+			second: '2-digit'
+		})
+			.formatToParts(d)
+			.map((x) => [x.type, x.value])
+	);
+	const pared = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second);
+	return Math.round((pared - d.getTime()) / 60000);
+}
+
+/**
+ * `Date` de un ISO; si viene **sin zona** (p. ej. `2026-09-28T22:11:08`) se interpreta
+ * en `TIME_ZONE` y no en la zona del proceso: así SSR (servidor en UTC) y navegador
+ * muestran la misma hora.
+ */
+export function parseFecha(v: string): Date {
+	if (!ISO_SIN_ZONA.test(v)) return new Date(v);
+	const comoUtc = new Date(`${v}Z`);
+	const primera = new Date(comoUtc.getTime() - offsetMinutos(comoUtc) * 60000);
+	return new Date(comoUtc.getTime() - offsetMinutos(primera) * 60000);
+}
+
 export function fmtDate(v: string | Date | null | undefined, withTime = false): string {
 	if (!v) return EMPTY;
-	const d = typeof v === 'string' ? new Date(v) : v;
+	const d = typeof v === 'string' ? parseFecha(v) : v;
 	if (Number.isNaN(d.getTime())) return EMPTY;
 	return d.toLocaleString(LOCALE, {
 		day: '2-digit',

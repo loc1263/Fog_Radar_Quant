@@ -21,7 +21,8 @@ si hiciera falta exactitud, cambiar a ``RedisStorage``.
 
 from __future__ import annotations
 
-from collections.abc import Callable
+import threading
+from collections.abc import Callable, Iterator
 from typing import Annotated
 
 from fastapi import Depends, Request
@@ -63,6 +64,34 @@ def rate_limit(limit: str, *, scope: str) -> Callable[..., None]:
 def default_rate_limit(request: Request, settings: Annotated[Settings, Depends(get_settings)]) -> None:
     """Límite global configurable por ``RATE_LIMIT_DEFAULT``."""
     _check(settings.rate_limit_default, "default", request, settings)
+
+
+_semaforos: dict[str, threading.BoundedSemaphore] = {}
+_semaforos_lock = threading.Lock()
+
+
+def limite_concurrente(maximo: int, *, scope: str) -> Callable[..., Iterator[None]]:
+    """Dependencia: como máximo ``maximo`` ejecuciones simultáneas del endpoint en el
+    proceso; si está lleno responde 503 ``busy`` sin esperar (OWASP API4).
+
+    Complementa el rate limit por IP: los endpoints costosos (Yahoo en vivo,
+    optimizaciones, PDF) corren en el pool de hilos compartido y no deben poder
+    acapararlo aunque las solicitudes vengan de muchas IP.
+    """
+    with _semaforos_lock:
+        sem = _semaforos.setdefault(scope, threading.BoundedSemaphore(maximo))
+
+    def _dep() -> Iterator[None]:
+        if not sem.acquire(blocking=False):
+            raise ApiError(
+                503, "busy", "El servidor está procesando otras solicitudes de este tipo. Reintenta."
+            )
+        try:
+            yield
+        finally:
+            sem.release()
+
+    return _dep
 
 
 def reset_rate_limits() -> None:

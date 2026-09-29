@@ -9,11 +9,11 @@ valor por defecto.
 
 from __future__ import annotations
 
-from datetime import date, datetime
+from datetime import date
 
 from pydantic import ConfigDict
 
-from fog_radar.core.schemas import Out
+from fog_radar.core.schemas import FechaLocal, Out
 
 
 class TdMetricas(Out):
@@ -150,7 +150,7 @@ class TdExcluido(Out):
 class TdDashboard(Out):
     """Una corrida completa (mismo contenido que ``dashboard_data.json``)."""
 
-    generated_at: datetime
+    generated_at: FechaLocal
     run_dir: str
     universe_source: str | None = None
     market_regime_notes: list[str] = []
@@ -173,7 +173,7 @@ class TdAnalisisDisponible(Out):
 class TdRunPerformance(Out):
     run_dir: str
     run_date: date
-    generated_at: datetime
+    generated_at: FechaLocal
     universe_source: str | None = None
     analysis_key: str
     label: str
@@ -231,7 +231,7 @@ class TdRunDetalle(Out):
     id: int
     run_dir: str
     run_date: date
-    generated_at: datetime
+    generated_at: FechaLocal
     universe_source: str | None = None
     market_regime_notes: list[str] = []
     stored_at: str | None = None

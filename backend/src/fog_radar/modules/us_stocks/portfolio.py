@@ -274,8 +274,12 @@ def black_litterman_weights(
     caps = np.array([max(market_caps.get(t) or 0.0, 0.0) for t in tickers])
     w_mkt = caps / caps.sum() if caps.sum() > 0 else np.repeat(1.0 / n, n)
 
-    # Prior de equilibrio (reverse optimization): π = δ·Σ·w_mkt
-    pi = risk_aversion * (cov @ w_mkt)
+    # Prior de equilibrio (reverse optimization): δ·Σ·w_mkt es el retorno en EXCESO
+    # de la tasa libre de riesgo; se le suma rf para trabajar en retornos totales
+    # (como ``pypfopt.black_litterman.market_implied_prior_returns``). Fog Radar
+    # (Fase 7, corrección): el original no sumaba rf y luego _max_sharpe_weights
+    # la restaba otra vez, así que con views neutras no recuperaba w_mkt.
+    pi = risk_aversion * (cov @ w_mkt) + risk_free_rate
 
     # Views automáticas: score de salud alto -> view por encima del
     # equilibrio, bajo -> por debajo, escalado por la volatilidad propia de

@@ -27,3 +27,16 @@ describe('format', () => {
 		expect(signedClass(undefined)).toBe('');
 	});
 });
+
+describe('fechas sin zona', () => {
+	it('se interpretan en America/Santiago, no en la zona del proceso', async () => {
+		const { parseFecha, fmtDate } = await import('./format');
+		// 28-09-2026 22:11 en Santiago (UTC-3) = 29-09-2026 01:11 UTC.
+		expect(parseFecha('2026-09-28T22:11:08').toISOString()).toBe('2026-09-29T01:11:08.000Z');
+		// Invierno (UTC-4).
+		expect(parseFecha('2026-06-15T10:00:00').toISOString()).toBe('2026-06-15T14:00:00.000Z');
+		// Con zona explícita no cambia.
+		expect(parseFecha('2026-09-28T22:11:08Z').toISOString()).toBe('2026-09-28T22:11:08.000Z');
+		expect(fmtDate('2026-09-28T22:11:08', true)).toContain('10:11 p. m.');
+	});
+});

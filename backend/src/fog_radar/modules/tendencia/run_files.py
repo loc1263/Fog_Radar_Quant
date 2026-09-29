@@ -25,6 +25,7 @@ DASHBOARD = "dashboard_data.json"
 SIN_CORRIDAS = "Todavía no hay corridas de Tendencia. Ejecuta: python -m fog_radar.jobs tendencia"
 
 # Archivos de una corrida que se pueden descargar (nombre plano, sin subcarpetas).
+NOMBRE_ARCHIVO = re.compile(r"[A-Za-z0-9][A-Za-z0-9_\-]{0,126}\.[A-Za-z0-9]{1,5}")
 TIPOS_DESCARGABLES = {
     ".pdf": "application/pdf",
     ".csv": "text/csv; charset=utf-8",
@@ -87,15 +88,12 @@ def archivos(d: Path) -> list[dict[str, Any]]:
 
 def archivo(d: Path, nombre: str) -> Path:
     """Archivo descargable de una corrida; rechaza rutas y extensiones no permitidas."""
-    if (
-        "/" in nombre
-        or "\\" in nombre
-        or nombre.startswith(".")
-        or Path(nombre).suffix.lower() not in (TIPOS_DESCARGABLES)
-    ):
-        raise ApiError(404, "not_found", f"Archivo no disponible: {nombre}")
+    # Lista blanca (no lista negra): sin separadores, unidades de Windows (C:x) ni
+    # flujos alternativos NTFS (a:b); y la ruta final debe quedar dentro de la corrida.
+    if not NOMBRE_ARCHIVO.fullmatch(nombre) or Path(nombre).suffix.lower() not in TIPOS_DESCARGABLES:
+        raise ApiError(404, "not_found", "Archivo no disponible.")
     path = d / nombre
-    if not path.is_file():
+    if not path.resolve().is_relative_to(d.resolve()) or not path.is_file():
         raise ApiError(404, "not_found", f"La corrida {d.name} no tiene {nombre}.")
     return path
 

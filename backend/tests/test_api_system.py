@@ -94,7 +94,7 @@ def test_prod_hides_internal_errors_and_docs(tmp_path) -> None:
     prod = Settings(
         _env_file=None,
         env="prod",
-        api_key=SecretStr("k" * 32),
+        api_key=SecretStr("k3J9-vQ2_xT7pL0mZ8rW4yN6bH1dF5sA"),
         allowed_origins=["https://quant.example.cl"],
         data_dir=tmp_path,
     )
@@ -128,3 +128,26 @@ def test_dev_without_key_is_open(tmp_path) -> None:
     s = Settings(_env_file=None, env="dev", api_key=None, data_dir=tmp_path)
     with TestClient(create_app(s)) as c:
         assert c.get("/api/status").status_code == 200
+
+
+def test_api_key_no_ascii_es_401_no_500(client, auth) -> None:  # noqa: ANN001
+    r = client.get("/api/status", headers={"X-API-Key": "\xe9abc".encode("latin-1")})
+    assert r.status_code == 401
+
+
+def test_limite_concurrente_responde_503() -> None:
+    import pytest as _pytest
+
+    from fog_radar.core.errors import ApiError
+    from fog_radar.core.ratelimit import limite_concurrente
+
+    dep = limite_concurrente(1, scope="test-concurrencia")
+    primero = dep()
+    next(primero)  # toma el único cupo
+    with _pytest.raises(ApiError) as exc:
+        next(dep())
+    assert exc.value.status_code == 503
+    with _pytest.raises(StopIteration):
+        next(primero)  # libera
+    segundo = dep()
+    next(segundo)  # vuelve a haber cupo

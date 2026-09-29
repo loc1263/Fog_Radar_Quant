@@ -39,9 +39,15 @@ type ApiResult<T> = { data?: T; error?: unknown; response: Response };
  */
 export function unwrap<T>(result: ApiResult<T>): T {
 	if (result.data !== undefined && result.response.ok) return result.data;
-	const status = result.response.status || 502;
+	// Un 2xx sin cuerpo no es un error HTTP válido para `error()` (exige 400-599).
+	const status = result.response.ok ? 502 : result.response.status || 502;
 	const body = (result.error ?? {}) as { detail?: unknown; code?: unknown };
-	const message = typeof body.detail === 'string' ? body.detail : `Error ${status} del backend`;
+	const message =
+		typeof body.detail === 'string'
+			? body.detail
+			: result.response.ok
+				? 'Respuesta vacía del backend.'
+				: `Error ${status} del backend`;
 	const code = typeof body.code === 'string' ? body.code : 'backend_error';
 	// 401 del backend = la API key del servidor está mal configurada: no es culpa del usuario.
 	if (status === 401)

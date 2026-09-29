@@ -59,3 +59,15 @@ describe('toCsv', () => {
 		expect(csv).toContain('X;"Uno; ""dos""";1.00');
 	});
 });
+
+describe('csvCell (inyección CSV)', () => {
+	it('neutraliza textos que Excel ejecutaría como fórmula', async () => {
+		const { csvCell } = await import('./table');
+		expect(csvCell('=HYPERLINK("http://x","ok")')).toBe(`"'=HYPERLINK(""http://x"",""ok"")"`);
+		expect(csvCell('+1')).toBe("'+1");
+		expect(csvCell('@SUM(A1)')).toBe("'@SUM(A1)");
+		expect(csvCell('-3 %')).toBe("'-3 %");
+		expect(csvCell(-3.5)).toBe('-3.5'); // número: se exporta como número
+		expect(csvCell('AAPL')).toBe('AAPL');
+	});
+});

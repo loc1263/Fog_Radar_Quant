@@ -165,6 +165,32 @@ def test_run_en_curso_409(
     assert r.json()["code"] == "run_in_progress"
 
 
+def test_run_respeta_el_lock_global(
+    client: TestClient, auth: dict[str, str], settings: Settings, etf_corrida: Path
+) -> None:
+    """Una corrida batch (cron o consola) en curso bloquea el re-análisis por API."""
+    import threading
+
+    from fog_radar.jobs.runner import lock_pipelines
+
+    tomado, soltar = threading.Event(), threading.Event()
+
+    def batch() -> None:
+        with lock_pipelines(settings):
+            tomado.set()
+            soltar.wait(5)
+
+    t = threading.Thread(target=batch)
+    t.start()
+    tomado.wait(5)
+    try:
+        r = client.post("/api/etf/run", headers=auth)
+    finally:
+        soltar.set()
+        t.join()
+    assert r.status_code == 409 and r.json()["code"] == "run_in_progress"
+
+
 def test_run_sin_csv(client: TestClient, auth: dict[str, str]) -> None:
     r = client.post("/api/etf/run", headers=auth)
     assert r.status_code == 503

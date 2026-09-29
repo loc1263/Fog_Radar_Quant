@@ -226,3 +226,19 @@ def test_parametros_no_factibles_fallan_antes_de_correr(settings: Settings, raiz
 def test_overrides_solo_parametros_conocidos() -> None:
     with pytest.raises(ValueError, match="no ajustables"):
         paths.set_overrides({"L2_GAMMA": 1.0})
+
+
+@pytest.mark.parametrize("nombre", ["C:x.pdf", "a:b.csv", "..%2Fx.csv", ".oculto.csv", "x.exe", "a b.csv"])
+def test_descarga_rechaza_nombres_fuera_de_la_lista_blanca(
+    client: TestClient, auth: dict[str, str], datos: Path, nombre: str
+) -> None:
+    from .helpers import RUN as corrida
+
+    r = client.get(f"/api/tendencia/runs/{corrida}/files/{nombre}", headers=auth)
+    assert r.status_code == 404
+
+
+def test_fechas_sin_zona_salen_con_offset(client: TestClient, auth: dict[str, str], datos: Path) -> None:
+    """generated_at del pipeline portado no trae zona: la API publica el offset de Santiago."""
+    g = client.get("/api/tendencia/latest", headers=auth).json()["generated_at"]
+    assert g.endswith(("-03:00", "-04:00"))

@@ -79,8 +79,16 @@ def project_price(last_price, mu_i, sigma_i, horizon_years, z=Z_90):
     Proyección GBM con banda de confianza. Extraída como función pura
     (antes estaba inline en el loop de main()) para poder testearla sin
     depender de archivos en disco.
+
+    ``mu_i`` = retorno anual compuesto (CAGR); ``sigma_i`` = volatilidad anual.
+    Devuelve (mediana, percentil 5, percentil 95) del precio a ``horizon_years``.
     """
-    drift = (mu_i - 0.5 * sigma_i**2) * horizon_years
+    # Fog Radar (Fase 7, corrección): ``mu_i`` es el CAGR (retorno geométrico de
+    # pypfopt.mean_historical_return), que ya descuenta el "volatility drag". La
+    # mediana del GBM es P·(1+CAGR)^T → drift logarítmico = ln(1+CAGR)·T. El
+    # original usaba exp((μ − σ²/2)·T): trataba el CAGR como tasa continua
+    # (sobrestima con μ alto) y restaba σ²/2 otra vez (subestima con σ alta).
+    drift = math.log1p(mu_i) * horizon_years
     sigma_h = sigma_i * math.sqrt(horizon_years)
     central = last_price * math.exp(drift)
     low = last_price * math.exp(drift - z * sigma_h)

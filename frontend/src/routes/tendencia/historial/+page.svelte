@@ -277,6 +277,7 @@
 				initialSort={{ key: 'run_dir', dir: 'desc' }}
 				caption="Líderes de momentum"
 				csvFilename="tendencia_lideres_momentum"
+				pageSize={30}
 			>
 				{#snippet cell({ column, row, text })}
 					{#if column.key === 'ticker' && row.ticker}<TickerLink
@@ -294,6 +295,7 @@
 			initialSort={{ key: 'run_dir', dir: 'desc' }}
 			caption="Todas las corridas"
 			csvFilename="tendencia_corridas"
+			pageSize={50}
 		/>
 	</Section>
 {/if}

@@ -11,7 +11,7 @@ def test_project_price_zero_vol_matches_deterministic_drift():
     last_price = 100.0
     mu, sigma, horizon = 0.10, 0.0, 0.5
     central, low, high = project_price(last_price, mu, sigma, horizon)
-    expected = last_price * math.exp((mu - 0.5 * sigma**2) * horizon)
+    expected = last_price * (1 + mu) ** horizon  # mediana = P·(1+CAGR)^T (sin doble descuento σ²/2)
     assert central == pytest.approx(expected)
     assert low == pytest.approx(central)
     assert high == pytest.approx(central)
@@ -53,3 +53,12 @@ def test_trend_signal_3m_windows_react_faster_than_default():
     assert short_ma < long_ma
     signal_default, _, _ = trend_signal(prices)
     assert signal_default != "Bajista"
+
+
+def test_project_price_no_descuenta_dos_veces_la_volatilidad():
+    """Con mu = CAGR, la mediana no depende de sigma y la banda es simétrica en log."""
+    central_baja, _, _ = project_price(100.0, 0.10, 0.05, 0.5)
+    central_alta, low, high = project_price(100.0, 0.10, 0.50, 0.5)
+    assert central_alta == pytest.approx(central_baja)
+    assert math.log(high / central_alta) == pytest.approx(math.log(central_alta / low))
+    assert math.log(high / central_alta) == pytest.approx(1.645 * 0.50 * math.sqrt(0.5), rel=1e-3)
