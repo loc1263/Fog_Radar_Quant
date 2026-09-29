@@ -2,7 +2,8 @@
 
 Monorepo que unifica 4 proyectos cuantitativos (ETF_Choice, Stock_Choice_EEUU,
 Stock_Choice_Nacional, Stock_Tendencia) en un solo sitio. Plan completo y
-estado de avance: **ROADMAP.md**. Backlog: **docs/BACKLOG.md**.
+estado de avance: **ROADMAP.md**. Backlog: **docs/BACKLOG.md**. Cómo calcula cada
+módulo: **docs/METODOLOGIAS.md** (actualizarla si cambia la lógica).
 
 ## Stack (decidido, no relitigar)
 - **Frontend:** SvelteKit 2 + **Svelte 5 (runes)** + TypeScript estricto + Tailwind v4 +
@@ -48,6 +49,18 @@ estado de avance: **ROADMAP.md**. Backlog: **docs/BACKLOG.md**.
 - Ruff + pytest. Al portar lógica de un proyecto original, agregar **test de
   paridad** (mismo input → mismo output que el original).
 - PDFs: estilo común en `core/pdf` (paleta, Carlito incluida, tablas, encabezado/pie).
+  Textos ≥ 10 pt, encabezados de tabla claros (nunca fondos oscuros), números a la derecha.
+- **Yahoo Finance:** todo yfinance pasa por la sesión común de `core/yahoo.py` (espaciado
+  global, reintento ante 429). Históricos con caché: `yahoo.descargar_historial`. Dentro de un
+  request web, envolver las llamadas en `yahoo.interactivo()` (sin backoff largo).
+- **FX:** `core/fx.py` (spot `FxRates`, series `serie_a_usd`, cualquier moneda ISO 4217 y
+  subunidades GBp/ZAc/ILA). No agregar tablas de monedas por módulo.
+- Endpoints costosos: `rate_limit(...)` por IP **y** `limite_concurrente(n, scope=...)`
+  (503 `busy`). Cualquier escritura de datos de un módulo desde la API toma el lock global
+  `jobs.runner.lock_pipelines`.
+- Correcciones de lógica respecto del original: se documentan en `docs/PARIDAD.md`
+  ("Correcciones cuantitativas") y el test de paridad verifica la relación exacta con el
+  resultado original.
 
 ## Convenciones de módulos (ADR 0002)
 - Backend: `modules/<modulo>/{scoring|scanner…, extractor, storage, schemas, service, router, pipeline}.py`;
@@ -55,6 +68,8 @@ estado de avance: **ROADMAP.md**. Backlog: **docs/BACKLOG.md**.
 - En disco, el formato del proyecto original; en la API, claves snake_case. Parámetros del
   modelo (pesos, umbrales) viajan en la respuesta: el front no los duplica.
 - Fechas con zona (`Settings.timezone`); en el front, `fmtDate` (zona fija).
+- Cada módulo expone `modules/<modulo>/hub.py` (`resumen_hub`, `indice_busqueda`) para el
+  hub y el buscador global (`fog_radar/transversal`, `GET /api/hub`, `GET /api/buscar`).
 - Front: `src/lib/modules/<modulo>/` para lógica y componentes propios del módulo.
 - Paridad firmada en `docs/PARIDAD.md` antes de dar un módulo por terminado.
 

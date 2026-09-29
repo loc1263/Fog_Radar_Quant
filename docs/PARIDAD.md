@@ -3,6 +3,22 @@
 Un módulo se da por migrado cuando, con los mismos datos, el sitio nuevo muestra lo mismo que
 el proyecto original. Las diferencias intencionales quedan anotadas.
 
+## Correcciones cuantitativas (Fase 7, 2026-09-29)
+
+Una revisión con criterios estándar de finanzas cuantitativas encontró tres errores de cálculo
+heredados de los originales. Se corrigieron; **desde esta fecha esas salidas ya no son iguales
+al original a propósito**. Los tests de paridad siguen comparando todo lo demás y verifican la
+relación exacta entre el valor nuevo y el original.
+
+| Módulo | Error en el original | Corrección | Cómo se verifica |
+|---|---|---|---|
+| EEUU · Black-Litterman | π = δΣw es retorno **en exceso** de rf, pero se usaba como retorno total y el optimizador de Sharpe le restaba rf otra vez. Con views neutras (score 50) no recuperaba los pesos de mercado (p. ej. 77/23/0 en vez de 67/22/11 con rf = 4 %). | π = δΣw + rf (igual que `pypfopt.market_implied_prior_returns`); Q y el posterior quedan en retornos totales. | `test_black_litterman`: π, Q y posterior = original + rf (exacto); `test_black_litterman_con_views_neutras_recupera_el_mercado`. La "mejor combinación BL" cambia en consecuencia. |
+| Tendencia · proyección 6 m | `exp((μ − σ²/2)·T)` con μ = CAGR de `pypfopt.mean_historical_return`: trata el CAGR como tasa continua (sobrestima con μ alto) y descuenta la volatilidad dos veces (subestima con σ alta). | Mediana = P·(1+μ)^T; banda 90 % = mediana·exp(±1,645·σ·√T) (el ancho no cambia). | `test_parity`: todas las columnas iguales salvo la proyección, que cumple nuevo = original·exp((ln(1+μ) − μ + σ²/2)·T); `test_trend_forecast`. |
+| ETF · beta (y Treynor) | Retornos del ETF y del mercado emparejados **por posición** (últimos N de cada serie): si faltaba un día, todo lo anterior quedaba desfasado y el beta se sesgaba hacia 0. | Emparejados **por fecha** (join interno). | `test_performance_y_riesgo` (serie con un día faltante → β ≈ 1). Afecta a la próxima corrida del screener; los CSV ya generados no cambian. |
+
+Otras observaciones de la revisión que cambian la **metodología** (no son errores de cálculo)
+quedaron en `docs/BACKLOG.md` (TD-MODEL-4 … TD-MODEL-9) para decidirlas con un backtest.
+
 ## Chile / IPSA (`Stock_Choice_Nacional`) — ✅ 2026-09-27
 
 | Ítem | Cómo se verificó | Estado |
@@ -103,3 +119,4 @@ el proyecto original. Las diferencias intencionales quedan anotadas.
 - Nuevo: `/api/tendencia/excluidos` y aviso visible de tickers excluidos por moneda (TD-OPS-2, TD-DATA-1); validación de factibilidad de la configuración antes de correr (TD-MODEL-3).
 - La sección "Tendencia 6m" vive en `/tendencia/proyeccion`; el análisis y el tamaño del portafolio van en la URL (`?analisis=us&n=5`); los filtros del historial también (formulario GET, sin JavaScript).
 - Gráficos del historial por corrida (dos corridas del mismo día se distinguen: `24/09 #2`).
+- Fase 7: la proyección a 6 meses usa la mediana P·(1+CAGR)^T (ver "Correcciones cuantitativas"); tablas del PDF con encabezado claro, números alineados a la derecha y textos ≥ 10 pt; cualquier moneda ISO 4217 tiene par FX (antes solo 6).

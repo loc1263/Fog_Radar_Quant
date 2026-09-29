@@ -40,7 +40,7 @@ Fog_Radar_Quant/
 │   │   ├── main.py                 # create_app(): monta routers (solo API, no sirve el frontend)
 │   │   ├── settings.py             # pydantic-settings (rutas, puertos, claves)
 │   │   ├── core/                   # código compartido
-│   │   │   ├── yf_client.py        # yfinance robusto (reintentos, rate-limit, cache)
+│   │   │   ├── yahoo.py            # yfinance común (espaciado global, 429, caché)
 │   │   │   ├── fx.py               # tasas de cambio
 │   │   │   ├── stats.py            # winsorización, z-score, momentum 12-1, indicadores
 │   │   │   ├── pdf/                # estilos ReportLab comunes (Calibri/Carlito, paleta)
@@ -239,30 +239,40 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 - [x] `scripts/fixtures_e2e.py`: instala en `data/` los fixtures de los 4 módulos (+ `history.db` por backfill) para CI o una demo local.
 - ⚠️ Pendiente del usuario: correr el pipeline completo contra Yahoo/FRED en Windows (`uv run python -m fog_radar.jobs tendencia --macro`, ~10 min).
 
-### Fase 7 — Consolidación y valor agregado (≈2–3 sesiones)
-- [ ] Extraer código repetido a `core/`: cliente yfinance único (rate-limit, reintentos, caché en disco), FX (incl. `build_dataset` de Tendencia), stats, estilos PDF (`core/pdf` ✅ ya existe y lo usa ETF; falta migrar `reporting/theme.py` de Tendencia).
-- [ ] Opciones con valor en el CLI de jobs (TD-CFG-1: `--top-n`).
-- [ ] Macro siempre al día (TD-MACRO-1): agregar `--macro` a Tendencia en la corrida diaria (programa `diario` en `jobs/schedule.py` → regenerar `deploy/backend/crontab`). Requiere `FRED_API_KEY` en el servidor; suma unos segundos de descarga FRED.
+### Fase 7 — Consolidación y valor agregado ✅ completada 2026-09-29
+- [x] **Cliente común de Yahoo** (`core/yahoo.py`): yfinance (1.x) guarda una sesión *singleton*; `yahoo.instalar()` la reemplaza por una sesión curl_cffi que aplica a **todo el proceso** (los 4 módulos e hilos) un espaciado mínimo global entre requests (0,35 s + jitter), reintento con backoff exponencial ante HTTP 429 (3) y reintentos de red (2), y cuenta requests/429/esperas (quedan en el mensaje del job). Se instala en cada módulo del runner y al arrancar la API; dentro de un request web (`yahoo.interactivo()`) no hay backoff largo. La caché de zonas horarias de yfinance vive en `data/_cache/yfinance`. Parámetros `YAHOO_*` en `.env`. Las pausas propias de cada módulo se mantienen (paridad).
+- [x] **Caché en disco de históricos** (ex `tendencia/net/robust_yf.py`) generalizada: `yahoo.descargar_historial` / `descargar_varios` (escritura atómica); `robust_yf` queda como adaptador con los parámetros de Tendencia.
+- [x] **FX común** (`core/fx.py`, cierra TD-DATA-1): `par_usd`, `serie_a_usd` (forward-fill sin mirar al futuro) y cualquier moneda ISO 4217 + subunidades de Yahoo (GBp, ZAc, ILA). Tendencia (`fetch_fx`, `build_dataset`, `discovery`) ya no depende de una tabla de 6 monedas (`config.fx_ticker_for`).
+- [x] **PDF de Tendencia sobre `core/pdf`**: paleta, fuentes (Calibri → Carlito incluida → Helvetica, con cursiva) y matplotlib a juego desde `core/pdf`; `reporting/theme.py` queda como alias. Además, por las preferencias de formato: encabezados de tabla claros (antes azul oscuro con texto blanco), números alineados a la derecha, textos ≥ 10 pt en gráficos y tablas (alto del gráfico según la cantidad de barras). También el PDF de ETF (categoría 9 → 10 pt).
+- [x] "Stats" comunes: **se descarta a propósito**. Los cálculos de Sharpe/anualización de cada módulo difieren en frecuencia (diaria/semanal), convención de rf y librería (pypfopt vs. propio) y están cubiertos por los tests de paridad; unificarlos cambiaría resultados sin beneficio.
+- [x] **TD-CFG-1 — opciones con valor en el CLI de jobs**: `PipelineOption(tipo=int|float, minimo, maximo)`; Tendencia acepta `--top-n N`, `--top-n-us N`, `--max-weight X` (validadas por argparse y por `validar_configuracion()`), valen solo para esa corrida (`paths.set_overrides`, sobreviven al `reload` de `config`) y quedan en `run_manifest.json` (`parametros` y `parametros_sobrescritos`).
 - [x] **Corridas batch en secuencia** (✅ 2026-09-28): `fog_radar/jobs/runner.py` (lock global entre procesos, pausa entre pipelines, reintento con espera, la secuencia sigue si un módulo falla, aviso por `ALERT_WEBHOOK_URL` — US-DATA-04 y US-DEVOPS-04) y `fog_radar/jobs/schedule.py` (única fuente de la programación). CLI: `--todos [--solo …] [--offline]`, `--programa semanal|diario`, `--esperar`, `--crontab`, `--list`.
   - **Producción (Linux):** ETFs los **lunes 06:00**; Chile → EEUU → Tendencia de **lunes a viernes 18:00**, en secuencia. `deploy/backend/crontab` (generado y verificado por test) + `deploy/backend/README.md`.
   - **Desarrollo (Windows):** `python scripts/run_all_pipelines.py` o doble clic en `correr_pipelines.bat`: corre los 4 a pedido (Chile → EEUU → Tendencia → ETF), con confirmación, `--solo`, `--offline` (sin Yahoo) y log en `data/_jobs/logs/`.
   - Tendencia ganó `--skip-discovery` (reutiliza el último universo) para el modo offline.
   - `/estado` muestra las corridas programadas y la próxima ejecución (`GET /api/jobs/programas`).
-- [ ] **Hub** con datos reales (fecha, frescura, top 3 por módulo). (`/estado` ya muestra jobs y programación.)
-- [ ] Funciones transversales (opcionales): **buscador global de ticker** (en qué módulos aparece y con qué score), comparador EEUU vs. Tendencia, informe PDF consolidado semanal de los 4 módulos.
-- **Listo cuando:** un solo comando actualiza todo y el hub refleja el estado real.
+- [x] **Hub con datos reales** (`GET /api/hub`): por módulo, fecha de los datos, antigüedad, **frescura** ("al día" si los datos son posteriores a la última corrida programada, con 3 h de margen para que termine; si no, "atrasado"), top 3 con su métrica, tamaño del universo, programa y próxima corrida, último job. Un módulo con datos ilegibles no tumba el hub (`frescura: error`). Cada módulo aporta `modules/<m>/hub.py`.
+- [x] **Buscador global de ticker** (`GET /api/buscar?q=`, rate limit 120/min): índice de la última corrida de cada módulo (Chile: ranking IPSA; EEUU: candidatos con marca Top 15; ETF: universo depurado con marca Top 15; Tendencia: portafolios y líderes de momentum), coincidencia exacta de ticker (con o sin sufijo de bolsa), prefijo o nombre (sin tildes), caché de 60 s. En el sitio: caja en el menú, sección en el hub y página `/buscar`; cada resultado abre la vista del módulo **ya filtrada** (`?q=` en Chile, EEUU candidatos y ETF universo; `?ticker=` en el historial de Tendencia).
+- [x] **Revisión de calidad** (TI + cuantitativa, 2026-09-29): 3 correcciones de cálculo (Black-Litterman con rf, mediana GBM de Tendencia, beta de ETF por fecha — `docs/PARIDAD.md`), 11 de seguridad/robustez y 9 del frontend (ver `docs/BACKLOG.md`, "Revisión de la Fase 7"). Lo que cambia la metodología quedó en el backlog (TD-MODEL-4…9, US-DATA-08) para decidirlo con backtest.
+- [ ] Opcionales (no bloquean): comparador EEUU vs. Tendencia, informe PDF consolidado semanal de los 4 módulos.
+- **Listo cuando:** un solo comando actualiza todo y el hub refleja el estado real. ✅
 
-### Fase 8 — Calidad, despliegue en 2 servidores y cierre (≈2–3 sesiones)
-- [ ] E2E Playwright: una prueba de humo por módulo (carga, tabla con filas, gráfico renderizado).
+### Fase 8 — Calidad, despliegue en 2 servidores y cierre
+**Parte de desarrollo** (✅ 2026-09-29, salvo lo que depende del usuario):
+- [x] E2E Playwright: prueba de humo por módulo + hub + buscador (**26 E2E**).
+- [x] Local: `iniciar_dev.py` / `iniciar.bat` levantan los 2 procesos (verificado).
+- [x] Documentación: `README.md`, `docs/METODOLOGIAS.md` (metodología de los 4 módulos, escrita desde el código actual) y `CLAUDE.md` (convenciones nuevas: cliente Yahoo, FX, límites de concurrencia, `hub.py`).
+- [ ] ⚠️ Usuario: correr los 4 pipelines completos contra Yahoo en Windows (`python scripts/run_all_pipelines.py`) y revisar el sitio con datos reales.
+- [ ] ⚠️ Usuario: verificación final de paridad con los 4 originales → archivar los proyectos antiguos.
+
+**Parte de producción** — ⏸ **en pausa por decisión del usuario** (no se hace hasta tener el desarrollo depurado):
 - [ ] **Servidor backend**: Docker (uvicorn con varios workers) + volumen persistente para `data/` + cron de pipelines + Caddy con HTTPS; firewall que solo acepte el puerto 443 desde la IP del servidor frontend (y SSH).
-- [ ] **Servidor frontend**: Docker (`node build`) + Caddy con HTTPS en el dominio público; variables `ORIGIN`, `PRIVATE_API_URL`, `PRIVATE_API_KEY`.
+- [ ] **Servidor frontend**: Docker (`node build`) + Caddy con HTTPS en el dominio público; variables `ORIGIN`, `PRIVATE_API_URL`, `PRIVATE_API_KEY`, `ADDRESS_HEADER`/`XFF_DEPTH` (SEC-PROD-1).
 - [ ] Dominios/DNS (ej. `quant.midominio.cl` y `api.midominio.cl`), rotación de la API key, respaldo diario de `data/` (incluye `history.db`).
 - [ ] Autenticación de usuarios en el frontend si el sitio no será público (p. ej. login simple con sesión en cookie, manejado en `hooks.server.ts`).
 - [ ] CI/CD: GitHub Actions construye y publica imágenes separadas (`fog-radar-api`, `fog-radar-web`) y despliega cada servidor de forma independiente.
-- [ ] Monitoreo básico: `/api/health` + uptime check; logs de pipelines accesibles desde `/estado`.
-- [ ] Local: `iniciar_dev.py` / `iniciar.bat` siguen levantando los 2 procesos para desarrollo.
-- [ ] Documentación: `README.md`, `docs/METODOLOGIAS.md` (reúne las metodologías de los 4 CLAUDE.md/README), `CLAUDE.md` del monorepo.
-- [ ] Verificación final de paridad con los 4 originales → archivar los proyectos antiguos.
+- [ ] Monitoreo básico: `/api/health` + uptime check; logs de pipelines accesibles desde `/estado`; mensajes de error genéricos en prod (SEC-PROD-2).
+- [ ] **TD-MACRO-1**: agregar `--macro` a Tendencia en la corrida diaria (programa `diario` en `jobs/schedule.py` → regenerar `deploy/backend/crontab`). Requiere `FRED_API_KEY` en el servidor; suma unos segundos de descarga FRED.
 - **Listo cuando:** los 4 proyectos originales ya no son necesarios para el uso diario.
 
 ---
@@ -278,7 +288,7 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 | 4 | EEUU ✅ | 2–3 | 9 |
 | 5 | ETF ✅ | 3 | 12 |
 | 6 | Tendencia ✅ | 3 | 15 |
-| 7 | Consolidación | 2–3 | 18 |
+| 7 | Consolidación ✅ | 2–3 | 18 |
 | 8 | Calidad, despliegue en 2 servidores y cierre | 2–3 | 21 |
 
 *"Sesión" = un bloque de trabajo enfocado de unas horas. Hitos visibles: fin de Fase 3 (primer módulo completo en el sitio nuevo) y fin de Fase 6 (paridad total).*
@@ -320,4 +330,6 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 
 1. ~~Orden de módulos~~ ✅ confirmado (Chile → EEUU → ETF → Tendencia) · ~~Librería de gráficos~~ ✅ LayerChart · ~~Modo de despliegue~~ ✅ SvelteKit con `adapter-node` (SSR) + FastAPI en **2 servidores separados**, patrón BFF.
 2. Pendiente de definir más adelante (no bloquea): proveedor de hosting, dominio, y si el sitio tendrá login o será público. Repositorio: **privado** ✅.
-3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅ · ~~Fase 2~~ ✅ · ~~Fase 3~~ ✅ Chile · ~~Fase 4~~ ✅ EEUU · ~~Fase 5~~ ✅ ETF · ~~Fase 6~~ ✅ Tendencia (**paridad total de los 4 módulos**). **En curso: Fase 7 — consolidación** (corridas batch ✅). Antes: correr los 4 pipelines contra Yahoo en Windows (`uv run python -m fog_radar.jobs <modulo>`).
+3. ~~Fase 0~~ ✅ · ~~Fase 1~~ ✅ · ~~Fase 2~~ ✅ · ~~Fase 3~~ ✅ Chile · ~~Fase 4~~ ✅ EEUU · ~~Fase 5~~ ✅ ETF · ~~Fase 6~~ ✅ Tendencia (**paridad total de los 4 módulos**) · ~~Fase 7~~ ✅ consolidación · Fase 8: parte de desarrollo ✅.
+4. **Siguiente:** el usuario corre los 4 pipelines contra Yahoo en Windows (`python scripts/run_all_pipelines.py`) y depura con datos reales. La **puesta en producción queda en pausa** hasta que el desarrollo esté depurado (Fase 8, parte de producción, incluye TD-MACRO-1).
+5. Después (B, con backtest): TD-MODEL-4…9 y US-DATA-08 (`docs/BACKLOG.md`).

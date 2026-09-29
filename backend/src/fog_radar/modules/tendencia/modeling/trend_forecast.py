@@ -9,11 +9,12 @@ Metodología (transparente y deliberadamente simple para el MVP):
      Ambas señales son solo informativas: no intervienen en la
      proyección ni en los pesos de Markowitz.
   2. Proyección de precio a 6 meses tipo Movimiento Geométrico Browniano
-     (GBM), usando el retorno esperado anualizado (mu) y la volatilidad
-     anualizada (sigma) estimados a partir de la matriz de covarianza
-     histórica:
-         precio_6m = precio_actual * exp((mu - 0.5*sigma^2)*0.5)
-     con banda de confianza 90% usando sigma*sqrt(0.5).
+     (GBM), usando el retorno anual compuesto histórico (mu = CAGR) y la
+     volatilidad anualizada (sigma) de la matriz de covarianza histórica:
+         precio_6m (mediana) = precio_actual * (1 + mu) ** 0.5
+     con banda de confianza 90% = mediana * exp(±1.645 * sigma * sqrt(0.5)).
+     (Fog Radar, Fase 7: el original usaba exp((mu - 0.5*sigma^2)*0.5), que
+     trata el CAGR como tasa continua y descuenta dos veces la volatilidad.)
      Esto NO es una predicción determinística: es una proyección
      estadística basada en el comportamiento histórico de 5 años. Debe
      leerse como rango de escenarios, no como pronóstico garantizado.

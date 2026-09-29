@@ -18,8 +18,8 @@
 
 | Etiqueta | Ítems |
 |---|---|
-| A — Durante la migración | 34 |
-| B — Después | 23 |
+| A — Durante la migración | 34 (+2 de producción de la revisión de la Fase 7) |
+| B — Después | 23 (+7 de metodología de la revisión de la Fase 7) |
 | C — Descartar / cerrar | 3 |
 | Decidido (TD-LIC-1: repo privado) | 1 |
 | **Total** | **61** (16 Chile · 22 EEUU · 9 ETF · 13 Tendencia · 1 del sistema de diseño) |
@@ -54,7 +54,7 @@
 | US-DEVOPS-04 | Sin alertas si falla un pipeline | 7 ✅ | `core/jobs.py` registra estado; webhook/correo al fallar + página `/estado`. |
 | US-DATA-04 | El batch no reintenta la corrida completa | 7 ✅ | Reintento con backoff en el runner común de jobs. |
 | TD-OPS-1 | Sin lockfile | 0 ✅ | `uv.lock` en el monorepo. |
-| CL (reintentos) | Sin reintento por ticker ante errores transitorios | 7 | Cliente yfinance común (`core/yf_client.py`, base: `robust_yf.py` de Tendencia). |
+| CL (reintentos) | Sin reintento por ticker ante errores transitorios | 7 ✅ | `core/yahoo.py`: sesión común para todo yfinance (espaciado global, reintento con backoff ante 429, reintentos de red) + `descargar_historial` con caché (ex `robust_yf`). |
 
 ### Datos y robustez
 
@@ -63,10 +63,10 @@
 | CL (CSV corrupto) | Manejo de CSV con columnas faltantes | 3 ✅ | Validación al cargar + `response_model` Pydantic; 503 `invalid_data` con el nombre de las columnas faltantes. |
 | US-BACK-01 | Sin caché en `/evaluate` | 4 ✅ | `TTLCache` de 5 min por ticker. |
 | TD-MODEL-3 | Sin validación de factibilidad de la configuración | 6 ✅ | `config.validar_configuracion()` antes de cada corrida (`top_n × MAX_WEIGHT ≥ 1`, `top_n ≤ universo`, portafolios reducidos < `top_n`); el pipeline falla con el detalle. |
-| TD-DATA-1 | FX limitado a 6 monedas + sin aviso visible | 6 ✅ (aviso) / 7 (FX común) | Aviso visible en el resumen y lista en Limitaciones cuando se excluyen tickers por moneda ✅. Pasar `build_dataset` a `core/fx.py` queda para la Fase 7 (consolidación). |
+| TD-DATA-1 | FX limitado a 6 monedas + sin aviso visible | 6 ✅ (aviso) / 7 ✅ (FX común) | Aviso visible en el resumen y en Limitaciones ✅. `core/fx.py` (`par_usd`, `serie_a_usd`): cualquier moneda ISO 4217 y subunidades GBp/ZAc/ILA ✅. |
 | TD-OPS-2 | `excluded_tickers.txt` sin encabezado | 6 ✅ | `GET /api/tendencia/excluidos` (ticker, nombre, motivo) + tabla con CSV en `/tendencia/limitaciones`. |
-| TD-CFG-1 | Parámetros del modelo solo editables en código | 7 | Requiere opciones con valor en el CLI de jobs (hoy solo banderas): pasa a la Fase 7 junto con `run_all_pipelines.py`. Los parámetros ya viajan por la API (`parametros`). |
-| TD-MACRO-1 | Datos macro (FRED) solo se actualizan con `--macro` manual | 7 | Agregar `--macro` a Tendencia en el programa `diario` (lun–vie 18:00) para que la macro esté siempre al día. Requiere `FRED_API_KEY` en el servidor; +segundos de descarga. Pendiente, no implementado. |
+| TD-CFG-1 | Parámetros del modelo solo editables en código | 7 ✅ | `python -m fog_radar.jobs tendencia --top-n N --top-n-us N --max-weight X` (validados, solo para esa corrida, quedan en `run_manifest.json`). |
+| TD-MACRO-1 | Datos macro (FRED) solo se actualizan con `--macro` manual | 8 (producción) | Agregar `--macro` a Tendencia en el programa `diario` (lun–vie 18:00) para que la macro esté siempre al día. Requiere `FRED_API_KEY` en el servidor; +segundos de descarga. **Pendiente por decisión del usuario**: se hace junto con la puesta en producción. |
 
 ### Frontend (lo resuelven los componentes comunes)
 
@@ -119,7 +119,7 @@ Pedido en los 4 proyectos. Depende de B1 (hacen falta corridas acumuladas).
 |---|---|
 | US-DATA-01 | Universo EEUU frágil (scraping de Wikipedia): segundo scraper de respaldo |
 | TD-DISC-2 | Deduplicación por ISIN en vez de por nombre |
-| TD-DATA-2 | Taxonomía de sectores común (GICS) para los 4 módulos. También habilita el buscador global y la comparación entre módulos. |
+| TD-DATA-2 | Taxonomía de sectores común (GICS) para los 4 módulos. Habilita la comparación entre módulos (el buscador global ya existe desde la Fase 7). |
 
 ### Otros
 
@@ -132,12 +132,43 @@ Pedido en los 4 proyectos. Depende de B1 (hacen falta corridas acumuladas).
 
 ---
 
+## Revisión de la Fase 7 (2026-09-29)
+
+Revisión del código con criterios estándar de TI (OWASP API Top 10, WCAG 2.1 AA) y de finanzas
+cuantitativas. **Corregido** en la Fase 7 (detalle en `docs/PARIDAD.md` y en el commit):
+Black-Litterman con rf, mediana GBM de Tendencia, beta de ETF por fecha, `POST /api/etf/run`
+bajo el lock global, API key no ASCII, rate limit antes de la autenticación, límite de
+concurrencia en endpoints costosos, lista blanca de archivos descargables, clave de prod
+robusta, fechas con zona, rotación del registro de jobs, inyección CSV, accesibilidad del
+sub-menú, paginación del historial, PDF de Tendencia (encabezados claros, ≥ 10 pt).
+
+### Pendiente — metodología (B; cambian rankings: decidir con backtest, épica B2)
+
+| ID | Ítem | Propuesta |
+|---|---|---|
+| TD-MODEL-4 | ETF: Sharpe/Treynor con rf fija de 2 % (`etf/screener/config.py`); la T-bill a 3 meses está cerca de 4 %. Favorece a los fondos de baja volatilidad. | Leer rf del ^IRX (como Tendencia) con respaldo configurable. |
+| TD-MODEL-5 | EEUU: el MACD del score técnico está en dólares (histograma sin normalizar): una acción de USD 900 satura el puntaje y una de USD 15 queda en 50. | Puntuar `hist / precio · 100` con cortes re-escalados. |
+| TD-MODEL-6 | Chile: el pilar momentum promedia 5D…1A, todos hasta hoy (incluye el mes más reciente, con efecto reversión de corto plazo) y pesa 2,0. | 12-1 y 6-1 (saltar el último mes) o quitar 5D/1M del pilar. |
+| TD-MODEL-7 | Chile: P/E, EV/EBITDA y D/E negativos pasan a NaN (`solo_positivos`): una empresa con pérdidas no se penaliza en Valor. | Usar rendimientos (E/P, EBITDA/EV) o asignar el peor z-score a los ≤ 0. |
+| TD-MODEL-8 | ETF momentum: sin filtro MAD de atípicos y con min-max (un ETF apalancado comprime al resto); `Q_raw = 0,5·Sharpe + 0,5·Treynor` mezcla escalas; la "consistencia" compara con el archivo **más antiguo** (la brecha crece con el archivo). | Mismo filtro MAD del ranking o percentiles; normalizar por rango antes de promediar; comparar contra un rezago fijo (~26 semanas). |
+| TD-MODEL-9 | Tendencia: la covarianza muestral por pares con historias distintas depende del arreglo espectral de pypfopt; huecos > 2 semanas se pierden del CAGR. | Junto con TD-MODEL-1 (Ledoit-Wolf). |
+| US-DATA-08 | EEUU: la "mejor combinación" se elige por retorno esperado histórico dentro de la muestra (sesgo de selección); en BL rankea con medias históricas y no con el posterior. | Rankear por Sharpe fuera de muestra (con B2) y, en BL, por el posterior. |
+
+### Pendiente — producción (Fase 8, no se hace hasta depurar el desarrollo)
+
+| ID | Ítem | Propuesta |
+|---|---|---|
+| SEC-PROD-1 | Detrás de Caddy sin `ADDRESS_HEADER`/`XFF_DEPTH`, todos los usuarios comparten un balde de rate limit. | `hooks.server.ts` falla al arrancar si `ORIGIN` está sin `ADDRESS_HEADER`; revisar el salto de `X-Forwarded-For` que se toma en el backend. |
+| SEC-PROD-2 | Mensajes internos en `/api/jobs` y errores de Yahoo/SQLite visibles en el sitio público. | En prod: mensaje genérico + `code`, detalle solo en el log (el hub ya lo hace). |
+
+---
+
 ## C — Descartar / cerrar
 
 | ID | Motivo |
 |---|---|
 | CL (paginación/virtualización) | Universo de ~30 acciones; `DataTable` puede agregarla después si hiciera falta. |
-| US-DATA-06 | Views de Black-Litterman heurísticas: se documenta como límite conocido en `docs/METODOLOGIAS.md`. |
+| US-DATA-06 | Views de Black-Litterman heurísticas: documentado como límite conocido en `docs/METODOLOGIAS.md` ✅. |
 | TD-DISC-3 | Umbrales del screener "no validados": ya hay 6 corridas reales en `output/`. Revisar los logs una vez y cerrar. |
 
 ## Decisiones tomadas
