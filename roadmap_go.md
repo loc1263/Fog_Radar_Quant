@@ -295,8 +295,8 @@ Todo el código vive en `backend-go/`; `go vet`, `golangci-lint` (0 issues) y `g
 - [ ] **Revisión visual de los PDF** de ETF y Tendencia contra los de Python (el maquetado de `go-pdf/fpdf` no es idéntico al de
   ReportLab: mismos anchos, fuentes y paleta; el salto de página puede variar; los gráficos de Tendencia se dibujan sin matplotlib).
 - [ ] **Screener de universo de Tendencia** (EquityQuery de Yahoo: crumb + POST): `gohoo` no lo expone. Go reutiliza el
-  snapshot de hoy o el último (como `--skip-discovery`) y, sin ninguno, la lista de respaldo. Opciones: contribuir el
-  screener a `gohoo` o dejar el descubrimiento semanal en Python.
+  snapshot de hoy o el último (como `--skip-discovery`) y, sin ninguno, la lista de respaldo. Plan: ampliar `gohoo` de forma aditiva
+  (ver `docs/GOHOO_REQUISITOS.md`: screener, quote en lote, `Info`, ganchos de tráfico).
 - [ ] Cola en SQLite con workers (red 1 / cómputo N): opcional, no bloquea el corte.
 - [ ] **Fase 9**: corrida en sombra 1–2 semanas, `docker build` (el daemon no corría), Caddy real, prueba de carga,
   actualizar `CLAUDE.md`, `docs/METODOLOGIAS.md`, `docs/PARIDAD.md`, `ROADMAP.md` y `docs/BACKLOG.md`
