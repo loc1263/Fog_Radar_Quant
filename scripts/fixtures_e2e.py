@@ -2,8 +2,8 @@
 
     cd backend && uv run python ../scripts/fixtures_e2e.py [--data-dir ../data]
 
-Copia las corridas reales usadas en los tests de paridad de cada módulo y, para
-Tendencia, arma history.db con el backfill. Descomprime los ``.gz``. No borra
+Copia las corridas reales usadas en los tests de paridad de cada módulo y arma el
+history.db de cada uno con el backfill. Descomprime los ``.gz``. No borra
 nada: si un archivo ya existe, se reemplaza.
 """
 
@@ -50,15 +50,16 @@ def main() -> int:
     copiar(td / "data", data / "tendencia")
     copiar(td / "expected", data / "tendencia" / "output")
 
-    # history.db de Tendencia a partir de la corrida copiada.
+    # history.db de cada módulo a partir de las corridas copiadas.
     env = {"DATA_DIR": str(data), "ENV": "dev"}
     import os
 
-    subprocess.run(
-        [sys.executable, "-m", "fog_radar.jobs", "tendencia", "--backfill"],
-        check=True,
-        env={**os.environ, **env},
-    )
+    for modulo in ("cl_stocks", "us_stocks", "etf", "tendencia"):
+        subprocess.run(
+            [sys.executable, "-m", "fog_radar.jobs", modulo, "--backfill"],
+            check=True,
+            env={**os.environ, **env},
+        )
     print(f"Fixtures instalados en {data}")
     return 0
 

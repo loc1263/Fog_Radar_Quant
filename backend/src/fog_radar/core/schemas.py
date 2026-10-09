@@ -141,3 +141,33 @@ class ResultadoBusqueda(EntradaBusqueda):
 class BusquedaResponse(Out):
     consulta: str
     resultados: list[ResultadoBusqueda]
+
+
+# --- Historial (history.db de cada módulo, ver core.histdb) ----------------------
+
+EstadoDiff = Literal["nuevo", "salio", "sigue", "fuera"]
+
+
+class HistDiffFila(Out):
+    """Un ticker comparado entre dos corridas. ``estado`` se mide contra el top
+    (``top_n``) si el módulo tiene uno, o contra la presencia en el ranking si no:
+    ``nuevo`` (entró), ``salio``, ``sigue`` (en ambas) o ``fuera`` (en ninguna de
+    las dos dentro del top, pero sí en el ranking)."""
+
+    ticker: str
+    nombre: str | None = None
+    rank_desde: int | None = None
+    rank_hasta: int | None = None
+    score_desde: float | None = None
+    score_hasta: float | None = None
+    delta_rank: int | None = None
+    """Positivo = subió posiciones."""
+    delta_score: float | None = None
+    estado: EstadoDiff
+
+
+class HistDiff(Out):
+    desde: str
+    hasta: str
+    top_n: int | None = None
+    filas: list[HistDiffFila]

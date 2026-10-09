@@ -40,13 +40,22 @@ export const load: PageServerLoad = async (event) => {
 		pedido && TICKER.test(pedido) && lista.some((t) => t.ticker === pedido)
 			? pedido
 			: (lista[0]?.ticker ?? null);
-	const trayectoria = ticker
-		? await tryCall(
-				api.GET('/api/tendencia/history/ticker/{ticker}', {
-					params: { path: { ticker }, query: { analysis } }
-				})
-			)
-		: null;
+	const [trayectoria, universo] = ticker
+		? await Promise.all([
+				tryCall(
+					api.GET('/api/tendencia/history/ticker/{ticker}', {
+						params: { path: { ticker }, query: { analysis } }
+					})
+				),
+				// Pesos de Markowitz del universo completo (history.db v2): cuán cerca del
+				// top estuvo el ticker en las corridas en que no quedó seleccionado.
+				tryCall(
+					api.GET('/api/tendencia/history/universe/{ticker}', {
+						params: { path: { ticker }, query: { analysis } }
+					})
+				)
+			])
+		: [null, null];
 
 	return {
 		filtros: { analisis: analysis ? 'us' : '', desde, hasta, ticker },
@@ -55,6 +64,7 @@ export const load: PageServerLoad = async (event) => {
 		sectors: sectors.ok ? sectors.data : [],
 		leaders: leaders.ok ? leaders.data : [],
 		tickers: lista,
-		trayectoria
+		trayectoria,
+		universo: universo?.ok ? universo.data : []
 	};
 };

@@ -84,16 +84,24 @@ def _tendencia(settings, **opts) -> str | None:  # noqa: ANN001 - import diferid
     return run(settings, **opts)
 
 
+# Todos los módulos: reconstruye history.db desde los archivos de corridas (core.histdb).
+_BACKFILL = PipelineOption("--backfill", "Solo carga en history.db las corridas ya guardadas en disco.")
+
 # modulo -> pipeline. Se completa al portar cada módulo (Fases 3-6).
 PIPELINES: dict[str, Pipeline] = {
     "cl_stocks": Pipeline(
         _cl_stocks,
-        (PipelineOption("--solo-scoring", "Re-puntúa el último CSV de indicadores sin descargar de Yahoo."),),
+        (
+            PipelineOption(
+                "--solo-scoring", "Re-puntúa el último CSV de indicadores sin descargar de Yahoo."
+            ),
+            _BACKFILL,
+        ),
     ),
-    "us_stocks": Pipeline(_us_stocks),
+    "us_stocks": Pipeline(_us_stocks, (_BACKFILL,)),
     "etf": Pipeline(
         _etf,
-        (PipelineOption("--solo-analisis", "Re-analiza el CSV vigente sin descargar de Yahoo."),),
+        (PipelineOption("--solo-analisis", "Re-analiza el CSV vigente sin descargar de Yahoo."), _BACKFILL),
     ),
     "tendencia": Pipeline(
         _tendencia,
@@ -104,7 +112,7 @@ PIPELINES: dict[str, Pipeline] = {
             PipelineOption("--static-universe", "Usa la lista fija de respaldo en vez del screener."),
             PipelineOption("--skip-discovery", "Reutiliza el último snapshot de universo (sin screener)."),
             PipelineOption("--macro", "Descarga antes los datos macro de FRED (requiere FRED_API_KEY)."),
-            PipelineOption("--backfill", "Solo carga en history.db las corridas de output/ que falten."),
+            _BACKFILL,
             PipelineOption(
                 "--top-n",
                 "Acciones a seleccionar en Asia + EEUU (por defecto 15).",

@@ -127,7 +127,7 @@ def main():
     print(f"Datos del dashboard exportados: {archived_path}")
 
     try:
-        history_writer.store_run(payload)
+        history_writer.store_run(payload, run_path=run_dir)
         print(f"Corrida guardada en la base histórica: {history_db_path()}")
     except Exception as e:
         # No es fatal para esta corrida (el JSON/CSV de siempre ya se

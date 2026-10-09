@@ -10,13 +10,16 @@ vieja mezclada con nueva.
 """
 
 import json
+import os
 import re
+
+import pandas as pd
 
 from fog_radar.modules.tendencia.storage.db import get_connection, init_db
 
 _RUN_DATE_RE = re.compile(r"^(\d{4})(\d{2})(\d{2})_(\d{2})$")
 
-# Columnas de cada tabla hija de `analyses` (ver storage.db.SCHEMA), en el
+# Columnas de cada tabla hija de `analyses` (ver storage.db.MIGRACIONES), en el
 # mismo nombre que la clave del payload — salvo `momentum_rank`, que en el
 # payload se llama `rank` (palabra reservada en SQLite). Agregar una
 # columna nueva es agregarla acá y en el esquema.
@@ -83,12 +86,40 @@ def _insert_rows(conn, table, columns, analysis_id, rows):
     )
 
 
-def store_run(payload, db_path=None):
+def _universe_weights(run_path, analysis_key):
+    """Filas de ``markowitz_universe_weights<sufijo>.csv`` (pesos de Markowitz de
+    todo el universo, de mayor a menor), o [] si la corrida no lo tiene."""
+    if not run_path:
+        return []
+    path = os.path.join(run_path, f"markowitz_universe_weights{analysis_key}.csv")
+    if not os.path.isfile(path):
+        return []
+    df = pd.read_csv(path, index_col=0)
+    df = df.sort_values("peso_markowitz", ascending=False, kind="stable")
+    filas = []
+    for i, (ticker, row) in enumerate(df.iterrows(), start=1):
+        filas.append(
+            (
+                i,
+                str(ticker),
+                None if pd.isna(row.get("nombre")) else row.get("nombre"),
+                None if pd.isna(row.get("pais")) else row.get("pais"),
+                None if pd.isna(row.get("peso_markowitz")) else float(row["peso_markowitz"]),
+                None if pd.isna(row.get("retorno_esperado_anual")) else float(row["retorno_esperado_anual"]),
+            )
+        )
+    return filas
+
+
+def store_run(payload, db_path=None, run_path=None):
     """
     payload: el dict que devuelve dashboard_data.build_dashboard_payload()
     (mismo formato que dashboard_data.json: generated_at, run_dir,
     universe_source, market_regime_notes, analyses[]). Devuelve el id de
     runs.id de la corrida guardada.
+
+    run_path: carpeta de la corrida; si se pasa, también guarda los pesos del
+    universo completo (``universe_weights``).
     """
     init_db(db_path)
     run_dir = payload["run_dir"]
@@ -144,5 +175,11 @@ def store_run(payload, db_path=None):
             _insert_rows(conn, "holdings", HOLDING_COLUMNS, analysis_id, analysis.get("holdings", []))
             _insert_rows(conn, "sectors", SECTOR_COLUMNS, analysis_id, analysis.get("sectors", []))
             _insert_rows(conn, "momentum", MOMENTUM_COLUMNS, analysis_id, analysis.get("momentum", []))
+            conn.executemany(
+                """INSERT INTO universe_weights (
+                       analysis_id, universe_rank, ticker, nombre, pais, peso_markowitz, retorno_esperado_anual
+                   ) VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                [(analysis_id, *f) for f in _universe_weights(run_path, analysis.get("key", ""))],
+            )
 
     return run_id

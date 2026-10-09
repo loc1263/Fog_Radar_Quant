@@ -82,18 +82,26 @@
 
 ## B — Después (post Fase 6)
 
-### Épica B1 · Historial unificado entre corridas
-Hoy cada módulo guarda su historia distinto: Tendencia en SQLite (`history.db`), ETF en `data_hist/` (CSV), EEUU en `runs/<id>/*.json` y Chile en CSV con timestamp. Propuesta: una base SQLite por módulo con el mismo esquema (`runs`, `rankings(run_id, ticker, score, …)`) y endpoints comunes.
+### Épica B1 · Historial unificado entre corridas — ✅ 2026-10-04
+Una base `data/<modulo>/history.db` por módulo, índice derivado de los archivos de cada
+corrida (ADR 0003, `INFORME_SQLITE.md`). Helper común `core/histdb.py` (WAL, versión de
+esquema, `diff_corridas`); escritura al final del pipeline sin hacerlo fallar; backfill con
+`python -m fog_radar.jobs <modulo> --backfill`; endpoints `/api/<mod>/history/*`.
 
-| ID | Ítem |
-|---|---|
-| US-BACK-03 | Persistencia en SQLite en vez de JSON por corrida |
-| US-BACK-04 | Diff entre corridas (entraron/salieron del top, delta de score). ETF ya tiene "Rotación": se generaliza. |
-| US-DATA-03 | Histórico de score de un ticker a lo largo de las corridas |
-| CL (histórico) | Endpoint de histórico de rankings IPSA + gráfico de evolución |
+| ID | Ítem | Estado |
+|---|---|---|
+| US-BACK-03 | Persistencia en SQLite en vez de JSON por corrida | ✅ `us_stocks/history.py` (los JSON se mantienen como fuente de verdad) |
+| US-BACK-04 | Diff entre corridas (entraron/salieron del top, delta de score). ETF ya tiene "Rotación": se generaliza. | ✅ `/history/diff` en Chile, EEUU y ETF; vistas `/eeuu/historial` y `/etf/evolucion` |
+| US-DATA-03 | Histórico de score de un ticker a lo largo de las corridas | ✅ `/history/ticker/{t}` en los 3 módulos |
+| CL (histórico) | Endpoint de histórico de rankings IPSA + gráfico de evolución | ✅ `/api/cl/history/*` + `/chile/historial` |
+| TD (universo) | Guardar los pesos de Markowitz del universo completo (no solo los seleccionados) | ✅ `universe_weights` (history.db v2) + gráfico en `/tendencia/historial` |
+| B1-ETF-INC | Incidencias del screener y `ETF_eliminados.csv` en la base (detectar tickers que fallan N corridas seguidas) | Pendiente |
+| B1-ETF-SQL | Reescribir racha/rotación de `rotacion.py` sobre SQL (hoy el diff SQL ya coincide con la rotación del original en los tests) | Pendiente (no urgente) |
+| B1-JOBS | Tabla `jobs` (duración, requests y 429 de Yahoo por corrida) con gráfico en `/estado` | Pendiente (opcional) |
 
 ### Épica B2 · Backtesting / validación del modelo
-Pedido en los 4 proyectos. Depende de B1 (hacen falta corridas acumuladas).
+Pedido en los 4 proyectos. B1 ya está hecho: falta acumular corridas. EEUU guarda los
+cierres deduplicados en `us_stocks/history.db` (`prices`) y ETF el `Precio` de cada corrida.
 
 | ID | Ítem |
 |---|---|
@@ -107,7 +115,6 @@ Pedido en los 4 proyectos. Depende de B1 (hacen falta corridas acumuladas).
 | ID | Ítem |
 |---|---|
 | TD-MODEL-1 | Shrinkage de covarianza Ledoit-Wolf |
-| US-DATA-07 | Límite de concentración máxima por ticker en `best_combination` |
 | US-DATA-05 | Perfiles de market cap (mega/mid/small) |
 | CL (perfiles) + CL (selector UI) | Perfiles de scoring predefinidos (Valor/Momentum/Dividendo/Balanceado) + selector en la UI |
 | CL (sector-neutral) | z-score sector-neutral (solo si crece el universo) |

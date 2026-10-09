@@ -113,7 +113,7 @@ Fog_Radar_Quant/
 | `/etf/[seccion]` | top15 · universo · excluidos · rotacion · diversificacion · categorias · top15-simple · top15-vanguard · momentum · russell3000 · historial · descargar | ETF (13 pestañas) |
 | `/eeuu` | Top 15 momentum + datos de la corrida | Stock_Choice_EEUU ✅ |
 | `/eeuu/candidatos` · `/eeuu/evaluacion` · `/eeuu/rendimiento` | Vistas del screener | Stock_Choice_EEUU ✅ |
-| `/eeuu/portafolio/[metodo]` | markowitz · black-litterman · hrp (optimizar + mejor combinación) | Stock_Choice_EEUU ✅ |
+| `/eeuu/portafolio` | modelo único: clusters de correlación + Black-Litterman (`docs/MODELO_NEW.md`) | Stock_Choice_EEUU ✅ |
 | `/eeuu/ticker` · `/eeuu/ticker/[ticker]` | Buscador + evaluación en vivo de un ticker | Stock_Choice_EEUU ✅ |
 | `/chile` | Ranking IPSA + panel de pesos ajustables | Stock_Choice_Nacional |
 | `/chile/indicadores` | Tabla de indicadores crudos | Stock_Choice_Nacional |
@@ -128,7 +128,7 @@ Layout global: header con logo *Fog Radar Quant*, menú principal de 4 módulos,
 | Módulo | Antes | Después |
 |---|---|---|
 | ETF | `/api/status`, `/api/top15`, `/api/top15-simple`, `/api/top15-vanguard`, `/api/ranking-completo`, `/api/excluidos`, `/api/diversificacion`, `/api/rotacion`, `/api/momentum/top15`, `/api/categorias/ranking`, `/api/russell3000`, `/api/historial`, `/api/pdf`, `POST /api/run` | `/api/etf/<mismo sufijo>` |
-| EEUU | `/api/rankings/latest[/candidates\|/prices]`, `/api/rankings/runs`, `/api/tickers/{t}/evaluate`, `POST /api/portfolio/optimize`, `POST /api/portfolio/best_combination` | `/api/us/<mismo sufijo>` |
+| EEUU | `/api/rankings/latest[/candidates\|/prices]`, `/api/rankings/runs`, `/api/tickers/{t}/evaluate`, `POST /api/portfolio/optimize` | `/api/us/<mismo sufijo>` |
 | Chile | `/api/ranking`, `/api/indicadores` | `/api/cl/ranking`, `/api/cl/indicadores` |
 | Tendencia | `/analyses`, `/runs`, `/runs/{dir}`, `/history/*` + `dashboard_data.json` estático | `/api/tendencia/<mismo sufijo>` + `/api/tendencia/latest` |
 | Global | 4 × `/api/health` | `/api/health` (agrega salud de los 4 módulos) + `/api/jobs` |
@@ -207,13 +207,13 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 
 ### Fase 4 — Módulo EEUU ✅ completada 2026-09-27
 - [x] Backend `modules/us_stocks/`: `universe`, `indicators`, `fundamentals`, `scoring`, `portfolio`, `ticker_eval`, `scanner` portados **sin cambios de lógica** (solo imports, logger y `pd.Timedelta(n, unit="D")`, que elimina el `DeprecationWarning` de NumPy anotado en la Fase 0). Nuevos: `storage.py`, `schemas.py` (Pydantic completo, bloques vacíos → nulos), `router.py`, `pipeline.py`.
-- [x] Endpoints `/api/us/`: `rankings/latest[/candidates|/prices?days=&tickers=]`, `rankings/runs`, `tickers/{t}/evaluate`, `portfolio/optimize`, `portfolio/best_combination`, `portfolio/limits`.
+- [x] Endpoints `/api/us/`: `rankings/latest[/candidates|/prices?days=&tickers=]`, `rankings/runs`, `tickers/{t}/evaluate`, `portfolio/optimize` (modelo único), `portfolio/limits`.
 - [x] Seguridad/robustez: ticker validado en path y body (US-SEC-02), caché TTL de 5 min en `/evaluate` (US-BACK-01), rate limit por endpoint (`/evaluate` 20/min, optimizar 30/min, mejor combinación 6/min), errores `no_data` 503 · `portfolio_data` 400 · `ticker_not_found` 404 · `upstream_error` 502.
 - [x] Pipeline `python -m fog_radar.jobs us_stocks` (7 pasos; si la corrida termina con `status: error`, el job queda en error). Las 12 corridas del original copiadas a `data/us_stocks/runs/`.
-- [x] Frontend: `/eeuu` (Top 15 + datos de la corrida + buscador), `/eeuu/candidatos`, `/eeuu/evaluacion`, `/eeuu/rendimiento` (filtro "crecientes" en la URL), `/eeuu/portafolio/[metodo]` (markowitz · black-litterman · hrp: universo, optimizar, frontera eficiente, tabla π/Q/posterior de BL, mejor combinación) y `/eeuu/ticker/[ticker]` (evaluación en vivo). Tendencia 3 m con `Sparkline` (LayerChart), CSV con los 41 campos.
+- [x] Frontend: `/eeuu` (Top 15 + datos de la corrida + buscador), `/eeuu/candidatos`, `/eeuu/evaluacion`, `/eeuu/rendimiento` (filtro "crecientes" en la URL), `/eeuu/portafolio` (markowitz · black-litterman · hrp: universo, optimizar, frontera eficiente, tabla π/Q/posterior de BL, mejor combinación) y `/eeuu/ticker/[ticker]` (evaluación en vivo). Tendencia 3 m con `Sparkline` (LayerChart), CSV con los 41 campos.
 - [x] Mutaciones con **form actions** + `use:enhance` (un `<form>` con dos `formaction`: funciona sin JavaScript y conserva selección y resultados). Remote functions revisadas: siguen experimentales → se mantiene ADR 0001.
 - [x] Tests: los **110 tests originales** migrados (`tests/us_stocks/`) + 8 de paridad + 34 de API/pipeline (**227 pytest** en total, sin warnings). Front: 8 Vitest nuevos (**38**), **6 E2E** de EEUU (**13** en total).
-- [x] **Paridad verificada** con la corrida real del 25-09 (`docs/PARIDAD.md`): score idéntico en los 60 candidatos, momentum y retornos recalculados desde `prices.json` iguales, pesos de Markowitz/BL/HRP y mejores combinaciones iguales a los del `portfolio.py` original.
+- [x] **Paridad verificada** con la corrida real del 25-09 (`docs/PARIDAD.md`): score idéntico en los 60 candidatos, momentum y retornos recalculados desde `prices.json` iguales, pesos de BL iguales a los del `portfolio.py` original.
 - ⚠️ Pendiente del usuario: correr una corrida completa contra Yahoo en Windows (`uv run python -m fog_radar.jobs us_stocks`, ~12 min) y probar `/eeuu/ticker/AAPL` (aquí no hubo acceso a Yahoo).
 
 ### Fase 5 — Módulo ETF ✅ completada 2026-09-28
@@ -261,6 +261,7 @@ Detalle y motivos en `docs/ADR/0002-convenciones-de-modulos.md`. Resumen:
 **Parte de desarrollo** (✅ 2026-09-29, salvo lo que depende del usuario):
 - [x] E2E Playwright: prueba de humo por módulo + hub + buscador (**26 E2E**).
 - [x] Local: `iniciar_dev.py` / `iniciar.bat` levantan los 2 procesos (verificado).
+- [x] **Historial SQLite en los 4 módulos** (Épica B1, ADR 0003, 2026-10-04): `core/histdb.py` (WAL, `user_version`, diff común); `history.db` en Chile, EEUU y ETF (escritura al final del pipeline + `--backfill`), Tendencia migrada a v2 (pesos del universo completo). Endpoints `/api/<mod>/history/*` y vistas `/chile/historial`, `/eeuu/historial`, `/etf/evolucion` y la posición en el universo en `/tendencia/historial`.
 - [x] Documentación: `README.md`, `docs/METODOLOGIAS.md` (metodología de los 4 módulos, escrita desde el código actual) y `CLAUDE.md` (convenciones nuevas: cliente Yahoo, FX, límites de concurrencia, `hub.py`).
 - [ ] ⚠️ Usuario: correr los 4 pipelines completos contra Yahoo en Windows (`python scripts/run_all_pipelines.py`) y revisar el sitio con datos reales.
 - [ ] ⚠️ Usuario: verificación final de paridad con los 4 originales → archivar los proyectos antiguos.

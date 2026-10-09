@@ -11,22 +11,28 @@ Yahoo, segundos) y queda en el registro de jobs.
 
 from __future__ import annotations
 
-from typing import Annotated
+from typing import Annotated, Any
 
-from fastapi import Depends
+from fastapi import Depends, Query
+from fastapi import Path as PathParam
 from fastapi.responses import Response
 
 from fog_radar.core.errors import ApiError, NoDataError
 from fog_radar.core.jobs import JobRegistry
 from fog_radar.core.logging import get_logger
 from fog_radar.core.ratelimit import limite_concurrente, rate_limit
+from fog_radar.core.schemas import HistDiff
 from fog_radar.modules._base import make_module_router
-from fog_radar.modules.etf import informe_pdf, pipeline, service, storage
+from fog_radar.modules.etf import history, informe_pdf, pipeline, service, storage
 from fog_radar.modules.etf.schemas import (
     EtfCap,
     EtfCategorias,
     EtfDiversificacion,
+    EtfHistCategoria,
+    EtfHistCorrida,
     EtfHistorial,
+    EtfHistPermanencia,
+    EtfHistTickerPunto,
     EtfResumen,
     EtfRotacion,
     EtfRunResult,
@@ -182,3 +188,48 @@ def run(settings: SettingsDep) -> EtfRunResult:
             500, "pipeline_error", "Error procesando el análisis; revisa el log del servidor."
         ) from exc
     return EtfRunResult(job=job)
+
+
+# --- Historial (history.db) --------------------------------------------------------
+# No toman el lock de ``current``: leen la base SQLite (WAL), no los CSV.
+
+RunKey = Annotated[str | None, Query(pattern=r"^\d{8}(_\d+)?$", description="yyyymmdd[_n]")]
+
+
+@router.get(
+    "/history/runs", response_model=list[EtfHistCorrida], summary="Corridas guardadas en el historial"
+)
+def history_runs(settings: SettingsDep) -> Any:
+    return history.corridas(settings)
+
+
+@router.get(
+    "/history/ticker/{ticker}",
+    response_model=list[EtfHistTickerPunto],
+    summary="Score, puesto y métricas de un ETF en cada corrida",
+)
+def history_ticker(
+    ticker: Annotated[str, PathParam(pattern=r"^[A-Za-z0-9.\-]{1,12}$")], settings: SettingsDep
+) -> Any:
+    return history.historia_ticker(settings, ticker.upper())
+
+
+@router.get("/history/diff", response_model=HistDiff, summary="Rotación del Top 15 entre dos corridas")
+def history_diff(settings: SettingsDep, desde: RunKey = None, hasta: RunKey = None) -> Any:
+    return history.diff(settings, desde, hasta)
+
+
+@router.get(
+    "/history/top", response_model=list[EtfHistPermanencia], summary="Permanencia en el Top 15 (últimas N)"
+)
+def history_top(settings: SettingsDep, ultimas: Annotated[int, Query(ge=2, le=260)] = 12) -> Any:
+    return history.permanencia_top(settings, ultimas)
+
+
+@router.get(
+    "/history/categorias",
+    response_model=list[EtfHistCategoria],
+    summary="Score promedio y presencia en el Top 15 por categoría, en el tiempo",
+)
+def history_categorias(settings: SettingsDep) -> Any:
+    return history.historia_categorias(settings)

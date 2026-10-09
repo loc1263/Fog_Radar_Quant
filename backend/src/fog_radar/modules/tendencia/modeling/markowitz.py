@@ -48,6 +48,7 @@ complementario "solo EEUU" (ver config.ANALYSES).
 
 import json
 import os
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -81,7 +82,11 @@ def optimize_max_sharpe(prices, rf, weight_bounds, l2_gamma):
         ef.add_objective(objective_functions.L2_reg, gamma=l2_gamma)
 
     try:
-        ef.max_sharpe(risk_free_rate=rf)
+        with warnings.catch_warnings():
+            # Esperado: max_sharpe transforma el problema y avisa que objetivos extra
+            # (L2_reg) "may not work as expected". El original corre igual; se silencia.
+            warnings.filterwarnings("ignore", message="max_sharpe transforms", category=UserWarning)
+            ef.max_sharpe(risk_free_rate=rf)
     except Exception as e:
         logger.warning(f"max_sharpe falló ({e}); se intenta min_volatility como respaldo.")
         ef = EfficientFrontier(mu, S, weight_bounds=weight_bounds)

@@ -25,7 +25,6 @@ FNDA;Charles Schwab;Schwab Fundamental U.S. Small Company ETF;Small Blend;202607
 SCHH;Charles Schwab;Schwab U.S. REIT ETF;Real Estate;20260723
 FNDC;Charles Schwab;Schwab Fundamental International Small Equity ETF;Foreign Small/Mid Value;20260723
 SCMB;Charles Schwab;Schwab Municipal Bond ETF;Muni National Interm;20260723
-SAEF;Charles Schwab;Schwab Ariel Opportunities ETF;Mid-Cap Blend;20260723
 SCHY;Charles Schwab;Schwab International Dividend Equity ETF;Foreign Large Value;20260723
 SCHC;Charles Schwab;Schwab International Small-Cap Equity ETF;Foreign Small/Mid Blend;20260723
 SGVT;Charles Schwab;Schwab Government Money Market ETF;Money Market-Taxable;20260723
@@ -137,7 +136,6 @@ KRE;State Street;State Street SPDR S&P Regional Banking ETF;Financial;20260723
 GWX;State Street;State Street SPDR S&P International Small Cap ETF;Foreign Small/Mid Blend;20260723
 DWX;State Street;State Street SPDR S&P International Dividend ETF;Foreign Large Value;20260723
 XOP;State Street;State Street SPDR S&P Oil & Gas Exploration & Production ETF;Equity Energy;20260723
-EMTL;State Street;State Street DoubleLine Emerging Markets Fixed Income ETF;Emerging Markets Bond;20260723
 SPYD;State Street;State Street SPDR Portfolio S&P 500 High Dividend ETF;Mid-Cap Value;20260723
 BWZ;State Street;State Street SPDR Bloomberg Short Term International Treasury Bond ETF;Global Bond;20260723
 EBND;State Street;State Street SPDR Bloomberg Emerging Markets Local Bond ETF;Emerging-Markets Local-Currency Bond;20260723
@@ -175,7 +173,6 @@ XLII;State Street;State Street Industrial Select Sector SPDR Premium Income ETF;
 HECO;State Street;State Street Galaxy Hedged Digital Asset Ecosystem ETF;Equity Digital Assets;20260723
 XLSI;State Street;State Street Consumer Staples Select Sector SPDR Premium Income ETF;Derivative Income;20260723
 XLFI;State Street;State Street Financial Select Sector SPDR Premium Income ETF;Derivative Income;20260723
-WMAT;State Street;State Street SPDR MSCI World Materials UCITS ETF USD Acc;Sector Equity Industrial Materials;20260723
 XLVI;State Street;State Street Health Care Select Sector SPDR Premium Income ETF;Derivative Income;20260723
 MYHC;State Street;State Street My2029 High Yield Corporate Bond ETF;Target Maturity;20260723
 SPTU;State Street;State Street SPDR Portfolio Ultra Short T-Bill ETF;Ultrashort Bond;20260723
@@ -189,7 +186,6 @@ QNDX;State Street;State Street SPDR Portfolio Nasdaq 100 ETF;Large Blend;2026072
 MYCL;State Street;State Street My2032 Corporate Bond ETF;Target Maturity;20260723
 XLYI;State Street;State Street Consumer Discretionary Select Sector SPDR Premium Income ETF;Derivative Income;20260723
 SPDG;State Street;State Street SPDR Portfolio S&P Sector Neutral Dividend ETF;Large Value;20260723
-ECLPX;State Street;State Street Blackstone Euro AAA CLO UCITS ETF GBP Hedged Dis;Other Bond;20260723
 TEKX;State Street;State Street Galaxy Transformative Tech Accelerators ETF;Mid-Cap Growth;20260723
 MYMK;State Street;State Street My2031 Municipal Bond ETF;Muni Target Maturity;20260723
 PRAB;State Street;State Street IG Public & Private ABS ETF;Securitized Bond - Diversified;20260723
@@ -580,7 +576,6 @@ SUSL;iShares;iShares ESG MSCI USA Leaders ETF;Large Blend;20260723
 SIZE;iShares;iShares MSCI USA Size Factor ETF;Mid-Cap Blend;20260723
 AIA;iShares;iShares Asia 50 ETF;Pacific/Asia ex-Japan Stk;20260723
 IYC;iShares;iShares US Consumer Discretionary ETF;Consumer Cyclical;20260723
-AGRH;iShares;iShares Interest Rate Hedged U.S. Aggregate Bond ETF;Ultrashort Bond;20260723
 IVLU;iShares;iShares Edge MSCI Intl Value Factor ETF;Foreign Large Value;20260723
 IAK;iShares;iShares U.S. Insurance ETF;Financial;20260723
 EUSA;iShares;iShares MSCI USA Equal Weighted ETF;Mid-Cap Blend;20260723
@@ -600,7 +595,6 @@ DGRO;iShares;iShares Core Dividend Growth ETF;Large Value;20260723
 FALN;iShares;iShares Fallen Angels USD Bond ETF;High Yield Bond;20260723
 AOK;iShares;iShares Core 30/70 Conservative Allocation ETF;Global Conservative Allocation;20260723
 ITA;iShares;iShares U.S. Aerospace & Defense ETF;Industrials;20260723
-IEDI;iShares;iShares U.S. Consumer Focused ETF;Consumer Cyclical;20260723
 AOM;iShares;iShares Core 40/60 Moderate Allocation ETF;Global Moderately Conservative Allocation;20260723
 IWX;iShares;iShares Russell Top 200 Value ETF;Large Value;20260723
 IYK;iShares;iShares US Consumer Staples ETF;Consumer Defensive;20260723
@@ -710,13 +704,10 @@ IJT;iShares;iShares S&P Small-Cap 600 Growth ETF;Small Growth;20260723
 SECU;iShares;iShares Securitized Income Active ETF;Securitized Bond - Diversified;20260723
 XJR;iShares;iShares ESG Select Screened S&P Small-Cap ETF;Small Blend;20260723
 EAGG;iShares;iShares ESG U.S. Aggregate Bond ETF;Intermediate Core Bond;20260723
-ITWAX;iShares;iShares MSCI Taiwan UCITS ETF USD Acc;Taiwan Large-Cap Equity;20260723
 TCHI;iShares;iShares MSCI China Multisector Tech ETF;Greater China Region;20260723
-EAOR;iShares;iShares ESG Aware 60/40 Balanced Allocation ETF;Global Moderate Allocation;20260723
 IXP;iShares;iShares Global Comm Services ETF;Communications;20260723
 IETC;iShares;iShares U.S. Tech Independence Focused ETF;Technology;20260723
 USCL;iShares;Ishares Climate Conscious & Transition MSCI USA ETF;Large Blend;20260723
-EAOA;iShares;iShares ESG Aware 80/20 Aggressive Allocation ETF;Global Aggressive Allocation;20260723
 EMXF;iShares;iShares ESG Advanced MSCI EM ETF;Diversified Emerging Mkts;20260723
 VEGI;iShares;iShares MSCI Agriculture Producers ETF;Natural Resources;20260723
 EWJ;iShares;iShares MSCI Japan ETF;Japan Stock;20260723
@@ -748,7 +739,6 @@ XJH;iShares;iShares ESG Select Screened S&P Mid-Cap ETF;Mid-Cap Blend;20260723
 HDV;iShares;iShares Core High Dividend ETF;Large Value;20260723
 ERET;iShares;Ishares Environmentally Aware Real Estate ETF;Global Real Estate;20260723
 ISCG;iShares;iShares Morningstar Small-Cap Growth ETF;Small Growth;20260723
-EAOM;iShares;iShares ESG Aware 40/60 Moderate Allocation ETF;Global Moderately Conservative Allocation;20260723
 AGG;iShares;iShares Core U.S. Aggregate Bond ETF;Intermediate Core Bond;20260723
 IYE;iShares;iShares U.S. Energy ETF;Equity Energy;20260723
 TIP;iShares;iShares TIPS Bond ETF;Inflation-Protected Bond;20260723
@@ -805,7 +795,6 @@ POWR;iShares;iShares U.S. Power Infrastructure ETF;Infrastructure;20260723
 EPP;iShares;iShares MSCI Pacific ex Japan ETF;Pacific/Asia ex-Japan Stk;20260723
 DVYE;iShares;iShares Emerging Markets Dividend ETF;Diversified Emerging Mkts;20260723
 QLTA;iShares;iShares Aaa - A Rated Corporate Bond ETF;Corporate Bond;20260723
-IVRS;iShares;iShares Future Metaverse Tech And Communications ETF;Communications;20260723
 IDRV;iShares;iShares Self-Driving EV and Tech ETF;Industrials;20260723
 REM;iShares;iShares Mortgage Real Estate Capped ETF;Real Estate;20260723
 LDEM;iShares;iShares ESG MSCI EM Leaders ETF;Diversified Emerging Mkts;20260723
@@ -820,8 +809,6 @@ LQDW;iShares;iShares Investment Grade Corporate Bond Buywrite Strategy ETF;Corpo
 ILIT;iShares;Ishares Lithium Miners And Producers ETF;Natural Resources;20260723
 GVI;iShares;iShares Intermediate Government/Credit Bond ETF;Short-Term Bond;20260723
 USMV;iShares;iShares MSCI USA Min Vol Factor ETF;Large Blend;20260723
-ASGDX;iShares;iShares $ Asia Investment Grade Corp Bond UCITS ETF SGD Hedged (Acc);Other Bond;20260723
-AGAUX;iShares;iShares Global Aggregate Bond ESG SRI UCITS ETF AUD Hedged Distribution;Other Bond;20260723
 IBIT;iShares;iShares Bitcoin Trust ETF;Digital Assets;20260723
 TENM;iShares;ishares Large Cap 10% Target Buffer Mar ETF;Defined Outcome;20260723
 LMUB;iShares;iShares Long-Term National Muni Bd ETF;Muni National Long;20260723
@@ -829,7 +816,6 @@ IBIJ;iShares;iShares iBonds Oct 2033 Term TIPS ETF;Target Maturity;20260723
 IBIH;iShares;iShares iBonds Oct 2031 Term TIPS ETF;Target Maturity;20260723
 IBHL;iShares;iShares iBonds 2032 Term High Yield and Income ETF;Target Maturity;20260723
 IBTH;iShares;iShares iBonds Dec 2027 Term Treasury ETF;Target Maturity;20260723
-SUSEMX;iShares;iShares ? Corp Bond 0-3yr ESG SRI UCITS ETF MXN Hedged (Acc);Other Bond;20260723
 IBMS;iShares;iShares iBonds Dec 2030 Term Muni Bond ETF;Muni Target Maturity;20260723
 IBDR;iShares;iShares iBonds Dec 2026 Term Corporate ETF;Target Maturity;20260723
 MMAX;iShares;iShares Large Cap Max Buffer Mar ETF;Defined Outcome;20260723
@@ -840,8 +826,6 @@ MADE;iShares;iShares U.S. Manufacturing ETF;Industrials;20260723
 ITDJ;iShares;iShares LifePath Target Date 2070 ETF;Target-Date 2070+;20260723
 IBMQ;iShares;iShares iBonds Dec 2028 Term Muni Bond ETF;Muni Target Maturity;20260723
 GOVM;iShares;iShares 1-10 Year Treasury Bond ETF;Intermediate Government;20260723
-IDTXX;iShares;iShares $ Treasury Bond 7-10yr UCITS ETF MXN Hedged (Acc);Other Bond;20260723
-ERNMX;iShares;iShares $ Ultrashort Bond UCITS ETF MXN Hedged (Acc);Other Bond;20260723
 IBIC;iShares;iShares iBonds Oct 2026 Term TIPS ETF;Target Maturity;20260723
 LDRT;iShares;iShares iBonds 1-5 Year Treasury Ladder ETF;Short Government;20260723
 IBTO;iShares;iShares iBonds Dec 2033 Term Treasury ETF;Target Maturity;20260723
@@ -857,7 +841,6 @@ EWU;iShares;iShares MSCI United Kingdom ETF;Focused Region;20260723
 EWL;iShares;iShares MSCI Switzerland ETF;Focused Region;20260723
 ILF;iShares;iShares Latin America 40 ETF;Focused Region;20260723
 EZA;iShares;iShares MSCI South Africa ETF;Focused Region;20260723
-ERUS;iShares;iShares MSCI Russia ETF;Focused Region;20260723
 IBDW;iShares;iShares iBonds Dec 2031 Term Corporate ETF;Target Maturity;20260723
 TEXN;iShares;iShares Texas Equity ETF;Large Blend;20260723
 CSHP;iShares;iShares Dynamic Short-Term Active ETF;Ultrashort Bond;20260723
@@ -885,7 +868,6 @@ IBII;iShares;iShares iBonds Oct 2032 Term TIPS ETF;Target Maturity;20260723
 CALI;iShares;iShares Short-Term California Muni Active ETF;Muni Single State Short;20260723
 BFLX;iShares;iShares Flexible Equity Active ETF;Long-Short Equity;20260723
 IBTL;iShares;iShares iBonds Dec 2031 Term Treasury ETF;Target Maturity;20260723
-ID27;iShares;iShares V PLC - iShares iBonds Dec 2027 Term $ Corp UCITS ETF MXN Hedged Acc;Fixed Term Bond;20260723
 ITDD;iShares;Ishares Lifepath Target Date 2040 ETF;Target-Date 2040;20260723
 IBHJ;iShares;iShares iBonds 2030 Term High Yield and Income ETF;Target Maturity;20260723
 IBHF;iShares;iShares iBonds 2026 Term High Yield and Income ETF;Target Maturity;20260723
@@ -893,7 +875,6 @@ IBGK;iShares;iShares iBonds Dec 2054 Term Treasury ETF;Target Maturity;20260723
 IBIL;iShares;iShares iBonds Oct 2035 Term TIPS ETF;Target Maturity;20260723
 IBCA;iShares;iShares iBonds Dec 2035 Term Corporate ETF;Target Maturity;20260723
 EWI;iShares;iShares MSCI Italy ETF;Focused Region;20260723
-IMMXX;iShares;iShares US Mortgage Backed Securities UCITS ETF MXN Hedged (Acc);Other Bond;20260723
 AQLT;iShares;iShares MSCI Global Quality Factor ETF;Global Large-Stock Blend;20260723
 EWN;iShares;iShares MSCI Netherlands ETF;Focused Region;20260723
 WSML;iShares;iShares MSCI World Small-Cap ETF;Global Small/Mid Stock;20260723
@@ -935,8 +916,6 @@ EIDO;iShares;iShares MSCI Indonesia ETF;Focused Region;20260723
 ITDI;iShares;Ishares Lifepath Target Date 2065 ETF;Target-Date 2065;20260723
 LDRH;iShares;iShares iBonds 1-5 Year High Yield and Income Ladder ETF;High Yield Bond;20260723
 IPAC;iShares;iShares Core MSCI Pacific ETF;Focused Region;20260723
-DTMXX;iShares;iShares $ Treasury Bond 20+yr UCITS ETF MXN Hedged (Acc);Other Bond;20260723
-I37MX;iShares;iShares $ Treasury Bond 3-7yr UCITS ETF MXN Hedged (Acc);Other Bond;20260723
 ENHI;iShares;Ishares Enhanced International Active ETF;Foreign Large Blend;20260723
 TUR;iShares;iShares MSCI Turkey ETF;Focused Region;20260723
 EQLT;iShares;iShares MSCI Emerging Markets Quality Factor ETF;Diversified Emerging Mkts;20260723
@@ -1143,7 +1122,6 @@ VGUS;Vanguard;Vanguard Ultra-Short Treasury ETF;Ultrashort Bond;20260723
 VEXC;Vanguard;Vanguard Emerging Markets Ex-China ETF;Diversified Emerging Mkts;20260723
 VGMS;Vanguard;Vanguard Multi-Sector Income Bond ETF;Multisector Bond;20260723
 VCRM;Vanguard;Vanguard Core Tax-Exempt Bond ETF;Muni National Long;20260723
-VMSTx;Vanguard;Vanguard U.S. Treasury 0-1 Year Bond UCITS ETF MXN Hedged Accumulating XXX;Other Bond;20260723
 VBCJ;Vanguard;Vanguard Target Maturity 2036 Corporate Bond ETF;Target Maturity;20260723
 VBCG;Vanguard;Vanguard Target Maturity 2033 Corporate Bond ETF;Target Maturity;20260723
 VTEI;Vanguard;Vanguard Intermediate-Term Tax-Exempt Bond ETF;Muni National Interm;20260723
@@ -1235,7 +1213,6 @@ HODL;VanEck;VanEck Bitcoin ETF;Digital Assets;20260723
 TRUU;VanEck;Vaneck Utilities TruSector ETF;Utilities;20260723
 TRUT;VanEck;Vaneck Technology Trusector ETF;Technology;20260723
 INDZ;VanEck;VanEck India Select ETF;India Equity;20260723
-RSX;VanEck;VanEck Russia ETF;Focused Region;20260723
 VEFA;VanEck;VanEck MSCI EAFE Analyst Sentiment ETF;Foreign Large Blend;20260723
 VSOL;VanEck;VanEck Solana ETF;Digital Assets;20260723
 TRUR;VanEck;Vaneck Real Estate TruSector ETF;Real Estate;20260723
@@ -1244,7 +1221,6 @@ VBNB;VanEck;VanEck BNB ETF;Digital Assets;20260723
 SMHC;VanEck;VanEck China Semiconductor ETF;Technology;20260723
 CMCI;VanEck;VanEck CMCI Commodity Strategy ETF;Commodities Broad Basket;20260723
 TRUN;VanEck;Vaneck Energy TruSector ETF;Equity Energy;20260723
-RSXJ;VanEck;VanEck Russia Small-Cap ETF;Focused Region;20260723
 TRUH;VanEck;Vaneck Healthcare TruSector ETF;Health;20260723
 NODE;VanEck;VanEck Onchain Economy ETF;Equity Digital Assets;20260723
 GPZ;VanEck;VanEck Alternative Asset Manager ETF;Financial;20260723

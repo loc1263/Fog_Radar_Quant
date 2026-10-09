@@ -30,6 +30,7 @@ from fog_radar.modules.tendencia.schemas import (
     TdSectorHistoria,
     TdTickerHistoria,
     TdTickerNombre,
+    TdUniversoHistoria,
 )
 from fog_radar.settings import Settings, get_settings
 
@@ -127,6 +128,19 @@ def history_ticker(
     analysis: Analysis = "",
 ) -> Any:
     return service.ticker_history(settings, ticker, analysis)
+
+
+@router.get(
+    "/history/universe/{ticker}",
+    response_model=list[TdUniversoHistoria],
+    summary="Posición de un ticker en el universo completo (pesos de Markowitz)",
+)
+def history_universe(
+    ticker: Annotated[str, PathParam(pattern=r"^[A-Za-z0-9.\-^=]{1,15}$")],
+    settings: SettingsDep,
+    analysis: Analysis = "",
+) -> Any:
+    return service.universe_history(settings, ticker, analysis)
 
 
 @router.get("/history/sectors", response_model=list[TdSectorHistoria], summary="Peso por sector en el tiempo")

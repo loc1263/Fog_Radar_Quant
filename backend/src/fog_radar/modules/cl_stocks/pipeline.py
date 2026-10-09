@@ -2,6 +2,7 @@
 
     uv run python -m fog_radar.jobs cl_stocks                 # completo (~10 min)
     uv run python -m fog_radar.jobs cl_stocks --solo-scoring  # re-puntúa el último CSV
+    uv run python -m fog_radar.jobs cl_stocks --backfill      # solo reconstruye history.db
 
 Nunca se ejecuta dentro de un request web.
 """
@@ -10,8 +11,9 @@ from __future__ import annotations
 
 from datetime import datetime
 
+from fog_radar.core import histdb
 from fog_radar.core.logging import get_logger
-from fog_radar.modules.cl_stocks import storage
+from fog_radar.modules.cl_stocks import history, storage
 from fog_radar.modules.cl_stocks.extractor import cargar_tickers, extraer_indicadores
 from fog_radar.modules.cl_stocks.scoring import construir_ranking, grupos_duplicados
 from fog_radar.settings import Settings
@@ -19,8 +21,10 @@ from fog_radar.settings import Settings
 log = get_logger("cl.pipeline")
 
 
-def run(settings: Settings, *, solo_scoring: bool = False) -> str:
+def run(settings: Settings, *, solo_scoring: bool = False, backfill: bool = False) -> str:
     """Ejecuta el pipeline y devuelve un resumen para el registro de jobs."""
+    if backfill:
+        return history.backfill(settings)
     directory = storage.data_dir(settings)
     timestamp = datetime.now(settings.tzinfo).strftime("%Y%m%d_%H%M%S")
     resumen: list[str] = []
@@ -45,6 +49,7 @@ def run(settings: Settings, *, solo_scoring: bool = False) -> str:
     ranking = construir_ranking(indicadores)
     ruta = storage.guardar(ranking, directory, "ranking_acciones", timestamp)
     log.info("Ranking: %s", ruta.name)
+    histdb.guardar_sin_fallar("cl_stocks", lambda: history.guardar_corrida(settings, ruta))
 
     top = ranking.head(3)["Símbolo"].tolist()
     resumen.append(f"top 3: {', '.join(top)}")

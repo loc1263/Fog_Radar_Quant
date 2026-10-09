@@ -100,7 +100,8 @@ def main() -> int:
 
     LOGS.mkdir(parents=True, exist_ok=True)
     log_path = LOGS / f"manual_{datetime.now():%Y%m%d_%H%M%S}.log"
-    env = {**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"}
+    # UV_LINK_MODE=copy: caché de uv y repo en discos distintos → evita el aviso de hardlink.
+    env = {**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8", "UV_LINK_MODE": "copy"}
     print(f"  Log: {log_path.relative_to(ROOT)}\n")
 
     inicio = datetime.now()

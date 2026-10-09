@@ -9,7 +9,7 @@ se citan son relativas a `backend/src/fog_radar/`.
 |---|---|---|
 | Acciones Chile (IPSA) | ¿Qué acciones del IPSA se ven mejor en un score multifactor (valor, calidad, crecimiento, salud, dividendo, momentum)? | 30 acciones `.SN` |
 | Acciones EEUU | ¿Qué mega-caps de EEUU tienen mejor momentum 12-1, qué tan "sanas" están y cómo combinarlas en un portafolio? | Acciones con market cap ≥ USD 200 mil millones |
-| ETFs | ¿Qué ETFs listados en EEUU tienen mejor relación retorno/riesgo, más momentum y cómo rotan semana a semana? | ~1.250 ETFs de una lista curada |
+| ETFs | ¿Qué ETFs listados en EEUU tienen mejor relación retorno/riesgo, más momentum y cómo rotan semana a semana? | ~1.225 ETFs de una lista curada |
 | Tendencia (Asia + EEUU) | ¿Qué mega-caps de Asia y EEUU entran a un portafolio Markowitz, qué tendencia tienen y qué rango de precio es plausible a 6 meses? | Universo dinámico (top 20 Asia + mega-caps EEUU) |
 
 ## Fuentes de datos
@@ -217,10 +217,12 @@ disponibles, renormalizando pesos si falta una categoría entera.
 
 Etiquetas: ≥ 75 Fuerte, ≥ 60 Sólido, ≥ 45 Neutral, ≥ 30 Débil, < 30 Muy débil.
 
-### 2.5 Portafolios (`portfolio.py`)
+### 2.5 Portafolio — modelo único (`portfolio.py`, ver `docs/MODELO_NEW.md`)
 
-Se calculan a pedido (request HTTP) sobre `prices.json` de la última corrida, **sin llamar a
-Yahoo**. Los 3 métodos son **long-only** (pesos ≥ 0 que suman 1).
+Se calcula a pedido (request HTTP) sobre `prices.json` y `candidates.json` de la última
+corrida, **sin llamar a Yahoo**. Un solo modelo en tres etapas; el resultado es **long-only**
+(pesos ≥ 0 que suman 1). Reemplaza a los tres modelos del original (Markowitz, Black-Litterman
+y HRP) y a la búsqueda de la mejor combinación de k tickers.
 
 **Datos comunes**
 
@@ -229,44 +231,35 @@ Yahoo**. Los 3 métodos son **long-only** (pesos ≥ 0 que suman 1).
 - Retornos diarios simples. Anualización con **252** ruedas:
   `μ = media diaria · 252`, `Σ = cov diaria · 252 + 10⁻⁶ · I` (ridge `COV_RIDGE` para evitar
   matrices casi singulares).
-- Tasa libre de riesgo por defecto **4 %** anual (constante; el usuario puede enviar otra
-  entre −5 % y 50 %).
+- Tasa libre de riesgo por defecto **4 %** anual (el usuario puede enviar otra entre −5 % y 50 %).
 
-**Markowitz — máximo Sharpe.** `max_w (wᵀμ − rf) / √(wᵀΣw)` con `Σw = 1`, `0 ≤ w ≤ 1`,
-resuelto con SLSQP desde pesos iguales. La **frontera eficiente** (25 puntos) minimiza
-varianza para retornos objetivo entre el del portafolio de mínima varianza y el máximo μ
-individual, probando 3 puntos de partida por objetivo y mostrando solo la rama eficiente.
+**Etapa 1 — Ranking.** El universo (por defecto, todos los candidatos de la corrida) se ordena
+por el score multi-factor de §2.4. Los filtros de liquidez y riesgo fundamental ya los aplica
+el scanner del batch.
 
-**Black-Litterman.**
+**Etapa 2 — Diversificación por clusters.** Distancia de correlación
+`d_ij = √(0,5 · (1 − ρ_ij))`, clustering jerárquico **average linkage** y corte en `n_assets`
+clusters (10 por defecto, 2–20). De cada cluster se elige el ticker de **mayor score** (empate:
+orden alfabético). Si el corte da menos clusters que `n_assets`, se completa con los de mayor
+score aún no elegidos; si el universo tiene `n_assets` o menos, entran todos.
+
+**Etapa 3 — Black-Litterman sobre los elegidos.**
 
 - Pesos de mercado `w_mkt` proporcionales al market cap (iguales si no hay datos).
 - Prior de equilibrio (retorno total): `π = δ · Σ · w_mkt + rf`, con `δ = 2,5`.
-- Views automáticas absolutas (P = I), una por ticker, derivadas del score de salud:
+- Views automáticas absolutas (P = I), una por ticker, derivadas del score:
   `Q_i = π_i + k · (score_i / 100 − 0,5) · σ_i`, con `k = 0,5` y `σ_i = √Σ_ii`; score
   ausente = 50 (view neutra). El usuario puede sobrescribir cualquier `Q_i`.
 - Confianza: `Ω = diag(τ · P Σ Pᵀ) + 10⁻⁸ · I`, con `τ = 0,05`.
 - Posterior: `μ_BL = [(τΣ)⁻¹ + PᵀΩ⁻¹P]⁻¹ · [(τΣ)⁻¹π + PᵀΩ⁻¹Q]`.
-- Pesos: máximo Sharpe (igual que Markowitz) con `μ_BL` y la misma `Σ`.
+- Pesos: máximo Sharpe `max_w (wᵀμ_BL − rf) / √(wᵀΣw)` con `Σw = 1` y
+  `0 ≤ w ≤ max_weight` (SLSQP desde pesos iguales). `max_weight` es **25 %** por defecto
+  (5 %–100 %); si es menor que `1/n_assets` se sube a `1/n_assets`, único valor factible.
 - Corrección respecto del original (Fase 7): el original no sumaba `rf` a π y luego la
   restaba en el Sharpe; ahora, con views neutras, se recupera `w_mkt`.
 
-**HRP (Hierarchical Risk Parity, López de Prado).** No usa retornos esperados.
-
-1. Distancia de correlación `d_ij = √(0,5 · (1 − ρ_ij))`.
-2. Clustering jerárquico **single linkage** y reordenamiento cuasi-diagonal de las hojas.
-3. **Bisección recursiva**: cada grupo se parte en dos mitades según el orden; la varianza de
-   cada mitad se calcula con pesos de varianza inversa dentro de ella; la mitad izquierda
-   recibe `α = 1 − V_izq / (V_izq + V_der)` y la derecha `1 − α`.
-   (Aquí la covarianza anualizada va sin el término ridge.)
-
-**Métricas del portafolio**: `E[R] = wᵀμ`, `vol = √(wᵀΣw)`, `Sharpe = (E[R] − rf) / vol`.
-
-**Mejor combinación de tamaño k.** Evalúa **todas** las combinaciones `C(n, k)` de tickers
-del universo elegido, optimiza cada una con el objetivo propio del método (la búsqueda solo
-decide *qué* k tickers entran) y ordena por `expected_return` (por defecto) o `sharpe`, devolviendo
-las 5 mejores (configurable hasta 20). Límites: `2 ≤ k ≤ 10`, `k ≤ n` y `C(n, k) ≤ 2.500` (`MAX_COMBINATIONS`, para que
-un request no pase de ~15 s). Las combinaciones que no convergen se descartan sin cortar la
-búsqueda. El frontend usa `k = 4` por defecto (C(15, 4) = 1.365).
+**Métricas del portafolio**: `E[R] = wᵀμ`, `vol = √(wᵀΣw)`, `Sharpe = (E[R] − rf) / vol`
+(con `μ` histórico, no `μ_BL`).
 
 ---
 
@@ -276,8 +269,11 @@ Archivos: `modules/etf/screener/…` (descarga) y `modules/etf/analysis/…` (an
 
 ### 3.1 Screener (`screener/`)
 
-- **Universo**: lista curada `screener/List_All_ETF.csv` (~1.250 tickers con nombre,
+- **Universo**: lista curada `screener/List_All_ETF.csv` (~1.225 tickers con nombre,
   proveedor y categoría Morningstar). La categoría del CSV tiene prioridad sobre la de Yahoo.
+  Los tickers que Yahoo ya no reconoce (404 / deslistados, fallidos en corridas sucesivas) se
+  sacan de la lista y quedan registrados en `screener/ETF_eliminados.csv` con la fecha de
+  eliminación, la última corrida en que validaron y el motivo.
   El proveedor se infiere por palabras clave (iShares, Vanguard, SPDR, Invesco, …; si no,
   "Otro").
 - Se procesa en lotes de 30 con pausas anti rate-limit (`screener/config.py`).
@@ -544,7 +540,7 @@ ranking de ese módulo. Máximo 50 resultados.
 - **Estimación dentro de la muestra.** Los retornos esperados y las covarianzas (EEUU,
   Tendencia) se estiman con el mismo historial que se usa para elegir; los portafolios de
   máximo Sharpe son muy sensibles a μ y suelen decepcionar fuera de la muestra. La
-  regularización L2, los topes por activo y HRP mitigan, pero no eliminan, este problema.
+  regularización L2 y los topes por activo mitigan, pero no eliminan, este problema.
   No hay backtest fuera de muestra integrado.
 - **Scores relativos.** Los z-scores (Chile) y percentiles o min-max (ETF) comparan solo
   contra el universo de la corrida: un "buen" puntaje no significa un buen valor absoluto.

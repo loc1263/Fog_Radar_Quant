@@ -10,6 +10,7 @@ import {
 	csvName,
 	fmtDelta,
 	fmtFechaCorrida,
+	top15PorCategoria,
 	fmtRend,
 	historialConDeltas,
 	pesoPorBucket,
@@ -125,6 +126,25 @@ describe('Top 15 Cap.', () => {
 			{ label: 'Large-cap', value: 0.55 },
 			{ label: 'Otros', value: 0.25 },
 			{ label: 'Mid-cap', value: 0.2 }
+		]);
+	});
+});
+
+describe('top15PorCategoria', () => {
+	it('elige las categorías más frecuentes y agrupa el resto', () => {
+		const filas = [
+			{ run_key: 'a', category: 'Tech', en_top15: 5 },
+			{ run_key: 'a', category: 'Health', en_top15: 2 },
+			{ run_key: 'a', category: 'Energy', en_top15: 1 },
+			{ run_key: 'a', category: 'Bonds', en_top15: 0 },
+			{ run_key: 'b', category: 'Tech', en_top15: 4 },
+			{ run_key: 'b', category: 'Energy', en_top15: 3 }
+		];
+		const r = top15PorCategoria(filas, (k) => k.toUpperCase(), 2);
+		expect(r.grupos).toEqual(['Tech', 'Energy', 'Otras']);
+		expect(r.filas).toEqual([
+			{ corrida: 'A', Tech: 5, Energy: 1, Otras: 2 },
+			{ corrida: 'B', Tech: 4, Energy: 3, Otras: 0 }
 		]);
 	});
 });

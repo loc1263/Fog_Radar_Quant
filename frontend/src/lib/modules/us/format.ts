@@ -87,15 +87,6 @@ export function searchText(row: Pick<UsCandidateRow, 'ticker' | 'name' | 'sector
 	return `${row.ticker} ${row.name ?? ''} ${row.sector ?? ''}`;
 }
 
-/** C(n, k) sin desbordes para los tamaños del optimizador. */
-export function combinationsCount(n: number, k: number): number {
-	if (k < 0 || k > n) return 0;
-	const kk = Math.min(k, n - k);
-	let result = 1;
-	for (let i = 0; i < kk; i++) result = (result * (n - i)) / (i + 1);
-	return Math.round(result);
-}
-
 /** Fila plana con el 100 % de los datos de un candidato (para CSV). */
 export function flattenCandidate(row: UsCandidateRow): Record<string, string | number | null> {
 	const t = row.technical;

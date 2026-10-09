@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { UsCandidateRow } from '$lib/api/types';
 import {
-	combinationsCount,
 	flattenCandidate,
 	fmtPrice,
 	fmtRet,
@@ -9,7 +8,7 @@ import {
 	isGrowingPerformance,
 	scoreSignal
 } from './format';
-import { methodBySlug, parseInt10, parseRankBy, parseTickers, parseViews } from './portfolio';
+import { parseFraction, parseInt10, parseTickers, parseViews } from './portfolio';
 
 describe('formato EEUU', () => {
 	it('montos USD compactos', () => {
@@ -42,12 +41,6 @@ describe('formato EEUU', () => {
 		expect(isGrowingPerformance({ ...base, return_1y: null })).toBe(false);
 	});
 
-	it('combinaciones', () => {
-		expect(combinationsCount(6, 3)).toBe(20);
-		expect(combinationsCount(15, 5)).toBe(3003);
-		expect(combinationsCount(3, 5)).toBe(0);
-	});
-
 	it('CSV con todos los campos', () => {
 		const row = { ticker: 'AAA', price: 1, momentum_12_1: 0.5 } as UsCandidateRow;
 		const flat = flattenCandidate(row);
@@ -77,9 +70,9 @@ describe('formularios de portafolio', () => {
 	it('parámetros', () => {
 		expect(parseInt10('4', 5)).toBe(4);
 		expect(parseInt10(null, 5)).toBe(5);
-		expect(parseRankBy('sharpe')).toBe('sharpe');
-		expect(parseRankBy('otro')).toBe('expected_return');
-		expect(methodBySlug('black-litterman')?.api).toBe('black_litterman');
-		expect(methodBySlug('x')).toBeUndefined();
+		expect(parseFraction('25', 0.25)).toBe(0.25);
+		expect(parseFraction('30,5', 0.25)).toBeCloseTo(0.305);
+		expect(parseFraction('', 0.25)).toBe(0.25);
+		expect(parseFraction('abc', 0.25)).toBe(0.25);
 	});
 });

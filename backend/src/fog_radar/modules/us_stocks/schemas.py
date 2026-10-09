@@ -12,7 +12,7 @@ import re
 from datetime import datetime
 from typing import Annotated, Literal
 
-from pydantic import AfterValidator, BaseModel, ConfigDict, Field
+from pydantic import AfterValidator, BaseModel, Field
 
 from fog_radar.core.schemas import Out
 
@@ -28,8 +28,6 @@ def _ticker(v: str) -> str:
 
 
 Ticker = Annotated[str, AfterValidator(_ticker)]
-PortfolioMethod = Literal["markowitz", "black_litterman", "hrp"]
-RankBy = Literal["expected_return", "sharpe"]
 
 
 # --- Bloques de datos por ticker --------------------------------------------
@@ -140,6 +138,54 @@ class RunsList(Out):
     runs: list[str]
 
 
+# --- Historial (history.db) ------------------------------------------------------
+
+
+class UsHistCorrida(Out):
+    run_id: str
+    started_at: datetime
+    finished_at: datetime | None = None
+    universe_total: int | None = None
+    candidates_total: int | None = None
+    evaluated_total: int | None = None
+    top_n: int
+    top1_ticker: str | None = None
+    top1_score: float | None = None
+
+
+class UsHistPilares(Out):
+    valuation: float | None = None
+    profitability: float | None = None
+    financial_health: float | None = None
+    shareholder_return: float | None = None
+    technical: float | None = None
+
+
+class UsHistTickerPunto(Out):
+    run_id: str
+    started_at: datetime
+    evaluated_total: int | None = None
+    top_n: int
+    rank: int = Field(description="Posición por momentum 12-1 entre los candidatos evaluados.")
+    in_top: bool
+    name: str | None = None
+    price: float | None = None
+    momentum_12_1: float | None = None
+    score: float | None = None
+    score_label: str | None = None
+    pilares: UsHistPilares
+
+
+class UsHistPermanencia(Out):
+    ticker: str
+    nombre: str | None = None
+    veces_en_top: int
+    corridas: int
+    racha_actual: int
+    rank_ultima: int | None = None
+    score_ultima: float | None = None
+
+
 # --- Evaluación en vivo --------------------------------------------------------
 
 
@@ -165,13 +211,15 @@ class TickerEvaluation(Out):
 
 
 class PortfolioRequest(BaseModel):
-    method: PortfolioMethod
-    tickers: list[Ticker] = Field(max_length=150)
+    tickers: list[Ticker] = Field(max_length=150, description="Universo ya filtrado (etapa 1).")
+    n_assets: int = Field(default=10, ge=2, le=20, description="Activos de la cartera final (clusters).")
+    max_weight: float = Field(default=0.25, ge=0.05, le=1.0, description="Peso máximo por activo.")
     risk_free_rate: float | None = Field(
         default=None, ge=-0.05, le=0.5, description="Tasa libre de riesgo anual; null = valor por defecto."
     )
     views: dict[str, float] | None = Field(
-        default=None, description="Retorno anual esperado por ticker (fracción) para Black-Litterman."
+        default=None,
+        description="Retorno anual esperado por ticker (fracción) que reemplaza la view automática.",
     )
 
 
@@ -181,57 +229,30 @@ class PortfolioMetrics(Out):
     sharpe: float
 
 
-class FrontierPoint(Out):
-    model_config = ConfigDict(populate_by_name=True, json_schema_serialization_defaults_required=True)
-
-    ret: float = Field(alias="return")
-    volatility: float
+class PortfolioPick(Out):
+    ticker: str
+    cluster: int = Field(description="Cluster de correlación (1..n) en orden de score.")
+    score: float | None = None
 
 
 class PortfolioResult(Out):
-    method: PortfolioMethod
     run_id: str
-    tickers: list[str]
+    universe: list[str]
+    selection: list[PortfolioPick]
     weights: dict[str, float]
+    max_weight: float
     metrics: PortfolioMetrics
-    efficient_frontier: list[FrontierPoint] | None = None
-    prior_returns: dict[str, float] | None = None
-    views: dict[str, float] | None = None
-    posterior_returns: dict[str, float] | None = None
-
-
-class BestCombinationRequest(BaseModel):
-    method: PortfolioMethod
-    tickers: list[Ticker] = Field(max_length=150)
-    k: int
-    risk_free_rate: float | None = Field(
-        default=None, ge=-0.05, le=0.5, description="Tasa libre de riesgo anual; null = valor por defecto."
-    )
-    rank_by: RankBy = "expected_return"
-    top_n: int = Field(default=5, ge=1, le=20)
-
-
-class Combination(Out):
-    tickers: list[str]
-    weights: dict[str, float]
-    metrics: PortfolioMetrics
-
-
-class BestCombinationResult(Out):
-    method: PortfolioMethod
-    run_id: str
-    k: int
-    rank_by: RankBy
-    universe_size: int
-    combinations_evaluated: int
-    results: list[Combination]
+    prior_returns: dict[str, float]
+    views: dict[str, float]
+    posterior_returns: dict[str, float]
 
 
 class PortfolioLimits(Out):
-    """Límites del optimizador (para validar en el cliente antes de enviar)."""
+    """Límites y valores por defecto del modelo (para validar en el cliente)."""
 
     min_tickers: int
-    min_combination_size: int
-    max_combination_size: int
-    max_combinations: int
+    min_assets: int
+    max_assets: int
+    default_assets: int
+    default_max_weight: float
     default_risk_free_rate: float

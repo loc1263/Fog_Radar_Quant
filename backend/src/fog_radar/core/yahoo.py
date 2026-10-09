@@ -259,6 +259,9 @@ def instalar(settings: Settings | None = None, politica: Politica | None = None)
             sesion.control = ControlTrafico(politica)
             YfData(session=sesion)  # el singleton adopta la sesión nueva
             yf.config.network.retries = politica.reintentos_red
+            # yfinance loguea como ERROR cada ticker sin datos (404, "possibly delisted"); los
+            # pipelines ya reportan esos tickers (✗ TICKER / excluidos), así que es ruido duplicado.
+            logging.getLogger("yfinance").setLevel(logging.CRITICAL)
             if settings is not None:
                 cache = settings.data_dir / "_cache" / "yfinance"
                 cache.mkdir(parents=True, exist_ok=True)

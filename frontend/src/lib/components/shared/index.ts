@@ -2,6 +2,7 @@ export { default as CompositionBar } from './CompositionBar.svelte';
 export { default as DataTable } from './DataTable.svelte';
 export { default as EmptyState } from './EmptyState.svelte';
 export { default as ErrorState } from './ErrorState.svelte';
+export { default as HistDiffTable } from './HistDiffTable.svelte';
 export { default as KpiCard } from './KpiCard.svelte';
 export { default as KpiGrid } from './KpiGrid.svelte';
 export { default as ModuleCard } from './ModuleCard.svelte';

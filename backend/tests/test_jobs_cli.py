@@ -19,5 +19,10 @@ def test_todos_los_modulos_tienen_pipeline() -> None:
 
 
 def test_opcion_de_otro_modulo_rechazada(capsys: pytest.CaptureFixture[str]) -> None:
-    assert cli.main(["cl_stocks", "--backfill"]) == 2
-    assert "backfill" in capsys.readouterr().err
+    assert cli.main(["cl_stocks", "--skip-fetch"]) == 2
+    assert "skip_fetch" in capsys.readouterr().err
+
+
+def test_backfill_disponible_en_todos_los_modulos() -> None:
+    for key, pipeline in PIPELINES.items():
+        assert "--backfill" in {o.flag for o in pipeline.options}, key

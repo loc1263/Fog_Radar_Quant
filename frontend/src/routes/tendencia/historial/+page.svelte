@@ -67,6 +67,14 @@
 		}))
 	);
 
+	const seriesUniverso = $derived(
+		data.universo.map((u) => ({
+			corrida: etiquetaCorrida(u.run_dir),
+			peso: (u.peso_markowitz ?? 0) * 100
+		}))
+	);
+	const ultimoUniverso = $derived(data.universo.at(-1));
+
 	const colRuns: Column<TdRunPerformance>[] = [
 		{ key: 'run_date', label: 'Fecha', format: (v) => fechaCorta(v as string) },
 		{ key: 'run_dir', label: 'Corrida' },
@@ -265,6 +273,30 @@
 						/>
 					</div>
 				</div>
+				{#if data.universo.length > 0}
+					<div>
+						<div class="mb-1 text-xs font-bold tracking-wide text-brand-label uppercase">
+							Peso de Markowitz en el universo completo
+						</div>
+						<p class="mb-2 text-sm text-brand-muted">
+							Peso que le asigna el optimizador sobre todo el universo, antes de quedarse con las
+							seleccionadas: muestra cuán cerca del corte estuvo en cada corrida.
+							{#if ultimoUniverso}
+								Última corrida: puesto {ultimoUniverso.universe_rank} de {ultimoUniverso.universe_size ??
+									'—'}
+								({ultimoUniverso.seleccionado ? 'seleccionado' : 'no seleccionado'}).
+							{/if}
+						</p>
+						<LineChart
+							data={seriesUniverso}
+							x="corrida"
+							categorical
+							zeroBaseline
+							series={[{ key: 'peso', label: 'Peso Markowitz (universo)' }]}
+							yFormat={(v) => `${fmtNumber(v, 1)} %`}
+						/>
+					</div>
+				{/if}
 			{/if}
 		{/if}
 	</Section>

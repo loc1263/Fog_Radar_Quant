@@ -6,7 +6,7 @@ from typing import Any
 
 import pandas as pd
 
-from fog_radar.modules.cl_stocks import storage
+from fog_radar.modules.cl_stocks import history, storage
 from fog_radar.modules.cl_stocks.columnas import COLUMNAS, GRUPOS
 from fog_radar.modules.cl_stocks.schemas import (
     ColumnaInfo,
@@ -149,3 +149,16 @@ def indicadores(settings: Settings) -> IndicadoresResponse:
         ],
         filas=filas,
     )
+
+
+def historia_ticker(settings: Settings, ticker: str) -> list[dict[str, Any]]:
+    """Filas de ``history.historia_ticker`` con los pilares agrupados (mismo shape que ``RankingRow``)."""
+    return [
+        {
+            **{k: v for k, v in f.items() if k not in history.PILARES_SQL.values()},
+            "pilares": {
+                PILAR_KEYS[csv.removeprefix("Score ")]: f[col] for csv, col in history.PILARES_SQL.items()
+            },
+        }
+        for f in history.historia_ticker(settings, ticker)
+    ]

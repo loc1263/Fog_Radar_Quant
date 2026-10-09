@@ -3,7 +3,7 @@
 - Lectura de la última corrida batch (ranking, candidatos, precios).
 - Evaluación en vivo de un ticker (única llamada a Yahoo dentro de un
   request; con caché de 5 min y rate limit).
-- Optimización de portafolio y búsqueda de la mejor combinación: cómputo
+- Portafolio del modelo único (clusters + Black-Litterman): cómputo
   puro sobre ``prices.json`` + ``candidates.json`` (nunca descargan datos).
 """
 
@@ -22,12 +22,11 @@ from fog_radar.core import yahoo
 from fog_radar.core.errors import ApiError
 from fog_radar.core.logging import get_logger
 from fog_radar.core.ratelimit import limite_concurrente, rate_limit
+from fog_radar.core.schemas import HistDiff
 from fog_radar.modules._base import make_module_router
-from fog_radar.modules.us_stocks import portfolio, storage, ticker_eval
+from fog_radar.modules.us_stocks import history, portfolio, storage, ticker_eval
 from fog_radar.modules.us_stocks.schemas import (
     TICKER_PATTERN,
-    BestCombinationRequest,
-    BestCombinationResult,
     PortfolioLimits,
     PortfolioRequest,
     PortfolioResult,
@@ -35,6 +34,9 @@ from fog_radar.modules.us_stocks.schemas import (
     RunResponse,
     RunsList,
     TickerEvaluation,
+    UsHistCorrida,
+    UsHistPermanencia,
+    UsHistTickerPunto,
 )
 from fog_radar.settings import Settings, get_settings
 
@@ -89,6 +91,39 @@ def latest_prices(
 @router.get("/rankings/runs", response_model=RunsList, summary="Corridas disponibles (más reciente primero)")
 def list_runs(settings: SettingsDep) -> RunsList:
     return RunsList(runs=[d.name for d in storage.list_runs(settings)])
+
+
+# --- Historial (history.db) --------------------------------------------------------
+
+RunId = Annotated[str | None, Query(pattern=r"^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}Z$")]
+
+
+@router.get("/history/runs", response_model=list[UsHistCorrida], summary="Corridas guardadas en el historial")
+def history_runs(settings: SettingsDep) -> Any:
+    return history.corridas(settings)
+
+
+@router.get(
+    "/history/ticker/{ticker}",
+    response_model=list[UsHistTickerPunto],
+    summary="Score, momentum y posición de un ticker en cada corrida",
+)
+def history_ticker(ticker: Annotated[str, PathParam(pattern=TICKER_PATTERN)], settings: SettingsDep) -> Any:
+    return history.historia_ticker(settings, ticker.strip().upper())
+
+
+@router.get("/history/diff", response_model=HistDiff, summary="Qué entró y salió del top entre dos corridas")
+def history_diff(settings: SettingsDep, desde: RunId = None, hasta: RunId = None) -> Any:
+    return history.diff(settings, desde, hasta)
+
+
+@router.get(
+    "/history/top",
+    response_model=list[UsHistPermanencia],
+    summary="Permanencia en el top (últimas N corridas)",
+)
+def history_top(settings: SettingsDep, ultimas: Annotated[int, Query(ge=2, le=260)] = 20) -> Any:
+    return history.permanencia_top(settings, ultimas)
 
 
 # --- Evaluación en vivo ------------------------------------------------------------
@@ -152,13 +187,14 @@ def _portfolio_error(exc: portfolio.PortfolioDataError) -> ApiError:
     return ApiError(400, "portfolio_data", str(exc))
 
 
-@router.get("/portfolio/limits", response_model=PortfolioLimits, summary="Límites del optimizador")
+@router.get("/portfolio/limits", response_model=PortfolioLimits, summary="Límites del modelo de portafolio")
 def portfolio_limits() -> PortfolioLimits:
     return PortfolioLimits(
         min_tickers=portfolio.MIN_TICKERS,
-        min_combination_size=portfolio.MIN_COMBINATION_SIZE,
-        max_combination_size=portfolio.MAX_COMBINATION_SIZE,
-        max_combinations=portfolio.MAX_COMBINATIONS,
+        min_assets=portfolio.MIN_N_ASSETS,
+        max_assets=portfolio.MAX_N_ASSETS,
+        default_assets=portfolio.DEFAULT_N_ASSETS,
+        default_max_weight=portfolio.DEFAULT_MAX_WEIGHT,
         default_risk_free_rate=portfolio.DEFAULT_RISK_FREE_RATE,
     )
 
@@ -166,7 +202,7 @@ def portfolio_limits() -> PortfolioLimits:
 @router.post(
     "/portfolio/optimize",
     response_model=PortfolioResult,
-    summary="Optimiza un portafolio (Markowitz, Black-Litterman o HRP)",
+    summary="Portafolio del modelo único: clusters de correlación + Black-Litterman",
     dependencies=[
         Depends(rate_limit("30/minute", scope="us-optimize")),
         Depends(limite_concurrente(4, scope="us-optimize")),
@@ -175,68 +211,19 @@ def portfolio_limits() -> PortfolioLimits:
 def optimize(request: PortfolioRequest, settings: SettingsDep) -> Any:
     run_dir = storage.latest_finished_run(settings)
     tickers = sorted(set(request.tickers))
-    rf = _rf(request.risk_free_rate)
     try:
         returns = _returns(run_dir, tickers)
-        extra: dict[str, Any] = {}
-        if request.method == "markowitz":
-            weights = portfolio.markowitz_weights(returns, rf)
-            extra["efficient_frontier"] = portfolio.markowitz_efficient_frontier(returns)
-        elif request.method == "black_litterman":
-            caps, scores = _market_caps_and_scores(run_dir, tickers)
-            views = {k.strip().upper(): v for k, v in (request.views or {}).items()}
-            bl = portfolio.black_litterman_weights(returns, caps, scores, rf, views or None)
-            weights = bl["weights"]
-            extra = {k: bl[k] for k in ("prior_returns", "views", "posterior_returns")}
-        else:
-            weights = portfolio.hrp_weights(returns)
-        metrics = portfolio.portfolio_metrics(weights, returns, rf)
-    except portfolio.PortfolioDataError as exc:
-        raise _portfolio_error(exc) from exc
-    return {
-        "method": request.method,
-        "run_id": run_dir.name,
-        "tickers": tickers,
-        "weights": weights,
-        "metrics": metrics,
-        **extra,
-    }
-
-
-@router.post(
-    "/portfolio/best_combination",
-    response_model=BestCombinationResult,
-    summary="Mejores portafolios de exactamente k tickers",
-    dependencies=[
-        Depends(rate_limit("6/minute", scope="us-best-combination")),
-        Depends(limite_concurrente(2, scope="us-best-combination")),
-    ],
-)
-def best_combination(request: BestCombinationRequest, settings: SettingsDep) -> Any:
-    run_dir = storage.latest_finished_run(settings)
-    tickers = sorted(set(request.tickers))
-    try:
-        returns = _returns(run_dir, tickers)
-        caps = scores = None
-        if request.method == "black_litterman":
-            caps, scores = _market_caps_and_scores(run_dir, tickers)
-        result = portfolio.best_combinations(
+        caps, scores = _market_caps_and_scores(run_dir, tickers)
+        views = {k.strip().upper(): v for k, v in (request.views or {}).items()}
+        result = portfolio.build_portfolio(
             returns,
-            request.method,
-            request.k,
-            market_caps=caps,
-            scores=scores,
-            risk_free_rate=_rf(request.risk_free_rate),
-            rank_by=request.rank_by,
-            top_n=request.top_n,
+            caps,
+            scores,
+            _rf(request.risk_free_rate),
+            views or None,
+            n_assets=request.n_assets,
+            max_weight=request.max_weight,
         )
     except portfolio.PortfolioDataError as exc:
         raise _portfolio_error(exc) from exc
-    return {
-        "method": request.method,
-        "run_id": run_dir.name,
-        "k": request.k,
-        "rank_by": request.rank_by,
-        "universe_size": len(tickers),
-        **result,
-    }
+    return {"run_id": run_dir.name, "universe": tickers, **result}

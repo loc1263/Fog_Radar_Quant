@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import math
 
 import numpy as np
 import pandas as pd
@@ -97,37 +96,6 @@ def test_daily_returns_empty_raises():
 
 
 # --------------------------------------------------------------------------
-# markowitz_weights / efficient_frontier
-# --------------------------------------------------------------------------
-
-
-def test_markowitz_weights_long_only_and_normalized(returns):
-    weights = p.markowitz_weights(returns)
-    assert set(weights.keys()) == set(returns.columns)
-    _assert_long_only_and_normalized(weights)
-
-
-def test_markowitz_efficient_frontier_returns_points(returns):
-    frontier = p.markowitz_efficient_frontier(returns, n_points=10)
-    assert len(frontier) > 0
-    for point in frontier:
-        assert point["volatility"] >= 0
-    # Solo se muestra la rama eficiente: tanto el retorno como la
-    # volatilidad deben crecer monótonamente a lo largo de la grilla (si no,
-    # el gráfico de frontera del frontend queda zigzagueante).
-    rets = [pt["return"] for pt in frontier]
-    vols = [pt["volatility"] for pt in frontier]
-    assert rets == sorted(rets)
-    assert all(vols[i] <= vols[i + 1] + 1e-6 for i in range(len(vols) - 1))
-
-
-def test_markowitz_efficient_frontier_flat_expected_returns_is_empty():
-    dates = pd.bdate_range(end="2025-06-30", periods=50)
-    returns = pd.DataFrame({"AAA": [0.001] * 50, "BBB": [0.001] * 50}, index=dates)
-    assert p.markowitz_efficient_frontier(returns) == []
-
-
-# --------------------------------------------------------------------------
 # black_litterman_weights
 # --------------------------------------------------------------------------
 
@@ -170,30 +138,6 @@ def test_black_litterman_view_override_shifts_that_tickers_view(returns):
 
 
 # --------------------------------------------------------------------------
-# hrp_weights
-# --------------------------------------------------------------------------
-
-
-def test_hrp_weights_long_only_and_normalized(returns):
-    weights = p.hrp_weights(returns)
-    assert set(weights.keys()) == set(returns.columns)
-    _assert_long_only_and_normalized(weights)
-
-
-def test_hrp_does_not_require_expected_returns(returns):
-    # HRP solo usa covarianza/correlación: acciones con retorno esperado
-    # idéntico pero distinta volatilidad igual reciben pesos distintos.
-    dates = returns.index
-    rng = np.random.default_rng(1)
-    low_vol = rng.normal(0.0005, 0.004, size=len(dates))
-    high_vol = rng.normal(0.0005, 0.02, size=len(dates))
-    df = pd.DataFrame({"LOW": low_vol, "HIGH": high_vol}, index=dates)
-    weights = p.hrp_weights(df)
-    # HRP tiende a asignar más peso al activo de menor varianza.
-    assert weights["LOW"] > weights["HIGH"]
-
-
-# --------------------------------------------------------------------------
 # portfolio_metrics
 # --------------------------------------------------------------------------
 
@@ -206,70 +150,90 @@ def test_portfolio_metrics_shape(returns):
 
 
 # --------------------------------------------------------------------------
-# best_combinations
+# max_weight (tope por activo)
 # --------------------------------------------------------------------------
 
 
-@pytest.fixture
-def wide_returns() -> pd.DataFrame:
-    return _synthetic_returns([f"T{i}" for i in range(8)], seed=11)
+def test_black_litterman_respeta_el_tope_de_peso(returns):
+    tickers = list(returns.columns)
+    caps = {t: 1e11 for t in tickers}
+    scores = {t: 50.0 + 10 * i for i, t in enumerate(tickers)}
+    res = p.black_litterman_weights(returns, caps, scores, max_weight=0.3)
+    assert max(res["weights"].values()) <= 0.3 + 1e-6
+    _assert_long_only_and_normalized(res["weights"])
 
 
-@pytest.mark.parametrize("method", ["markowitz", "black_litterman", "hrp"])
-def test_best_combinations_evaluates_all_and_sorts_by_rank(wide_returns, method):
-    tickers = list(wide_returns.columns)
-    market_caps = {t: 1e11 * (i + 1) for i, t in enumerate(tickers)}
-    scores = {t: 40.0 + i * 5 for i, t in enumerate(tickers)}
-
-    result = p.best_combinations(
-        wide_returns,
-        method,
-        k=3,
-        market_caps=market_caps,
-        scores=scores,
-        top_n=3,
-    )
-
-    assert result["combinations_evaluated"] == math.comb(len(tickers), 3)
-    assert len(result["results"]) == 3
-    for combo in result["results"]:
-        assert len(combo["tickers"]) == 3
-        assert set(combo["tickers"]).issubset(set(tickers))
-        _assert_long_only_and_normalized(combo["weights"])
-
-    # Ordenado descendente por el criterio de ranking por defecto.
-    rets = [c["metrics"]["expected_return"] for c in result["results"]]
-    assert rets == sorted(rets, reverse=True)
+# --------------------------------------------------------------------------
+# select_by_cluster
+# --------------------------------------------------------------------------
 
 
-def test_best_combinations_rank_by_sharpe_picks_highest_sharpe(wide_returns):
-    result = p.best_combinations(wide_returns, "markowitz", k=3, rank_by="sharpe", top_n=3)
-    sharpes = [c["metrics"]["sharpe"] for c in result["results"]]
-    assert sharpes == sorted(sharpes, reverse=True)
+def _clustered_returns(seed: int = 5, n_days: int = 250) -> pd.DataFrame:
+    """3 grupos de 3 tickers muy correlacionados dentro del grupo, independientes entre grupos."""
+    rng = np.random.default_rng(seed)
+    dates = pd.bdate_range(end="2025-06-30", periods=n_days)
+    data = {}
+    for g in "ABC":
+        factor = rng.normal(0, 0.01, size=n_days)
+        for i in range(3):
+            data[f"{g}{i}"] = factor + rng.normal(0, 0.001, size=n_days)
+    return pd.DataFrame(data, index=dates)
 
 
-def test_best_combinations_invalid_rank_by(wide_returns):
-    with pytest.raises(p.PortfolioDataError, match="rank_by"):
-        p.best_combinations(wide_returns, "hrp", k=3, rank_by="volatility")
+def test_select_by_cluster_elige_un_representante_por_grupo_con_mayor_score():
+    rets = _clustered_returns()
+    scores = {
+        "A0": 10.0,
+        "A1": 90.0,
+        "A2": 20.0,
+        "B0": 70.0,
+        "B1": 30.0,
+        "B2": 40.0,
+        "C0": 5.0,
+        "C1": 6.0,
+        "C2": 80.0,
+    }
+    picks = p.select_by_cluster(rets, scores, n_assets=3)
+    assert [x["ticker"] for x in picks] == ["A1", "C2", "B0"]  # orden por score desc
+    assert [x["cluster"] for x in picks] == [1, 2, 3]
 
 
-def test_best_combinations_k_too_small(wide_returns):
-    with pytest.raises(p.PortfolioDataError, match="al menos"):
-        p.best_combinations(wide_returns, "hrp", k=1)
+def test_select_by_cluster_universo_menor_que_n_assets_devuelve_todos():
+    rets = _clustered_returns()[["A0", "B0", "C0"]]
+    picks = p.select_by_cluster(rets, {}, n_assets=10)
+    assert sorted(x["ticker"] for x in picks) == ["A0", "B0", "C0"]
 
 
-def test_best_combinations_k_larger_than_universe(wide_returns):
-    with pytest.raises(p.PortfolioDataError, match="universo"):
-        p.best_combinations(wide_returns, "hrp", k=len(wide_returns.columns) + 1)
+def test_select_by_cluster_completa_si_hay_menos_clusters_que_n_assets():
+    rets = _clustered_returns()
+    scores = {t: float(i) for i, t in enumerate(rets.columns)}
+    picks = p.select_by_cluster(rets, scores, n_assets=5)
+    assert len(picks) == 5 and len({x["ticker"] for x in picks}) == 5
 
 
-def test_best_combinations_k_larger_than_max_combination_size(monkeypatch, wide_returns):
-    monkeypatch.setattr(p, "MAX_COMBINATION_SIZE", 3)
-    with pytest.raises(p.PortfolioDataError, match="más de 3 tickers"):
-        p.best_combinations(wide_returns, "hrp", k=4)
+def test_select_by_cluster_n_assets_invalido():
+    with pytest.raises(p.PortfolioDataError):
+        p.select_by_cluster(_clustered_returns(), {}, n_assets=1)
 
 
-def test_best_combinations_respects_max_combinations_cap(monkeypatch, wide_returns):
-    monkeypatch.setattr(p, "MAX_COMBINATIONS", 10)
-    with pytest.raises(p.PortfolioDataError, match="10"):
-        p.best_combinations(wide_returns, "hrp", k=4)
+# --------------------------------------------------------------------------
+# build_portfolio
+# --------------------------------------------------------------------------
+
+
+def test_build_portfolio_integra_seleccion_y_pesos():
+    rets = _clustered_returns()
+    caps = {t: 1e11 for t in rets.columns}
+    scores = {t: 50.0 + i for i, t in enumerate(rets.columns)}
+    res = p.build_portfolio(rets, caps, scores, n_assets=3, max_weight=0.5)
+    chosen = [x["ticker"] for x in res["selection"]]
+    assert len(chosen) == 3 and set(res["weights"]) == set(chosen)
+    _assert_long_only_and_normalized(res["weights"])
+    assert max(res["weights"].values()) <= 0.5 + 1e-6
+    assert set(res["metrics"]) == {"expected_return", "volatility", "sharpe"}
+
+
+def test_build_portfolio_tope_invalido():
+    rets = _clustered_returns()
+    with pytest.raises(p.PortfolioDataError):
+        p.build_portfolio(rets, {}, {}, max_weight=0.01)

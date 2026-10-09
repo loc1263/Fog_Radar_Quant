@@ -60,6 +60,11 @@ def _install_missing() -> bool:
 
 
 def main() -> int:
+    # La consola de Windows puede no ser UTF-8: reemplazar en vez de fallar al reenviar salida.
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            reconfigure(errors="replace")
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--backend-port", type=int, default=8000)
     parser.add_argument("--frontend-port", type=int, default=5173)
@@ -84,13 +89,25 @@ def main() -> int:
         backend_cmd.append("--reload")
     frontend_cmd = ["npm", "run", "dev", "--", "--port", str(args.frontend_port)]
 
-    env_front = {**os.environ, "PRIVATE_API_URL": f"http://localhost:{args.backend_port}"}
-    popen_kw: dict = {"stdout": subprocess.PIPE, "stderr": subprocess.STDOUT, "text": True, "bufsize": 1}
+    # PYTHONUTF8: sin esto, en Windows el stdout redirigido del backend usa cp1252 y el
+    # logging falla con caracteres como '≥' o '→'. UV_LINK_MODE: el caché de uv (C:) y el
+    # repo (D:) están en discos distintos; se evita el aviso "Failed to hardlink files".
+    env_comun = {**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8", "UV_LINK_MODE": "copy"}
+    env_back = env_comun
+    env_front = {**env_comun, "PRIVATE_API_URL": f"http://localhost:{args.backend_port}"}
+    popen_kw: dict = {
+        "stdout": subprocess.PIPE,
+        "stderr": subprocess.STDOUT,
+        "text": True,
+        "encoding": "utf-8",
+        "errors": "replace",
+        "bufsize": 1,
+    }
     if IS_WINDOWS:
         popen_kw["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP  # type: ignore[attr-defined]
 
     procs = [
-        (subprocess.Popen(backend_cmd, cwd=BACKEND, shell=IS_WINDOWS, **popen_kw), "[BACKEND] "),
+        (subprocess.Popen(backend_cmd, cwd=BACKEND, env=env_back, shell=IS_WINDOWS, **popen_kw), "[BACKEND] "),
         (subprocess.Popen(frontend_cmd, cwd=FRONTEND, env=env_front, shell=IS_WINDOWS, **popen_kw), "[FRONTEND]"),
     ]
     for proc, prefix in procs:

@@ -5,7 +5,6 @@ y adaptado al sitio unificado (prefijo ``/api/us``, API key, errores ``{detail, 
 from __future__ import annotations
 
 import json
-import math
 import shutil
 from collections.abc import Iterator
 from pathlib import Path
@@ -229,42 +228,36 @@ def _portfolio_run(runs: Path, tickers: list[str], seed: int = 7) -> None:
     )
 
 
-@pytest.mark.parametrize("method", ["markowitz", "black_litterman", "hrp"])
-def test_optimize(client: TestClient, auth: dict, runs: Path, method: str) -> None:
-    tickers = ["AAA", "BBB", "CCC"]
-    _portfolio_run(runs, tickers)
-    res = client.post("/api/us/portfolio/optimize", json={"method": method, "tickers": tickers}, headers=auth)
+WIDE = ["AAA", "BBB", "CCC", "DDD", "EEE", "FFF"]
+
+
+def test_optimize(client: TestClient, auth: dict, runs: Path) -> None:
+    _portfolio_run(runs, WIDE, seed=13)
+    res = client.post("/api/us/portfolio/optimize", json={"tickers": WIDE, "n_assets": 4}, headers=auth)
     assert res.status_code == 200
     body = res.json()
-    assert body["method"] == method and set(body["weights"]) == set(tickers)
-    assert all(w >= -1e-9 for w in body["weights"].values())
+    assert body["universe"] == WIDE and len(body["selection"]) == 4
+    chosen = {x["ticker"] for x in body["selection"]}
+    assert set(body["weights"]) == chosen == set(body["views"])
+    assert all(0 <= w <= 0.5 + 1e-6 for w in body["weights"].values())  # tope 25% -> sube a 1/4 si hace falta
     assert sum(body["weights"].values()) == pytest.approx(1.0, abs=1e-6)
-    if method == "markowitz":
-        assert body["efficient_frontier"] and set(body["efficient_frontier"][0]) == {"return", "volatility"}
-    if method == "black_litterman":
-        assert set(body["views"]) == set(tickers)
 
 
-def test_optimize_bl_con_views_manuales(client: TestClient, auth: dict, runs: Path) -> None:
-    tickers = ["AAA", "BBB", "CCC"]
-    _portfolio_run(runs, tickers)
-    payload = {"method": "black_litterman", "tickers": tickers, "views": {"aaa": 0.9}}
+def test_optimize_views_manuales(client: TestClient, auth: dict, runs: Path) -> None:
+    _portfolio_run(runs, WIDE, seed=13)
+    payload = {"tickers": WIDE, "n_assets": 6, "views": {"aaa": 0.9}}
     body = client.post("/api/us/portfolio/optimize", json=payload, headers=auth).json()
     assert body["views"]["AAA"] == pytest.approx(0.9)
 
 
 def test_optimize_sin_corridas(client: TestClient, auth: dict, runs: Path) -> None:
-    res = client.post(
-        "/api/us/portfolio/optimize", json={"method": "hrp", "tickers": ["AAA", "BBB"]}, headers=auth
-    )
+    res = client.post("/api/us/portfolio/optimize", json={"tickers": ["AAA", "BBB"]}, headers=auth)
     assert res.status_code == 503
 
 
 def test_optimize_ticker_sin_precios(client: TestClient, auth: dict, runs: Path) -> None:
     _portfolio_run(runs, ["AAA", "BBB", "CCC"])
-    res = client.post(
-        "/api/us/portfolio/optimize", json={"method": "hrp", "tickers": ["AAA", "ZZZZ"]}, headers=auth
-    )
+    res = client.post("/api/us/portfolio/optimize", json={"tickers": ["AAA", "ZZZZ"]}, headers=auth)
     assert (
         res.status_code == 400 and res.json()["code"] == "portfolio_data" and "ZZZZ" in res.json()["detail"]
     )
@@ -272,63 +265,18 @@ def test_optimize_ticker_sin_precios(client: TestClient, auth: dict, runs: Path)
 
 def test_optimize_un_solo_ticker(client: TestClient, auth: dict, runs: Path) -> None:
     _portfolio_run(runs, ["AAA", "BBB", "CCC"])
-    res = client.post(
-        "/api/us/portfolio/optimize", json={"method": "markowitz", "tickers": ["AAA"]}, headers=auth
-    )
+    res = client.post("/api/us/portfolio/optimize", json={"tickers": ["AAA"]}, headers=auth)
     assert res.status_code == 400
 
 
 def test_optimize_ticker_invalido_422(client: TestClient, auth: dict, runs: Path) -> None:
-    res = client.post(
-        "/api/us/portfolio/optimize", json={"method": "hrp", "tickers": ["AAA", "B B"]}, headers=auth
-    )
+    res = client.post("/api/us/portfolio/optimize", json={"tickers": ["AAA", "B B"]}, headers=auth)
     assert res.status_code == 422 and res.json()["code"] == "validation_error"
 
 
-WIDE = ["AAA", "BBB", "CCC", "DDD", "EEE", "FFF"]
-
-
-@pytest.mark.parametrize("method", ["markowitz", "black_litterman", "hrp"])
-def test_best_combination(client: TestClient, auth: dict, runs: Path, method: str) -> None:
-    _portfolio_run(runs, WIDE, seed=13)
-    payload = {"method": method, "tickers": WIDE, "k": 3, "top_n": 3}
-    body = client.post("/api/us/portfolio/best_combination", json=payload, headers=auth).json()
-    assert body["k"] == 3 and body["universe_size"] == 6
-    assert body["combinations_evaluated"] == math.comb(6, 3)
-    assert len(body["results"]) == 3
-    rets = [c["metrics"]["expected_return"] for c in body["results"]]
-    assert rets == sorted(rets, reverse=True)
-
-
-def test_best_combination_k_mayor_que_universo(client: TestClient, auth: dict, runs: Path) -> None:
-    _portfolio_run(runs, WIDE, seed=13)
-    payload = {"method": "hrp", "tickers": WIDE, "k": 10}
-    assert client.post("/api/us/portfolio/best_combination", json=payload, headers=auth).status_code == 400
-
-
-def test_best_combination_supera_tope(client: TestClient, auth: dict, runs: Path) -> None:
-    _portfolio_run(runs, WIDE, seed=13)
-    with mock.patch.object(router.portfolio, "MAX_COMBINATIONS", 5):
-        res = client.post(
-            "/api/us/portfolio/best_combination",
-            json={"method": "hrp", "tickers": WIDE, "k": 3},
-            headers=auth,
-        )
-        limits = client.get("/api/us/portfolio/limits", headers=auth).json()
-    assert res.status_code == 400 and "combinaciones posibles" in res.json()["detail"]
-    assert limits["max_combinations"] == 5
-
-
-def test_best_combination_por_sharpe(client: TestClient, auth: dict, runs: Path) -> None:
-    _portfolio_run(runs, WIDE, seed=13)
-    payload = {"method": "markowitz", "tickers": WIDE, "k": 3, "rank_by": "sharpe", "top_n": 3}
-    sharpes = [
-        c["metrics"]["sharpe"]
-        for c in client.post("/api/us/portfolio/best_combination", json=payload, headers=auth).json()[
-            "results"
-        ]
-    ]
-    assert sharpes == sorted(sharpes, reverse=True)
+def test_limits(client: TestClient, auth: dict) -> None:
+    body = client.get("/api/us/portfolio/limits", headers=auth).json()
+    assert body["default_assets"] == 10 and body["default_max_weight"] == 0.25
 
 
 # --- Pipeline / CLI ---------------------------------------------------------------------

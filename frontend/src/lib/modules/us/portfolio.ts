@@ -1,52 +1,10 @@
 /**
- * Métodos de portafolio y lectura de los formularios (usado por las form
- * actions del servidor y por la página). Lógica pura, sin I/O.
+ * Lectura de los formularios del portafolio (usado por la form action del
+ * servidor y por la página). Lógica pura, sin I/O.
  */
-import type { UsPortfolioMethod, UsRankBy } from '$lib/api/types';
 
-export interface MethodInfo {
-	/** Segmento de URL (`/eeuu/portafolio/[metodo]`). */
-	slug: string;
-	api: UsPortfolioMethod;
-	label: string;
-	description: string;
-}
-
-export const METHODS: MethodInfo[] = [
-	{
-		slug: 'markowitz',
-		api: 'markowitz',
-		label: 'Markowitz',
-		description:
-			'Portafolio tangente de máximo Sharpe sobre la frontera eficiente media-varianza (long-only), estimado con el histórico de precios de la última corrida.'
-	},
-	{
-		slug: 'black-litterman',
-		api: 'black_litterman',
-		label: 'Black-Litterman',
-		description:
-			'Combina el equilibrio de mercado (pesos por market cap) con views automáticas derivadas del score de salud de cada ticker. Puedes editar cualquier view antes de optimizar.'
-	},
-	{
-		slug: 'hrp',
-		api: 'hrp',
-		label: 'HRP',
-		description:
-			'Hierarchical Risk Parity: asigna pesos por clustering jerárquico de la correlación entre tickers (López de Prado). No estima retornos esperados, solo covarianza.'
-	}
-];
-
-export function methodBySlug(slug: string): MethodInfo | undefined {
-	return METHODS.find((m) => m.slug === slug);
-}
-
-export const RANK_LABELS: Record<UsRankBy, string> = {
-	expected_return: 'Retorno esperado',
-	sharpe: 'Sharpe'
-};
-
-/** Selección inicial del universo: top N por momentum 12-1. */
-export const DEFAULT_SELECTION = 15;
+/** Atajos de selección: los N mejores por score (el universo inicial es todos los candidatos). */
+export const TOP_UNIVERSES = [15, 30];
 
 const TICKER_RE = /^[A-Z0-9.\-^=]{1,15}$/;
 
@@ -83,6 +41,12 @@ export function parseInt10(value: FormDataEntryValue | null, fallback: number): 
 	return Number.isFinite(n) ? n : fallback;
 }
 
-export function parseRankBy(value: FormDataEntryValue | null): UsRankBy {
-	return value === 'sharpe' ? 'sharpe' : 'expected_return';
+/** Porcentaje del formulario (`25` o `25,5`) → fracción; vacío o inválido → `fallback`. */
+export function parseFraction(value: FormDataEntryValue | null, fallback: number): number {
+	const text = String(value ?? '')
+		.trim()
+		.replace(',', '.');
+	if (text === '') return fallback;
+	const n = Number(text);
+	return Number.isFinite(n) ? n / 100 : fallback;
 }

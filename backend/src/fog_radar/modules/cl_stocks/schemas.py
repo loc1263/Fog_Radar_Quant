@@ -7,6 +7,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from fog_radar.core.schemas import FechaLocal
 from fog_radar.modules.cl_stocks.columnas import Unidad
 
 
@@ -108,3 +109,32 @@ class IndicadoresResponse(BaseModel):
     grupos: list[str]
     columnas: list[ColumnaInfo]
     filas: list[IndicadorRow]
+
+
+# --- Historial (history.db) --------------------------------------------------------
+
+
+class ClHistCorrida(BaseModel):
+    ts: str = Field(description="Timestamp de la corrida (YYYYMMDD_HHMMSS), su identificador.")
+    run_at: FechaLocal
+    archivo: str
+    n_tickers: int
+    top1_ticker: str | None
+    top1_score: float | None
+
+
+class ClHistTickerPunto(BaseModel):
+    ts: str
+    run_at: FechaLocal
+    n_tickers: int
+    rank: int | None
+    nombre: str | None
+    score_compuesto: float | None
+    pilares: PilarScores
+    metricas_disponibles: int | None
+
+
+class ClHistIndicadorPunto(BaseModel):
+    ts: str
+    run_at: FechaLocal
+    valor: float | None

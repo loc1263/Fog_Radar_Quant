@@ -2,6 +2,7 @@
 
     uv run python -m fog_radar.jobs etf                   # screener Yahoo + análisis (~30 min)
     uv run python -m fog_radar.jobs etf --solo-analisis   # re-analiza el CSV vigente (segundos)
+    uv run python -m fog_radar.jobs etf --backfill        # solo reconstruye history.db
 
 Flujo completo (igual que el original):
 
@@ -10,7 +11,9 @@ Flujo completo (igual que el original):
    *staging*; ``data/etf/current`` no se toca todavía.
 3. Solo si el análisis terminó sin errores: archiva la corrida vigente en
    ``data/etf/hist`` e instala la nueva (bajo el lock que respetan los GET).
-4. Mueve a ``screener/data_old/`` las salidas crudas del screener de más de
+4. Guarda la corrida en ``data/etf/history.db`` (índice histórico; si falla, solo
+   avisa: se recupera con ``--backfill``).
+5. Mueve a ``screener/data_old/`` las salidas crudas del screener de más de
    30 días (no borra nada).
 
 ``--solo-analisis`` equivale al ``POST /api/run`` del original: recalcula los
@@ -25,9 +28,10 @@ import shutil
 from datetime import datetime
 from pathlib import Path
 
+from fog_radar.core import histdb
 from fog_radar.core.errors import NoDataError
 from fog_radar.core.logging import get_logger
-from fog_radar.modules.etf import storage
+from fog_radar.modules.etf import history, storage
 from fog_radar.settings import Settings
 
 log = get_logger("etf.pipeline")
@@ -100,6 +104,7 @@ def _analizar_e_instalar(settings: Settings, origen_csv: Path, *, archivar: bool
         log.info("Instalados en current/: %s", ", ".join(instalados))
     finally:
         shutil.rmtree(staging, ignore_errors=True)
+    histdb.guardar_sin_fallar("etf", lambda: history.guardar_vigente(settings))
 
     top3 = resultado["top15"]["Ticker"].head(3).tolist()
     partes = [
@@ -113,8 +118,10 @@ def _analizar_e_instalar(settings: Settings, origen_csv: Path, *, archivar: bool
     return " · ".join(partes)
 
 
-def run(settings: Settings, *, solo_analisis: bool = False) -> str:
+def run(settings: Settings, *, solo_analisis: bool = False, backfill: bool = False) -> str:
     """Ejecuta el pipeline y devuelve un resumen para el registro de jobs."""
+    if backfill:
+        return history.backfill(settings)
     if solo_analisis:
         with storage.bloqueo_datos(settings, timeout=60):
             vigente = storage.csv_actual(storage.current_dir(settings))

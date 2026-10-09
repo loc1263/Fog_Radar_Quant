@@ -24,9 +24,9 @@ que necesitás para "analizar un año de corridas".
 """
 
 import os
-import sqlite3
 from contextlib import contextmanager
 
+from fog_radar.core import histdb
 from fog_radar.modules.tendencia import config
 
 
@@ -38,7 +38,7 @@ def history_db_path():
 # `momentum_rank` (no `rank`, palabra reservada en SQLite moderno por las
 # funciones ventana) es la posición 1..N en el ranking de momentum de esa
 # corrida/análisis — ver modeling.momentum.
-SCHEMA = """
+SCHEMA_V1 = """
 CREATE TABLE IF NOT EXISTS runs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     run_dir TEXT UNIQUE NOT NULL,
@@ -125,29 +125,41 @@ CREATE INDEX IF NOT EXISTS idx_momentum_ticker ON momentum(ticker);
 """
 
 
+# v2 (INFORME_SQLITE §3.1): un ticker una sola vez por análisis, y los pesos de
+# Markowitz del universo completo (``markowitz_universe_weights<sufijo>.csv``)
+# para ver cuán cerca del top estuvo cada ticker y por qué salió.
+SCHEMA_V2 = """
+CREATE UNIQUE INDEX IF NOT EXISTS ux_holdings_analysis_ticker ON holdings(analysis_id, ticker);
+
+CREATE TABLE IF NOT EXISTS universe_weights (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    analysis_id INTEGER NOT NULL REFERENCES analyses(id) ON DELETE CASCADE,
+    universe_rank INTEGER NOT NULL,
+    ticker TEXT NOT NULL,
+    nombre TEXT,
+    pais TEXT,
+    peso_markowitz REAL,
+    retorno_esperado_anual REAL,
+    UNIQUE(analysis_id, ticker)
+);
+CREATE INDEX IF NOT EXISTS idx_universe_weights_ticker ON universe_weights(ticker);
+"""
+
+# Migraciones en orden (ver core.histdb.migrar). La v1 es el esquema original con
+# ``IF NOT EXISTS``: aplicarla a una base creada antes del versionado no cambia nada.
+MIGRACIONES = (SCHEMA_V1, SCHEMA_V2)
+
+
 @contextmanager
 def get_connection(db_path=None):
-    """Conexión sqlite3 con claves foráneas activas (para que el ON DELETE
-    CASCADE del esquema realmente borre en cascada) y filas accesibles
-    por nombre de columna (`dict(row)`). Hace commit al salir del `with`
-    si no hubo excepción, o rollback si la hubo."""
-    path = db_path or history_db_path()
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    conn = sqlite3.connect(path)
-    conn.row_factory = sqlite3.Row
-    conn.execute("PRAGMA foreign_keys = ON")
-    try:
+    """Conexión de escritura (claves foráneas, WAL; ver ``core.histdb``). Filas
+    accesibles por nombre de columna; commit al salir del ``with`` o rollback si
+    hubo excepción."""
+    with histdb.conectar_escritura(db_path or history_db_path()) as conn:
         yield conn
-        conn.commit()
-    except Exception:
-        conn.rollback()
-        raise
-    finally:
-        conn.close()
 
 
 def init_db(db_path=None):
-    """Crea las tablas/índices si no existen. Idempotente — llamarla al
-    arrancar (writer o API) sin necesidad de saber si ya se corrió antes."""
+    """Crea o migra el esquema a la última versión. Idempotente."""
     with get_connection(db_path) as conn:
-        conn.executescript(SCHEMA)
+        histdb.migrar(conn, MIGRACIONES)

@@ -63,3 +63,13 @@ test('indicadores: cambia de grupo de columnas', async ({ page }) => {
 		'page'
 	);
 });
+
+test('historial desde history.db', async ({ page }) => {
+	await page.goto('/chile/historial');
+	await expect(page.getByRole('table', { name: 'Corridas' }).locator('tbody tr')).not.toHaveCount(
+		0
+	);
+	await expect(
+		page.getByRole('table', { name: 'Trayectoria de la acción' }).locator('tbody tr')
+	).not.toHaveCount(0);
+});

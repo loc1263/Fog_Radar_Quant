@@ -20,7 +20,7 @@ from __future__ import annotations
 import os
 import re
 import shutil
-import tempfile
+import uuid
 from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import date, datetime
@@ -186,7 +186,10 @@ def preparar_staging(settings: Settings, origen_csv: Path, fecha_tag: str) -> Pa
     CSV nuevo ya con su nombre final y una copia del historial vigente."""
     base = module_dir(settings)
     base.mkdir(parents=True, exist_ok=True)
-    staging = Path(tempfile.mkdtemp(prefix=".staging_", dir=base))
+    # No usar tempfile.mkdtemp: en Windows (Python ≥ 3.12) crea la carpeta con una ACL sin herencia y los
+    # archivos instalados desde ahí quedan ilegibles para el usuario (PermissionError en la corrida siguiente).
+    staging = base / f".staging_{uuid.uuid4().hex[:8]}"
+    staging.mkdir()
     shutil.copy2(origen_csv, staging / f"etf_perf_data_{fecha_tag}.csv")
     with bloqueo_datos(settings, timeout=60):
         historial = current_dir(settings) / HISTORIAL

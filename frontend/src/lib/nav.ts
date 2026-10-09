@@ -24,7 +24,8 @@ export const MODULES: ModuleNav[] = [
 		description: 'Ranking multi-factor de acciones del IPSA.',
 		sections: [
 			{ label: 'Ranking', href: '/chile' },
-			{ label: 'Indicadores', href: '/chile/indicadores' }
+			{ label: 'Indicadores', href: '/chile/indicadores' },
+			{ label: 'Historial', href: '/chile/historial' }
 		]
 	},
 	{
@@ -37,10 +38,9 @@ export const MODULES: ModuleNav[] = [
 			{ label: 'Candidatos', href: '/eeuu/candidatos' },
 			{ label: 'Evaluación', href: '/eeuu/evaluacion' },
 			{ label: 'Rendimiento', href: '/eeuu/rendimiento' },
-			{ label: 'Markowitz', href: '/eeuu/portafolio/markowitz' },
-			{ label: 'Black-Litterman', href: '/eeuu/portafolio/black-litterman' },
-			{ label: 'HRP', href: '/eeuu/portafolio/hrp' },
-			{ label: 'Evaluar ticker', href: '/eeuu/ticker' }
+			{ label: 'Portafolio', href: '/eeuu/portafolio' },
+			{ label: 'Evaluar ticker', href: '/eeuu/ticker' },
+			{ label: 'Historial', href: '/eeuu/historial' }
 		]
 	},
 	{
@@ -61,6 +61,7 @@ export const MODULES: ModuleNav[] = [
 			{ label: 'Top 15 Momentum', href: '/etf/momentum' },
 			{ label: 'Top 15 Cap.', href: '/etf/top15-cap' },
 			{ label: 'Historial', href: '/etf/historial' },
+			{ label: 'Evolución', href: '/etf/evolucion' },
 			{ label: 'Descargar', href: '/etf/descargar' }
 		]
 	},

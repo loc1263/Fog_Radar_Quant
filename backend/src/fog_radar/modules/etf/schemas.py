@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from datetime import date, datetime
 
+from pydantic import Field
+
 from fog_radar.core.jobs import JobRecord
 from fog_radar.core.schemas import Out
 
@@ -209,3 +211,66 @@ class EtfResumen(Out):
 
 class EtfRunResult(Out):
     job: JobRecord
+
+
+# --- Historial (history.db) --------------------------------------------------------
+
+
+class EtfHistCorrida(Out):
+    run_key: str = Field(description="<yyyymmdd> o <yyyymmdd>_<n> (mismo sufijo que hist/).")
+    fecha: date
+    secuencia: int
+    run_at: datetime | None = None
+    universo_bruto: int | None = None
+    universo_depurado: int
+    n_outliers: int | None = None
+    sharpe_promedio: float | None = None
+    beta_promedio: float | None = None
+    top1_ticker: str | None = None
+    top1_score: float | None = None
+
+
+class EtfHistTickerPunto(Out):
+    run_key: str
+    fecha: date
+    universo_depurado: int
+    nombre: str | None = None
+    category: str | None = None
+    rank: int | None = Field(default=None, description="Puesto en el ranking principal (None = no estaba).")
+    en_top15: bool
+    score: float | None = None
+    score_simple: float | None = None
+    precio: float | None = None
+    sharpe: float | None = None
+    treynor: float | None = None
+    beta: float | None = None
+    perf_1m: float | None = None
+    perf_6m: float | None = None
+    perf_1y: float | None = None
+    momentum_rank: int | None = None
+    momentum_score: float | None = None
+    excluido_ventana: str | None = Field(
+        default=None, description="Si fue excluido por outlier en esa corrida."
+    )
+    excluido_z: float | None = None
+
+
+class EtfHistCategoria(Out):
+    run_key: str
+    fecha: date
+    category: str
+    n: int | None = None
+    score_promedio: float | None = None
+    sharpe_promedio: float | None = None
+    perf_1y_promedio: float | None = None
+    en_top15: int
+
+
+class EtfHistPermanencia(Out):
+    ticker: str
+    nombre: str | None = None
+    veces_en_top: int
+    corridas: int
+    racha_actual: int
+    rank_ultima: int | None = None
+    score_ultima: float | None = None

@@ -206,6 +206,16 @@ class TdTickerHistoria(Out):
     precio_max_90pct_6m_usd: float | None = None
 
 
+class TdUniversoHistoria(Out):
+    run_date: date
+    run_dir: str
+    universe_rank: int
+    universe_size: int | None = None
+    peso_markowitz: float | None = None
+    retorno_esperado_anual: float | None = None
+    seleccionado: bool
+
+
 class TdSectorHistoria(Out):
     run_date: date
     run_dir: str

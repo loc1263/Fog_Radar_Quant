@@ -48,6 +48,11 @@ módulo: **docs/METODOLOGIAS.md** (actualizarla si cambia la lógica).
   (pydantic-settings) + `.env`.
 - Ruff + pytest. Al portar lógica de un proyecto original, agregar **test de
   paridad** (mismo input → mismo output que el original).
+- **Historial (`history.db`, ADR 0003):** cada módulo indexa sus corridas en
+  `data/<modulo>/history.db` vía `core/histdb.py` (`modules/<modulo>/history.py`). Es un índice
+  derivado: los archivos siguen siendo la fuente de verdad; se escribe al final del pipeline con
+  `histdb.guardar_sin_fallar` y se reconstruye con `--backfill`. Cambios de esquema = migración
+  nueva al final de `MIGRACIONES` (nunca editar una publicada). Endpoints `/history/*` en solo lectura.
 - PDFs: estilo común en `core/pdf` (paleta, Carlito incluida, tablas, encabezado/pie).
   Textos ≥ 10 pt, encabezados de tabla claros (nunca fondos oscuros), números a la derecha.
 - **Yahoo Finance:** todo yfinance pasa por la sesión común de `core/yahoo.py` (espaciado

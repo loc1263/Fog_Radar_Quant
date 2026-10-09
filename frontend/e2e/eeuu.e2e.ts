@@ -44,37 +44,18 @@ test('evaluación ordenada por score y rendimiento creciente', async ({ page }) 
 	expect(n).toBeLessThanOrEqual(total);
 });
 
-test('Markowitz: optimizar y buscar la mejor combinación', async ({ page }) => {
-	await page.goto('/eeuu/portafolio/markowitz');
-	await expect(page.getByText(/15 seleccionados/)).toBeVisible();
-	await page.getByRole('button', { name: 'Optimizar' }).click();
-	await expect(page.getByText('Sharpe', { exact: true })).toBeVisible({ timeout: 20_000 });
-	await expect(page.getByRole('heading', { name: 'Frontera eficiente' })).toBeVisible();
-	await expect(page.getByRole('list', { name: 'Composición del portafolio' })).toBeVisible();
-
-	// La selección se conserva tras optimizar (use:enhance sin reset)
-	await expect(page.getByText(/15 seleccionados/)).toBeVisible();
-
-	await page.getByLabel('Tickers por portafolio (k)').fill('3');
-	await expect(page.getByText('455 combinaciones posibles')).toBeVisible();
-	await page.getByRole('button', { name: 'Buscar' }).click();
-	await expect(page.getByText('combinaciones evaluadas')).toBeVisible({ timeout: 45_000 });
-	await expect(
-		page.getByRole('table', { name: 'Mejores combinaciones' }).locator('tbody tr')
-	).toHaveCount(5);
-	// El resultado de optimizar sigue visible
-	await expect(page.getByRole('heading', { name: 'Frontera eficiente' })).toBeVisible();
-});
-
-test('Black-Litterman muestra equilibrio, views y posterior', async ({ page }) => {
-	await page.goto('/eeuu/portafolio/black-litterman');
+test('Portafolio: selección por cluster y pesos Black-Litterman', async ({ page }) => {
+	await page.goto('/eeuu/portafolio');
 	await page.getByRole('button', { name: 'Desmarcar todos' }).click();
 	await expect(page.getByRole('button', { name: 'Optimizar' })).toBeDisabled();
-	await page.getByRole('button', { name: 'Top 15' }).click();
+	await page.getByRole('button', { name: 'Todos', exact: true }).click();
 	await page.getByRole('button', { name: 'Optimizar' }).click();
 	await expect(
-		page.getByRole('table', { name: 'Retornos de Black-Litterman por ticker' })
+		page.getByRole('table', { name: /Selección por cluster y retornos de Black-Litterman/ })
 	).toBeVisible({ timeout: 20_000 });
+	await expect(page.getByRole('list', { name: 'Composición del portafolio' })).toBeVisible();
+	// La selección se conserva tras optimizar (use:enhance sin reset)
+	await expect(page.getByText(/seleccionados de/)).toBeVisible();
 });
 
 test('evaluación en vivo: ticker inválido y página de ticker', async ({ page }) => {
@@ -85,4 +66,12 @@ test('evaluación en vivo: ticker inválido y página de ticker', async ({ page 
 	await expect(page).toHaveURL(/\/eeuu\/ticker\/AAPL$/);
 	// Con o sin acceso a Yahoo, la página responde (resultado o error controlado)
 	await expect(page.getByRole('heading', { name: /Evaluación en vivo · AAPL/ })).toBeVisible();
+});
+
+test('historial desde history.db', async ({ page }) => {
+	await page.goto('/eeuu/historial');
+	await expect(page.getByText('Corridas guardadas').first()).toBeVisible();
+	await expect(
+		page.getByRole('table', { name: 'Permanencia en el top' }).locator('tbody tr')
+	).not.toHaveCount(0);
 });

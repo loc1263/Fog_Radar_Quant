@@ -5,10 +5,10 @@ from __future__ import annotations
 
 import json
 import sqlite3
-from collections.abc import Iterator
-from contextlib import contextmanager
+from contextlib import AbstractContextManager
 from typing import Any
 
+from fog_radar.core import histdb
 from fog_radar.core.errors import ApiError
 from fog_radar.modules.tendencia import run_files as storage
 from fog_radar.modules.tendencia.schemas import TdDashboard, TdParametros
@@ -53,29 +53,13 @@ def dashboard(settings: Settings, run_dir: str | None = None) -> TdDashboard:
 # --- history.db ----------------------------------------------------------------
 
 
-@contextmanager
-def _conn(settings: Settings) -> Iterator[sqlite3.Connection | None]:
+def _conn(settings: Settings) -> AbstractContextManager[sqlite3.Connection | None]:
     """Conexión de solo lectura; ``None`` si la base todavía no existe."""
-    path = storage.history_db(settings)
-    if not path.is_file():
-        yield None
-        return
-    conn = sqlite3.connect(f"file:{path}?mode=ro", uri=True)
-    conn.row_factory = sqlite3.Row
-    try:
-        yield conn
-    finally:
-        conn.close()
+    return histdb.conectar_lectura(storage.history_db(settings))
 
 
 def _rows(settings: Settings, sql: str, params: tuple[Any, ...] | list[Any]) -> list[dict[str, Any]]:
-    with _conn(settings) as conn:
-        if conn is None:
-            return []
-        try:
-            return [dict(r) for r in conn.execute(sql, params).fetchall()]
-        except sqlite3.DatabaseError as exc:
-            raise ApiError(503, "invalid_data", f"history.db no se pudo leer: {exc}") from exc
+    return histdb.filas(storage.history_db(settings), sql, params)
 
 
 def analyses(settings: Settings) -> list[dict[str, Any]]:
@@ -204,3 +188,31 @@ def momentum_leaders(settings: Settings, analysis: str, top: int) -> list[dict[s
         """,
         (analysis, top),
     )
+
+
+def universe_history(settings: Settings, ticker: str, analysis: str) -> list[dict[str, Any]]:
+    """Posición de un ticker en el universo completo (pesos de Markowitz) en cada
+    corrida, esté o no entre los seleccionados (``universe_weights``, desde la v2)."""
+    rows = _rows(
+        settings,
+        """
+        SELECT r.run_date, r.run_dir, u.universe_rank, a.universe_size, u.peso_markowitz,
+               u.retorno_esperado_anual,
+               EXISTS (
+                   SELECT 1 FROM holdings h WHERE h.analysis_id = a.id AND h.ticker = u.ticker
+               ) AS seleccionado
+        FROM universe_weights u
+        JOIN analyses a ON a.id = u.analysis_id
+        JOIN runs r ON r.id = a.run_id
+        WHERE a.analysis_key = ? AND u.ticker = ?
+        ORDER BY r.run_date ASC, r.run_dir ASC
+        """,
+        (analysis, ticker),
+    )
+    if not rows:
+        raise ApiError(
+            404,
+            "not_found",
+            f"'{ticker}' no tiene pesos del universo guardados en el análisis '{analysis or 'principal'}'.",
+        )
+    return rows

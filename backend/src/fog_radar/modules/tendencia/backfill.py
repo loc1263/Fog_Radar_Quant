@@ -43,7 +43,7 @@ def main():
 
             with open(archived, encoding="utf-8") as f:
                 payload["generated_at"] = json.load(f).get("generated_at", payload["generated_at"])
-        history_writer.store_run(payload)
+        history_writer.store_run(payload, run_path=run_dir)
         print(f"[cargada] {name} ({len(payload['analyses'])} análisis)")
         ok += 1
 

@@ -1,0 +1,25 @@
+Ticker;Company;Name;Category;FechaEliminacion;UltimaCorridaValida;Motivo
+SAEF;Charles Schwab;Schwab Ariel Opportunities ETF;Mid-Cap Blend;20260929;20260812;Yahoo 404: simbolo no encontrado
+EMTL;State Street;State Street DoubleLine Emerging Markets Fixed Income ETF;Emerging Markets Bond;20260929;20260821;Yahoo: sin precios, posiblemente deslistado
+WMAT;State Street;State Street SPDR MSCI World Materials UCITS ETF USD Acc;Sector Equity Industrial Materials;20260929;nunca;Yahoo: sin precio ni historial
+ECLPX;State Street;State Street Blackstone Euro AAA CLO UCITS ETF GBP Hedged Dis;Other Bond;20260929;nunca;Yahoo 404: simbolo no encontrado
+AGRH;iShares;iShares Interest Rate Hedged U.S. Aggregate Bond ETF;Ultrashort Bond;20260929;20260914;Yahoo: sin precios, posiblemente deslistado
+IEDI;iShares;iShares U.S. Consumer Focused ETF;Consumer Cyclical;20260929;20260914;Yahoo: sin precios, posiblemente deslistado
+ITWAX;iShares;iShares MSCI Taiwan UCITS ETF USD Acc;Taiwan Large-Cap Equity;20260929;nunca;Yahoo 404: simbolo no encontrado
+EAOR;iShares;iShares ESG Aware 60/40 Balanced Allocation ETF;Global Moderate Allocation;20260929;20260914;Yahoo: sin precios, posiblemente deslistado
+EAOA;iShares;iShares ESG Aware 80/20 Aggressive Allocation ETF;Global Aggressive Allocation;20260929;20260914;Yahoo: sin precios, posiblemente deslistado
+EAOM;iShares;iShares ESG Aware 40/60 Moderate Allocation ETF;Global Moderately Conservative Allocation;20260929;20260914;Yahoo: sin precios, posiblemente deslistado
+IVRS;iShares;iShares Future Metaverse Tech And Communications ETF;Communications;20260929;20260914;Yahoo: sin precios, posiblemente deslistado
+ASGDX;iShares;iShares $ Asia Investment Grade Corp Bond UCITS ETF SGD Hedged (Acc);Other Bond;20260929;nunca;Yahoo 404: simbolo no encontrado
+AGAUX;iShares;iShares Global Aggregate Bond ESG SRI UCITS ETF AUD Hedged Distribution;Other Bond;20260929;nunca;Yahoo 404: simbolo no encontrado
+SUSEMX;iShares;iShares ? Corp Bond 0-3yr ESG SRI UCITS ETF MXN Hedged (Acc);Other Bond;20260929;nunca;Yahoo 404: simbolo no encontrado
+IDTXX;iShares;iShares $ Treasury Bond 7-10yr UCITS ETF MXN Hedged (Acc);Other Bond;20260929;nunca;Yahoo 404: simbolo no encontrado
+ERNMX;iShares;iShares $ Ultrashort Bond UCITS ETF MXN Hedged (Acc);Other Bond;20260929;nunca;Yahoo 404: simbolo no encontrado
+ERUS;iShares;iShares MSCI Russia ETF;Focused Region;20260929;20260812;Yahoo 404: simbolo no encontrado
+ID27;iShares;iShares V PLC - iShares iBonds Dec 2027 Term $ Corp UCITS ETF MXN Hedged Acc;Fixed Term Bond;20260929;nunca;Yahoo 404: simbolo no encontrado
+IMMXX;iShares;iShares US Mortgage Backed Securities UCITS ETF MXN Hedged (Acc);Other Bond;20260929;nunca;Yahoo 404: simbolo no encontrado
+DTMXX;iShares;iShares $ Treasury Bond 20+yr UCITS ETF MXN Hedged (Acc);Other Bond;20260929;nunca;Yahoo 404: simbolo no encontrado
+I37MX;iShares;iShares $ Treasury Bond 3-7yr UCITS ETF MXN Hedged (Acc);Other Bond;20260929;nunca;Yahoo 404: simbolo no encontrado
+VMSTx;Vanguard;Vanguard U.S. Treasury 0-1 Year Bond UCITS ETF MXN Hedged Accumulating XXX;Other Bond;20260929;nunca;Yahoo: sin precio ni historial
+RSX;VanEck;VanEck Russia ETF;Focused Region;20260929;20260728;Yahoo 404: simbolo no encontrado
+RSXJ;VanEck;VanEck Russia Small-Cap ETF;Focused Region;20260929;20260811;Yahoo 404: simbolo no encontrado

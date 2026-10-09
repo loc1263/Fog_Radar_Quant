@@ -54,11 +54,12 @@ quedaron en `docs/BACKLOG.md` (TD-MODEL-4 … TD-MODEL-9) para decidirlas con un
 | Lógica portada | Los 110 tests originales (`test_fundamentals`, `test_indicators`, `test_portfolio`, `test_scanner`, `test_scoring`, `test_ticker_eval`, `test_universe`) pasan sin cambios de aserciones | ✅ |
 | Score de salud | `test_parity.py`: `evaluate_score` reproduce el score guardado de los 60 candidatos de la corrida 2026-09-25T21-00-01Z | ✅ |
 | Momentum 12-1 y retornos | Recalculados desde `prices.json` = valores de `candidates.json` (rel. 1e-9) | ✅ |
-| Markowitz, frontera, Black-Litterman, HRP | Pesos/retornos iguales a los del `portfolio.py` original sobre el top 15 real (`fixtures/portfolio_expected.json`) | ✅ |
+| Black-Litterman (π, Q, posterior) | Pesos/retornos iguales a los del `portfolio.py` original sobre el top 15 real (`fixtures/portfolio_expected.json`) | ✅ |
+| Markowitz, HRP, mejor combinación | Eliminados por decisión de producto (`docs/MODELO_NEW.md`): el portafolio EEUU es un modelo único (clusters + BL con tope de peso); sin original con el que comparar | — |
 | Mejor combinación (3 métodos) | Mismas combinaciones, mismo orden y mismos pesos | ✅ |
 | API | `test_api.py` (port de `test_main.py`): mismas respuestas, con prefijo `/api/us`, API key y errores `{detail, code}` | ✅ |
 | Corridas históricas | Las 12 corridas del original validan contra los esquemas Pydantic | ✅ |
-| Vistas | Top 15, Candidatos, Evaluación, Performance, Markowitz/BL/HRP (+ mejor combinación) y evaluación en vivo: E2E `eeuu.e2e.ts` | ✅ |
+| Vistas | Top 15, Candidatos, Evaluación, Performance, Portafolio (modelo único) y evaluación en vivo: E2E `eeuu.e2e.ts` | ✅ |
 | Corrida completa contra Yahoo / evaluación en vivo | Pendiente en Windows (sin acceso a Yahoo en esta sesión) | ⏳ |
 
 **Diferencias intencionales**

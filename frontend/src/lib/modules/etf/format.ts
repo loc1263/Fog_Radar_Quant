@@ -2,7 +2,7 @@
  * Formateo y lógica de presentación del módulo ETF (port de `lib/format.tsx`,
  * `lib/csv.ts` y `Rango52SemanasBar.tsx` del original).
  */
-import type { EtfFila, EtfHistorialFila } from '$lib/api/types';
+import type { EtfFila, EtfHistCategoria, EtfHistorialFila } from '$lib/api/types';
 import { fmtNumber, fmtPct } from '$lib/format';
 import type { Column, Row } from '$lib/table';
 
@@ -204,4 +204,37 @@ export function pesoPorBucket(
 		.map(([label, pct]) => ({ label, value: pct / 100 }))
 		.filter((s) => s.value > 0)
 		.sort((a, b) => b.value - a.value);
+}
+
+/**
+ * Presencia en el Top 15 por categoría, corrida a corrida, para un gráfico de
+ * líneas: las `max` categorías con más apariciones en el Top 15 del período
+ * (el resto se suma en "Otras"). `etiqueta` arma el eje X desde la clave.
+ */
+export function top15PorCategoria(
+	filas: Pick<EtfHistCategoria, 'run_key' | 'category' | 'en_top15'>[],
+	etiqueta: (runKey: string) => string,
+	max = 6
+): { grupos: string[]; filas: Record<string, string | number>[] } {
+	const total = new Map<string, number>();
+	for (const f of filas) total.set(f.category, (total.get(f.category) ?? 0) + f.en_top15);
+	const elegidas = [...total.entries()]
+		.filter(([, n]) => n > 0)
+		.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+		.slice(0, max)
+		.map(([c]) => c);
+	const hayOtras = [...total.entries()].some(([c, n]) => n > 0 && !elegidas.includes(c));
+	const grupos = hayOtras ? [...elegidas, 'Otras'] : elegidas;
+
+	const porCorrida = new Map<string, Record<string, string | number>>();
+	for (const f of filas) {
+		let fila = porCorrida.get(f.run_key);
+		if (!fila) {
+			fila = { corrida: etiqueta(f.run_key), ...Object.fromEntries(grupos.map((g) => [g, 0])) };
+			porCorrida.set(f.run_key, fila);
+		}
+		const g = elegidas.includes(f.category) ? f.category : 'Otras';
+		if (g in fila) fila[g] = (fila[g] as number) + f.en_top15;
+	}
+	return { grupos, filas: [...porCorrida.values()] };
 }
