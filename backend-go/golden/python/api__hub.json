@@ -1,0 +1,149 @@
+{
+ "generado_en": "2026-10-08T22:26:08.368944-03:00",
+ "modulos": [
+  {
+   "datos_al": "2026-10-07T21:44:29-03:00",
+   "edad_horas": 24.7,
+   "frescura": "atrasado",
+   "key": "cl_stocks",
+   "mensaje": null,
+   "metrica": "Score compuesto",
+   "programa": "de lunes a viernes a las 18:00",
+   "proxima": "2026-10-09T18:00:00-03:00",
+   "titulo": "Acciones Chile (IPSA)",
+   "top": [
+    {
+     "nombre": "COMPANIA SUD AMERICANA DE VAPOR",
+     "ticker": "VAPORES.SN",
+     "valor": 0.7148
+    },
+    {
+     "nombre": "SOC QUIMICA MINERA DE CHILE S.A",
+     "ticker": "SQM-B.SN",
+     "valor": 0.5051
+    },
+    {
+     "nombre": "EMBOTELLADORA ANDINA S.A. SERIE",
+     "ticker": "ANDINA-B.SN",
+     "valor": 0.4389
+    }
+   ],
+   "ultimo_job": {
+    "duration_s": 6.46,
+    "finished_at": "2026-10-09T01:11:49.911390Z",
+    "id": "68bd9679f297",
+    "message": "KeyboardInterrupt: ",
+    "module": "cl_stocks",
+    "started_at": "2026-10-09T01:11:43.445690Z",
+    "status": "error",
+    "trigger": "cli"
+   },
+   "unidad": "numero",
+   "universo": 30
+  },
+  {
+   "datos_al": "2026-10-07T22:00:04.790798-03:00",
+   "edad_horas": 24.4,
+   "frescura": "atrasado",
+   "key": "us_stocks",
+   "mensaje": null,
+   "metrica": "Momentum 12-1",
+   "programa": "de lunes a viernes a las 18:00",
+   "proxima": "2026-10-09T18:00:00-03:00",
+   "titulo": "Acciones EEUU",
+   "top": [
+    {
+     "nombre": "Sandisk Corporation",
+     "ticker": "SNDK",
+     "valor": 13.359990313558864
+    },
+    {
+     "nombre": "Micron Technology, Inc.",
+     "ticker": "MU",
+     "valor": 4.328783105812626
+    },
+    {
+     "nombre": "Dell Technologies Inc.",
+     "ticker": "DELL",
+     "valor": 2.641734332874274
+    }
+   ],
+   "ultimo_job": {
+    "duration_s": 760.63,
+    "finished_at": "2026-10-08T01:00:04.890648Z",
+    "id": "ee28b10e4f66",
+    "message": "2026-10-08T00-47-24Z · 58 candidatos de 503 · top 3: SNDK, MU, DELL · 1008 requests a Yahoo, 0 respuestas 429, 0 reintentos, 117 s de espera",
+    "module": "us_stocks",
+    "started_at": "2026-10-08T00:47:24.260394Z",
+    "status": "success",
+    "trigger": "cli"
+   },
+   "unidad": "fraccion",
+   "universo": 58
+  },
+  {
+   "datos_al": null,
+   "edad_horas": null,
+   "frescura": "error",
+   "key": "etf",
+   "mensaje": "ApiError: No se pudo leer etf_top15_recomendados.csv: PermissionError",
+   "metrica": "",
+   "programa": "los lunes a las 06:00",
+   "proxima": "2026-10-12T06:00:00-03:00",
+   "titulo": "ETFs",
+   "top": [],
+   "ultimo_job": {
+    "duration_s": 1440.6,
+    "finished_at": "2026-10-08T01:36:23.018945Z",
+    "id": "83d5c0d297de",
+    "message": "PermissionError: [Errno 13] Permission denied: 'D:\\\\Claude\\\\Fog_Radar_Quant\\\\data\\\\etf\\\\current\\\\historial_corridas.csv'",
+    "module": "etf",
+    "started_at": "2026-10-08T01:12:22.416731Z",
+    "status": "error",
+    "trigger": "cli"
+   },
+   "unidad": "numero",
+   "universo": null
+  },
+  {
+   "datos_al": "2026-10-07T22:11:22.385771-03:00",
+   "edad_horas": 24.2,
+   "frescura": "atrasado",
+   "key": "tendencia",
+   "mensaje": null,
+   "metrica": "Peso en el portafolio",
+   "programa": "de lunes a viernes a las 18:00",
+   "proxima": "2026-10-09T18:00:00-03:00",
+   "titulo": "Tendencia Asia + EEUU",
+   "top": [
+    {
+     "nombre": "Hanwha Aerospace Co., Ltd.",
+     "ticker": "012450.KS",
+     "valor": 0.11815
+    },
+    {
+     "nombre": "Mitsubishi UFJ Financial Group, Inc.",
+     "ticker": "8306.T",
+     "valor": 0.11749
+    },
+    {
+     "nombre": "Eli Lilly and Company",
+     "ticker": "LLY",
+     "valor": 0.11192
+    }
+   ],
+   "ultimo_job": {
+    "duration_s": 617.52,
+    "finished_at": "2026-10-08T01:11:22.413400Z",
+    "id": "f8a21893222d",
+    "message": "corrida 20261007_01 · Asia + EEUU: Sharpe 2.64, top 012450.KS, 8306.T, LLY · solo EEUU: Sharpe 1.95, top LLY, XOM, PM",
+    "module": "tendencia",
+    "started_at": "2026-10-08T01:01:04.893690Z",
+    "status": "success",
+    "trigger": "cli"
+   },
+   "unidad": "fraccion",
+   "universo": 77
+  }
+ ]
+}

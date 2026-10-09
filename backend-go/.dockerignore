@@ -1,0 +1,5 @@
+spikes
+golden
+Dockerfile
+*.md
+**/*_test.go

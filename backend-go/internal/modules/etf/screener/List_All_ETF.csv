@@ -1,0 +1,1227 @@
+Ticker;Company;Name;Category;Update
+STCE;Charles Schwab;Schwab Crypto Thematic ETF;Equity Digital Assets;20260723
+FNDB;Charles Schwab;Schwab Fundamental U.S. Broad Market ETF;Large Value;20260723
+FNDX;Charles Schwab;Schwab Fundamental U.S. Large Company ETF;Large Value;20260723
+FNDF;Charles Schwab;Schwab Fundamental International Equity ETF;Foreign Large Value;20260723
+SCHI;Charles Schwab;Schwab 5-10 Year Corporate Bond ETF;Corporate Bond;20260723
+FNDE;Charles Schwab;Schwab Fundamental Emerging Markets Equity ETF;Diversified Emerging Mkts;20260723
+SCHG;Charles Schwab;Schwab U.S. Large-Cap Growth ETF;Large Growth;20260723
+SCHP;Charles Schwab;Schwab U.S. TIPS ETF;Inflation-Protected Bond;20260723
+SCHF;Charles Schwab;Schwab International Equity ETF;Foreign Large Blend;20260723
+SCHX;Charles Schwab;Schwab U.S. Large-Cap ETF;Large Blend;20260723
+SCHR;Charles Schwab;Schwab Intermediate-Term U.S. Treasury ETF;Intermediate Government;20260723
+SCHQ;Charles Schwab;Schwab Long-Term U.S. Treasury ETF;Long Government;20260723
+SCHE;Charles Schwab;Schwab Emerging Markets Equity ETF;Diversified Emerging Mkts;20260723
+SCHV;Charles Schwab;Schwab U.S. Large-Cap Value ETF;Large Value;20260723
+SCHZ;Charles Schwab;Schwab U.S. Aggregate Bond ETF;Intermediate Core Bond;20260723
+SCHK;Charles Schwab;Schwab 1000 ETF;Large Blend;20260723
+SCHJ;Charles Schwab;Schwab 1-5 Year Corporate Bond ETF;Short-Term Bond;20260723
+SCHM;Charles Schwab;Schwab U.S. Mid-Cap ETF;Mid-Cap Blend;20260723
+SCHA;Charles Schwab;Schwab U.S. Small-Cap ETF;Small Blend;20260723
+SCHD;Charles Schwab;Schwab U.S. Dividend Equity ETF;Large Value;20260723
+SCHB;Charles Schwab;Schwab U.S. Broad Market ETF;Large Blend;20260723
+SCHO;Charles Schwab;Schwab Short-Term U.S. Treasury ETF;Short Government;20260723
+FNDA;Charles Schwab;Schwab Fundamental U.S. Small Company ETF;Small Blend;20260723
+SCHH;Charles Schwab;Schwab U.S. REIT ETF;Real Estate;20260723
+FNDC;Charles Schwab;Schwab Fundamental International Small Equity ETF;Foreign Small/Mid Value;20260723
+SCMB;Charles Schwab;Schwab Municipal Bond ETF;Muni National Interm;20260723
+SCHY;Charles Schwab;Schwab International Dividend Equity ETF;Foreign Large Value;20260723
+SCHC;Charles Schwab;Schwab International Small-Cap Equity ETF;Foreign Small/Mid Blend;20260723
+SGVT;Charles Schwab;Schwab Government Money Market ETF;Money Market-Taxable;20260723
+SMBS;Charles Schwab;Schwab Mortgage-Backed Securities ETF;Government Mortgage-Backed Bond;20260723
+SCUS;Charles Schwab;Schwab Ultra-Short Income ETF;Ultrashort Bond;20260723
+SCYB;Charles Schwab;Schwab High Yield Bond ETF;High Yield Bond;20260723
+SCCR;Charles Schwab;Schwab Core Bond ETF;Intermediate Core Bond;20260723
+DGT;State Street;State Street SPDR Global Dow ETF;Global Large-Stock Value;20260723
+SPIB;State Street;State Street SPDR Portfolio Intermediate Term Corporate Bond ETF;Corporate Bond;20260723
+ROKT;State Street;State Street SPDR S&P Kensho Final Frontiers ETF;Industrials;20260723
+VLU;State Street;State Street SPDR S&P 1500 Value Tilt ETF;Large Value;20260723
+XTL;State Street;State Street SPDR S&P Telecom ETF;Communications;20260723
+FITE;State Street;State Street SPDR S&P Kensho Future Security ETF;Technology;20260723
+EFIV;State Street;State Street SPDR S&P 500 ESG ETF;Large Blend;20260723
+XSD;State Street;State Street SPDR S&P Semiconductor ETF;Technology;20260723
+XLRE;State Street;State Street Real Estate Select Sector SPDR ETF;Real Estate;20260723
+ONEY;State Street;State Street SPDR Russell 1000 Yield Focus ETF;Mid-Cap Value;20260723
+XLP;State Street;State Street Consumer Staples Select Sector SPDR ETF;Consumer Defensive;20260723
+SJNK;State Street;State Street SPDR Bloomberg Short Term High Yield Bond ETF;High Yield Bond;20260723
+XNTK;State Street;State Street SPDR NYSE Technology ETF;Technology;20260723
+XLV;State Street;State Street Health Care Select Sector SPDR ETF;Health;20260723
+SMLV;State Street;State Street SPDR US Small Cap Low Volatility Index ETF;Small Value;20260723
+NANR;State Street;State Street SPDR S&P North American Natural Resources ETF;Natural Resources;20260723
+XAR;State Street;State Street SPDR S&P Aerospace & Defense ETF;Industrials;20260723
+MDYG;State Street;State Street SPDR S&P 400? Mid Cap Growth ETF;Mid-Cap Growth;20260723
+XME;State Street;State Street SPDR S&P Metals & Mining ETF;Natural Resources;20260723
+CWI;State Street;State Street SPDR MSCI ACWI ex-US ETF;Foreign Large Blend;20260723
+XLF;State Street;State Street Financial Select Sector SPDR ETF;Financial;20260723
+XLI;State Street;State Street Industrial Select Sector SPDR ETF;Industrials;20260723
+SPTI;State Street;State Street SPDR Portfolio Intermediate Term Treasury ETF;Intermediate Government;20260723
+GII;State Street;State Street SPDR S&P Global Infrastructure ETF;Infrastructure;20260723
+FLRN;State Street;State Street SPDR Bloomberg Investment Grade Floating Rate ETF;Ultrashort Bond;20260723
+XLK;State Street;State Street Technology Select Sector SPDR ETF;Technology;20260723
+EDIV;State Street;State Street SPDR S&P Emerging Markets Dividend ETF;Diversified Emerging Mkts;20260723
+XLE;State Street;State Street Energy Select Sector SPDR ETF;Equity Energy;20260723
+SPTS;State Street;State Street SPDR Portfolio Short Term Treasury ETF;Short Government;20260723
+SPGM;State Street;State Street SPDR Portfolio MSCI Global Stock Market ETF;Global Large-Stock Blend;20260723
+SPHY;State Street;State Street SPDR Portfolio High Yield Bond ETF;High Yield Bond;20260723
+SPY;State Street;State Street SPDR S&P 500 ETF Trust;Large Blend;20260723
+XLB;State Street;State Street Materials Select Sector SPDR ETF;Natural Resources;20260723
+DIA;State Street;State Street SPDR Dow Jones Industrial Average ETF Trust;Large Value;20260723
+SPSB;State Street;State Street SPDR Portfolio Short Term Corporate Bond ETF;Short-Term Bond;20260723
+SPDW;State Street;State Street SPDR Portfolio Developed World ex-US ETF;Foreign Large Blend;20260723
+SPTM;State Street;State Street SPDR Portfolio S&P 1500 Composite Stock Market ETF;Large Blend;20260723
+SPYX;State Street;State Street SPDR S&P 500 Fossil Fuel Reserves Free ETF;Large Blend;20260723
+XLY;State Street;State Street Consumer Discretionary Select Sector SPDR ETF;Consumer Cyclical;20260723
+ONEO;State Street;State Street SPDR Russell 1000 Momentum Focus ETF;Mid-Cap Blend;20260723
+SPYM;State Street;State Street SPDR Portfolio S&P 500 ETF;Large Blend;20260723
+SPYG;State Street;State Street SPDR Portfolio S&P 500 Growth ETF;Large Growth;20260723
+KCE;State Street;State Street SPDR S&P Capital Markets ETF;Financial;20260723
+FEZ;State Street;State Street SPDR EURO STOXX 50 ETF;Europe Stock;20260723
+XHB;State Street;State Street SPDR S&P Homebuilders ETF;Consumer Cyclical;20260723
+STOT;State Street;State Street DoubleLine Short Duration Total Return Tactical ETF;Short-Term Bond;20260723
+SPMB;State Street;State Street SPDR Portfolio Mortgage Backed Bond ETF;Government Mortgage-Backed Bond;20260723
+TIPX;State Street;State Street SPDR Bloomberg 1-10 Year TIPS ETF;Short-Term Inflation-Protected Bond;20260723
+KIE;State Street;State Street SPDR S&P Insurance ETF;Financial;20260723
+XLU;State Street;State Street Utilities Select Sector SPDR ETF;Utilities;20260723
+RWO;State Street;State Street SPDR Dow Jones Global Real Estate ETF;Global Real Estate;20260723
+SDY;State Street;State Street SPDR S&P Dividend ETF;Mid-Cap Value;20260723
+JNK;State Street;State Street SPDR Bloomberg High Yield Bond ETF;High Yield Bond;20260723
+RWR;State Street;State Street SPDR Dow Jones REIT ETF;Real Estate;20260723
+OBND;State Street;State Street Loomis Sayles Opportunistic Bond ETF;Multisector Bond;20260723
+SPSM;State Street;State Street SPDR Portfolio S&P 600? Small Cap ETF;Small Blend;20260723
+SPMD;State Street;State Street SPDR Portfolio S&P 400? Mid Cap ETF;Mid-Cap Blend;20260723
+QEMM;State Street;State Street SPDR MSCI Emerging Markets StrategicFactors ETF;Diversified Emerging Mkts;20260723
+MMTM;State Street;State Street SPDR S&P 1500 Momentum Tilt ETF;Large Blend;20260723
+XPH;State Street;State Street SPDR S&P Pharmaceuticals ETF;Health;20260723
+NZAC;State Street;State Street SPDR MSCI ACWI Climate Paris Aligned ETF;Global Large-Stock Blend;20260723
+SPYV;State Street;State Street SPDR Portfolio S&P 500 Value ETF;Large Value;20260723
+SPTL;State Street;State Street SPDR Portfolio Long Term Treasury ETF;Long Government;20260723
+CWB;State Street;State Street SPDR Bloomberg Convertible Securities ETF;Convertibles;20260723
+SRLN;State Street;State Street Blackstone Senior Loan ETF;Bank Loan;20260723
+HYMB;State Street;State Street SPDR Nuveen ICE High Yield Municipal Bond ETF;High Yield Muni;20260723
+SPAB;State Street;State Street SPDR Portfolio Aggregate Bond ETF;Intermediate Core Bond;20260723
+SPLB;State Street;State Street SPDR Portfolio Long Term Corporate Bond ETF;Long-Term Bond;20260723
+GXC;State Street;State Street SPDR S&P China ETF;Greater China Region;20260723
+QEFA;State Street;State Street SPDR MSCI EAFE StrategicFactors ETF;Foreign Large Blend;20260723
+MDYV;State Street;State Street SPDR S&P 400? Mid Cap Value ETF;Mid-Cap Value;20260723
+SLYG;State Street;State Street SPDR S&P 600? Small Cap Growth ETF;Small Growth;20260723
+SPEM;State Street;State Street SPDR Portfolio Emerging Markets ETF;Diversified Emerging Mkts;20260723
+ULST;State Street;State Street Ultra Short Term Bond ETF;Ultrashort Bond;20260723
+SPEU;State Street;State Street SPDR Portfolio Europe ETF;Europe Stock;20260723
+SLYV;State Street;State Street SPDR S&P 600? Small Cap Value ETF;Small Value;20260723
+XLC;State Street;State Street Communication Services Select Sector SPDR ETF;Communications;20260723
+MDY;State Street;State Street SPDR S&P MIDCAP 400 ETF Trust;Mid-Cap Blend;20260723
+WIP;State Street;State Street SPDR FTSE International Government Inflation-Protected Bond ETF;Global Bond;20260723
+EWX;State Street;State Street SPDR S&P Emerging Markets Small Cap ETF;Diversified Emerging Mkts;20260723
+HYBL;State Street;State Street Blackstone High Income ETF;High Yield Bond;20260723
+IBND;State Street;State Street SPDR Bloomberg International Corporate Bond ETF;Global Bond;20260723
+EFAX;State Street;State Street SPDR MSCI EAFE Fossil Fuel Reserves Free ETF;Foreign Large Blend;20260723
+MBND;State Street;State Street Nuveen Municipal Bond ETF;Muni National Interm;20260723
+QWLD;State Street;State Street SPDR MSCI World StrategicFactors ETF;Global Large-Stock Blend;20260723
+ONEV;State Street;State Street SPDR Russell 1000 Low Volatility Focus ETF;Mid-Cap Value;20260723
+EEMX;State Street;State Street SPDR MSCI Emerging Markets Fossil Fuel Reserves Free ETF;Diversified Emerging Mkts;20260723
+SPBO;State Street;State Street SPDR Portfolio Corporate Bond ETF;Corporate Bond;20260723
+KBE;State Street;State Street SPDR S&P Bank ETF;Financial;20260723
+QUS;State Street;State Street SPDR MSCI USA StrategicFactors ETF;Large Blend;20260723
+TOTL;State Street;State Street DoubleLine Total Return Tactical ETF;Intermediate Core-Plus Bond;20260723
+SHE;State Street;State Street SPDR MSCI USA Gender Diversity ETF;Large Blend;20260723
+WDIV;State Street;State Street SPDR S&P Global Dividend ETF;Global Large-Stock Value;20260723
+XSW;State Street;State Street SPDR S&P Software & Services ETF;Technology;20260723
+INKM;State Street;State Street Income Allocation ETF;Global Moderately Conservative Allocation;20260723
+TFI;State Street;State Street SPDR Nuveen ICE Municipal Bond ETF;Muni National Long;20260723
+BIL;State Street;State Street SPDR Bloomberg 1-3 Month T-Bill ETF;Ultrashort Bond;20260723
+SHM;State Street;State Street SPDR Nuveen ICE Short Term Municipal Bond ETF;Muni National Short;20260723
+XRT;State Street;State Street SPDR S&P Retail ETF;Consumer Cyclical;20260723
+EMHC;State Street;State Street SPDR Bloomberg Emerging Markets USD Bond ETF;Emerging Markets Bond;20260723
+KRE;State Street;State Street SPDR S&P Regional Banking ETF;Financial;20260723
+GWX;State Street;State Street SPDR S&P International Small Cap ETF;Foreign Small/Mid Blend;20260723
+DWX;State Street;State Street SPDR S&P International Dividend ETF;Foreign Large Value;20260723
+XOP;State Street;State Street SPDR S&P Oil & Gas Exploration & Production ETF;Equity Energy;20260723
+SPYD;State Street;State Street SPDR Portfolio S&P 500 High Dividend ETF;Mid-Cap Value;20260723
+BWZ;State Street;State Street SPDR Bloomberg Short Term International Treasury Bond ETF;Global Bond;20260723
+EBND;State Street;State Street SPDR Bloomberg Emerging Markets Local Bond ETF;Emerging-Markets Local-Currency Bond;20260723
+BILS;State Street;State Street SPDR Bloomberg 3-12 Month T-Bill ETF;Ultrashort Bond;20260723
+XBI;State Street;State Street SPDR S&P Biotech ETF;Health;20260723
+XHS;State Street;State Street SPDR S&P Health Care Services ETF;Health;20260723
+XLSR;State Street;State Street US Sector Rotation ETF;Large Blend;20260723
+LGLV;State Street;State Street SPDR US Large Cap Low Volatility Index ETF;Large Blend;20260723
+XES;State Street;State Street SPDR S&P Oil & Gas Equipment & Services ETF;Equity Energy;20260723
+HAIL;State Street;State Street SPDR S&P Kensho Smart Mobility ETF;Technology;20260723
+PSK;State Street;State Street SPDR ICE Preferred Securities ETF;Preferred Stock;20260723
+SIMS;State Street;State Street SPDR S&P Kensho Intelligent Structures ETF;Infrastructure;20260723
+CNRG;State Street;State Street SPDR S&P Kensho Clean Power ETF;Equity Energy;20260723
+XHE;State Street;State Street SPDR S&P Health Care Equipment ETF;Health;20260723
+FISR;State Street;State Street Fixed Income Sector Rotation ETF;Intermediate Core Bond;20260723
+XTN;State Street;State Street SPDR S&P Transportation ETF;Industrials;20260723
+RWX;State Street;State Street SPDR Dow Jones International Real Estate ETF;Global Real Estate;20260723
+BWX;State Street;State Street SPDR Bloomberg International Treasury Bond ETF;Global Bond;20260723
+LVLN;State Street;State Street SPDR S&P Leveraged Ln ETF;Bank Loan;20260723
+MYHB;State Street;State Street My2028 High Yield Corporate Bond ETF;Target Maturity;20260723
+XLCI;State Street;State Street Communication Services Select Sector SPDR Premium Income ETF;Derivative Income;20260723
+MYHD;State Street;State Street My2030 High Yield Corporate Bond ETF;Target Maturity;20260723
+MYCK;State Street;State Street My2031 Corporate Bond ETF;Target Maturity;20260723
+MYCG;State Street;State Street My2027 Corporate Bond ETF;Target Maturity;20260723
+MYCO;State Street;State Street My2035 Corporate Bond ETF;Target Maturity;20260723
+MYMF;State Street;State Street My2026 Municipal Bond ETF;Muni Target Maturity;20260723
+MYCI;State Street;State Street My2029 Corporate Bond ETF;Target Maturity;20260723
+MYHE;State Street;State Street My2031 High Yield Corporate Bond ETF;Target Maturity;20260723
+MYMH;State Street;State Street My2028 Municipal Bond ETF;Muni Target Maturity;20260723
+ALLW;State Street;State Street Bridgewater All Weather ETF;Tactical Allocation;20260723
+XLRI;State Street;State Street Real Estate Select Sector SPDR Premium Income ETF;Derivative Income;20260723
+XLBI;State Street;State Street Materials Select Sector SPDR Premium Income ETF;Derivative Income;20260723
+XLKI;State Street;State Street Technology Select Sector SPDR Premium Income ETF;Derivative Income;20260723
+XLII;State Street;State Street Industrial Select Sector SPDR Premium Income ETF;Derivative Income;20260723
+HECO;State Street;State Street Galaxy Hedged Digital Asset Ecosystem ETF;Equity Digital Assets;20260723
+XLSI;State Street;State Street Consumer Staples Select Sector SPDR Premium Income ETF;Derivative Income;20260723
+XLFI;State Street;State Street Financial Select Sector SPDR Premium Income ETF;Derivative Income;20260723
+XLVI;State Street;State Street Health Care Select Sector SPDR Premium Income ETF;Derivative Income;20260723
+MYHC;State Street;State Street My2029 High Yield Corporate Bond ETF;Target Maturity;20260723
+SPTU;State Street;State Street SPDR Portfolio Ultra Short T-Bill ETF;Ultrashort Bond;20260723
+SPTB;State Street;State Street SPDR Portfolio Treasury ETF;Intermediate Government;20260723
+GLDM;State Street;SPDR Gold MiniShares;Commodities Focused;20260723
+MYHA;State Street;State Street My2027 High Yield Corporate Bond ETF;Target Maturity;20260723
+MYMI;State Street;State Street My2029 Municipal Bond ETF;Muni Target Maturity;20260723
+MYCJ;State Street;State Street My2030 Corporate Bond ETF;Target Maturity;20260723
+XLEI;State Street;State Street Energy Select Sector SPDR Premium Income ETF;Derivative Income;20260723
+QNDX;State Street;State Street SPDR Portfolio Nasdaq 100 ETF;Large Blend;20260723
+MYCL;State Street;State Street My2032 Corporate Bond ETF;Target Maturity;20260723
+XLYI;State Street;State Street Consumer Discretionary Select Sector SPDR Premium Income ETF;Derivative Income;20260723
+SPDG;State Street;State Street SPDR Portfolio S&P Sector Neutral Dividend ETF;Large Value;20260723
+TEKX;State Street;State Street Galaxy Transformative Tech Accelerators ETF;Mid-Cap Growth;20260723
+MYMK;State Street;State Street My2031 Municipal Bond ETF;Muni Target Maturity;20260723
+PRAB;State Street;State Street IG Public & Private ABS ETF;Securitized Bond - Diversified;20260723
+PRSD;State Street;State Street Short Duration Ig Public & Private Credit ETF;Short-Term Bond;20260723
+MYCN;State Street;State Street My2034 Corporate Bond ETF;Target Maturity;20260723
+SPIN;State Street;State Street US Equity Premium Income ETF;Derivative Income;20260723
+XLUI;State Street;State Street Utilities Select Sector SPDR Premium Income ETF;Derivative Income;20260723
+DECO;State Street;State Street Galaxy Digital Asset Ecosystem ETF;Equity Digital Assets;20260723
+MYMG;State Street;State Street My2027 Municipal Bond ETF;Muni Target Maturity;20260723
+MYCM;State Street;State Street My2033 Corporate Bond ETF;Target Maturity;20260723
+PRIV;State Street;State Street IG Public & Private Credit ETF;Intermediate Core-Plus Bond;20260723
+MYCH;State Street;State Street My2028 Corporate Bond ETF;Target Maturity;20260723
+MYMJ;State Street;State Street My2030 Municipal Bond ETF;Muni Target Maturity;20260723
+CERY;State Street;State Street SPDR Bloomberg Enhanced Roll Yield Commodity Strategy No K-1 ETF;Commodities Broad Basket;20260723
+XCNY;State Street;State Street SPDR S&P Emerging Markets ex-China ETF;Diversified Emerging Mkts;20260723
+KOMP;State Street;State Street SPDR S&P Kensho New Economies Composite ETF;Miscellaneous Sector;20260723
+SPHB;Invesco;Invesco S&P 500 High Beta ETF;Mid-Cap Blend;20260723
+SOXQ;Invesco;Invesco PHLX Semiconductor ETF;Technology;20260723
+XSMO;Invesco;Invesco S&P SmallCap Momentum ETF;Small Blend;20260723
+PRN;Invesco;Invesco Dorsey Wright Industrials Momentum ETF;Industrials;20260723
+PWB;Invesco;Invesco Large Cap Growth ETF;Large Growth;20260723
+QQQ;Invesco;Invesco QQQ Trust;Large Growth;20260723
+PKW;Invesco;Invesco BuyBack Achievers ETF;Mid-Cap Value;20260723
+IDMO;Invesco;Invesco S&P International Developed Momentum ETF;Foreign Large Blend;20260723
+RWL;Invesco;Invesco S&P 500 Revenue ETF;Large Value;20260723
+XMMO;Invesco;Invesco S&P MidCap Momentum ETF;Mid-Cap Blend;20260723
+PSI;Invesco;Invesco Semiconductors ETF;Technology;20260723
+IUS;Invesco;Invesco RAFI? Strategic US ETF;Large Value;20260723
+SPMO;Invesco;Invesco S&P 500 Momentum ETF;Large Blend;20260723
+PIZ;Invesco;Invesco Dorsey Wright Developed Markets Momentum ETF;Foreign Large Growth;20260723
+XLG;Invesco;Invesco S&P 500 Top 50 ETF;Large Blend;20260723
+EQWL;Invesco;Invesco S&P 100 Equal Weight ETF;Large Value;20260723
+SPHQ;Invesco;Invesco S&P 500 Quality ETF;Large Blend;20260723
+PPA;Invesco;Invesco Aerospace & Defense ETF;Industrials;20260723
+PRF;Invesco;Invesco RAFI US 1000 ETF;Large Value;20260723
+PXF;Invesco;Invesco RAFI Developed Markets ex-U.S. ETF;Foreign Large Value;20260723
+VRIG;Invesco;Invesco Variable Rate Investment Grade ETF;Ultrashort Bond;20260723
+QQQM;Invesco;Invesco NASDAQ 100 ETF;Large Growth;20260723
+RSPU;Invesco;Invesco S&P 500 Equal Weight Utilities ETF;Utilities;20260723
+VRP;Invesco;Invesco Variable Rate Preferred ETF;Preferred Stock;20260723
+XMVM;Invesco;Invesco S&P MidCap Value with Momentum ETF;Small Value;20260723
+XMHQ;Invesco;Invesco S&P MidCap Quality ETF;Mid-Cap Blend;20260723
+CSD;Invesco;Invesco S&P Spin-Off ETF;Mid-Cap Blend;20260723
+GTOS;Invesco;Invesco Short Duration Total Return Bond ETF;Short-Term Bond;20260723
+PBTP;Invesco;Invesco 0-5 Yr US TIPS ETF;Short-Term Inflation-Protected Bond;20260723
+QQQJ;Invesco;Invesco NASDAQ Next Gen 100 ETF;Mid-Cap Growth;20260723
+KBWP;Invesco;Invesco KBW Property & Casualty Insurance ETF;Financial;20260723
+IDHQ;Invesco;Invesco S&P International Developed Quality ETF;Foreign Large Growth;20260723
+QVML;Invesco;Invesco S&P 500 QVM Multi-factor ETF;Large Blend;20260723
+PWV;Invesco;Invesco Large Cap Value ETF;Large Value;20260723
+PFIG;Invesco;Invesco Fundamental Investment Grade Corporate Bond ETF;Corporate Bond;20260723
+PSL;Invesco;Invesco Dorsey Wright Consumer Staples Momentum ETF;Consumer Defensive;20260723
+PTF;Invesco;Invesco Dorsey Wright Technology Momentum ETF;Technology;20260723
+KNCT;Invesco;Invesco Next Gen Connectivity ETF;Technology;20260723
+GOVI;Invesco;Invesco Equal Weight 0-30 Year Treasury ETF;Long Government;20260723
+QQMG;Invesco;Invesco ESG NASDAQ 100 ETF;Large Growth;20260723
+PFM;Invesco;Invesco Dividend Achievers? ETF;Large Value;20260723
+PTH;Invesco;Invesco Dorsey Wright Healthcare Momentum ETF;Health;20260723
+DJD;Invesco;Invesco Dow Jones Industrial Average Dividend ETF;Large Value;20260723
+PRFZ;Invesco;Invesco RAFI US 1500 Small-Mid ETF;Small Blend;20260723
+RSPG;Invesco;Invesco S&P 500 Equal Weight Energy ETF;Equity Energy;20260723
+SPVM;Invesco;Invesco S&P 500 Value with Momentum ETF;Mid-Cap Value;20260723
+IROC;Invesco;Invesco Rochester High Yield Municipal ETF;High Yield Muni;20260723
+CGW;Invesco;Invesco S&P Global Water Index ETF;Natural Resources;20260723
+GSY;Invesco;Invesco Ultra Short Duration ETF;Ultrashort Bond;20260723
+RWJ;Invesco;Invesco S&P SmallCap 600 Revenue ETF;Small Value;20260723
+PKB;Invesco;Invesco Building & Construction ETF;Industrials;20260723
+IPKW;Invesco;Invesco International BuyBack Achievers? ETF;Foreign Large Value;20260723
+PICB;Invesco;Invesco International Corporate Bond ETF;Global Bond;20260723
+PSCI;Invesco;Invesco S&P SmallCap Industrials ETF;Industrials;20260723
+IGPT;Invesco;Invesco AI and Next Gen Software ETF;Technology;20260723
+QVMS;Invesco;Invesco S&P SmallCap 600 QVM Multi-factor ETF;Small Blend;20260723
+QVMM;Invesco;Invesco S&P MidCap 400 QVM Multi-factor ETF;Mid-Cap Blend;20260723
+RSPR;Invesco;Invesco S&P 500 Equal Weight Real Estate ETF;Real Estate;20260723
+RSPE;Invesco;Invesco ESG S&P 500 Equal Weight ETF;Large Value;20260723
+PBP;Invesco;Invesco S&P 500 BuyWrite ETF;Derivative Income;20260723
+RSPT;Invesco;Invesco S&P 500 Equal Weight Technology ETF;Technology;20260723
+IBBQ;Invesco;Invesco Nasdaq Biotechnology ETF;Health;20260723
+PDBC;Invesco;Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF;Commodities Broad Basket;20260723
+RPV;Invesco;Invesco S&P 500 Pure Value ETF;Mid-Cap Value;20260723
+PIE;Invesco;Invesco Dorsey Wright Emerging Markets Momentum ETF;Diversified Emerging Mkts;20260723
+BKLN;Invesco;Invesco Senior Loan ETF;Bank Loan;20260723
+PSR;Invesco;Invesco Active U.S. Real Estate Fund;Real Estate;20260723
+EQAL;Invesco;Invesco Russell 1000 Equal Weight ETF;Mid-Cap Blend;20260723
+CVY;Invesco;Invesco Zacks Multi-Asset Income ETF;Aggressive Allocation;20260723
+PEJ;Invesco;Invesco Dynamic Leisure and Entertainment ETF;Consumer Cyclical;20260723
+PJP;Invesco;Invesco Pharmaceuticals ETF;Health;20260723
+PIO;Invesco;Invesco Global Water ETF;Natural Resources;20260723
+RZG;Invesco;Invesco S&P SmallCap 600 Pure Growth ETF;Small Growth;20260723
+SATO;Invesco;Invesco Alerian Galaxy Crypto Economy ETF;Equity Digital Assets;20260723
+PBE;Invesco;Invesco Biotechnology & Genome ETF;Health;20260723
+PBJ;Invesco;Invesco Food & Beverage ETF;Consumer Defensive;20260723
+RSPF;Invesco;Invesco S&P 500 Equal Weight Financials ETF;Financial;20260723
+PDP;Invesco;Invesco Dorsey Wright Momentum ETF;Large Growth;20260723
+PXH;Invesco;Invesco RAFI Emerging Markets ETF;Diversified Emerging Mkts;20260723
+PZA;Invesco;Invesco National AMT-Free Municipal Bond ETF;Muni National Long;20260723
+KBWB;Invesco;Invesco KBW Bank ETF;Financial;20260723
+GTOQ;Invesco;Invesco High Yield Systematic Bond ETF;High Yield Bond;20260723
+PZT;Invesco;Invesco New York AMT-Free Municipal Bond ETF;Muni New York Long;20260723
+PGHY;Invesco;Invesco Global ex-US High Yield Corporate Bond ETF;High Yield Bond;20260723
+CZA;Invesco;Invesco Zacks Mid-Cap ETF;Mid-Cap Blend;20260723
+RFV;Invesco;Invesco S&P MidCap 400 Pure Value ETF;Small Value;20260723
+PSCT;Invesco;Invesco S&P SmallCap Information Technology ETF;Technology;20260723
+RSPH;Invesco;Invesco S&P 500 Equal Weight Health Care ETF;Health;20260723
+GRPM;Invesco;Invesco S&P MidCap 400 GARP ETF;Small Blend;20260723
+PHDG;Invesco;Invesco S&P 500 Downside Hedged ETF;Equity Hedged;20260723
+PBUS;Invesco;Invesco MSCI USA ETF;Large Blend;20260723
+BAB;Invesco;Invesco Taxable Municipal Bond ETF;Muni National Long;20260723
+DBC;Invesco;Invesco DB Commodity Index Tracking Fund;Commodities Broad Basket;20260723
+RPG;Invesco;Invesco S&P 500 Pure Growth ETF;Large Growth;20260723
+RSPM;Invesco;Invesco S&P 500 Equal Weight Materials ETF;Natural Resources;20260723
+PSCM;Invesco;Invesco S&P SmallCap Materials ETF;Natural Resources;20260723
+PFI;Invesco;Invesco Dorsey Wright Financial Momentum ETF;Financial;20260723
+SPGP;Invesco;Invesco S&P 500 GARP ETF;Large Value;20260723
+IMFL;Invesco;Invesco International Developed Dynamic Multifactor ETF;Foreign Large Blend;20260723
+DWAS;Invesco;Invesco Dorsey Wright SmallCap Momentum ETF;Small Blend;20260723
+XSVM;Invesco;Invesco S&P SmallCap Value with Momentum ETF;Small Value;20260723
+RFG;Invesco;Invesco S&P MidCap 400 Pure Growth ETF;Mid-Cap Growth;20260723
+GTO;Invesco;Invesco Total Return Bond ETF;Intermediate Core-Plus Bond;20260723
+PXI;Invesco;Invesco Dorsey Wright Energy Momentum ETF;Equity Energy;20260723
+PSP;Invesco;Invesco Global Listed Private Equity ETF;Financial;20260723
+PWZ;Invesco;Invesco California AMT-Free Municipal Bond ETF;Muni California Long;20260723
+IIGD;Invesco;Invesco Investment Grade Defensive ETF;Short-Term Bond;20260723
+GTOH;Invesco;Invesco Short Duration High Yield ETF;High Yield Bond;20260723
+PSCF;Invesco;Invesco S&P SmallCap Financials ETF;Financial;20260723
+XSHQ;Invesco;Invesco S&P SmallCap Quality ETF;Small Blend;20260723
+PGX;Invesco;Invesco Preferred ETF;Preferred Stock;20260723
+RSP;Invesco;Invesco S&P 500 Equal Weight ETF;Large Blend;20260723
+XMLV;Invesco;Invesco S&P MidCap Low Volatility ETF;Small Blend;20260723
+TBLL;Invesco;Invesco Short Term Treasury ETF;Ultrashort Bond;20260723
+PVI;Invesco;Invesco Floating Rate Municipal Income ETF;Muni National Short;20260723
+PID;Invesco;Invesco International Dividend Achievers ETF;Foreign Large Value;20260723
+PSCH;Invesco;Invesco S&P SmallCap Health Care ETF;Health;20260723
+PBD;Invesco;Invesco Global Clean Energy ETF;Global Small/Mid Stock;20260723
+PDN;Invesco;Invesco RAFI Developed Markets ex-U.S. Small-Mid ETF;Foreign Small/Mid Value;20260723
+EEMO;Invesco;Invesco S&P Emerging Markets Momentum ETF;Diversified Emerging Mkts;20260723
+FDIQ;Invesco;Invesco Bloomberg Financial Data Providers ETF;Financial;20260723
+IDLV;Invesco;Invesco S&P International Developed Low Volatility ETF;Foreign Large Blend;20260723
+PSCD;Invesco;Invesco S&P SmallCap Consumer Discretionary ETF;Consumer Cyclical;20260723
+PYZ;Invesco;Invesco Dorsey Wright Basic Materials Momentum ETF;Natural Resources;20260723
+PSCC;Invesco;Invesco S&P SmallCap Consumer Staples ETF;Consumer Defensive;20260723
+CQQQ;Invesco;Invesco China Technology ETF;Greater China Region;20260723
+RSPC;Invesco;Invesco S&P 500 Equal Weight Communication Services ETF;Communications;20260723
+UPGD;Invesco;Invesco Bloomberg Analyst Rating Improvers ETF;Mid-Cap Blend;20260723
+EELV;Invesco;Invesco S&P Emerging Markets Low Volatility ETF;Diversified Emerging Mkts;20260723
+PGF;Invesco;Invesco Financial Preferred ETF;Preferred Stock;20260723
+PEY;Invesco;Invesco High Yield Equity Dividend Achievers? ETF;Mid-Cap Value;20260723
+OMFS;Invesco;Invesco Russell 2000 Dynamic Multifactor ETF;Small Blend;20260723
+PUI;Invesco;Invesco Dorsey Wright Utilities Momentum ETF;Utilities;20260723
+RZV;Invesco;Invesco S&P SmallCap 600 Pure Value ETF;Small Value;20260723
+QQQS;Invesco;Invesco NASDAQ Future Gen 200 ETF;Small Blend;20260723
+OMFL;Invesco;Invesco Russell 1000 Dynamic Multifactor ETF;Large Blend;20260723
+PCEF;Invesco;Invesco CEF Income Composite ETF;Global Moderate Allocation;20260723
+RSPD;Invesco;Invesco S&P 500 Equal Weight Consumer Discretionary ETF;Consumer Cyclical;20260723
+IFLN;Invesco;Invesco Bloomberg Enhanced Fallen Angels ETF;High Yield Bond;20260723
+IMVP;Invesco;Invesco India ETF;India Equity;20260723
+CUT;Invesco;Invesco MSCI Global Timber ETF;Natural Resources;20260723
+ERTH;Invesco;Invesco MSCI Sustainable Future ETF;Global Large-Stock Blend;20260723
+PBW;Invesco;Invesco WilderHill Clean Energy ETF;Small Growth;20260723
+POWA;Invesco;Invesco Bloomberg Pricing Power ETF;Large Blend;20260723
+PSCE;Invesco;Invesco S&P SmallCap Energy ETF;Equity Energy;20260723
+PGJ;Invesco;Invesco Golden Dragon China ETF;Greater China Region;20260723
+XSHD;Invesco;Invesco S&P SmallCap High Dividend Low Volatility ETF;Small Value;20260723
+PNQI;Invesco;Invesco NASDAQ Internet ETF;Large Growth;20260723
+RSPS;Invesco;Invesco S&P 500 Equal Weight Consumer Staples ETF;Consumer Defensive;20260723
+SPLV;Invesco;Invesco S&P 500 Low Volatility ETF;Large Value;20260723
+KBWD;Invesco;Invesco KBW High Dividend Yield Financial ETF;Financial;20260723
+PCY;Invesco;Invesco Emerging Markets Sovereign Debt ETF;Emerging Markets Bond;20260723
+SPHD;Invesco;Invesco S&P 500 High Dividend Low Volatility ETF;Large Value;20260723
+IMTG;Invesco;Invesco Agency MBS ETF;Government Mortgage-Backed Bond;20260723
+BSMQ;Invesco;Invesco BulletShares (R) 2026 Municipal Bond ETF;Muni Target Maturity;20260723
+BSMY;Invesco;Invesco Bulletshares 2034 Municipal Bond ETF;Muni Target Maturity;20260723
+BSGT;Invesco;Invesco Bulletshares 2029 Treasury Bond ETF;Target Maturity;20260723
+QQHG;Invesco;Invesco QQQ Hedged Advantage ETF;Equity Hedged;20260723
+BSMU;Invesco;Invesco BulletShares 2030 Municipal Bond ETF;Muni Target Maturity;20260723
+BSJS;Invesco;Invesco BulletShares 2028 High Yield Corporate Bond ETF;Target Maturity;20260723
+BSMS;Invesco;Invesco BulletShares (R) 2028 Municipal Bond ETF;Muni Target Maturity;20260723
+GRPZ;Invesco;Invesco S&P Smallcap 600 GARP ETF;Small Blend;20260723
+DBB;Invesco;Invesco DB Base Metals Fund;Commodities Focused;20260723
+PSCU;Invesco;Invesco S&P SmallCap Utilities & Communication Services ETF;Miscellaneous Sector;20260723
+CSTK;Invesco;Invesco Comstock Contrarian Equity ETF;Large Value;20260723
+MTRA;Invesco;Invesco International Growth Focus ETF;Foreign Large Growth;20260723
+QBIG;Invesco;Invesco Top QQQ ETF;Large Growth;20260723
+BSJQ;Invesco;Invesco BulletShares 2026 High Yield Corporate Bond ETF;Target Maturity;20260723
+BSCV;Invesco;Invesco BulletShares 2031 Corporate Bond ETF;Target Maturity;20260723
+FXA;Invesco;Invesco CurrencyShares Australian Dollar Trust;Single Currency;20260723
+BSGR;Invesco;Invesco Bulletshares 2027 Treasury Bond ETF;Target Maturity;20260723
+IMF;Invesco;Invesco Managed Futures Strategy ETF;Systematic Trend;20260723
+TAN;Invesco;Invesco Solar ETF;Miscellaneous Sector;20260723
+BSJR;Invesco;Invesco BulletShares 2027 High Yield Corporate Bond ETF;Target Maturity;20260723
+HBRD;Invesco;Invesco U.S. Hybrid Bond ETF;Corporate Bond;20260723
+BSCS;Invesco;Invesco BulletShares 2028 Corporate Bond ETF;Target Maturity;20260723
+BSJV;Invesco;Invesco BulletShares 2031 High Yield Corporate Bond ETF;Target Maturity;20260723
+BSCQ;Invesco;Invesco BulletShares 2026 Corporate Bond ETF;Target Maturity;20260723
+FXF;Invesco;Invesco CurrencyShares Swiss Franc Trust;Single Currency;20260723
+UUP;Invesco;Invesco DB US Dollar Index Bullish Fund;Trading??Miscellaneous;20260723
+BSCY;Invesco;Invesco BulletShares 2034 Corporate Bond ETF;Target Maturity;20260723
+QETH;Invesco;Invesco Galaxy Ethereum ETF;Digital Assets;20260723
+FXB;Invesco;Invesco CurrencyShares British Pound Sterling Trust;Single Currency;20260723
+EFAA;Invesco;Invesco MSCI EAFE Income Advantage ETF;Derivative Income;20260723
+DBA;Invesco;Invesco DB Agriculture Fund;Commodities Focused;20260723
+PIPE;Invesco;Invesco SteelPath MLP & Energy Infrastructure ETF;Energy Limited Partnership;20260723
+DVVY;Invesco;Invesco Diversified Dividend Opportunities ETF;Large Value;20260723
+BSMT;Invesco;Invesco BulletShares 2029 Municipal Bond ETF;Muni Target Maturity;20260723
+BSJY;Invesco;Invesco Bulletshares 2034 High Yield Corporate Bond ETF;High Yield Bond;20260723
+PDBA;Invesco;Invesco Agriculture Commodity Strategy No K-1 ETF;Commodities Focused;20260723
+BSSX;Invesco;Invesco Bulletshares 2033 Municipal Bond ETF;Muni Target Maturity;20260723
+BSCW;Invesco;Invesco Bulletshares 2032 Corporate Bond ETF;Target Maturity;20260723
+BSTS;Invesco;Invesco Bulletshares 2028 Treasury Bond ETF;Target Maturity;20260723
+BSCX;Invesco;Invesco Bulletshares 2033 Corporate Bond ETF;Target Maturity;20260723
+BSMW;Invesco;Invesco Bulletshares 2032 Municipal Bond ETF;Muni Target Maturity;20260723
+BSJW;Invesco;Invesco BulletShares 2032 High Yield Corporate Bond ETF;Target Maturity;20260723
+BTCO;Invesco;Invesco Galaxy Bitcoin ETF;Digital Assets;20260723
+GTOC;Invesco;Invesco Core Fixed Income ETF;Intermediate Core Bond;20260723
+UDN;Invesco;Invesco DB US Dollar Index Bearish Fund;Trading??Miscellaneous;20260723
+INTM;Invesco;Invesco Intermediate Municipal ETF;Muni National Interm;20260723
+QSOL;Invesco;Invesco Galaxy Solana ETF;Digital Assets;20260723
+BSMR;Invesco;Invesco BulletShares (R) 2027 Municipal Bond ETF;Muni Target Maturity;20260723
+KLMN;Invesco;Invesco MSCI North America Climate ETF;Large Blend;20260723
+IQSZ;Invesco;Invesco Global Equity Net Zero ETF;Global Large-Stock Blend;20260723
+KLMT;Invesco;Invesco MSCI Global Climate 500 ETF;Global Large-Stock Blend;20260723
+QQA;Invesco;Invesco QQQ Income Advantage ETF;Derivative Income;20260723
+QEW;Invesco;Invesco QQQ Equal Weight ETF;Large Growth;20260723
+FXE;Invesco;Invesco CurrencyShares Euro Currency Trust;Single Currency;20260723
+BSJT;Invesco;Invesco BulletShares 2029 High Yield Corporate Bond ETF;Target Maturity;20260723
+DBP;Invesco;Invesco DB Precious Metals Fund;Commodities Focused;20260723
+TROT;Invesco;Invesco MSCI Treasury Duration Rotation ETF;Intermediate Government;20260723
+BSJU;Invesco;Invesco Bulletshares 2030 High Yield Corporate Bond ETF;Target Maturity;20260723
+BSCU;Invesco;Invesco BulletShares 2030 Corporate Bond ETF;Target Maturity;20260723
+BSMV;Invesco;Invesco BulletShares 2031 Municipal Bond ETF;Muni Target Maturity;20260723
+BSJX;Invesco;Invesco Bulletshares 2033 High Yield Corporate Bond ETF;Target Maturity;20260723
+DBE;Invesco;Invesco DB Energy Fund;Commodities Focused;20260723
+BSMZ;Invesco;Invesco BulletShares 2035 Municipal Bond ETF;Muni Target Maturity;20260723
+FLXI;Invesco;Invesco Flexible Income ETF;Multisector Bond;20260723
+EVMT;Invesco;Invesco Electric Vehicle Metals Commodity Strategy No K-1 ETF;Commodities Focused;20260723
+FXC;Invesco;Invesco CurrencyShares Canadian Dollar Trust;Single Currency;20260723
+BSTV;Invesco;Invesco Bulletshares 2031 Treasury Bond ETF;Target Maturity;20260723
+BSCR;Invesco;Invesco BulletShares 2027 Corporate Bond ETF;Target Maturity;20260723
+FXY;Invesco;Invesco CurrencyShares Japanese Yen Trust;Single Currency;20260723
+BSCZ;Invesco;Invesco Bulletshares 2035 Corporate Bond ETF;Target Maturity;20260723
+BSCA;Invesco;Invesco Bulletshares 2036 Corporate Bond ETF;Target Maturity;20260723
+DBO;Invesco;Invesco DB Oil Fund;Commodities Focused;20260723
+TYLG;Global X;Global X Information Technology Covered Call & Growth ETF;Derivative Income;20260723
+QYLG;Global X;Global X Nasdaq 100 Covered Call & Growth ETF;Derivative Income;20260723
+XTR;Global X;Global X S&P 500 Tail Risk ETF;Equity Hedged;20260723
+QTR;Global X;Global X NASDAQ 100 Tail Risk ETF;Equity Hedged;20260723
+PAVE;Global X;Global X U.S. Infrastructure Development ETF;Infrastructure;20260723
+DTCR;Global X;Global X Data Center & Digital Infrastructure ETF;Real Estate;20260723
+AUSF;Global X;Global X Adaptive U.S. Factor ETF;Mid-Cap Value;20260723
+AGNG;Global X;Global X Aging Population ETF;Health;20260723
+EFAS;Global X;Global X MSCI SuperDividend EAFE ETF;Foreign Large Value;20260723
+QYLD;Global X;Global X NASDAQ 100 Covered Call ETF;Derivative Income;20260723
+XYLG;Global X;Global X S&P 500 Covered Call & Growth ETF;Derivative Income;20260723
+BITS;Global X;Global X Blockchain & Bitcoin Strategy ETF;Equity Digital Assets;20260723
+MLPX;Global X;Global X MLP & Energy Infrastructure ETF;Energy Limited Partnership;20260723
+QCLR;Global X;Global X NASDAQ 100 Collar 95-110 ETF;Equity Hedged;20260723
+ONOF;Global X;Global X Adaptive U.S. Risk Management ETF;Tactical Allocation;20260723
+AIQ;Global X;Global X Artificial Intelligence & Technology ETF;Technology;20260723
+COPX;Global X;Global X Copper Miners ETF;Natural Resources;20260723
+EBIZ;Global X;Global X E-commerce ETF;Consumer Cyclical;20260723
+RNRG;Global X;Global X Renewable Energy Producers ETF;Equity Energy;20260723
+XYLD;Global X;Global X S&P 500 Covered Call ETF;Derivative Income;20260723
+URA;Global X;Global X Uranium ETF;Natural Resources;20260723
+XCLR;Global X;Global X S&P 500 Collar 95-110 ETF;Equity Hedged;20260723
+RYLG;Global X;Global X Russell 2000 Covered Call & Growth ETF;Derivative Income;20260723
+EART;Global X;Global X Rare Earth & Critical Materials ETF;Natural Resources;20260723
+DJIA;Global X;Global X Dow 30 Covered Call ETF;Derivative Income;20260723
+ASEA;Global X;Global X FTSE Southeast Asia ETF;Pacific/Asia ex-Japan Stk;20260723
+EMM;Global X;Global X Emerging Markets ex-China ETF;Diversified Emerging Mkts;20260723
+CATH;Global X;Global X S&P 500 Catholic Values ETF;Large Blend;20260723
+PFFV;Global X;Global X Variable Rate Preferred ETF;Preferred Stock;20260723
+EMBD;Global X;Global X Emerging Markets Bond ETF;Emerging Markets Bond;20260723
+AQWA;Global X;Global X Clean Water ETF;Natural Resources;20260723
+GOEX;Global X;Global X Gold Explorers ETF;Equity Precious Metals;20260723
+ALTY;Global X;Global X Alternative Income ETF;Global Moderate Allocation;20260723
+EMC;Global X;Global X Emerging Markets Great Consumer ETF;Diversified Emerging Mkts;20260723
+XRMI;Global X;Global X S&P 500 Risk Managed Income ETF;Derivative Income;20260723
+BUG;Global X;Global X Cybersecurity ETF;Technology;20260723
+CHIQ;Global X;Global X MSCI China Consumer Disc ETF;Greater China Region;20260723
+SNSR;Global X;Global X Internet of Things ETF;Technology;20260723
+SRET;Global X;Global X SuperDividend REIT ETF;Real Estate;20260723
+CPTL;Global X;Global X Morningstar Capital Allocation Leaders ETF;Large Blend;20260723
+CEFA;Global X;Global X S&P Catholic Values Developed ex-U.S. ETF;Foreign Large Blend;20260723
+QRMI;Global X;Global X NASDAQ 100 Risk Managed Income ETF;Derivative Income;20260723
+DIV;Global X;Global X SuperDividend? U.S. ETF;Small Value;20260723
+PFFD;Global X;Global X U.S. Preferred ETF;Preferred Stock;20260723
+GURU;Global X;Global X Guru? Index ETF;Large Blend;20260723
+CLIP;Global X;Global X 1-3 Month T-Bill ETF;Ultrashort Bond;20260723
+SPFF;Global X;Global X SuperIncome? Preferred ETF;Preferred Stock;20260723
+SDEM;Global X;Global X MSCI SuperDividend Emerging Markets ETF;Diversified Emerging Mkts;20260723
+SIL;Global X;Global X Silver Miners ETF;Equity Precious Metals;20260723
+BOTZ;Global X;Global X Robotics & Artificial Intelligence ETF;Technology;20260723
+SDIV;Global X;Global X SuperDividend? ETF;Global Small/Mid Stock;20260723
+LIT;Global X;Global X Lithium & Battery Tech ETF;Natural Resources;20260723
+IRVH;Global X;Global X Interest Rate Volatility & Inflation Hedge ETF;Inflation-Protected Bond;20260723
+BKCH;Global X;Global X Blockchain ETF;Equity Digital Assets;20260723
+CLOU;Global X;Global X Cloud Computing ETF;Technology;20260723
+GXDW;Global X;Global X Dorsey Wright Thematic ETF;Global Small/Mid Stock;20260723
+QDIV;Global X;Global X S&P 500 Quality Dividend ETF;Large Value;20260723
+HEAL;Global X;Global X HealthTech ETF;Health;20260723
+KROP;Global X;Global X AgTech & Food Innovation ETF;Global Small/Mid Stock;20260723
+RYLD;Global X;Global X Russell 2000 Covered Call ETF;Derivative Income;20260723
+HERO;Global X;Global X Video Games & Esports ETF;Communications;20260723
+FINX;Global X;Global X FinTech ETF;Technology;20260723
+MILN;Global X;Global X Millennials Consumer ETF;Large Growth;20260723
+SOCL;Global X;Global X Social Media ETF;Communications;20260723
+GNOM;Global X;Global X Genomics & Biotechnology ETF;Health;20260723
+MLPA;Global X;Global X MLP ETF;Energy Limited Partnership;20260723
+CTEC;Global X;Global X ClimateTech ETF;Global Small/Mid Stock;20260723
+GXPD;Global X;Global X Purecap MSCI Consumer Discretionary ETF;Consumer Cyclical;20260723
+FLOW;Global X;Global X U.S. Cash Flow Kings 100 ETF;Mid-Cap Value;20260723
+RMHY;Global X;Global X Adaptive Risk Managed High Yield ETF;Multisector Bond;20260723
+SHLD;Global X;Global X Defense Tech ETF;Industrials;20260723
+NDIA;Global X;Global X India Active ETF;India Equity;20260723
+EHCC;Global X;Global X Ethereum Covered Call ETF;Digital Assets;20260723
+GXPT;Global X;Global X PureCap MSCI Information Technology ETF;Technology;20260723
+NYSX;Global X;Global X NYSE 100 ETF;Large Growth;20260723
+AUAU;Global X;Global X Gold Miners ETF;Equity Precious Metals;20260723
+GXPC;Global X;Global X Purecap MSCI Communication Services ETF;Communications;20260723
+RSSL;Global X;Global X Russell 2000 ETF;Small Blend;20260723
+ZCBA;Global X;Global X Zero Coupon Bond 2030 ETF;Target Maturity;20260723
+BCCC;Global X;Global X Bitcoin Covered Call ETF;Digital Assets;20260723
+TLTX;Global X;Global X Treasury Bond Enhanced Income ETF;Intermediate Government;20260723
+BRAZ;Global X;Global X Brazil Active ETF;Focused Region;20260723
+MLDR;Global X;Global X Intermediate-Term Treasury Ladder ETF;Intermediate Government;20260723
+ORBX;Global X;Global X Space Tech ETF;Industrials;20260723
+CHPX;Global X;Global X AI Semiconductor & Quantum ETF;Technology;20260723
+DRIV;Global X;Global X Autonomous & Electric Vehicles ETF;Miscellaneous Sector;20260723
+GREK;Global X;Global X MSCI Greece ETF;Focused Region;20260723
+DAX;Global X;Global X DAX Germany ETF;Focused Region;20260723
+NORW;Global X;Global X MSCI Norway ETF;Focused Region;20260723
+EDGQ;Global X;Global X Nasdaq-100 Income Edge ETF;Derivative Income;20260723
+ZCBE;Global X;Global X Zero Coupon Bond 2033 ETF;Target Maturity;20260723
+GXPS;Global X;Global X Purecap MSCI Consumer Staples ETF;Consumer Defensive;20260723
+MLPD;Global X;Global X MLP & Energy Infrastructure Covered Call ETF;Derivative Income;20260723
+ZCBF;Global X;Global X Zero Coupon Bond 2034 ETF;Target Maturity;20260723
+GXIG;Global X;Global X Investment Grade Corporate Bond ETF;Corporate Bond;20260723
+FLAG;Global X;Global X S&P 500 U.S. Market Leaders TOP 50 ETF;Large Blend;20260723
+COLO;Global X;Global X MSCI Colombia ETF;Focused Region;20260723
+VNAM;Global X;Global X MSCI Vietnam ETF;Focused Region;20260723
+ZCBB;Global X;Global X Zero Coupon Bond 2031 ETF;Target Maturity;20260723
+ZCBC;Global X;Global X Zero Coupon Bond 2032 ETF;Target Maturity;20260723
+ARGT;Global X;Global X MSCI Argentina ETF;Focused Region;20260723
+BTRN;Global X;Global X Bitcoin Trend Strategy ETF;Digital Assets;20260723
+IPAV;Global X;Global X Infrastructure Development ex-U.S. ETF;Infrastructure;20260723
+GXLC;Global X;Global X U.S. 500 ETF;Large Blend;20260723
+COMD;Global X;Global X Commodity Strategy ETF;Commodities Broad Basket;20260723
+LLDR;Global X;Global X Long-Term Treasury Ladder ETF;Long Government;20260723
+CHRI;Global X;Global X S&P 500 Christian Values ETF;Large Blend;20260723
+LNGX;Global X;Global X U.S. Natural Gas ETF;Equity Energy;20260723
+EDGX;Global X;Global X U.S. 500 Income Edge ETF;Derivative Income;20260723
+EGLE;Global X;Global X S&P 500 U.S. Revenue Leaders ETF;Large Blend;20260723
+DYLG;Global X;Global X Dow 30 Covered Call & Growth ETF;Derivative Income;20260723
+USXF;iShares;iShares ESG Advanced MSCI USA ETF;Large Growth;20260723
+HEEM;iShares;iShares Currency Hedged MSCI Emerging Markets ETF;Diversified Emerging Mkts;20260723
+SOXX;iShares;iShares Semiconductor ETF;Technology;20260723
+LQDH;iShares;iShares Interest Rate Hedged Corporate Bond ETF;Ultrashort Bond;20260723
+HSCZ;iShares;iShares Currency Hedged MSCI EAFE Small-Cap ETF;Foreign Small/Mid Blend;20260723
+HYGH;iShares;iShares Interest Rate Hedged High Yield Bond ETF;High Yield Bond;20260723
+OEF;iShares;iShares S&P 100 ETF;Large Blend;20260723
+EWT;iShares;iShares MSCI Taiwan ETF;Greater China Region;20260723
+HEFA;iShares;iShares Currency Hedged MSCI EAFE ETF;Foreign Large Blend;20260723
+SYSB;iShares;iShares Systematic Bond ETF;Intermediate Core-Plus Bond;20260723
+IWL;iShares;iShares Russell Top 200 ETF;Large Blend;20260723
+USRT;iShares;iShares Core U.S. REIT ETF;Real Estate;20260723
+ICOP;iShares;iShares Copper and Metals Mining ETF;Natural Resources;20260723
+DYNF;iShares;iShares U.S. Equity Factor Rotation Active ETF;Large Blend;20260723
+EMXC;iShares;iShares MSCI Emerging Markets ex China ETF;Diversified Emerging Mkts;20260723
+GARP;iShares;iShares MSCI USA Quality GARP ETF;Large Growth;20260723
+IFRA;iShares;iShares U.S. Infrastructure ETF;Infrastructure;20260723
+EMHY;iShares;iShares J.P. Morgan EM High Yield Bond ETF;Emerging Markets Bond;20260723
+IWY;iShares;iShares Russell Top 200 Growth ETF;Large Growth;20260723
+IOO;iShares;iShares Global 100 ETF;Global Large-Stock Blend;20260723
+IAI;iShares;iShares U.S. Broker-Dealers & Securities Exchanges ETF;Financial;20260723
+IEF;iShares;iShares 7-10 Year Treasury Bond ETF;Long Government;20260723
+HEZU;iShares;iShares Currency Hedged MSCI Eurozone ETF;Europe Stock;20260723
+URTH;iShares;iShares MSCI World ETF;Global Large-Stock Blend;20260723
+TOK;iShares;iShares MSCI Kokusai ETF;Global Large-Stock Blend;20260723
+IGBH;iShares;iShares Interest Rate Hedged Long-Term Corporate Bond ETF;Ultrashort Bond;20260723
+VLUE;iShares;iShares MSCI USA Value Factor ETF;Large Value;20260723
+HEWJ;iShares;iShares Currency Hedged MSCI Japan ETF;Japan Stock;20260723
+MTUM;iShares;iShares MSCI USA Momentum Factor ETF;Large Blend;20260723
+MEAR;iShares;iShares Short Maturity Municipal Bond Active ETF;Muni National Short;20260723
+ICVT;iShares;iShares Convertible Bond ETF;Convertibles;20260723
+IGEB;iShares;iShares Investment Grade Systematic Bond ETF;Corporate Bond;20260723
+IGM;iShares;iShares Expanded Tech Sector ETF;Technology;20260723
+SUSL;iShares;iShares ESG MSCI USA Leaders ETF;Large Blend;20260723
+SIZE;iShares;iShares MSCI USA Size Factor ETF;Mid-Cap Blend;20260723
+AIA;iShares;iShares Asia 50 ETF;Pacific/Asia ex-Japan Stk;20260723
+IYC;iShares;iShares US Consumer Discretionary ETF;Consumer Cyclical;20260723
+IVLU;iShares;iShares Edge MSCI Intl Value Factor ETF;Foreign Large Value;20260723
+IAK;iShares;iShares U.S. Insurance ETF;Financial;20260723
+EUSA;iShares;iShares MSCI USA Equal Weighted ETF;Mid-Cap Blend;20260723
+INTF;iShares;iShares International Equity Factor ETF;Foreign Large Blend;20260723
+IEI;iShares;iShares 3-7 Year Treasury Bond ETF;Intermediate Government;20260723
+IWP;iShares;iShares Russell Mid-Cap Growth ETF;Mid-Cap Growth;20260723
+IYM;iShares;iShares U.S. Basic Materials ETF;Natural Resources;20260723
+IUSG;iShares;iShares Core S&P U.S. Growth ETF;Large Growth;20260723
+MXI;iShares;iShares Global Materials ETF;Natural Resources;20260723
+DVY;iShares;iShares Select Dividend ETF;Mid-Cap Value;20260723
+IMTM;iShares;iShares MSCI Intl Momentum Factor ETF;Foreign Large Blend;20260723
+REET;iShares;iShares Global REIT ETF;Global Real Estate;20260723
+ISCF;iShares;iShares MSCI Intl Small-Cap Multifactor ETF;Foreign Small/Mid Blend;20260723
+CRBN;iShares;iShares Low Carbon Optimized MSCI ACWI ETF;Global Large-Stock Blend;20260723
+EMGF;iShares;iShares Emerging Markets Equity Factor ETF;Diversified Emerging Mkts;20260723
+DGRO;iShares;iShares Core Dividend Growth ETF;Large Value;20260723
+FALN;iShares;iShares Fallen Angels USD Bond ETF;High Yield Bond;20260723
+AOK;iShares;iShares Core 30/70 Conservative Allocation ETF;Global Conservative Allocation;20260723
+ITA;iShares;iShares U.S. Aerospace & Defense ETF;Industrials;20260723
+AOM;iShares;iShares Core 40/60 Moderate Allocation ETF;Global Moderately Conservative Allocation;20260723
+IWX;iShares;iShares Russell Top 200 Value ETF;Large Value;20260723
+IYK;iShares;iShares US Consumer Staples ETF;Consumer Defensive;20260723
+IXUS;iShares;iShares Core MSCI Total International Stock ETF;Foreign Large Blend;20260723
+IGSB;iShares;iShares 1-5 Year Investment Grade Corporate Bond ETF;Short-Term Bond;20260723
+IYH;iShares;iShares U.S. Healthcare ETF;Health;20260723
+DSI;iShares;iShares ESG MSCI KLD 400 ETF;Large Blend;20260723
+SLQD;iShares;iShares 0-5 Year Investment Grade Corporate Bond ETF;Short-Term Bond;20260723
+HIMU;iShares;iShares High Yield Muni Active ETF;High Yield Muni;20260723
+EGUS;iShares;Ishares ESG Aware MSCI USA Growth ETF;Large Growth;20260723
+PICK;iShares;iShares MSCI Global Metals & Mining Producers ETF;Natural Resources;20260723
+IAGG;iShares;iShares Core International Aggregate Bond ETF;Global Bond-USD Hedged;20260723
+DIVB;iShares;iShares Core Dividend ETF;Large Value;20260723
+LQDI;iShares;iShares Inflation Hedged Corporate Bond ETF;Corporate Bond;20260723
+IBRN;iShares;iShares Neuroscience and Healthcare ETF;Health;20260723
+IGF;iShares;iShares Global Infrastructure ETF;Infrastructure;20260723
+IVW;iShares;iShares S&P 500 Growth ETF;Large Growth;20260723
+EFV;iShares;iShares MSCI EAFE Value ETF;Foreign Large Value;20260723
+IGIB;iShares;iShares 5-10 Year Investment Grade Corporate Bond ETF;Corporate Bond;20260723
+ILCG;iShares;iShares Morningstar Growth ETF;Large Growth;20260723
+IWR;iShares;iShares Russell Mid-Cap ETF;Mid-Cap Blend;20260723
+IYF;iShares;iShares U.S. Financials ETF;Financial;20260723
+IXG;iShares;iShares Global Financials ETF;Financial;20260723
+IXC;iShares;iShares Global Energy ETF;Equity Energy;20260723
+IJK;iShares;iShares S&P Mid-Cap 400 Growth ETF;Mid-Cap Growth;20260723
+IGLB;iShares;iShares 10+ Year Investment Grade Corporate Bond ETF;Long-Term Bond;20260723
+SHYG;iShares;iShares 0-5 Year High Yield Corporate Bond ETF;High Yield Bond;20260723
+TLTW;iShares;iShares 20+ Year Treasury Bond Buywrite Strategy ETF;Long Government;20260723
+CNYA;iShares;iShares MSCI China A ETF;Greater China Region;20260723
+IHE;iShares;iShares U.S. Pharmaceuticals ETF;Health;20260723
+IXN;iShares;iShares Global Tech ETF;Technology;20260723
+NEAR;iShares;iShares Short Duration Bond Active ETF;Short-Term Bond;20260723
+REZ;iShares;iShares Residential and Multisector Real Estate ETF;Real Estate;20260723
+HYDB;iShares;iShares High Yield Systematic Bond ETF;High Yield Bond;20260723
+EWJV;iShares;iShares MSCI Japan Value ETF;Japan Stock;20260723
+AOA;iShares;iShares Core 80/20 Aggressive Allocation ETF;Global Moderately Aggressive Allocation;20260723
+SMLF;iShares;iShares U.S. Small-Cap Equity Factor ETF;Small Blend;20260723
+GLOF;iShares;iShares Global Equity Factor ETF;Global Large-Stock Blend;20260723
+AOR;iShares;iShares Core 60/40 Balanced Allocation ETF;Global Moderate Allocation;20260723
+TLH;iShares;iShares 10-20 Year Treasury Bond ETF;Long Government;20260723
+SMIN;iShares;iShares MSCI India Small-Cap ETF;India Equity;20260723
+STIP;iShares;iShares 0-5 Year TIPS Bond ETF;Short-Term Inflation-Protected Bond;20260723
+IWB;iShares;iShares Russell 1000 ETF;Large Blend;20260723
+FLOT;iShares;iShares Floating Rate Bond ETF;Ultrashort Bond;20260723
+IVV;iShares;iShares Core S&P 500 ETF;Large Blend;20260723
+IEMG;iShares;iShares Core MSCI Emerging Markets ETF;Diversified Emerging Mkts;20260723
+EEMA;iShares;iShares MSCI Emerging Markets Asia ETF;Pacific/Asia ex-Japan Stk;20260723
+RING;iShares;iShares MSCI Global Gold Miners ETF;Equity Precious Metals;20260723
+IWF;iShares;iShares Russell 1000 Growth ETF;Large Growth;20260723
+IYW;iShares;iShares U.S. Technology ETF;Technology;20260723
+IYG;iShares;iShares U.S. Financial Services ETF;Financial;20260723
+LRGF;iShares;iShares U.S. Equity Factor ETF;Large Blend;20260723
+ACWI;iShares;iShares MSCI ACWI ETF;Global Large-Stock Blend;20260723
+ILCB;iShares;iShares Morningstar U.S. Equity ETF;Large Blend;20260723
+ILCV;iShares;iShares Morningstar Value ETF;Large Value;20260723
+ISTB;iShares;iShares Core 1-5 Year USD Bond ETF;Short-Term Bond;20260723
+BINC;iShares;iShares Flexible Income Active ETF;Multisector Bond;20260723
+COMT;iShares;iShares GSCI Commodity Dynamic Roll Strategy ETF;Commodities Broad Basket;20260723
+BRLN;iShares;iShares Floating Rate Loan Active ETF;Bank Loan;20260723
+IGRO;iShares;iShares International Dividend Growth ETF;Foreign Large Blend;20260723
+IYR;iShares;iShares U.S. Real Estate ETF;Real Estate;20260723
+IMCB;iShares;iShares Morningstar Mid-Cap ETF;Mid-Cap Blend;20260723
+ICF;iShares;iShares Select U.S. REIT ETF;Real Estate;20260723
+ISVL;iShares;iShares International Developed Small Cap Value Factor ETF;Foreign Small/Mid Value;20260723
+EUSB;iShares;iShares ESG Advanced Universal USD Bond ETF;Intermediate Core-Plus Bond;20260723
+KXI;iShares;iShares Global Consumer Staples ETF;Consumer Defensive;20260723
+SHYM;iShares;iShares Short Duration High Yield Muni Active ETF;High Yield Muni;20260723
+SUSB;iShares;iShares ESG 1-5 Year USD Corporate Bond ETF;Short-Term Bond;20260723
+TECB;iShares;iShares U.S. Tech Breakthrough Multisector ETF;Technology;20260723
+IEFA;iShares;iShares Core MSCI EAFE ETF;Foreign Large Blend;20260723
+EEMS;iShares;iShares MSCI Emerging Markets Small-Cap ETF;Diversified Emerging Mkts;20260723
+EFA;iShares;iShares MSCI EAFE ETF;Foreign Large Blend;20260723
+SHY;iShares;iShares 1-3 Year Treasury Bond ETF;Short Government;20260723
+FXI;iShares;iShares China Large-Cap ETF;Greater China Region;20260723
+ACWX;iShares;iShares MSCI ACWI ex U.S. ETF;Foreign Large Blend;20260723
+IYJ;iShares;iShares U.S. Industrials ETF;Industrials;20260723
+IVE;iShares;iShares S&P 500 Value ETF;Large Value;20260723
+SUSA;iShares;iShares ESG Optimized MSCI USA ETF;Large Blend;20260723
+IDV;iShares;iShares International Select Dividend ETF;Foreign Large Value;20260723
+USIG;iShares;iShares Broad USD Investment Grade Corporate Bond ETF;Corporate Bond;20260723
+USHY;iShares;iShares Broad USD High Yield Corporate Bond ETF;High Yield Bond;20260723
+EVUS;iShares;Ishares ESG Aware MSCI USA Value ETF;Large Value;20260723
+SVAL;iShares;iShares US Small Cap Value Factor ETF;Small Value;20260723
+CMDY;iShares;iShares Bloomberg Roll Select Commodity Strategy ETF;Commodities Broad Basket;20260723
+IMTB;iShares;iShares Core 5-10 Year USD Bond ETF;Intermediate Core-Plus Bond;20260723
+IEUR;iShares;iShares Core MSCI Europe ETF;Europe Stock;20260723
+HYXF;iShares;iShares ESG Advanced High Yield Corporate Bond ETF;High Yield Bond;20260723
+IMCV;iShares;iShares Morningstar Mid-Cap Value ETF;Mid-Cap Value;20260723
+IXJ;iShares;iShares Global Healthcare ETF;Health;20260723
+SMMV;iShares;iShares MSCI USA Small-Cap Min Vol Factor ETF;Small Blend;20260723
+IDEV;iShares;iShares Core MSCI International Developed Markets ETF;Foreign Large Blend;20260723
+IQLT;iShares;iShares MSCI Intl Quality Factor ETF;Foreign Large Blend;20260723
+ESGE;iShares;iShares ESG Aware MSCI EM ETF;Diversified Emerging Mkts;20260723
+RXI;iShares;iShares Global Consumer Discretionary ETF;Consumer Cyclical;20260723
+BGRN;iShares;iShares USD Green Bond ETF;Global Bond-USD Hedged;20260723
+IDU;iShares;iShares U.S. Utilities ETF;Utilities;20260723
+IEV;iShares;iShares Europe ETF;Europe Stock;20260723
+IWS;iShares;iShares Russell Mid-Cap Value ETF;Mid-Cap Value;20260723
+EEM;iShares;iShares MSCI Emerging Markets ETF;Diversified Emerging Mkts;20260723
+IJR;iShares;iShares Core S&P Small-Cap ETF;Small Blend;20260723
+IJJ;iShares;iShares S&P Mid-Cap 400 Value ETF;Mid-Cap Value;20260723
+CEMB;iShares;iShares J.P. Morgan EM Corporate Bond ETF;Emerging Markets Bond;20260723
+IWV;iShares;iShares Russell 3000 ETF;Large Blend;20260723
+JXI;iShares;iShares Global Utilities ETF;Utilities;20260723
+MUB;iShares;iShares National Muni Bond ETF;Muni National Interm;20260723
+IJT;iShares;iShares S&P Small-Cap 600 Growth ETF;Small Growth;20260723
+SECU;iShares;iShares Securitized Income Active ETF;Securitized Bond - Diversified;20260723
+XJR;iShares;iShares ESG Select Screened S&P Small-Cap ETF;Small Blend;20260723
+EAGG;iShares;iShares ESG U.S. Aggregate Bond ETF;Intermediate Core Bond;20260723
+TCHI;iShares;iShares MSCI China Multisector Tech ETF;Greater China Region;20260723
+IXP;iShares;iShares Global Comm Services ETF;Communications;20260723
+IETC;iShares;iShares U.S. Tech Independence Focused ETF;Technology;20260723
+USCL;iShares;Ishares Climate Conscious & Transition MSCI USA ETF;Large Blend;20260723
+EMXF;iShares;iShares ESG Advanced MSCI EM ETF;Diversified Emerging Mkts;20260723
+VEGI;iShares;iShares MSCI Agriculture Producers ETF;Natural Resources;20260723
+EWJ;iShares;iShares MSCI Japan ETF;Japan Stock;20260723
+EZU;iShares;iShares MSCI Eurozone ETF;Europe Stock;20260723
+MBB;iShares;iShares MBS ETF;Government Mortgage-Backed Bond;20260723
+IWD;iShares;iShares Russell 1000 Value ETF;Large Value;20260723
+IWN;iShares;iShares Russell 2000 Value ETF;Small Value;20260723
+IWC;iShares;iShares Micro-Cap ETF;Small Blend;20260723
+HYG;iShares;iShares iBoxx $ High Yield Corporate Bond ETF;High Yield Bond;20260723
+GNMA;iShares;iShares GNMA Bond ETF;Government Mortgage-Backed Bond;20260723
+IUSV;iShares;iShares Core S&P U.S. Value ETF;Large Value;20260723
+IGE;iShares;iShares North American Natural Resources ETF;Natural Resources;20260723
+IEO;iShares;iShares U.S. Oil & Gas Exploration & Production ETF;Equity Energy;20260723
+IJS;iShares;iShares S&P Small-Cap 600 Value ETF;Small Value;20260723
+ITB;iShares;iShares U.S. Home Construction ETF;Consumer Cyclical;20260723
+EXI;iShares;iShares Global Industrials ETF;Industrials;20260723
+IBLC;iShares;iShares Blockchain and Tech ETF;Equity Digital Assets;20260723
+SMMD;iShares;iShares Russell 2500 ETF;Small Blend;20260723
+JPXN;iShares;iShares JPX-Nikkei 400 ETF;Japan Stock;20260723
+SGOV;iShares;iShares 0-3 Month Treasury Bond ETF;Ultrashort Bond;20260723
+CLOA;iShares;iShares AAA CLO Active ETF;Securitized Bond - Focused;20260723
+ISCV;iShares;iShares Morningstar Small-Cap Value ETF;Small Value;20260723
+ICSH;iShares;iShares Ultra Short Duration Bond Active ETF;Ultrashort Bond;20260723
+IBB;iShares;iShares Biotechnology ETF;Health;20260723
+IYY;iShares;iShares Dow Jones U.S. ETF;Large Blend;20260723
+ESGU;iShares;iShares ESG Aware MSCI USA ETF;Large Blend;20260723
+XVV;iShares;iShares ESG Select Screened S&P 500 ETF;Large Blend;20260723
+XJH;iShares;iShares ESG Select Screened S&P Mid-Cap ETF;Mid-Cap Blend;20260723
+HDV;iShares;iShares Core High Dividend ETF;Large Value;20260723
+ERET;iShares;Ishares Environmentally Aware Real Estate ETF;Global Real Estate;20260723
+ISCG;iShares;iShares Morningstar Small-Cap Growth ETF;Small Growth;20260723
+AGG;iShares;iShares Core U.S. Aggregate Bond ETF;Intermediate Core Bond;20260723
+IYE;iShares;iShares U.S. Energy ETF;Equity Energy;20260723
+TIP;iShares;iShares TIPS Bond ETF;Inflation-Protected Bond;20260723
+IJH;iShares;iShares Core S&P Mid-Cap ETF;Mid-Cap Blend;20260723
+SCZ;iShares;iShares MSCI EAFE Small-Cap ETF;Foreign Small/Mid Blend;20260723
+AAXJ;iShares;iShares MSCI All Country Asia ex Japan ETF;Pacific/Asia ex-Japan Stk;20260723
+ESML;iShares;iShares ESG Aware MSCI USA Small-Cap ETF;Small Blend;20260723
+IWO;iShares;iShares Russell 2000 Growth ETF;Small Growth;20260723
+IWM;iShares;iShares Russell 2000 ETF;Small Blend;20260723
+ILTB;iShares;iShares Core 10+ Year USD Bond ETF;Long-Term Bond;20260723
+CMBS;iShares;iShares CMBS ETF;Securitized Bond - Focused;20260723
+SCJ;iShares;iShares MSCI Japan Small-Cap ETF;Japan Stock;20260723
+BEMB;iShares;Ishares J.P. Morgan Broad USD Emerging Markets Bond ETF;Emerging Markets Bond;20260723
+IEZ;iShares;iShares U.S. Oil Equipment & Services ETF;Equity Energy;20260723
+ACWV;iShares;iShares MSCI Global Min Vol Factor ETF;Global Large-Stock Blend;20260723
+EEMV;iShares;iShares MSCI Emerging Markets Min Vol Factor ETF;Diversified Emerging Mkts;20260723
+PFF;iShares;iShares Preferred and Income Securities ETF;Preferred Stock;20260723
+EUHY;iShares;iShares Euro High Yield Corporate Bond USD Hedged ETF;High Yield Bond;20260723
+MCHI;iShares;iShares MSCI China ETF;Greater China Region;20260723
+GBF;iShares;iShares Government/Credit Bond ETF;Intermediate Core Bond;20260723
+GOVT;iShares;iShares U.S. Treasury Bond ETF;Intermediate Government;20260723
+ECNS;iShares;iShares MSCI China Small-Cap ETF;Greater China Region;20260723
+HYBB;iShares;iShares BB Rated Corporate Bond ETF;High Yield Bond;20260723
+CMF;iShares;iShares California Muni Bond ETF;Muni California Long;20260723
+GHYG;iShares;iShares US & Intl High Yield Corp Bond ETF;High Yield Bond;20260723
+SUSC;iShares;iShares ESG USD Corporate Bond ETF;Corporate Bond;20260723
+IHI;iShares;iShares U.S. Medical Devices ETF;Health;20260723
+IHF;iShares;iShares U.S. Healthcare Providers ETF;Health;20260723
+INDY;iShares;iShares India 50 ETF;India Equity;20260723
+SHV;iShares;iShares 0??1 Year Treasury Bond ETF;Ultrashort Bond;20260723
+LEMB;iShares;iShares J.P. Morgan EM Local Currency Bond ETF;Emerging-Markets Local-Currency Bond;20260723
+TLT;iShares;iShares 20+ Year Treasury Bond ETF;Long Government;20260723
+SLVP;iShares;iShares MSCI Global Silver and Metals Miners ETF;Equity Precious Metals;20260723
+SUB;iShares;iShares Short-Term National Muni Bond ETF;Muni National Short;20260723
+EMB;iShares;iShares J.P. Morgan USD Emerging Markets Bond ETF;Emerging Markets Bond;20260723
+SDG;iShares;iShares MSCI Global Sustainable Development Goals ETF;Global Large-Stock Blend;20260723
+IEUS;iShares;iShares MSCI Europe Small-Cap ETF;Europe Stock;20260723
+BYLD;iShares;iShares Yield Optimized Bond ETF;Multisector Bond;20260723
+NYF;iShares;iShares New York Muni Bond ETF;Muni New York Long;20260723
+EFRA;iShares;iShares Environmental Infrastructure and Industrials ETF;Infrastructure;20260723
+PABU;iShares;iShares Paris-Aligned Climate Optimized MSCI USA ETF;Large Growth;20260723
+LQD;iShares;iShares iBoxx $ Investment Grade Corporate Bond ETF;Corporate Bond;20260723
+EFAV;iShares;iShares MSCI EAFE Min Vol Factor ETF;Foreign Large Blend;20260723
+IYLD;iShares;iShares Morningstar Multi-Asset Income ETF;Global Moderately Conservative Allocation;20260723
+GSG;iShares;iShares S&P GSCI Commodity-Indexed Trust;Commodities Broad Basket;20260723
+IAT;iShares;iShares U.S. Regional Banks ETF;Financial;20260723
+XT;iShares;iShares Future Exponential Technologies ETF;Technology;20260723
+IYZ;iShares;iShares U.S. Telecommunications ETF;Communications;20260723
+ISCB;iShares;iShares Morningstar Small-Cap ETF;Small Blend;20260723
+IGV;iShares;iShares Expanded Tech-Software Sector ETF;Technology;20260723
+DMXF;iShares;iShares ESG Advanced MSCI EAFE Index ETF;Foreign Large Blend;20260723
+IYT;iShares;iShares Transportation Average ETF;Industrials;20260723
+POWR;iShares;iShares U.S. Power Infrastructure ETF;Infrastructure;20260723
+EPP;iShares;iShares MSCI Pacific ex Japan ETF;Pacific/Asia ex-Japan Stk;20260723
+DVYE;iShares;iShares Emerging Markets Dividend ETF;Diversified Emerging Mkts;20260723
+QLTA;iShares;iShares Aaa - A Rated Corporate Bond ETF;Corporate Bond;20260723
+IDRV;iShares;iShares Self-Driving EV and Tech ETF;Industrials;20260723
+REM;iShares;iShares Mortgage Real Estate Capped ETF;Real Estate;20260723
+LDEM;iShares;iShares ESG MSCI EM Leaders ETF;Diversified Emerging Mkts;20260723
+IFGL;iShares;iShares International Developed Real Estate ETF;Global Real Estate;20260723
+BKF;iShares;iShares MSCI BIC ETF;Diversified Emerging Mkts;20260723
+IGOV;iShares;iShares International Treasury Bond ETF;Global Bond;20260723
+GOVZ;iShares;iShares 25+ Year Treasury STRIPS Bond ETF;Long Government;20260723
+HYGW;iShares;iShares High Yield Corporate Bond Buywrite Strategy ETF;High Yield Bond;20260723
+EMIF;iShares;iShares Emerging Markets Infrastructure ETF;Diversified Emerging Mkts;20260723
+ESMV;iShares;iShares ESG Optimized MSCI USA Min Vol Factor ETF;Large Blend;20260723
+LQDW;iShares;iShares Investment Grade Corporate Bond Buywrite Strategy ETF;Corporate Bond;20260723
+ILIT;iShares;Ishares Lithium Miners And Producers ETF;Natural Resources;20260723
+GVI;iShares;iShares Intermediate Government/Credit Bond ETF;Short-Term Bond;20260723
+USMV;iShares;iShares MSCI USA Min Vol Factor ETF;Large Blend;20260723
+IBIT;iShares;iShares Bitcoin Trust ETF;Digital Assets;20260723
+TENM;iShares;ishares Large Cap 10% Target Buffer Mar ETF;Defined Outcome;20260723
+LMUB;iShares;iShares Long-Term National Muni Bd ETF;Muni National Long;20260723
+IBIJ;iShares;iShares iBonds Oct 2033 Term TIPS ETF;Target Maturity;20260723
+IBIH;iShares;iShares iBonds Oct 2031 Term TIPS ETF;Target Maturity;20260723
+IBHL;iShares;iShares iBonds 2032 Term High Yield and Income ETF;Target Maturity;20260723
+IBTH;iShares;iShares iBonds Dec 2027 Term Treasury ETF;Target Maturity;20260723
+IBMS;iShares;iShares iBonds Dec 2030 Term Muni Bond ETF;Muni Target Maturity;20260723
+IBDR;iShares;iShares iBonds Dec 2026 Term Corporate ETF;Target Maturity;20260723
+MMAX;iShares;iShares Large Cap Max Buffer Mar ETF;Defined Outcome;20260723
+EPOL;iShares;iShares MSCI Poland ETF;Focused Region;20260723
+EIRL;iShares;iShares MSCI Ireland ETF;Focused Region;20260723
+STEN;iShares;iShares Large Cap 10% Target Buffer Sep ETF;Defined Outcome;20260723
+MADE;iShares;iShares U.S. Manufacturing ETF;Industrials;20260723
+ITDJ;iShares;iShares LifePath Target Date 2070 ETF;Target-Date 2070+;20260723
+IBMQ;iShares;iShares iBonds Dec 2028 Term Muni Bond ETF;Muni Target Maturity;20260723
+GOVM;iShares;iShares 1-10 Year Treasury Bond ETF;Intermediate Government;20260723
+IBIC;iShares;iShares iBonds Oct 2026 Term TIPS ETF;Target Maturity;20260723
+LDRT;iShares;iShares iBonds 1-5 Year Treasury Ladder ETF;Short Government;20260723
+IBTO;iShares;iShares iBonds Dec 2033 Term Treasury ETF;Target Maturity;20260723
+TOPC;iShares;iShares S&P 500 3% Capped ETF;Large Blend;20260723
+IBDV;iShares;iShares iBonds Dec 2030 Term Corporate ETF;Target Maturity;20260723
+IBIM;iShares;iShares iBonds Oct 2036 Term TIPS ETF;Target Maturity;20260723
+IBGC;iShares;iShares iBonds Dec 2046 Term Treasury ETF;Target Maturity;20260723
+EWK;iShares;iShares MSCI Belgium ETF;Focused Region;20260723
+EWG;iShares;iShares MSCI Germany ETF;Focused Region;20260723
+EWA;iShares;iShares MSCI Australia ETF;Focused Region;20260723
+EWC;iShares;iShares MSCI Canada ETF;Focused Region;20260723
+EWU;iShares;iShares MSCI United Kingdom ETF;Focused Region;20260723
+EWL;iShares;iShares MSCI Switzerland ETF;Focused Region;20260723
+ILF;iShares;iShares Latin America 40 ETF;Focused Region;20260723
+EZA;iShares;iShares MSCI South Africa ETF;Focused Region;20260723
+IBDW;iShares;iShares iBonds Dec 2031 Term Corporate ETF;Target Maturity;20260723
+TEXN;iShares;iShares Texas Equity ETF;Large Blend;20260723
+CSHP;iShares;iShares Dynamic Short-Term Active ETF;Ultrashort Bond;20260723
+IBTI;iShares;iShares iBonds Dec 2028 Term Treasury ETF;Target Maturity;20260723
+IBHK;iShares;iShares iBonds 2031 Term High Yield And Income ETF;Target Maturity;20260723
+DMAX;iShares;iShares Large Cap Max Buffer Dec ETF;Defined Outcome;20260723
+IBHI;iShares;iShares iBonds 2029 Term High Yield and Income ETF;Target Maturity;20260723
+EWP;iShares;iShares MSCI Spain ETF;Focused Region;20260723
+EWD;iShares;iShares MSCI Sweden ETF;Focused Region;20260723
+ITDE;iShares;Ishares Lifepath Target Date 2045 ETF;Target-Date 2045;20260723
+THD;iShares;iShares MSCI Thailand ETF;Focused Region;20260723
+EPHE;iShares;iShares MSCI Philippines ETF;Focused Region;20260723
+ENZL;iShares;iShares MSCI New Zealand ETF;Focused Region;20260723
+BREM;iShares;iShares Emerging Markets Bond Active ETF;Emerging Markets Bond;20260723
+USLN;iShares;iShares Broad USD Floating Rate Loan ETF;Bank Loan;20260723
+IBMX;iShares;iShares iBonds Dec 2035 Term Muni Bond ETF;Muni Target Maturity;20260723
+ISTM;iShares;iShares Strategic Metals ETF;Commodities Focused;20260723
+IBMV;iShares;iShares iBonds Dec 2033 Term Muni Bond ETF;Muni Target Maturity;20260723
+LDRI;iShares;iShares iBonds 1-5 Year TIPS Ladder ETF;Short-Term Inflation-Protected Bond;20260723
+UAE;iShares;iShares MSCI UAE ETF;Focused Region;20260723
+IBID;iShares;iShares iBonds Oct 2027 Term TIPS ETF;Target Maturity;20260723
+LDRC;iShares;iShares iBonds 1-5 Year Corporate Ladder ETF;Short-Term Bond;20260723
+ITDB;iShares;Ishares Lifepath Target Date 2030 ETF;Target-Date 2030;20260723
+IBII;iShares;iShares iBonds Oct 2032 Term TIPS ETF;Target Maturity;20260723
+CALI;iShares;iShares Short-Term California Muni Active ETF;Muni Single State Short;20260723
+BFLX;iShares;iShares Flexible Equity Active ETF;Long-Short Equity;20260723
+IBTL;iShares;iShares iBonds Dec 2031 Term Treasury ETF;Target Maturity;20260723
+ITDD;iShares;Ishares Lifepath Target Date 2040 ETF;Target-Date 2040;20260723
+IBHJ;iShares;iShares iBonds 2030 Term High Yield and Income ETF;Target Maturity;20260723
+IBHF;iShares;iShares iBonds 2026 Term High Yield and Income ETF;Target Maturity;20260723
+IBGK;iShares;iShares iBonds Dec 2054 Term Treasury ETF;Target Maturity;20260723
+IBIL;iShares;iShares iBonds Oct 2035 Term TIPS ETF;Target Maturity;20260723
+IBCA;iShares;iShares iBonds Dec 2035 Term Corporate ETF;Target Maturity;20260723
+EWI;iShares;iShares MSCI Italy ETF;Focused Region;20260723
+AQLT;iShares;iShares MSCI Global Quality Factor ETF;Global Large-Stock Blend;20260723
+EWN;iShares;iShares MSCI Netherlands ETF;Focused Region;20260723
+WSML;iShares;iShares MSCI World Small-Cap ETF;Global Small/Mid Stock;20260723
+IBTQ;iShares;iShares iBonds Dec 2035 Term Treasury ETF;Target Maturity;20260723
+EUIG;iShares;iShares Euro Investment Grade Corporate Bond USD Hedged ETF;Global Bond-USD Hedged;20260723
+IWMW;iShares;iShares Russell 2000 BuyWrite ETF;Derivative Income;20260723
+IRTR;iShares;Ishares Lifepath Retirement ETF;Target-Date Retirement;20260723
+ETHA;iShares;iShares Ethereum Trust ETF;Digital Assets;20260723
+IBTM;iShares;iShares iBonds Dec 2032 Term Treasury ETF;Target Maturity;20260723
+TOPT;iShares;iShares Top 20 U.S. Stocks ETF;Large Blend;20260723
+QNXT;iShares;iShares Nasdaq-100 ex Top 30 ETF;Large Growth;20260723
+IBMO;iShares;iShares iBonds Dec 2026 Term Muni Bond ETF;Muni Target Maturity;20260723
+IBMR;iShares;iShares iBonds Dec 2029 Term Muni Bond ETF;Muni Target Maturity;20260723
+ITDF;iShares;Ishares Lifepath Target Date 2050 ETF;Target-Date 2050;20260723
+EFNL;iShares;iShares MSCI Finland ETF;Focused Region;20260723
+ITDC;iShares;Ishares Lifepath Target Date 2035 ETF;Target-Date 2035;20260723
+IBTJ;iShares;iShares iBonds Dec 2029 Term Treasury ETF;Target Maturity;20260723
+IBIF;iShares;iShares iBonds Oct 2029 Term TIPS ETF;Target Maturity;20260723
+IBCB;iShares;iShares iBonds Dec 2036 Term Corporate ETF;Target Maturity;20260723
+IBHG;iShares;iShares iBonds 2027 Term High Yield and Income ETF;Target Maturity;20260723
+IBDY;iShares;Shares iBonds Dec 2033 Term Corporate ETF;Target Maturity;20260723
+IBTR;iShares;iShares iBonds Dec 2036 Term Treasury ETF;Target Maturity;20260723
+IQQ;iShares;iShares Nasdaq 100 ETF;Large Growth;20260723
+ETEC;iShares;iShares Breakthrough Environmental Solutions ETF;Miscellaneous Sector;20260723
+ITDG;iShares;Ishares Lifepath Target Date 2055 ETF;Target-Date 2055;20260723
+IBMW;iShares;iShares iBonds Dec 2034 Term Muni Bond ETF;Muni Target Maturity;20260723
+QTOP;iShares;iShares Nasdaq Top 30 Stocks ETF;Large Growth;20260723
+IBDX;iShares;iShares iBonds Dec 2032 Term Corporate ETF;Target Maturity;20260723
+EWZS;iShares;iShares MSCI Brazil Small-Cap ETF;Focused Region;20260723
+EDEN;iShares;iShares MSCI Denmark ETF;Focused Region;20260723
+PABD;iShares;iShares Paris-Aligned Climate Optimized MSCI World ex USA ETF;Foreign Large Blend;20260723
+IBGA;iShares;iShares iBonds Dec 2044 Term Treasury ETF;Target Maturity;20260723
+MAXJ;iShares;iShares Large Cap Max Buffer Jun ETF;Defined Outcome;20260723
+BCLO;iShares;iShares BBB-B CLO Active ETF;Securitized Bond - Focused;20260723
+SLV;iShares;iShares Silver Trust;Commodities Focused;20260723
+EWZ;iShares;iShares MSCI Brazil ETF;Focused Region;20260723
+DVYA;iShares;iShares Asia/Pacific Dividend ETF;Focused Region;20260723
+EIDO;iShares;iShares MSCI Indonesia ETF;Focused Region;20260723
+ITDI;iShares;Ishares Lifepath Target Date 2065 ETF;Target-Date 2065;20260723
+LDRH;iShares;iShares iBonds 1-5 Year High Yield and Income Ladder ETF;High Yield Bond;20260723
+IPAC;iShares;iShares Core MSCI Pacific ETF;Focused Region;20260723
+ENHI;iShares;Ishares Enhanced International Active ETF;Foreign Large Blend;20260723
+TUR;iShares;iShares MSCI Turkey ETF;Focused Region;20260723
+EQLT;iShares;iShares MSCI Emerging Markets Quality Factor ETF;Diversified Emerging Mkts;20260723
+ECH;iShares;iShares MSCI Chile ETF;Focused Region;20260723
+IBDT;iShares;iShares iBonds Dec 2028 Term Corporate ETF;Target Maturity;20260723
+IBHH;iShares;iShares iBonds 2028 Term High Yield and Income ETF;Target Maturity;20260723
+IBIE;iShares;iShares iBonds Oct 2028 Term TIPS ETF;Target Maturity;20260723
+QAT;iShares;iShares MSCI Qatar ETF;Focused Region;20260723
+EIS;iShares;iShares MSCI Israel ETF;Focused Region;20260723
+EPU;iShares;iShares MSCI Peru ETF;Focused Region;20260723
+ENHU;iShares;iShares Enhanced Large Cap Core Active ETF;Large Blend;20260723
+ETHB;iShares;Ishares Staked Ethereum Trust ETF;Digital Assets;20260723
+GGOV;iShares;iShares Global Government Bond USD Hedged Active ETF;Global Bond-USD Hedged;20260723
+IBMU;iShares;iShares iBonds Dec 2032 Term Muni Bond ETF;Muni Target Maturity;20260723
+TEND;iShares;Ishares Large Cap 10% Target Buffer Dec ETF;Defined Outcome;20260723
+TWOX;iShares;iShares Large Cap Accelerated Outcome ETF;Defined Outcome;20260723
+IBDS;iShares;iShares iBonds Dec 2027 Term Corporate ETF;Target Maturity;20260723
+XOEF;iShares;iShares S&P 500 ex S&P 100 ETF;Large Blend;20260723
+SQLT;iShares;Ishares MSCI USA Small-Cap Quality Factor ETF;Small Blend;20260723
+IBHM;iShares;iShares iBonds 2033 Term High Yield and Income ETF;High Yield Bond;20260723
+BRHY;iShares;iShares High Yield Active ETF;High Yield Bond;20260723
+IBIG;iShares;iShares iBonds Oct 2030 Term TIPS ETF;Target Maturity;20260723
+IBGB;iShares;iShares iBonds Dec 2045 Term Treasury ETF;Target Maturity;20260723
+EWO;iShares;iShares MSCI Austria ETF;Focused Region;20260723
+BAI;iShares;iShares A.I. Innovation and Tech Active ETF;Technology;20260723
+TENJ;iShares;ishares Large Cap 10% Target Buffer Jun ETF;Defined Outcome;20260723
+KWT;iShares;iShares MSCI Kuwait ETF;Focused Region;20260723
+BALQ;iShares;iShares Nasdaq Premium Income Active ETF;Derivative Income;20260723
+IBTP;iShares;iShares iBonds Dec 2034 Term Treasury ETF;Target Maturity;20260723
+IAU;iShares;iShares Gold Trust;Commodities Focused;20260723
+JPUS;JPMorgan;JPMorgan Diversified Return U.S. Equity ETF;Mid-Cap Value;20260723
+BBRE;JPMorgan;JPMorgan BetaBuilders MSCI U.S. REIT ETF;Real Estate;20260723
+JEPQ;JPMorgan;JPMorgan Nasdaq Equity Premium Income ETF;Derivative Income;20260723
+JMOM;JPMorgan;JPMorgan U.S. Momentum Factor ETF;Large Blend;20260723
+JPIB;JPMorgan;JPMorgan International Bond Opportunities ETF;Global Bond-USD Hedged;20260723
+JCPI;JPMorgan;JPMorgan Inflation Managed Bond ETF;Inflation-Protected Bond;20260723
+JMEE;JPMorgan;JPMorgan Small & Mid Cap Enhanced Equity ETF;Small Blend;20260723
+JPRF;JPMorgan;JPMorgan Preferred and Income Securities ETF;Preferred Stock;20260723
+BBIB;JPMorgan;Jpmorgan Betabuilders U.S. Treasury Bond 3-10 Year ETF;Intermediate Government;20260723
+LGDS;JPMorgan;JPMorgan Fundamental Data Science Large Growth ETF;Large Growth;20260723
+JMUB;JPMorgan;JPMorgan Municipal ETF;Muni National Interm;20260723
+JMST;JPMorgan;JPMorgan Ultra-Short Municipal Income ETF;Muni National Short;20260723
+JVAL;JPMorgan;JPMorgan U.S. Value Factor ETF;Large Value;20260723
+BBIN;JPMorgan;JPMorgan BetaBuilders International Equity ETF;Foreign Large Blend;20260723
+JFLX;JPMorgan;JPMorgan Flexible Debt ETF;Nontraditional Bond;20260723
+JPEF;JPMorgan;Jpmorgan Equity Focus ETF;Large Blend;20260723
+JPRE;JPMorgan;JPMorgan Realty Income ETF;Real Estate;20260723
+JQUA;JPMorgan;JPMorgan U.S. Quality Factor ETF;Large Blend;20260723
+JCPB;JPMorgan;JPMorgan Core Plus Bond ETF;Intermediate Core-Plus Bond;20260723
+LVDS;JPMorgan;JPMorgan Fundamental Data Science Large Value ETF;Large Value;20260723
+JGRO;JPMorgan;JPMorgan Active Growth ETF;Large Growth;20260723
+BBEM;JPMorgan;JPMorgan Betabuilders Emerging Markets Equity ETF;Diversified Emerging Mkts;20260723
+JCAL;JPMorgan;JPMorgan California Tax Free Bond ETF;Muni California Intermediate;20260723
+BBSB;JPMorgan;Jpmorgan Betabuilders U.S. Treasury Bond 1-3 Year ETF;Short Government;20260723
+HOLA;JPMorgan;JPMorgan International Hedged Equity Laddered Overlay ETF;Equity Hedged;20260723
+JIRE;JPMorgan;JPMorgan International Research Enhanced Equity ETF;Foreign Large Blend;20260723
+JEPI;JPMorgan;JPMorgan Equity Premium Income ETF;Derivative Income;20260723
+BBEU;JPMorgan;JPMorgan BetaBuilders Europe ETF;Europe Stock;20260723
+BBUS;JPMorgan;JPMorgan BetaBuilders U.S. Equity ETF;Large Blend;20260723
+JPLD;JPMorgan;Jpmorgan Limited Duration Bond ETF;Securitized Bond - Diversified;20260723
+JMSI;JPMorgan;Jpmorgan Sustainable Municipal Income ETF;Muni National Interm;20260723
+JTNY;JPMorgan;JPMorgan New York Tax Free Bond ETF;Muni New York Intermediate;20260723
+JMTG;JPMorgan;JPMorgan Mortgage-Backed Securities ETF;Securitized Bond - Diversified;20260723
+JPST;JPMorgan;JPMorgan Ultra-Short Income ETF;Ultrashort Bond;20260723
+JEMA;JPMorgan;JPMorgan ActiveBuilders Emerging Markets Equity ETF;Diversified Emerging Mkts;20260723
+BBJP;JPMorgan;JPMorgan BetaBuilders Japan ETF;Japan Stock;20260723
+JCHI;JPMorgan;JPMorgan Active China ETF;Greater China Region;20260723
+JPSE;JPMorgan;JPMorgan Diversified Return U.S. Small Cap Equity ETF;Small Blend;20260723
+BBHY;JPMorgan;JPMorgan BetaBuilders USD High Yield Corporate Bond ETF;High Yield Bond;20260723
+JSCP;JPMorgan;JPMorgan Short Duration Core Plus ETF;Short-Term Bond;20260723
+BBAG;JPMorgan;JPMorgan BetaBuilders U.S. Aggregate Bond ETF;Intermediate Core Bond;20260723
+JPME;JPMorgan;JPMorgan Diversified Return U.S. Mid Cap Equity ETF;Mid-Cap Blend;20260723
+BBAX;JPMorgan;JPMorgan BetaBuilders Developed Asia Pacific ex-Japan ETF;Pacific/Asia ex-Japan Stk;20260723
+BBMC;JPMorgan;JPMorgan BetaBuilders U.S. Mid Cap Equity ETF;Mid-Cap Blend;20260723
+JIG;JPMorgan;JPMorgan International Growth ETF;Foreign Large Growth;20260723
+JAVA;JPMorgan;JPMorgan Active Value ETF;Large Value;20260723
+BBSC;JPMorgan;JPMorgan BetaBuilders U.S. Small Cap Equity ETF;Small Blend;20260723
+JPIE;JPMorgan;JPMorgan Income ETF;Multisector Bond;20260723
+JPSV;JPMorgan;Jpmorgan Active Small Cap Value ETF;Small Value;20260723
+BBCB;JPMorgan;JPMorgan BetaBuilders USD Investment Grade Corporate Bond ETF;Corporate Bond;20260723
+BBLB;JPMorgan;Jpmorgan Betabuilders U.S. Treasury Bond 20+ Year ETF;Long Government;20260723
+JPIN;JPMorgan;JPMorgan Diversified Return International Equity ETF;Foreign Large Value;20260723
+JPEM;JPMorgan;JPMorgan Diversified Return Emerging Markets Equity ETF;Diversified Emerging Mkts;20260723
+JMHI;JPMorgan;Jpmorgan High Yield Municipal ETF;High Yield Muni;20260723
+JPMB;JPMorgan;JPMorgan USD Emerging Markets Sovereign Bond ETF;Emerging Markets Bond;20260723
+BBCA;JPMorgan;JPMorgan BetaBuilders Canada ETF;Focused Region;20260723
+JBND;JPMorgan;Jpmorgan Active Bond ETF;Intermediate Core Bond;20260723
+MCDS;JPMorgan;JPMorgan Fundamental Data Science Mid Core ETF;Mid-Cap Blend;20260723
+JUSA;JPMorgan;JPMorgan U.S. Research Enhanced Large Cap ETF;Large Blend;20260723
+AMJB;JPMorgan;Alerian MLP Index ETN;Energy Limited Partnership;20260723
+SCDS;JPMorgan;JPMorgan Fundamental Data Science Small Core ETF;Small Blend;20260723
+JADE;JPMorgan;JPMorgan Active Developing Markets Equity ETF;Diversified Emerging Mkts;20260723
+JPHY;JPMorgan;Jpmorgan Active High Yield ETF;High Yield Bond;20260723
+JMMF;JPMorgan;Jpmorgan 100% U.S. Treasury Securities Money Market ETF;Money Market-Taxable;20260723
+JGLO;JPMorgan;Jpmorgan Global Select Equity ETF;Global Large-Stock Blend;20260723
+ROCY;JPMorgan;JPMorgan Equity Premium Yield ETF;Derivative Income;20260723
+JDOC;JPMorgan;Jpmorgan Healthcare Leaders ETF;Health;20260723
+LCDS;JPMorgan;JPMorgan Fundamental Data Science Large Core ETF;Large Blend;20260723
+HEQQ;JPMorgan;JPMorgan Nasdaq Hedged Equity Laddered Overlay ETF;Equity Hedged;20260723
+VYLD;JPMorgan;Inverse VIX Short-Term Futures ETNs due March 22 2045;Trading??Miscellaneous;20260723
+JIDE;JPMorgan;JPMorgan International Dynamic ETF;Foreign Large Blend;20260723
+JPFP;JPMorgan;JPMorgan Managed Futures Plus ETF;Multi-Asset Overlay;20260723
+JIVE;JPMorgan;Jpmorgan International Value ETF;Foreign Large Value;20260723
+JFLI;JPMorgan;JPMorgan Flexible Income ETF;Global Moderate Allocation;20260723
+HELO;JPMorgan;Jpmorgan Hedged Equity Laddered Overlay ETF;Equity Hedged;20260723
+JTEK;JPMorgan;JPMorgan U.S. Tech Leaders ETF;Technology;20260723
+JOYT;JPMorgan;JPMorgan Equity And Options Total Return ETF;Derivative Income;20260723
+ROCQ;JPMorgan;JPMorgan Nasdaq Equity Premium Yield ETF;Derivative Income;20260723
+MGV;Vanguard;Vanguard Mega Cap Value Index Fund ETF Shares;Large Value;20260723
+VFMF;Vanguard;Vanguard U.S. Multifactor ETF Shares;Mid-Cap Value;20260723
+VFMO;Vanguard;Vanguard U.S. Momentum Factor ETF ETF Shares;Mid-Cap Blend;20260723
+VDC;Vanguard;Vanguard Consumer Staples Index Fund ETF Shares;Consumer Defensive;20260723
+MGC;Vanguard;Vanguard Mega Cap Index Fund ETF Shares;Large Blend;20260723
+VFMV;Vanguard;Vanguard U.S. Minimum Volatility ETF ETF Shares;Mid-Cap Blend;20260723
+VOT;Vanguard;Vanguard Mid-Cap Growth Index Fund ETF Shares;Mid-Cap Growth;20260723
+BIV;Vanguard;Vanguard Intermediate-Term Bond Index Fund ETF Shares;Intermediate Core Bond;20260723
+VEU;Vanguard;Vanguard FTSE All-World ex-US Index Fund ETF Shares;Foreign Large Blend;20260723
+VYM;Vanguard;Vanguard High Dividend Yield Index Fund ETF Shares;Large Value;20260723
+VT;Vanguard;Vanguard Total World Stock Index Fund ETF Shares;Global Large-Stock Blend;20260723
+VBR;Vanguard;Vanguard Small-Cap Value Index Fund ETF Shares;Small Value;20260723
+VHT;Vanguard;Vanguard Health Care Index Fund ETF Shares;Health;20260723
+VO;Vanguard;Vanguard Mid-Cap Index Fund ETF Shares;Mid-Cap Blend;20260723
+VEA;Vanguard;Vanguard FTSE Developed Markets Index Fund ETF Shares;Foreign Large Blend;20260723
+IVOG;Vanguard;Vanguard S&P Mid-Cap 400 Growth Index Fund ETF Shares;Mid-Cap Growth;20260723
+VONG;Vanguard;Vanguard Russell 1000 Growth Index Fund ETF Shares;Large Growth;20260723
+VGIT;Vanguard;Vanguard Intermediate-Term Treasury Index Fund ETF Shares;Intermediate Government;20260723
+VCR;Vanguard;Vanguard Consumer Discretionary Index Fund ETF Shares;Consumer Cyclical;20260723
+VOOG;Vanguard;Vanguard S&P 500 Growth Index Fund ETF Shares;Large Growth;20260723
+VB;Vanguard;Vanguard Small-Cap Index Fund ETF Shares;Small Blend;20260723
+VONE;Vanguard;Vanguard Russell 1000 Index Fund ETF Shares;Large Blend;20260723
+VUG;Vanguard;Vanguard Growth Index Fund ETF Shares;Large Growth;20260723
+VCSH;Vanguard;Vanguard Short-Term Corporate Bond Index Fund ETF Shares;Short-Term Bond;20260723
+VTIP;Vanguard;Vanguard Short-Term Inflation-Protected Securities Index Fund ETF Shares;Short-Term Inflation-Protected Bond;20260723
+VV;Vanguard;Vanguard Large-Cap Index Fund ETF Shares;Large Blend;20260723
+VFH;Vanguard;Vanguard Financials Index Fund ETF Shares;Financial;20260723
+VTV;Vanguard;Vanguard Value Index Fund ETF Shares;Large Value;20260723
+VOO;Vanguard;Vanguard S&P 500 ETF;Large Blend;20260723
+VYMI;Vanguard;Vanguard International High Dividend Yield Index Fund ETF Shares;Foreign Large Value;20260723
+VCIT;Vanguard;Vanguard Intermediate-Term Corporate Bond Index Fund ETF Shares;Corporate Bond;20260723
+MGK;Vanguard;Vanguard Mega Cap Growth Index Fund ETF Shares;Large Growth;20260723
+VGSH;Vanguard;Vanguard Short-Term Treasury Index Fund ETF Shares;Short Government;20260723
+VGT;Vanguard;Vanguard Information Technology Index Fund ETF Shares;Technology;20260723
+VIOG;Vanguard;Vanguard S&P Small-Cap 600 Growth Index Fund ETF Shares;Small Growth;20260723
+VONV;Vanguard;Vanguard Russell 1000 Value Index Fund ETF Shares;Large Value;20260723
+VIOV;Vanguard;Vanguard S&P Small-Cap 600 Value Index Fund ETF Shares;Small Value;20260723
+VTWG;Vanguard;Vanguard Russell 2000 Growth Index Fund ETF Shares;Small Growth;20260723
+VIOO;Vanguard;Vanguard S&P Small-Cap 600 Index Fund ETF Shares;Small Blend;20260723
+VIGI;Vanguard;Vanguard International Dividend Appreciation Index Fund ETF Shares;Foreign Large Growth;20260723
+VWOB;Vanguard;Vanguard Emerging Markets Government Bond Index Fund ETF Shares;Emerging Markets Bond;20260723
+IVOV;Vanguard;Vanguard S&P Mid-Cap 400 Value Index Fund ETF Shares;Mid-Cap Value;20260723
+VTI;Vanguard;Vanguard Total Stock Market Index Fund ETF Shares;Large Blend;20260723
+VTHR;Vanguard;Vanguard Russell 3000 Index Fund ETF Shares;Large Blend;20260723
+VMBS;Vanguard;Vanguard Mortgage-Backed Securities Index Fund ETF Shares;Government Mortgage-Backed Bond;20260723
+VXF;Vanguard;Vanguard Extended Market Index Fund ETF Shares;Mid-Cap Blend;20260723
+VSS;Vanguard;Vanguard FTSE All-World ex-US Small-Cap Index Fund ETF Shares;Foreign Small/Mid Blend;20260723
+VAW;Vanguard;Vanguard Materials Index Fund ETF Shares;Natural Resources;20260723
+BNDX;Vanguard;Vanguard Total International Bond Index Fund ETF Shares;Global Bond-USD Hedged;20260723
+VTWO;Vanguard;Vanguard Russell 2000 Index Fund ETF Shares;Small Blend;20260723
+VNQ;Vanguard;Vanguard Real Estate Index Fund ETF Shares;Real Estate;20260723
+VTEB;Vanguard;Vanguard Tax-Exempt Bond Index Fund ETF Shares;Muni National Interm;20260723
+VIS;Vanguard;Vanguard Industrials Index Fund ETF Shares;Industrials;20260723
+VBK;Vanguard;Vanguard Small-Cap Growth Index Fund ETF Shares;Small Growth;20260723
+VXUS;Vanguard;Vanguard Total International Stock Index Fund ETF Shares;Foreign Large Blend;20260723
+VGLT;Vanguard;Vanguard Long-Term Treasury Index Fund ETF Shares;Long Government;20260723
+VDE;Vanguard;Vanguard Energy Index Fund ETF Shares;Equity Energy;20260723
+VGK;Vanguard;Vanguard FTSE Europe ETF;Europe Stock;20260723
+VOE;Vanguard;Vanguard Mid-Cap Value Index Fund ETF Shares;Mid-Cap Value;20260723
+VWO;Vanguard;Vanguard FTSE Emerging Markets Index Fund ETF Shares;Diversified Emerging Mkts;20260723
+VSGX;Vanguard;Vanguard ESG International Stock ETF;Foreign Large Blend;20260723
+VFQY;Vanguard;Vanguard U.S. Quality Factor ETF Shares;Mid-Cap Blend;20260723
+VFVA;Vanguard;Vanguard U.S. Value Factor ETF Shares;Mid-Cap Value;20260723
+VOX;Vanguard;Vanguard Communication Services Index Fund ETF Shares;Communications;20260723
+VOOV;Vanguard;Vanguard S&P 500 Value Index Fund ETF Shares;Large Value;20260723
+VIG;Vanguard;Vanguard Dividend Appreciation Index Fund ETF Shares;Large Blend;20260723
+VCLT;Vanguard;Vanguard Long-Term Corporate Bond Index Fund ETF Shares;Long-Term Bond;20260723
+BND;Vanguard;Vanguard Total Bond Market Index Fund ETF Shares;Intermediate Core Bond;20260723
+VTES;Vanguard;Vanguard Short-Term Tax-Exempt Bond ETF Shares;Muni National Short;20260723
+VTWV;Vanguard;Vanguard Russell 2000 Value Index Fund ETF Shares;Small Value;20260723
+VCEB;Vanguard;Vanguard ESG U.S. Corporate Bond ETF;Corporate Bond;20260723
+VPU;Vanguard;Vanguard Utilities Index Fund ETF Shares;Utilities;20260723
+ESGV;Vanguard;Vanguard ESG U.S. Stock ETF;Large Blend;20260723
+IVOO;Vanguard;Vanguard S&P Mid-Cap 400 Index Fund ETF Shares;Mid-Cap Blend;20260723
+VNQI;Vanguard;Vanguard Global ex-U.S. Real Estate Index Fund ETF Shares;Global Real Estate;20260723
+VTC;Vanguard;Vanguard Total Corporate Bond ETF ETF Shares;Corporate Bond;20260723
+VUSB;Vanguard;Vanguard Ultra-Short Bond ETF Shares;Ultrashort Bond;20260723
+BNDW;Vanguard;Vanguard Total World Bond ETF;Global Bond-USD Hedged;20260723
+BSV;Vanguard;Vanguard Short-Term Bond Index Fund ETF Shares;Short-Term Bond;20260723
+BLV;Vanguard;Vanguard Long-Term Bond Index Fund ETF Shares;Long-Term Bond;20260723
+EDV;Vanguard;Vanguard Extended Duration Treasury Index Fund ETF Shares;Long Government;20260723
+VSDM;Vanguard;Vanguard Short Duration Tax-Exempt Bond ETF;Muni National Short;20260723
+VBCD;Vanguard;Vanguard Target Maturity 2030 Corporate Bond ETF;Target Maturity;20260723
+VDG;Vanguard;Vanguard Developed Markets ex US Growth Index ETF;Foreign Large Growth;20260723
+VBCF;Vanguard;Vanguard Target Maturity 2032 Corporate Bond ETF;Target Maturity;20260723
+VCHY;Vanguard;Vanguard U.S. High-Yield Corporate Bond Index ETF;High Yield Bond;20260723
+VUSG;Vanguard;Vanguard Wellington U.S. Growth Active ETF;Large Growth;20260723
+VSDB;Vanguard;Vanguard Short Duration Bond ETF Shares;Short-Term Bond;20260723
+VBCI;Vanguard;Vanguard Target Maturity 2035 Corporate Bond ETF;Target Maturity;20260723
+VBCC;Vanguard;Vanguard Target Maturity 2029 Corporate Bond ETF;Target Maturity;20260723
+VTEL;Vanguard;Vanguard Long-Term Tax-Exempt Bond ETF Shares;Muni National Long;20260723
+VDV;Vanguard;Vanguard Developed Markets ex US Value Index ETF;Foreign Large Value;20260723
+VTEC;Vanguard;Vanguard California Tax-Exempt Bond ETF;Muni California Intermediate;20260723
+VTP;Vanguard;Vanguard Total Inflation-Protected Securities ETF;Inflation-Protected Bond;20260723
+VGUS;Vanguard;Vanguard Ultra-Short Treasury ETF;Ultrashort Bond;20260723
+VEXC;Vanguard;Vanguard Emerging Markets Ex-China ETF;Diversified Emerging Mkts;20260723
+VGMS;Vanguard;Vanguard Multi-Sector Income Bond ETF;Multisector Bond;20260723
+VCRM;Vanguard;Vanguard Core Tax-Exempt Bond ETF;Muni National Long;20260723
+VBCJ;Vanguard;Vanguard Target Maturity 2036 Corporate Bond ETF;Target Maturity;20260723
+VBCG;Vanguard;Vanguard Target Maturity 2033 Corporate Bond ETF;Target Maturity;20260723
+VTEI;Vanguard;Vanguard Intermediate-Term Tax-Exempt Bond ETF;Muni National Interm;20260723
+VBCH;Vanguard;Vanguard Target Maturity 2034 Corporate Bond ETF;Target Maturity;20260723
+VBCA;Vanguard;Vanguard Target Maturity 2027 Corporate Bond ETF;Target Maturity;20260723
+VBCE;Vanguard;Vanguard Target Maturity 2031 Corporate Bond ETF;Target Maturity;20260723
+VGHY;Vanguard;Vanguard High-Yield Active ETF;High Yield Bond;20260723
+VPL;Vanguard;Vanguard FTSE Pacific Index Fund ETF Shares;Focused Region;20260723
+VGVT;Vanguard;Vanguard Government Securities Active ETF;Intermediate Government;20260723
+VDIG;Vanguard;Vanguard Wellington Dividend Growth Active ETF;Large Value;20260723
+VUSV;Vanguard;Vanguard Wellington U.S. Value Active ETF;Large Value;20260723
+VCRB;Vanguard;Vanguard Core Bond ETF;Intermediate Core Bond;20260723
+VTG;Vanguard;Vanguard Total Treasury ETF;Intermediate Government;20260723
+VPLS;Vanguard;Vanguard Core-Plus Bond ETF;Intermediate Core-Plus Bond;20260723
+BNDP;Vanguard;Vanguard Core-Plus Bond Index ETF;Intermediate Core-Plus Bond;20260723
+MUNY;Vanguard;Vanguard New York Tax-Exempt Bond ETF Shares;Muni New York Intermediate;20260723
+VBIL;Vanguard;Vanguard 0-3 Month Treasury Bill ETF;Ultrashort Bond;20260723
+VBCB;Vanguard;Vanguard Target Maturity 2028 Corporate Bond ETF;Target Maturity;20260723
+RAAX;VanEck;VanEck Real Assets ETF;Global Moderate Allocation;20260723
+PIT;VanEck;VanEck Commodity Strategy ETF;Commodities Broad Basket;20260723
+FLTR;VanEck;VanEck IG Floating Rate ETF;Ultrashort Bond;20260723
+RTH;VanEck;VanEck Retail ETF;Consumer Cyclical;20260723
+SMH;VanEck;VanEck Semiconductor ETF;Technology;20260723
+NLR;VanEck;VanEck Uranium and Nuclear ETF;Natural Resources;20260723
+CNXT;VanEck;VanEck ChiNext Innovators ETF;Greater China Region;20260723
+CRAK;VanEck;VanEck Oil Refiners ETF;Equity Energy;20260723
+CLOI;VanEck;VanEck CLO ETF;Securitized Bond - Focused;20260723
+HYEM;VanEck;VanEck Emerging Markets High Yield Bond ETF;Emerging Markets Bond;20260723
+EINC;VanEck;VanEck Energy Income ETF;Energy Limited Partnership;20260723
+PPH;VanEck;VanEck Pharmaceutical ETF;Health;20260723
+MIG;VanEck;VanEck Moody's Analytics IG Corporate Bond ETF;Corporate Bond;20260723
+HAP;VanEck;VanEck Natural Resources ETF;Natural Resources;20260723
+SLX;VanEck;VanEck Steel ETF;Natural Resources;20260723
+EMBX;VanEck;VanEck Emerging Markets Bond ETF;Emerging Markets Bond;20260723
+MBBB;VanEck;VanEck Moody's Analytics BBB Corporate Bond ETF;Corporate Bond;20260723
+EMET;VanEck;VanEck Copper and Electrification Metals ETF;Natural Resources;20260723
+IBOT;VanEck;Vaneck Robotics ETF;Technology;20260723
+DGIN;VanEck;VanEck Digital India ETF;India Equity;20260723
+ANGL;VanEck;VanEck Fallen Angel High Yield Bond ETF;High Yield Bond;20260723
+HYD;VanEck;VanEck High Yield Muni ETF;High Yield Muni;20260723
+SMB;VanEck;VanEck Short Muni ETF;Muni National Short;20260723
+GRNB;VanEck;VanEck Green Bond ETF;Global Bond;20260723
+ESPO;VanEck;VanEck Video Gaming and eSports ETF;Communications;20260723
+PFXF;VanEck;VanEck Preferred Securities ex Financials ETF;Preferred Stock;20260723
+GDX;VanEck;VanEck Gold Miners ETF;Equity Precious Metals;20260723
+SMOT;VanEck;VanEck Morningstar SMID Moat ETF;Mid-Cap Blend;20260723
+MOAT;VanEck;VanEck Morningstar Wide Moat ETF;Large Blend;20260723
+BIZD;VanEck;VanEck BDC Income ETF;Financial;20260723
+MOO;VanEck;VanEck Agribusiness ETF;Natural Resources;20260723
+GDXJ;VanEck;VanEck Junior Gold Miners ETF;Equity Precious Metals;20260723
+MLN;VanEck;VanEck Long Muni ETF;Muni National Long;20260723
+BBH;VanEck;VanEck Biotech ETF;Health;20260723
+SHYD;VanEck;VanEck Short High Yield Muni ETF;High Yield Muni;20260723
+EVX;VanEck;VanEck Environmental Services ETF;Industrials;20260723
+DAPP;VanEck;VanEck Digital Transformation ETF;Equity Digital Assets;20260723
+MOTG;VanEck;VanEck Morningstar Global Wide Moat ETF;Global Large-Stock Blend;20260723
+BUZZ;VanEck;VanEck Social Sentiment ETF;Large Growth;20260723
+GLIN;VanEck;VanEck India Growth Leaders ETF;India Equity;20260723
+XMPT;VanEck;VanEck CEF Municipal Income ETF;High Yield Muni;20260723
+LFEQ;VanEck;VanEck Long/Flat Trend ETF;Large Blend;20260723
+DURA;VanEck;VanEck Durable High Dividend ETF;Large Value;20260723
+ITM;VanEck;VanEck Intermediate Muni ETF;Muni National Interm;20260723
+EMLC;VanEck;VanEck J.P. Morgan EM Local Currency Bond ETF;Emerging-Markets Local-Currency Bond;20260723
+REMX;VanEck;VanEck Rare Earth and Strategic Metals ETF;Natural Resources;20260723
+MOTI;VanEck;VanEck Morningstar International Moat ETF;Foreign Large Blend;20260723
+MORT;VanEck;VanEck Mortgage REIT Income ETF;Real Estate;20260723
+GENZ;VanEck;VanEck Digital Native Economy ETF;Consumer Cyclical;20260723
+OIH;VanEck;VanEck Oil Services ETF;Equity Energy;20260723
+IHY;VanEck;VanEck International High Yield Bond ETF;High Yield Bond;20260723
+TRUC;VanEck;VanEck Communication Services TruSector ETF;Communications;20260723
+WARP;VanEck;VanEck Space ETF;Industrials;20260723
+VNM;VanEck;VanEck Vietnam ETF;Focused Region;20260723
+DESK;VanEck;Vaneck Office And Commercial REIT ETF;Real Estate;20260723
+TRUF;VanEck;Vaneck Financials TruSector ETF;Financial;20260723
+CLOB;VanEck;VanEck AA-BB CLO ETF;Securitized Bond - Focused;20260723
+SMOG;VanEck;VanEck Low Carbon Energy ETF;Miscellaneous Sector;20260723
+TRUM;VanEck;Vaneck Materials TruSector ETF;Natural Resources;20260723
+SMHX;VanEck;VanEck Fabless Semiconductor ETF;Technology;20260723
+BRF;VanEck;VanEck Brazil Small-Cap ETF;Focused Region;20260723
+MVAL;VanEck;VanEck Morningstar Wide Moat Value ETF;Large Value;20260723
+RACK;VanEck;VanEck Data Center Supply Chain ETF;Technology;20260723
+VAVX;VanEck;VanEck Avalanche ETF;Digital Assets;20260723
+ETHV;VanEck;VanEck Ethereum ETF;Digital Assets;20260723
+TRUI;VanEck;Vaneck Industrials TruSector ETF;Industrials;20260723
+IDX;VanEck;VanEck Indonesia Index ETF;Focused Region;20260723
+TRUO;VanEck;Vaneck Consumer Staples TruSector ETF;Consumer Defensive;20260723
+AFK;VanEck;VanEck Africa Index ETF;Focused Region;20260723
+HODL;VanEck;VanEck Bitcoin ETF;Digital Assets;20260723
+TRUU;VanEck;Vaneck Utilities TruSector ETF;Utilities;20260723
+TRUT;VanEck;Vaneck Technology Trusector ETF;Technology;20260723
+INDZ;VanEck;VanEck India Select ETF;India Equity;20260723
+VEFA;VanEck;VanEck MSCI EAFE Analyst Sentiment ETF;Foreign Large Blend;20260723
+VSOL;VanEck;VanEck Solana ETF;Digital Assets;20260723
+TRUR;VanEck;Vaneck Real Estate TruSector ETF;Real Estate;20260723
+TRUD;VanEck;VanEck Consumer Disc TruSector ETF;Consumer Cyclical;20260723
+VBNB;VanEck;VanEck BNB ETF;Digital Assets;20260723
+SMHC;VanEck;VanEck China Semiconductor ETF;Technology;20260723
+CMCI;VanEck;VanEck CMCI Commodity Strategy ETF;Commodities Broad Basket;20260723
+TRUN;VanEck;Vaneck Energy TruSector ETF;Equity Energy;20260723
+TRUH;VanEck;Vaneck Healthcare TruSector ETF;Health;20260723
+NODE;VanEck;VanEck Onchain Economy ETF;Equity Digital Assets;20260723
+GPZ;VanEck;VanEck Alternative Asset Manager ETF;Financial;20260723
+ISRA;VanEck;VanEck Israel ETF;Focused Region;20260723

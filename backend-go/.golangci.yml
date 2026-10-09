@@ -1,0 +1,29 @@
+version: "2"
+linters:
+  default: standard
+  enable:
+    - errorlint
+    - bodyclose
+    - unconvert
+  settings:
+    errcheck:
+      # Close en rutas de lectura / defer: ignorar su error es idiomático.
+      exclude-functions:
+        - (io.Closer).Close
+        - (io.ReadCloser).Close
+        - (*os.File).Close
+        - (*database/sql.DB).Close
+        - (*database/sql.Rows).Close
+  exclusions:
+    paths:
+      - spikes
+    rules:
+      - linters: [errcheck]
+        text: 'fmt[.]Fprint'
+      - linters: [staticcheck]
+        text: "ST1005"  # los mensajes de error son texto para el usuario, en español y con punto, como en Python
+formatters:
+  enable:
+    - gofmt
+run:
+  tests: true

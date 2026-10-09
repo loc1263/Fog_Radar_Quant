@@ -1,0 +1,29 @@
+{
+ "api_prefix": "/api/etf",
+ "data_available": true,
+ "key": "etf",
+ "last_success": {
+  "duration_s": 1439.93,
+  "finished_at": "2026-10-06T00:35:39.376906Z",
+  "id": "1be6d74ca305",
+  "message": "corrida 20261005 · 787/1188 ETFs depurados · 11 outliers · top 3: CRAK, PBP, XYLD",
+  "module": "etf",
+  "started_at": "2026-10-06T00:11:39.442906Z",
+  "status": "success",
+  "trigger": "cli"
+ },
+ "latest_job": {
+  "duration_s": 1440.6,
+  "finished_at": "2026-10-08T01:36:23.018945Z",
+  "id": "83d5c0d297de",
+  "message": "PermissionError: [Errno 13] Permission denied: 'D:\\\\Claude\\\\Fog_Radar_Quant\\\\data\\\\etf\\\\current\\\\historial_corridas.csv'",
+  "module": "etf",
+  "started_at": "2026-10-08T01:12:22.416731Z",
+  "status": "error",
+  "trigger": "cli"
+ },
+ "migrated": true,
+ "migration_phase": 5,
+ "source_project": "ETF_Choice",
+ "title": "ETFs"
+}

@@ -1,0 +1,189 @@
+[
+ {
+  "candidates_total": 13,
+  "evaluated_total": 13,
+  "finished_at": "2026-09-18T18:51:05.015736Z",
+  "run_id": "2026-09-18T18-40-04Z",
+  "started_at": "2026-09-18T18:40:04.643544Z",
+  "top1_score": null,
+  "top1_ticker": "MU",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 57,
+  "evaluated_total": 57,
+  "finished_at": "2026-09-18T18:57:09.674271Z",
+  "run_id": "2026-09-18T18-46-14Z",
+  "started_at": "2026-09-18T18:46:14.738556Z",
+  "top1_score": null,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 57,
+  "evaluated_total": 57,
+  "finished_at": "2026-09-18T21:57:34.593143Z",
+  "run_id": "2026-09-18T21-50-04Z",
+  "started_at": "2026-09-18T21:50:04.076091Z",
+  "top1_score": 81.0,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 57,
+  "evaluated_total": 57,
+  "finished_at": "2026-09-18T22:09:32.203572Z",
+  "run_id": "2026-09-18T21-59-12Z",
+  "started_at": "2026-09-18T21:59:12.982795Z",
+  "top1_score": 81.0,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 57,
+  "evaluated_total": 57,
+  "finished_at": "2026-09-18T22:30:57.316288Z",
+  "run_id": "2026-09-18T22-23-27Z",
+  "started_at": "2026-09-18T22:23:27.883293Z",
+  "top1_score": 81.0,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 57,
+  "evaluated_total": 57,
+  "finished_at": "2026-09-18T22:35:24.949279Z",
+  "run_id": "2026-09-18T22-27-39Z",
+  "started_at": "2026-09-18T22:27:39.343928Z",
+  "top1_score": 81.0,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 57,
+  "evaluated_total": 57,
+  "finished_at": "2026-09-18T22:49:51.670916Z",
+  "run_id": "2026-09-18T22-39-28Z",
+  "started_at": "2026-09-18T22:39:28.504773Z",
+  "top1_score": 81.0,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 14,
+  "evaluated_total": 14,
+  "finished_at": "2026-09-19T19:09:18.595099Z",
+  "run_id": "2026-09-19T19-01-14Z",
+  "started_at": "2026-09-19T19:01:14.413688Z",
+  "top1_score": 78.8,
+  "top1_ticker": "MU",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 57,
+  "evaluated_total": 51,
+  "finished_at": "2026-09-19T21:58:23.842099Z",
+  "run_id": "2026-09-19T21-46-31Z",
+  "started_at": "2026-09-19T21:46:31.269079Z",
+  "top1_score": 80.3,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 58,
+  "evaluated_total": 58,
+  "finished_at": "2026-09-22T01:43:13.593685Z",
+  "run_id": "2026-09-22T01-32-44Z",
+  "started_at": "2026-09-22T01:32:44.622122Z",
+  "top1_score": 80.7,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 60,
+  "evaluated_total": 60,
+  "finished_at": "2026-09-25T01:30:51.107481Z",
+  "run_id": "2026-09-25T01-18-20Z",
+  "started_at": "2026-09-25T01:18:20.524400Z",
+  "top1_score": 80.6,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 60,
+  "evaluated_total": 60,
+  "finished_at": "2026-09-25T21:11:36.961690Z",
+  "run_id": "2026-09-25T21-00-01Z",
+  "started_at": "2026-09-25T21:00:01.192759Z",
+  "top1_score": 80.5,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 59,
+  "evaluated_total": 59,
+  "finished_at": "2026-09-29T15:23:56.964181Z",
+  "run_id": "2026-09-29T15-12-58Z",
+  "started_at": "2026-09-29T15:12:58.750628Z",
+  "top1_score": 79.1,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 59,
+  "evaluated_total": 59,
+  "finished_at": "2026-09-29T22:56:03.579616Z",
+  "run_id": "2026-09-29T22-39-31Z",
+  "started_at": "2026-09-29T22:39:31.223629Z",
+  "top1_score": 79.6,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 59,
+  "evaluated_total": 59,
+  "finished_at": "2026-10-04T15:50:40.896442Z",
+  "run_id": "2026-10-04T15-38-06Z",
+  "started_at": "2026-10-04T15:38:06.111394Z",
+  "top1_score": 74.7,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 60,
+  "evaluated_total": 60,
+  "finished_at": "2026-10-05T23:58:53.680805Z",
+  "run_id": "2026-10-05T23-46-11Z",
+  "started_at": "2026-10-05T23:46:11.617446Z",
+  "top1_score": 71.8,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ },
+ {
+  "candidates_total": 58,
+  "evaluated_total": 58,
+  "finished_at": "2026-10-08T01:00:04.790798Z",
+  "run_id": "2026-10-08T00-47-24Z",
+  "started_at": "2026-10-08T00:47:24.269608Z",
+  "top1_score": 71.7,
+  "top1_ticker": "SNDK",
+  "top_n": 15,
+  "universe_total": 503
+ }
+]

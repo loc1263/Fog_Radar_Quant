@@ -1,0 +1,123 @@
+{
+ "app": "Fog Radar Quant API",
+ "env": "dev",
+ "modules": [
+  {
+   "api_prefix": "/api/cl",
+   "data_available": true,
+   "key": "cl_stocks",
+   "last_success": {
+    "duration_s": 115.33,
+    "finished_at": "2026-10-08T00:46:24.252896Z",
+    "id": "bab0e8691231",
+    "message": "30/30 tickers · top 3: VAPORES.SN, SQM-B.SN, ANDINA-B.SN · 182 requests a Yahoo, 0 respuestas 429, 0 reintentos, 31 s de espera",
+    "module": "cl_stocks",
+    "started_at": "2026-10-08T00:44:28.922102Z",
+    "status": "success",
+    "trigger": "cli"
+   },
+   "latest_job": {
+    "duration_s": 6.46,
+    "finished_at": "2026-10-09T01:11:49.911390Z",
+    "id": "68bd9679f297",
+    "message": "KeyboardInterrupt: ",
+    "module": "cl_stocks",
+    "started_at": "2026-10-09T01:11:43.445690Z",
+    "status": "error",
+    "trigger": "cli"
+   },
+   "migrated": true,
+   "migration_phase": 3,
+   "source_project": "Stock_Choice_Nacional",
+   "title": "Acciones Chile (IPSA)"
+  },
+  {
+   "api_prefix": "/api/us",
+   "data_available": true,
+   "key": "us_stocks",
+   "last_success": {
+    "duration_s": 760.63,
+    "finished_at": "2026-10-08T01:00:04.890648Z",
+    "id": "ee28b10e4f66",
+    "message": "2026-10-08T00-47-24Z · 58 candidatos de 503 · top 3: SNDK, MU, DELL · 1008 requests a Yahoo, 0 respuestas 429, 0 reintentos, 117 s de espera",
+    "module": "us_stocks",
+    "started_at": "2026-10-08T00:47:24.260394Z",
+    "status": "success",
+    "trigger": "cli"
+   },
+   "latest_job": {
+    "duration_s": 760.63,
+    "finished_at": "2026-10-08T01:00:04.890648Z",
+    "id": "ee28b10e4f66",
+    "message": "2026-10-08T00-47-24Z · 58 candidatos de 503 · top 3: SNDK, MU, DELL · 1008 requests a Yahoo, 0 respuestas 429, 0 reintentos, 117 s de espera",
+    "module": "us_stocks",
+    "started_at": "2026-10-08T00:47:24.260394Z",
+    "status": "success",
+    "trigger": "cli"
+   },
+   "migrated": true,
+   "migration_phase": 4,
+   "source_project": "Stock_Choice_EEUU",
+   "title": "Acciones EEUU"
+  },
+  {
+   "api_prefix": "/api/etf",
+   "data_available": true,
+   "key": "etf",
+   "last_success": {
+    "duration_s": 1439.93,
+    "finished_at": "2026-10-06T00:35:39.376906Z",
+    "id": "1be6d74ca305",
+    "message": "corrida 20261005 · 787/1188 ETFs depurados · 11 outliers · top 3: CRAK, PBP, XYLD",
+    "module": "etf",
+    "started_at": "2026-10-06T00:11:39.442906Z",
+    "status": "success",
+    "trigger": "cli"
+   },
+   "latest_job": {
+    "duration_s": 1440.6,
+    "finished_at": "2026-10-08T01:36:23.018945Z",
+    "id": "83d5c0d297de",
+    "message": "PermissionError: [Errno 13] Permission denied: 'D:\\\\Claude\\\\Fog_Radar_Quant\\\\data\\\\etf\\\\current\\\\historial_corridas.csv'",
+    "module": "etf",
+    "started_at": "2026-10-08T01:12:22.416731Z",
+    "status": "error",
+    "trigger": "cli"
+   },
+   "migrated": true,
+   "migration_phase": 5,
+   "source_project": "ETF_Choice",
+   "title": "ETFs"
+  },
+  {
+   "api_prefix": "/api/tendencia",
+   "data_available": true,
+   "key": "tendencia",
+   "last_success": {
+    "duration_s": 617.52,
+    "finished_at": "2026-10-08T01:11:22.413400Z",
+    "id": "f8a21893222d",
+    "message": "corrida 20261007_01 · Asia + EEUU: Sharpe 2.64, top 012450.KS, 8306.T, LLY · solo EEUU: Sharpe 1.95, top LLY, XOM, PM",
+    "module": "tendencia",
+    "started_at": "2026-10-08T01:01:04.893690Z",
+    "status": "success",
+    "trigger": "cli"
+   },
+   "latest_job": {
+    "duration_s": 617.52,
+    "finished_at": "2026-10-08T01:11:22.413400Z",
+    "id": "f8a21893222d",
+    "message": "corrida 20261007_01 · Asia + EEUU: Sharpe 2.64, top 012450.KS, 8306.T, LLY · solo EEUU: Sharpe 1.95, top LLY, XOM, PM",
+    "module": "tendencia",
+    "started_at": "2026-10-08T01:01:04.893690Z",
+    "status": "success",
+    "trigger": "cli"
+   },
+   "migrated": true,
+   "migration_phase": 6,
+   "source_project": "Stock_Tendencia",
+   "title": "Tendencia Asia + EEUU"
+  }
+ ],
+ "version": "0.1.0"
+}

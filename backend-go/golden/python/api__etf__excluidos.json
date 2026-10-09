@@ -1,0 +1,4 @@
+{
+ "code": "invalid_data",
+ "detail": "No se pudo leer etf_excluidos_outliers.csv: PermissionError"
+}

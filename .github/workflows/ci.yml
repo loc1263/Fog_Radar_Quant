@@ -31,6 +31,32 @@ jobs:
       - name: Tests
         run: uv run pytest -q
 
+  backend-go:
+    name: Backend Go (vet + lint + tests)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend-go
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: backend-go/go.mod
+          cache-dependency-path: backend-go/go.sum
+      - name: Formato
+        run: test -z "$(gofmt -l cmd internal)"
+      - name: Vet
+        run: go vet ./cmd/... ./internal/...
+      - uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.14
+          working-directory: backend-go
+          args: ./cmd/... ./internal/...
+      - name: Tests (con detector de carreras)
+        run: go test -race ./cmd/... ./internal/...
+      - name: Build de la imagen
+        run: docker build -t fogradar-api .
+
   frontend:
     name: Frontend (autofix + check + lint + tests + e2e)
     runs-on: ubuntu-latest

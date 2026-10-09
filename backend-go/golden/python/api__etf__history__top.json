@@ -1,0 +1,722 @@
+[
+ {
+  "corridas": 12,
+  "nombre": "VanEck Oil Refiners ETF",
+  "racha_actual": 8,
+  "rank_ultima": 1,
+  "score_ultima": 87.26493011435834,
+  "ticker": "CRAK",
+  "veces_en_top": 9
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares MSCI Taiwan ETF",
+  "racha_actual": 8,
+  "rank_ultima": 4,
+  "score_ultima": 85.88945362134687,
+  "ticker": "EWT",
+  "veces_en_top": 8
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco S&P 500 BuyWrite ETF",
+  "racha_actual": 4,
+  "rank_ultima": 2,
+  "score_ultima": 86.48506988564168,
+  "ticker": "PBP",
+  "veces_en_top": 8
+ },
+ {
+  "corridas": 12,
+  "nombre": "Global X S&P 500 Covered Call ETF",
+  "racha_actual": 4,
+  "rank_ultima": 3,
+  "score_ultima": 86.05114358322746,
+  "ticker": "XYLD",
+  "veces_en_top": 8
+ },
+ {
+  "corridas": 12,
+  "nombre": "Global X NASDAQ 100 Covered Call ETF",
+  "racha_actual": 4,
+  "rank_ultima": 5,
+  "score_ultima": 85.33275095298603,
+  "ticker": "QYLD",
+  "veces_en_top": 7
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco Biotechnology & Genome ETF",
+  "racha_actual": 1,
+  "rank_ultima": 11,
+  "score_ultima": 82.89882465057178,
+  "ticker": "PBE",
+  "veces_en_top": 5
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares MSCI Poland ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "EPOL",
+  "veces_en_top": 5
+ },
+ {
+  "corridas": 12,
+  "nombre": "Jpmorgan International Value ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "JIVE",
+  "veces_en_top": 5
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Currency Hedged MSCI Japan ETF",
+  "racha_actual": 2,
+  "rank_ultima": 8,
+  "score_ultima": 83.78287801778907,
+  "ticker": "HEWJ",
+  "veces_en_top": 4
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco Dorsey Wright Emerging Markets Momentum ETF",
+  "racha_actual": 2,
+  "rank_ultima": 10,
+  "score_ultima": 83.06226175349427,
+  "ticker": "PIE",
+  "veces_en_top": 4
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco S&P 500 Equal Weight Technology ETF",
+  "racha_actual": 2,
+  "rank_ultima": 6,
+  "score_ultima": 84.38500635324016,
+  "ticker": "RSPT",
+  "veces_en_top": 4
+ },
+ {
+  "corridas": 12,
+  "nombre": "State Street SPDR S&P North American Natural Resources ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "NANR",
+  "veces_en_top": 4
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco S&P 500 Equal Weight Health Care ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "RSPH",
+  "veces_en_top": 4
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares MSCI USA Value Factor ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "VLUE",
+  "veces_en_top": 4
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Large Cap Max Buffer Dec ETF",
+  "racha_actual": 2,
+  "rank_ultima": 13,
+  "score_ultima": 82.46346886912325,
+  "ticker": "DMAX",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 12,
+  "nombre": "VanEck Semiconductor ETF",
+  "racha_actual": 2,
+  "rank_ultima": 12,
+  "score_ultima": 82.78367217280814,
+  "ticker": "SMH",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 12,
+  "nombre": "JPMorgan Equity Premium Yield ETF",
+  "racha_actual": 1,
+  "rank_ultima": 7,
+  "score_ultima": 84.08862770012705,
+  "ticker": "ROCY",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 12,
+  "nombre": "State Street SPDR S&P Health Care Services ETF",
+  "racha_actual": 1,
+  "rank_ultima": 9,
+  "score_ultima": 83.63802414231257,
+  "ticker": "XHS",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Asia 50 ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "AIA",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 12,
+  "nombre": "Global X MSCI Colombia ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "COLO",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 12,
+  "nombre": "VanEck Natural Resources ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "HAP",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Biotechnology ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IBB",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares U.S. Pharmaceuticals ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IHE",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco Dorsey Wright Healthcare Momentum ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "PTH",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 12,
+  "nombre": "Vanguard International High Dividend Yield Index Fund ETF Shares",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "VYMI",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 12,
+  "nombre": "Global X S&P 500 Covered Call & Growth ETF",
+  "racha_actual": 2,
+  "rank_ultima": 15,
+  "score_ultima": 81.67646124523506,
+  "ticker": "XYLG",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "VanEck Biotech ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "BBH",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares MSCI Emerging Markets ex China ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "EMXC",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "Ishares ESG Aware MSCI USA Value ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "EVUS",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares MSCI Austria ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "EWO",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "Schwab Fundamental International Equity ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "FNDF",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "Global X Genomics & Biotechnology ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "GNOM",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco Nasdaq Biotechnology ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IBBQ",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco RAFI Strategic US ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IUS",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Global Tech ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IXN",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco Pharmaceuticals ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "PJP",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco Large Cap Value ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "PWV",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "Schwab U.S. Dividend Equity ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "SCHD",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Large Cap Max Buffer Jun ETF",
+  "racha_actual": 1,
+  "rank_ultima": 14,
+  "score_ultima": 81.74587039390089,
+  "ticker": "MAXJ",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Global X FTSE Southeast Asia ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "ASEA",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "State Street SPDR Bloomberg Enhanced Roll Yield Commodity Strategy No K-1 ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "CERY",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Global X AI Semiconductor & Quantum ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "CHPX",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "State Street SPDR MSCI ACWI ex-US ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "CWI",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Core Dividend ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "DIVB",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Global X MSCI SuperDividend EAFE ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "EFAS",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares MSCI Japan Value ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "EWJV",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Schwab Fundamental U.S. Broad Market ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "FNDB",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Schwab Fundamental Emerging Markets Equity ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "FNDE",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Schwab Fundamental U.S. Large Company ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "FNDX",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Global Government Bond USD Hedged Active ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "GGOV",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco S&P MidCap 400 GARP ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "GRPM",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "JPMorgan International Hedged Equity Laddered Overlay ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "HOLA",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares International Select Dividend ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IDV",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares North American Natural Resources ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IGE",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco AI and Next Gen Software ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IGPT",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Morningstar Value ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "ILCV",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Morningstar Mid-Cap ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IMCB",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Ishares Lifepath Retirement ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IRTR",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Russell Top 200 Value ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IWX",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares U.S. Healthcare ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "IYH",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "JPMorgan Ultra-Short Municipal Income ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "JMST",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "JPMorgan Diversified Return U.S. Small Cap Equity ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "JPSE",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "JPMorgan U.S. Research Enhanced Large Cap ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "JUSA",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "State Street SPDR US Large Cap Low Volatility Index ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "LGLV",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco S&P SmallCap Energy ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "PSCE",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco Dorsey Wright Energy Momentum ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "PXI",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Global X Nasdaq 100 Covered Call & Growth ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "QYLG",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco S&P 500 Pure Value ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "RPV",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Schwab International Dividend Equity ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "SCHY",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares Large Cap 10% Target Buffer Sep ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "STEN",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "State Street DoubleLine Short Duration Total Return Tactical ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "STOT",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares ESG 1-5 Year USD Corporate Bond ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "SUSB",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Vanguard U.S. Value Factor ETF Shares",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "VFVA",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Vanguard Health Care Index Fund ETF Shares",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "VHT",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Vanguard Wellington U.S. Growth Active ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "VUSG",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "iShares ESG Select Screened S&P Mid-Cap ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "XJH",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "State Street Technology Select Sector SPDR ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "XLK",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "State Street Health Care Select Sector SPDR ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "XLV",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "Invesco S&P MidCap Low Volatility ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "XMLV",
+  "veces_en_top": 1
+ },
+ {
+  "corridas": 12,
+  "nombre": "State Street SPDR S&P Pharmaceuticals ETF",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "XPH",
+  "veces_en_top": 1
+ }
+]

@@ -1,0 +1,263 @@
+[
+ {
+  "corridas": 17,
+  "nombre": "Micron Technology, Inc.",
+  "racha_actual": 17,
+  "rank_ultima": 2,
+  "score_ultima": 81.0,
+  "ticker": "MU",
+  "veces_en_top": 17
+ },
+ {
+  "corridas": 17,
+  "nombre": "Advanced Micro Devices, Inc.",
+  "racha_actual": 16,
+  "rank_ultima": 6,
+  "score_ultima": 62.5,
+  "ticker": "AMD",
+  "veces_en_top": 16
+ },
+ {
+  "corridas": 17,
+  "nombre": "Applied Materials, Inc.",
+  "racha_actual": 9,
+  "rank_ultima": 8,
+  "score_ultima": 73.0,
+  "ticker": "AMAT",
+  "veces_en_top": 15
+ },
+ {
+  "corridas": 17,
+  "nombre": "Caterpillar Inc.",
+  "racha_actual": 9,
+  "rank_ultima": 11,
+  "score_ultima": 65.0,
+  "ticker": "CAT",
+  "veces_en_top": 15
+ },
+ {
+  "corridas": 17,
+  "nombre": "Cisco Systems, Inc.",
+  "racha_actual": 9,
+  "rank_ultima": 13,
+  "score_ultima": 69.1,
+  "ticker": "CSCO",
+  "veces_en_top": 15
+ },
+ {
+  "corridas": 17,
+  "nombre": "Dell Technologies Inc.",
+  "racha_actual": 9,
+  "rank_ultima": 3,
+  "score_ultima": 57.4,
+  "ticker": "DELL",
+  "veces_en_top": 15
+ },
+ {
+  "corridas": 17,
+  "nombre": "Intel Corporation",
+  "racha_actual": 9,
+  "rank_ultima": 4,
+  "score_ultima": 50.5,
+  "ticker": "INTC",
+  "veces_en_top": 15
+ },
+ {
+  "corridas": 17,
+  "nombre": "Lam Research Corporation",
+  "racha_actual": 9,
+  "rank_ultima": 7,
+  "score_ultima": 70.5,
+  "ticker": "LRCX",
+  "veces_en_top": 15
+ },
+ {
+  "corridas": 17,
+  "nombre": "Merck & Co., Inc.",
+  "racha_actual": 9,
+  "rank_ultima": 9,
+  "score_ultima": 57.7,
+  "ticker": "MRK",
+  "veces_en_top": 15
+ },
+ {
+  "corridas": 17,
+  "nombre": "Sandisk Corporation",
+  "racha_actual": 9,
+  "rank_ultima": 1,
+  "score_ultima": 71.7,
+  "ticker": "SNDK",
+  "veces_en_top": 15
+ },
+ {
+  "corridas": 17,
+  "nombre": "Marvell Technology, Inc.",
+  "racha_actual": 8,
+  "rank_ultima": 5,
+  "score_ultima": 64.3,
+  "ticker": "MRVL",
+  "veces_en_top": 14
+ },
+ {
+  "corridas": 17,
+  "nombre": "Palo Alto Networks, Inc.",
+  "racha_actual": 8,
+  "rank_ultima": 14,
+  "score_ultima": 49.6,
+  "ticker": "PANW",
+  "veces_en_top": 14
+ },
+ {
+  "corridas": 17,
+  "nombre": "KLA Corporation",
+  "racha_actual": 2,
+  "rank_ultima": 12,
+  "score_ultima": 68.8,
+  "ticker": "KLAC",
+  "veces_en_top": 14
+ },
+ {
+  "corridas": 17,
+  "nombre": "Eli Lilly and Company",
+  "racha_actual": 0,
+  "rank_ultima": 23,
+  "score_ultima": 64.4,
+  "ticker": "LLY",
+  "veces_en_top": 12
+ },
+ {
+  "corridas": 17,
+  "nombre": "Amgen Inc.",
+  "racha_actual": 0,
+  "rank_ultima": 16,
+  "score_ultima": 64.3,
+  "ticker": "AMGN",
+  "veces_en_top": 9
+ },
+ {
+  "corridas": 17,
+  "nombre": "CrowdStrike Holdings, Inc.",
+  "racha_actual": 5,
+  "rank_ultima": 10,
+  "score_ultima": 43.4,
+  "ticker": "CRWD",
+  "veces_en_top": 6
+ },
+ {
+  "corridas": 17,
+  "nombre": "Seagate Technology Holdings plc",
+  "racha_actual": 0,
+  "rank_ultima": null,
+  "score_ultima": null,
+  "ticker": "STX",
+  "veces_en_top": 5
+ },
+ {
+  "corridas": 17,
+  "nombre": "GE Vernova Inc.",
+  "racha_actual": 1,
+  "rank_ultima": 15,
+  "score_ultima": 65.5,
+  "ticker": "GEV",
+  "veces_en_top": 3
+ },
+ {
+  "corridas": 17,
+  "nombre": "Apple Inc.",
+  "racha_actual": 0,
+  "rank_ultima": 31,
+  "score_ultima": 63.9,
+  "ticker": "AAPL",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 17,
+  "nombre": "Amazon.com, Inc.",
+  "racha_actual": 0,
+  "rank_ultima": 36,
+  "score_ultima": 68.1,
+  "ticker": "AMZN",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 17,
+  "nombre": "Broadcom Inc.",
+  "racha_actual": 0,
+  "rank_ultima": 43,
+  "score_ultima": 74.5,
+  "ticker": "AVGO",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 17,
+  "nombre": "Berkshire Hathaway Inc.",
+  "racha_actual": 0,
+  "rank_ultima": 46,
+  "score_ultima": 67.6,
+  "ticker": "BRK-B",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 17,
+  "nombre": "Alphabet Inc.",
+  "racha_actual": 0,
+  "rank_ultima": 27,
+  "score_ultima": 77.2,
+  "ticker": "GOOG",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 17,
+  "nombre": "Alphabet Inc.",
+  "racha_actual": 0,
+  "rank_ultima": 25,
+  "score_ultima": 76.8,
+  "ticker": "GOOGL",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 17,
+  "nombre": "JPMorgan Chase & Co.",
+  "racha_actual": 0,
+  "rank_ultima": 35,
+  "score_ultima": 69.6,
+  "ticker": "JPM",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 17,
+  "nombre": "Meta Platforms, Inc.",
+  "racha_actual": 0,
+  "rank_ultima": 53,
+  "score_ultima": 75.2,
+  "ticker": "META",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 17,
+  "nombre": "Microsoft Corporation",
+  "racha_actual": 0,
+  "rank_ultima": 52,
+  "score_ultima": 72.1,
+  "ticker": "MSFT",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 17,
+  "nombre": "NVIDIA Corporation",
+  "racha_actual": 0,
+  "rank_ultima": 32,
+  "score_ultima": 74.7,
+  "ticker": "NVDA",
+  "veces_en_top": 2
+ },
+ {
+  "corridas": 17,
+  "nombre": "Tesla, Inc.",
+  "racha_actual": 0,
+  "rank_ultima": 56,
+  "score_ultima": 44.6,
+  "ticker": "TSLA",
+  "veces_en_top": 2
+ }
+]

@@ -1,0 +1,387 @@
+[
+ {
+  "momentum_rank": 1,
+  "momentum_score_pct": 214.02,
+  "run_date": "2026-09-21",
+  "run_dir": "20260921_01",
+  "ticker": "009150.KS"
+ },
+ {
+  "momentum_rank": 2,
+  "momentum_score_pct": 167.31,
+  "run_date": "2026-09-21",
+  "run_dir": "20260921_01",
+  "ticker": "MU"
+ },
+ {
+  "momentum_rank": 3,
+  "momentum_score_pct": 133.15,
+  "run_date": "2026-09-21",
+  "run_dir": "20260921_01",
+  "ticker": "DELL"
+ },
+ {
+  "momentum_rank": 4,
+  "momentum_score_pct": 123.69,
+  "run_date": "2026-09-21",
+  "run_dir": "20260921_01",
+  "ticker": "402340.KS"
+ },
+ {
+  "momentum_rank": 5,
+  "momentum_score_pct": 116.72,
+  "run_date": "2026-09-21",
+  "run_dir": "20260921_01",
+  "ticker": "000660.KS"
+ },
+ {
+  "momentum_rank": 1,
+  "momentum_score_pct": 214.02,
+  "run_date": "2026-09-22",
+  "run_dir": "20260922_01",
+  "ticker": "009150.KS"
+ },
+ {
+  "momentum_rank": 2,
+  "momentum_score_pct": 167.31,
+  "run_date": "2026-09-22",
+  "run_dir": "20260922_01",
+  "ticker": "MU"
+ },
+ {
+  "momentum_rank": 3,
+  "momentum_score_pct": 133.15,
+  "run_date": "2026-09-22",
+  "run_dir": "20260922_01",
+  "ticker": "DELL"
+ },
+ {
+  "momentum_rank": 4,
+  "momentum_score_pct": 123.69,
+  "run_date": "2026-09-22",
+  "run_dir": "20260922_01",
+  "ticker": "402340.KS"
+ },
+ {
+  "momentum_rank": 5,
+  "momentum_score_pct": 116.72,
+  "run_date": "2026-09-22",
+  "run_dir": "20260922_01",
+  "ticker": "000660.KS"
+ },
+ {
+  "momentum_rank": 1,
+  "momentum_score_pct": 218.01,
+  "run_date": "2026-09-24",
+  "run_dir": "20260924_01",
+  "ticker": "009150.KS"
+ },
+ {
+  "momentum_rank": 1,
+  "momentum_score_pct": 218.01,
+  "run_date": "2026-09-24",
+  "run_dir": "20260924_02",
+  "ticker": "009150.KS"
+ },
+ {
+  "momentum_rank": 2,
+  "momentum_score_pct": 183.81,
+  "run_date": "2026-09-24",
+  "run_dir": "20260924_01",
+  "ticker": "MU"
+ },
+ {
+  "momentum_rank": 2,
+  "momentum_score_pct": 183.81,
+  "run_date": "2026-09-24",
+  "run_dir": "20260924_02",
+  "ticker": "MU"
+ },
+ {
+  "momentum_rank": 3,
+  "momentum_score_pct": 132.72,
+  "run_date": "2026-09-24",
+  "run_dir": "20260924_01",
+  "ticker": "402340.KS"
+ },
+ {
+  "momentum_rank": 3,
+  "momentum_score_pct": 132.72,
+  "run_date": "2026-09-24",
+  "run_dir": "20260924_02",
+  "ticker": "402340.KS"
+ },
+ {
+  "momentum_rank": 4,
+  "momentum_score_pct": 120.94,
+  "run_date": "2026-09-24",
+  "run_dir": "20260924_01",
+  "ticker": "DELL"
+ },
+ {
+  "momentum_rank": 4,
+  "momentum_score_pct": 120.94,
+  "run_date": "2026-09-24",
+  "run_dir": "20260924_02",
+  "ticker": "DELL"
+ },
+ {
+  "momentum_rank": 5,
+  "momentum_score_pct": 117.07,
+  "run_date": "2026-09-24",
+  "run_dir": "20260924_01",
+  "ticker": "AMD"
+ },
+ {
+  "momentum_rank": 5,
+  "momentum_score_pct": 117.07,
+  "run_date": "2026-09-24",
+  "run_dir": "20260924_02",
+  "ticker": "AMD"
+ },
+ {
+  "momentum_rank": 1,
+  "momentum_score_pct": 220.7,
+  "run_date": "2026-09-25",
+  "run_dir": "20260925_01",
+  "ticker": "009150.KS"
+ },
+ {
+  "momentum_rank": 2,
+  "momentum_score_pct": 184.26,
+  "run_date": "2026-09-25",
+  "run_dir": "20260925_01",
+  "ticker": "MU"
+ },
+ {
+  "momentum_rank": 3,
+  "momentum_score_pct": 134.66,
+  "run_date": "2026-09-25",
+  "run_dir": "20260925_01",
+  "ticker": "402340.KS"
+ },
+ {
+  "momentum_rank": 4,
+  "momentum_score_pct": 131.18,
+  "run_date": "2026-09-25",
+  "run_dir": "20260925_01",
+  "ticker": "DELL"
+ },
+ {
+  "momentum_rank": 5,
+  "momentum_score_pct": 117.51,
+  "run_date": "2026-09-25",
+  "run_dir": "20260925_01",
+  "ticker": "AMD"
+ },
+ {
+  "momentum_rank": 1,
+  "momentum_score_pct": 220.9,
+  "run_date": "2026-09-26",
+  "run_dir": "20260926_01",
+  "ticker": "009150.KS"
+ },
+ {
+  "momentum_rank": 2,
+  "momentum_score_pct": 184.26,
+  "run_date": "2026-09-26",
+  "run_dir": "20260926_01",
+  "ticker": "MU"
+ },
+ {
+  "momentum_rank": 3,
+  "momentum_score_pct": 134.81,
+  "run_date": "2026-09-26",
+  "run_dir": "20260926_01",
+  "ticker": "402340.KS"
+ },
+ {
+  "momentum_rank": 4,
+  "momentum_score_pct": 131.18,
+  "run_date": "2026-09-26",
+  "run_dir": "20260926_01",
+  "ticker": "DELL"
+ },
+ {
+  "momentum_rank": 5,
+  "momentum_score_pct": 117.51,
+  "run_date": "2026-09-26",
+  "run_dir": "20260926_01",
+  "ticker": "AMD"
+ },
+ {
+  "momentum_rank": 1,
+  "momentum_score_pct": 220.9,
+  "run_date": "2026-09-29",
+  "run_dir": "20260929_01",
+  "ticker": "009150.KS"
+ },
+ {
+  "momentum_rank": 1,
+  "momentum_score_pct": 155.6,
+  "run_date": "2026-09-29",
+  "run_dir": "20260929_02",
+  "ticker": "009150.KS"
+ },
+ {
+  "momentum_rank": 2,
+  "momentum_score_pct": 184.26,
+  "run_date": "2026-09-29",
+  "run_dir": "20260929_01",
+  "ticker": "MU"
+ },
+ {
+  "momentum_rank": 2,
+  "momentum_score_pct": 112.72,
+  "run_date": "2026-09-29",
+  "run_dir": "20260929_02",
+  "ticker": "MU"
+ },
+ {
+  "momentum_rank": 3,
+  "momentum_score_pct": 134.81,
+  "run_date": "2026-09-29",
+  "run_dir": "20260929_01",
+  "ticker": "402340.KS"
+ },
+ {
+  "momentum_rank": 3,
+  "momentum_score_pct": 91.26,
+  "run_date": "2026-09-29",
+  "run_dir": "20260929_02",
+  "ticker": "402340.KS"
+ },
+ {
+  "momentum_rank": 4,
+  "momentum_score_pct": 131.18,
+  "run_date": "2026-09-29",
+  "run_dir": "20260929_01",
+  "ticker": "DELL"
+ },
+ {
+  "momentum_rank": 4,
+  "momentum_score_pct": 81.65,
+  "run_date": "2026-09-29",
+  "run_dir": "20260929_02",
+  "ticker": "DELL"
+ },
+ {
+  "momentum_rank": 5,
+  "momentum_score_pct": 117.51,
+  "run_date": "2026-09-29",
+  "run_dir": "20260929_01",
+  "ticker": "AMD"
+ },
+ {
+  "momentum_rank": 5,
+  "momentum_score_pct": 64.52,
+  "run_date": "2026-09-29",
+  "run_dir": "20260929_02",
+  "ticker": "MRVL"
+ },
+ {
+  "momentum_rank": 1,
+  "momentum_score_pct": 165.03,
+  "run_date": "2026-10-04",
+  "run_dir": "20261004_01",
+  "ticker": "009150.KS"
+ },
+ {
+  "momentum_rank": 2,
+  "momentum_score_pct": 114.56,
+  "run_date": "2026-10-04",
+  "run_dir": "20261004_01",
+  "ticker": "MU"
+ },
+ {
+  "momentum_rank": 3,
+  "momentum_score_pct": 98.41,
+  "run_date": "2026-10-04",
+  "run_dir": "20261004_01",
+  "ticker": "402340.KS"
+ },
+ {
+  "momentum_rank": 4,
+  "momentum_score_pct": 88.49,
+  "run_date": "2026-10-04",
+  "run_dir": "20261004_01",
+  "ticker": "DELL"
+ },
+ {
+  "momentum_rank": 5,
+  "momentum_score_pct": 69.59,
+  "run_date": "2026-10-04",
+  "run_dir": "20261004_01",
+  "ticker": "MRVL"
+ },
+ {
+  "momentum_rank": 1,
+  "momentum_score_pct": 165.2,
+  "run_date": "2026-10-05",
+  "run_dir": "20261005_01",
+  "ticker": "009150.KS"
+ },
+ {
+  "momentum_rank": 2,
+  "momentum_score_pct": 114.56,
+  "run_date": "2026-10-05",
+  "run_dir": "20261005_01",
+  "ticker": "MU"
+ },
+ {
+  "momentum_rank": 3,
+  "momentum_score_pct": 98.53,
+  "run_date": "2026-10-05",
+  "run_dir": "20261005_01",
+  "ticker": "402340.KS"
+ },
+ {
+  "momentum_rank": 4,
+  "momentum_score_pct": 88.49,
+  "run_date": "2026-10-05",
+  "run_dir": "20261005_01",
+  "ticker": "DELL"
+ },
+ {
+  "momentum_rank": 5,
+  "momentum_score_pct": 69.59,
+  "run_date": "2026-10-05",
+  "run_dir": "20261005_01",
+  "ticker": "MRVL"
+ },
+ {
+  "momentum_rank": 1,
+  "momentum_score_pct": 174.96,
+  "run_date": "2026-10-07",
+  "run_dir": "20261007_01",
+  "ticker": "009150.KS"
+ },
+ {
+  "momentum_rank": 2,
+  "momentum_score_pct": 122.6,
+  "run_date": "2026-10-07",
+  "run_dir": "20261007_01",
+  "ticker": "MU"
+ },
+ {
+  "momentum_rank": 3,
+  "momentum_score_pct": 98.3,
+  "run_date": "2026-10-07",
+  "run_dir": "20261007_01",
+  "ticker": "DELL"
+ },
+ {
+  "momentum_rank": 4,
+  "momentum_score_pct": 90.67,
+  "run_date": "2026-10-07",
+  "run_dir": "20261007_01",
+  "ticker": "402340.KS"
+ },
+ {
+  "momentum_rank": 5,
+  "momentum_score_pct": 76.55,
+  "run_date": "2026-10-07",
+  "run_dir": "20261007_01",
+  "ticker": "MRVL"
+ }
+]

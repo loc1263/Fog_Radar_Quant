@@ -1,0 +1,29 @@
+{
+ "api_prefix": "/api/cl",
+ "data_available": true,
+ "key": "cl_stocks",
+ "last_success": {
+  "duration_s": 115.33,
+  "finished_at": "2026-10-08T00:46:24.252896Z",
+  "id": "bab0e8691231",
+  "message": "30/30 tickers · top 3: VAPORES.SN, SQM-B.SN, ANDINA-B.SN · 182 requests a Yahoo, 0 respuestas 429, 0 reintentos, 31 s de espera",
+  "module": "cl_stocks",
+  "started_at": "2026-10-08T00:44:28.922102Z",
+  "status": "success",
+  "trigger": "cli"
+ },
+ "latest_job": {
+  "duration_s": 6.46,
+  "finished_at": "2026-10-09T01:11:49.911390Z",
+  "id": "68bd9679f297",
+  "message": "KeyboardInterrupt: ",
+  "module": "cl_stocks",
+  "started_at": "2026-10-09T01:11:43.445690Z",
+  "status": "error",
+  "trigger": "cli"
+ },
+ "migrated": true,
+ "migration_phase": 3,
+ "source_project": "Stock_Choice_Nacional",
+ "title": "Acciones Chile (IPSA)"
+}
