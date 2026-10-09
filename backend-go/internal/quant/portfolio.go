@@ -7,7 +7,7 @@ import (
 	"gonum.org/v1/gonum/mat"
 )
 
-// Equivalentes de PyPortfolioOpt (expected_returns, risk_models, EfficientFrontier) que usa el módulo Tendencia.
+// Retornos esperados, covarianzas y frontera eficiente que usa el módulo Tendencia.
 
 // PctChangeNaN son los retornos simples p[t]/p[t−1] − 1 de una serie con huecos (fill_method=None): el primero y
 // los que tocan un NaN quedan NaN. Mismo largo que la entrada.
@@ -70,7 +70,7 @@ func MeanHistoricalReturn(returns [][]float64, freq float64) []float64 {
 	return out
 }
 
-// pairCov replica DataFrame.cov() de pandas para un par: observaciones completas del par, algoritmo en línea.
+// pairCov calcula la covarianza de un par: observaciones completas del par, algoritmo en línea.
 func pairCov(x, y []float64) float64 {
 	var nobs float64
 	var meanx, meany, covxy float64
@@ -90,7 +90,7 @@ func pairCov(x, y []float64) float64 {
 	return covxy / (nobs - 1)
 }
 
-// CovPairwise es la covarianza muestral con observaciones completas por par (como pandas), multiplicada por freq.
+// CovPairwise es la covarianza muestral con observaciones completas por par, multiplicada por freq.
 func CovPairwise(returns [][]float64, freq float64) *mat.Dense {
 	k := len(returns)
 	out := mat.NewDense(k, k, nil)
@@ -151,7 +151,7 @@ func FixNonPositiveSemidefinite(m *mat.Dense) *mat.Dense {
 	return &fixed
 }
 
-// SampleCov: sample_cov de PyPortfolioOpt (cov pairwise · freq, corregida a semidefinida positiva).
+// SampleCov: covarianza muestral (cov pairwise · freq, corregida a semidefinida positiva).
 func SampleCov(returns [][]float64, freq float64) *mat.Dense {
 	return FixNonPositiveSemidefinite(CovPairwise(returns, freq))
 }

@@ -2,7 +2,7 @@ package api
 
 import "os"
 
-// hasData: la carpeta del módulo existe y tiene algo que no empiece con "." (igual que Python).
+// hasData: la carpeta del módulo existe y tiene algo que no empiece con ".".
 func hasData(dir string) bool {
 	entries, err := os.ReadDir(dir)
 	if err != nil {

@@ -219,7 +219,7 @@ type LeyendaBarra struct {
 }
 
 // Barras dibuja un gráfico de barras horizontales (etiquetas a la izquierda, valor al final de cada barra, grilla vertical
-// suave y leyenda opcional abajo a la derecha). Las barras van de abajo hacia arriba en el orden dado (como matplotlib).
+// suave y leyenda opcional abajo a la derecha). Las barras van de abajo hacia arriba en el orden dado.
 func (d *Doc) Barras(labels []string, values []float64, colors []RGB, xlabel string, leyenda []LeyendaBarra, width, height float64) {
 	d.ensure(height)
 	x0 := d.ML + (d.FW-width)/2

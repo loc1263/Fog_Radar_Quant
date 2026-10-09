@@ -1,4 +1,4 @@
-// Package api arma el servidor HTTP: huma sobre chi, con el mismo contrato que FastAPI
+// Package api arma el servidor HTTP: huma sobre chi, con el contrato público de la API
 // (rutas, envelope de error {detail, code}, CORS, rate limit y API key).
 package api
 
@@ -34,8 +34,8 @@ type Host struct {
 }
 
 func init() {
-	huma.DefaultArrayNullable = false // las listas siempre son [] (nunca null), como en Python
-	// Los errores generados por huma (validación, parseo) usan el mismo envelope que FastAPI.
+	huma.DefaultArrayNullable = false // las listas siempre son [] (nunca null)
+	// Los errores generados por huma (validación, parseo) usan el envelope de error de la API.
 	huma.NewError = func(status int, msg string, errs ...error) huma.StatusError {
 		detail := msg
 		if status == http.StatusUnprocessableEntity && len(errs) > 0 {
@@ -81,7 +81,7 @@ func New(s *core.Settings, log *slog.Logger) *Host {
 	} else {
 		cfg.OpenAPIPath, cfg.DocsPath, cfg.SchemasPath = "/openapi", "/docs", ""
 	}
-	// El esquema del envelope de error se llama «ErrorResponse» (como en FastAPI), no «APIError».
+	// El esquema del envelope de error se llama «ErrorResponse», no «APIError».
 	cfg.Components.Schemas = huma.NewMapRegistry("#/components/schemas/", func(t reflect.Type, hint string) string {
 		if t == reflect.TypeFor[core.APIError]() {
 			return "ErrorResponse"
@@ -99,7 +99,7 @@ func (h *Host) Handler() http.Handler { return h.Router }
 
 // Public registra un endpoint con solo rate limit.
 // trimDocs quita del OpenAPI el 500 genérico que huma agrega a toda operación con errores:
-// FastAPI no lo documenta y `gen:api` generaría tipos de más.
+// no forma parte del contrato y `gen:api` generaría tipos de más.
 func (h *Host) trimDocs(op huma.Operation) {
 	item := h.API.OpenAPI().Paths[op.Path]
 	if item == nil {
@@ -139,8 +139,7 @@ func ProtectedWith[I, O any](h *Host, op huma.Operation, handler func(ctx contex
 	h.trimDocs(op)
 }
 
-// Concurrent limita las ejecuciones simultáneas de un endpoint costoso (equivale a limite_concurrente de
-// Python): si está lleno responde 503 «busy» sin esperar.
+// Concurrent limita las ejecuciones simultáneas de un endpoint costoso (si está lleno responde 503 «busy» sin esperar.
 func (h *Host) Concurrent(n int) func(huma.Context, func(huma.Context)) {
 	gate := core.NewGate(n)
 	return func(ctx huma.Context, next func(huma.Context)) {

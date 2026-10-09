@@ -13,7 +13,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-// Universo de acciones de EEUU a evaluar: yfinance no ofrece un «screener» nativo por market cap, así que
+// Universo de acciones de EEUU a evaluar: Yahoo no ofrece un «screener» nativo por market cap, así que
 // se parte de la unión de los componentes del S&P 500 y el Nasdaq-100 (de Wikipedia), que cubre de sobra
 // cualquier compañía estadounidense con más de 200B de capitalización. Si Wikipedia no responde, se usa la
 // lista estática de respaldo.

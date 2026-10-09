@@ -77,7 +77,7 @@ type PilarInfo struct {
 	Metricas []string `json:"metricas"`
 }
 
-// Par es una tupla (float, float): se publica como prefixItems, igual que tuple[float, float] de pydantic.
+// Par es una tupla (float, float): se publica como prefixItems, como una tupla (float, float).
 type Par [2]float64
 
 // Schema implementa huma.SchemaProvider.

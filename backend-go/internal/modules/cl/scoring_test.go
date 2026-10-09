@@ -1,8 +1,6 @@
 package cl
 
 import (
-	"bytes"
-	"os"
 	"strings"
 	"testing"
 
@@ -10,37 +8,6 @@ import (
 )
 
 func norm(b []byte) string { return strings.ReplaceAll(string(b), "\r\n", "\n") }
-
-// Paridad con Stock_Choice_Nacional: mismo CSV de indicadores → mismo ranking, byte a byte.
-func TestRankingIdenticoAlOriginal(t *testing.T) {
-	for _, ts := range []string{"20260924_221437", "20260925_183129"} {
-		ind, err := quant.ReadCSVFile("testdata/indicadores_acciones_" + ts + ".csv")
-		if err != nil {
-			t.Fatal(err)
-		}
-		rank, err := ConstruirRanking(ind, nil)
-		if err != nil {
-			t.Fatal(err)
-		}
-		var buf bytes.Buffer
-		if err := rank.WriteCSV(&buf); err != nil {
-			t.Fatal(err)
-		}
-		want, err := os.ReadFile("testdata/ranking_acciones_" + ts + ".csv")
-		if err != nil {
-			t.Fatal(err)
-		}
-		if got := buf.String(); got != norm(want) {
-			gl, wl := strings.Split(got, "\n"), strings.Split(norm(want), "\n")
-			for i := range wl {
-				if i >= len(gl) || gl[i] != wl[i] {
-					t.Fatalf("%s: difiere en la línea %d\n go: %s\norig: %s", ts, i+1, at(gl, i), wl[i])
-				}
-			}
-			t.Fatalf("%s: difiere en el largo", ts)
-		}
-	}
-}
 
 func at(s []string, i int) string {
 	if i < len(s) {

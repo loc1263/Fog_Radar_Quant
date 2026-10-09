@@ -1,5 +1,4 @@
-// Package yahoo es el cliente común de Yahoo Finance para los 4 módulos (equivale a
-// fog_radar/core/yahoo.py), construido sobre github.com/loc1263/gohoo.
+// Package yahoo es el cliente común de Yahoo Finance para los 4 módulos construido sobre github.com/loc1263/gohoo.
 //
 // Reglas globales del proceso, compartidas por todas las goroutines:
 //  1. Espaciado mínimo (+ jitter) entre los INICIOS de dos requests. Medir inicios y no
@@ -25,7 +24,7 @@ import (
 	"fogradar/internal/core"
 )
 
-// Policy son las reglas de tráfico (mismas variables YAHOO_* que Python).
+// Policy son las reglas de tráfico.
 type Policy struct {
 	MinInterval time.Duration
 	Jitter      time.Duration
@@ -54,7 +53,7 @@ type Stats struct {
 	Wait        time.Duration
 }
 
-// Summary es el texto que va al registro de jobs (mismo formato que Python).
+// Summary es el texto que va al registro de jobs.
 func (s Stats) Summary() string {
 	return fmt.Sprintf("%d requests a Yahoo, %d respuestas 429, %d reintentos, %.0f s de espera",
 		s.Requests, s.RateLimited, s.Retries, s.Wait.Seconds())
@@ -127,7 +126,7 @@ func (s *Spacer) Wait(ctx context.Context) (time.Duration, error) {
 	return wait, s.sleep(ctx, wait)
 }
 
-// Backoff es min(base·2^intento, max) + U(0, 1) s (igual que backoff_s de Python).
+// Backoff es min(base·2^intento, max) + U(0, 1) s.
 func Backoff(attempt int, base, maxD time.Duration, rnd func() float64) time.Duration {
 	if rnd == nil {
 		rnd = rand.Float64
@@ -143,7 +142,7 @@ type interactiveKey struct{}
 
 // Interactive marca el contexto de una solicitud HTTP: un 429 de Yahoo se devuelve de inmediato
 // (sin dormir decenas de segundos con una conexión del servidor tomada). Equivale a
-// yahoo.interactivo() de Python.
+// el modo interactivo.
 func Interactive(ctx context.Context) context.Context {
 	return context.WithValue(ctx, interactiveKey{}, true)
 }

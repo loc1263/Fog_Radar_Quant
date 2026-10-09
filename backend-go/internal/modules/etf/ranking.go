@@ -16,7 +16,7 @@ import (
 	"fogradar/internal/quant"
 )
 
-// Config compartida de los análisis (analysis/config.py).
+// Config compartida de los análisis.
 const TopN = 15
 
 // PeriodCols son las 4 ventanas de rendimiento, en orden 5D → 1M → 6M → 1Y.
@@ -49,7 +49,7 @@ type weight struct {
 	w   float64
 }
 
-// Pesos del score compuesto (orden fijo: la suma se hace de izquierda a derecha como en Python).
+// Pesos del score compuesto.
 var weights = []weight{
 	{"s_sharpe", 0.25}, {"s_treynor", 0.1175}, {"s_1y", 0.14}, {"s_6m", 0.075}, {"s_consistencia", 0.15},
 	{"s_tendencia", 0.10}, {"s_baja_dispersion", 0.05}, {"s_bajo_beta", 0.0675}, {"s_cerca_maximo", 0.05},
@@ -220,7 +220,7 @@ func RunRanking(csvPath string) (*RankingResult, error) {
 		for i := 0; i < excluidos.N; i++ {
 			best, bestAbs := 0, -1.0
 			for k := range PeriodCols {
-				if a := math.Abs(zcols[k][i]); a > bestAbs { // en empate gana la primera ventana (max de Python)
+				if a := math.Abs(zcols[k][i]); a > bestAbs { // en empate gana la primera ventana
 					best, bestAbs = k, a
 				}
 			}
@@ -352,7 +352,7 @@ func RunRanking(csvPath string) (*RankingResult, error) {
 		Top15: top15, Ranking: ranking, Excluidos: excluidosOut, Top15Simple: top15SimpleOut}, nil
 }
 
-// weightedSum suma Σ col·w de izquierda a derecha (como sum(...) de Python).
+// weightedSum suma Σ col·w de izquierda a derecha .
 func weightedSum(f *quant.Frame, ws []weight) []float64 {
 	out := make([]float64, f.N)
 	for _, w := range ws {

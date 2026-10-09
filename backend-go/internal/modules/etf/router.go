@@ -15,8 +15,7 @@ import (
 
 const tag = "ETFs"
 
-// Register agrega los endpoints de /api/etf. Mismos endpoints que ETF_Choice/WEB/backend/main.py bajo el prefijo del módulo;
-// el GET /api/status del original es GET /api/etf/resumen. Todas las lecturas toman el lock de data/etf/current (503 «busy» si
+// Register agrega los endpoints de /api/etf. El GET /api/status del proyecto original es GET /api/etf/resumen. Todas las lecturas toman el lock de data/etf/current (503 «busy» si
 // el pipeline lo tiene más de 15 s). POST /run re-analiza el CSV vigente (sin Yahoo) y queda en el registro de jobs.
 //
 // GET /pdf (informe ejecutivo) se genera con internal/pdf (Carlito) y se cachea por la firma de los CSV.

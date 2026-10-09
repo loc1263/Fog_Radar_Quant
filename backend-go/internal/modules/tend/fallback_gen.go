@@ -1,4 +1,4 @@
-// Código generado desde modules/tendencia/fallback_universe.py: no editar a mano.
+// Código generado: no editar a mano.
 
 package tend
 

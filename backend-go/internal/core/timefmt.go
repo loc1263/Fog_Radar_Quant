@@ -9,7 +9,7 @@ import (
 	"github.com/danielgtaylor/huma/v2"
 )
 
-// FormatISO imprime una fecha igual que pydantic v2: sin fracción si los
+// FormatISO imprime una fecha en ISO 8601: sin fracción si los
 // microsegundos son 0, si no 6 dígitos; "Z" para UTC y "±hh:mm" para el resto.
 func FormatISO(t time.Time) string {
 	s := t.Format("2006-01-02T15:04:05")
@@ -38,7 +38,7 @@ var isoNaiveLayouts = []string{
 }
 
 // ParseISO lee un datetime ISO 8601. Si no trae zona se interpreta en loc
-// (equivale a FechaLocal de core/schemas.py).
+// .
 func ParseISO(s string, loc *time.Location) (time.Time, error) {
 	for _, l := range isoLayouts {
 		if t, err := time.Parse(l, s); err == nil {
@@ -54,10 +54,10 @@ func ParseISO(s string, loc *time.Location) (time.Time, error) {
 }
 
 // DefaultLoc es la zona con que se interpretan las fechas sin zona al leer JSON (Settings.timezone; se fija al
-// cargar la configuración). Equivale a FechaLocal de core/schemas.py.
+// cargar la configuración).
 var DefaultLoc = time.UTC
 
-// Fecha es un time.Time que se serializa como lo hace la API Python.
+// Fecha es un time.Time que se serializa como lo hace la API.
 type Fecha struct{ time.Time }
 
 // MarshalJSON implementa json.Marshaler.
@@ -79,7 +79,7 @@ func (Fecha) Schema(huma.Registry) *huma.Schema {
 }
 
 // Opt es un struct que puede ser null en el JSON. Huma no admite `nullable` sobre referencias a structs, así
-// que su esquema se declara como anyOf [T, null] (igual que pydantic con `T | None`).
+// que su esquema se declara como anyOf [T, null].
 type Opt[T any] struct{ V *T }
 
 // Some envuelve un valor.

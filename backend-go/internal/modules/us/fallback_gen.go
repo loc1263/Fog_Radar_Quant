@@ -1,4 +1,4 @@
-// Código generado desde modules/us_stocks/universe.py (scripts/gen_us_fallback.py): no editar a mano.
+// Código generado: no editar a mano.
 
 package us
 

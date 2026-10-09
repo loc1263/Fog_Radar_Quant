@@ -6,13 +6,13 @@ hay dos descargando a la vez.
 
 | Programa | Cuándo (America/Santiago) | Secuencia |
 |---|---|---|
-| `semanal` | lunes 06:00 | ETFs (~30 min) |
-| `diario` | lunes a viernes 18:00 | Chile → EEUU → Tendencia (~35 min, 60 s de pausa entre cada uno) |
+| `semanal` | lunes 06:00 | ETFs (~10 min) |
+| `diario` | lunes a viernes 18:00 | Chile → EEUU → Tendencia (~10 min, 60 s de pausa entre cada uno) |
 
-La programación vive en `backend/src/fog_radar/jobs/schedule.py` (una sola fuente
-de verdad): el archivo `crontab` de esta carpeta se genera desde ahí y la página
-`/estado` del sitio muestra la próxima corrida de cada programa. Un test
-(`tests/test_jobs_runner.py`) falla si el `crontab` versionado no coincide.
+La programación vive en `backend-go/internal/core/schedule.go` (una sola fuente
+de verdad): el archivo `crontab` de esta carpeta se genera desde ahí
+(`fogradar job --crontab`) y la página `/estado` del sitio muestra la próxima
+corrida de cada programa.
 
 ## Garantías
 
@@ -26,6 +26,7 @@ de verdad): el archivo `crontab` de esta carpeta se genera desde ahí y la pági
 - **Aviso**: si algo falla y `ALERT_WEBHOOK_URL` está definida (Slack, Discord,
   Teams), llega un mensaje con el módulo y el error.
 - Cada intento queda en `data/_jobs/<modulo>.jsonl` → `/api/jobs` y `/estado`.
+- El log detallado de todo el backend es `data/_jobs/logs/fogradar.log`.
 
 ## Instalación (Linux, sin Docker)
 
@@ -33,8 +34,9 @@ de verdad): el archivo `crontab` de esta carpeta se genera desde ahí y la pági
 # 1. Zona horaria del servidor (cron de Debian/Ubuntu ignora CRON_TZ)
 sudo timedatectl set-timezone America/Santiago
 
-# 2. Código en /opt/fog-radar y dependencias
-cd /opt/fog-radar/backend && uv sync --frozen
+# 2. Binario y configuración en /opt/fog-radar/backend-go
+cd /opt/fog-radar/backend-go
+CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o fogradar ./cmd/fogradar
 cp .env.example .env   # API_KEY, FRED_API_KEY, ALERT_WEBHOOK_URL…
 
 # 3. Carpeta de logs (del usuario que corre el backend)
@@ -45,21 +47,19 @@ crontab /opt/fog-radar/deploy/backend/crontab
 crontab -l
 ```
 
-Si el código vive en otra carpeta o `uv` en otra ruta, generar el crontab con:
+Si el código vive en otra carpeta, generar el crontab con:
 
 ```bash
-uv run python -m fog_radar.jobs --crontab --backend-dir /ruta/al/backend > mi-crontab
+./fogradar job --crontab --backend-dir /ruta/al/backend-go > mi-crontab
 ```
 
 ## Operación
 
 ```bash
-uv run python -m fog_radar.jobs --list                       # módulos y próximas corridas
-uv run python -m fog_radar.jobs --programa diario            # correr un programa ahora
-uv run python -m fog_radar.jobs --todos --esperar 3600       # todo, esperando si hay otra corrida
+./fogradar job --list                       # módulos y próximas corridas
+./fogradar job --programa diario            # correr un programa ahora
+./fogradar job --todos --esperar 3600       # todo, esperando si hay otra corrida
 tail -f /var/log/fog-radar/pipelines-diario.log
 ```
 
 Códigos de salida: `0` OK · `1` algún pipeline falló · `2` uso incorrecto · `3` otra corrida en curso.
-
-La imagen Docker y el cron dentro del contenedor quedan para la Fase 8.

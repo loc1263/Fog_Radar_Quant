@@ -1,6 +1,6 @@
 /**
  * Lógica común de las vistas de historial (history.db de cada módulo, ver
- * `backend/src/fog_radar/core/histdb.py`): elegir corridas/ticker desde la URL y
+ * `backend-go/internal/core/histdb.go`): elegir corridas/ticker desde la URL y
  * resumir un diff entre dos corridas.
  */
 import type { HistDiffFila, HistEstado } from '$lib/api/types';

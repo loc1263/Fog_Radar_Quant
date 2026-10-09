@@ -1,4 +1,4 @@
-// Package modules registra los 4 módulos del sitio (equivale a fog_radar/modules/__init__.py).
+// Package modules registra los 4 módulos del sitio.
 package modules
 
 import "fogradar/internal/core"
@@ -10,12 +10,12 @@ type Info struct {
 	Title          string
 	SourceProject  string
 	MigrationPhase int
-	// Migrated es true cuando su pipeline Python está portado a Fog Radar (campo `migrated`
+	// Migrated es true cuando su pipeline está portado a Fog Radar (campo `migrated`
 	// de /status). Es independiente de qué lenguaje sirve la API.
 	Migrated bool
 }
 
-// All en el mismo orden que Python.
+// All lista los módulos en el orden del sitio.
 var All = []Info{
 	{"cl_stocks", "/cl", "Acciones Chile (IPSA)", "Stock_Choice_Nacional", 3, true},
 	{"us_stocks", "/us", "Acciones EEUU", "Stock_Choice_EEUU", 4, true},

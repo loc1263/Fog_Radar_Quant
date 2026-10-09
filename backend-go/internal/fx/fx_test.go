@@ -112,8 +112,8 @@ func TestToUSDForwardFillYSubunidad(t *testing.T) {
 	}
 }
 
-func TestToUSDSemanticaDePandas(t *testing.T) {
-	// FX con fecha que NO coincide con ninguna de precios: pandas la ignora (reindex exacto + ffill).
+func TestToUSDReindexadoConArrastre(t *testing.T) {
+	// FX con fecha que NO coincide con ninguna de precios: se ignora (reindexado exacto + ffill).
 	precios := Series{T: []time.Time{day(0), day(1)}, V: []float64{10, 10}}
 	fx := Series{T: []time.Time{day(0).Add(24 * time.Hour)}, V: []float64{2}}
 	got := ToUSD(precios, fx, "JPY").V

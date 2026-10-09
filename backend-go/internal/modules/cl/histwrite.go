@@ -10,7 +10,7 @@ import (
 	"fogradar/internal/quant"
 )
 
-// SchemaV1 es el esquema publicado de history.db (idéntico a SCHEMA_V1 de Python: ambas
+// SchemaV1 es el esquema publicado de history.db (esquema publicado: ambas
 // implementaciones comparten la misma base). Nunca se edita; un cambio es una migración nueva.
 const SchemaV1 = `
 CREATE TABLE runs (
@@ -198,7 +198,7 @@ func Backfill(s *core.Settings, warn func(format string, args ...any)) (string, 
 	if len(files) == 0 {
 		return fmt.Sprintf("backfill: no hay %s en %s", PatronRanking, DataDir(s)), nil
 	}
-	// de la más antigua a la más nueva, como sorted() en Python
+	// de la más antigua a la más nueva, ordenadas
 	for i, j := 0, len(files)-1; i < j; i, j = i+1, j-1 {
 		files[i], files[j] = files[j], files[i]
 	}

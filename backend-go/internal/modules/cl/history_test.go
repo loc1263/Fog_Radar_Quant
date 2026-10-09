@@ -16,7 +16,7 @@ import (
 	"fogradar/internal/modules/cl"
 )
 
-// Mismo esquema que SCHEMA_V1 de modules/cl_stocks/history.py (las bases de Python y Go son la misma).
+// Mismo esquema que SchemaV1.
 const schemaV1 = `
 CREATE TABLE runs (
     id INTEGER PRIMARY KEY AUTOINCREMENT, ts TEXT UNIQUE NOT NULL, run_at TEXT NOT NULL,

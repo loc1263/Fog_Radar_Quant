@@ -32,8 +32,7 @@ type JobRecord struct {
 	Message    *string  `json:"message" nullable:"true" required:"false"`
 }
 
-// JobRegistry lee el registro de jobs. En la Fase 1 es solo lectura: Python
-// sigue escribiéndolo (los pipelines aún no se migran).
+// JobRegistry lee el registro de jobs. Cada pipeline registra sus intentos aquí.
 type JobRegistry struct {
 	Dir string
 	Now func() time.Time
@@ -58,7 +57,7 @@ func (r *JobRegistry) read(module string) []JobRecord {
 		}
 		var rec JobRecord
 		if err := json.Unmarshal(line, &rec); err != nil {
-			continue // línea inválida: se ignora, como en Python
+			continue // línea inválida: se ignora
 		}
 		if rec.Trigger == "" {
 			rec.Trigger = "cli"
@@ -118,8 +117,7 @@ const (
 
 func (r *JobRegistry) path(module string) string { return filepath.Join(r.Dir, module+".jsonl") }
 
-// Append agrega una línea al registro del módulo bajo el lock de archivo (el mismo <archivo>.lock que usa
-// Python, así ambos backends pueden escribir en la misma carpeta de datos).
+// Append agrega una línea al registro del módulo bajo el lock de archivo (<archivo>.lock).
 func (r *JobRegistry) Append(rec JobRecord) error {
 	if err := os.MkdirAll(r.Dir, 0o755); err != nil {
 		return err

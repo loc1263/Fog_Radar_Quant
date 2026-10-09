@@ -14,9 +14,9 @@ se citan son relativas a `backend/src/fog_radar/`.
 
 ## Fuentes de datos
 
-- **Yahoo Finance** vía `yfinance`, para precios, fundamentales, FX y el screener de
-  capitalización. Todas las llamadas del proceso pasan por **una sola sesión HTTP** que
-  instala `core/yahoo.py` (`yahoo.instalar`, invocado por `jobs/runner.py` y por `main.py`):
+- **Yahoo Finance** (librería `gohoo`), para precios, fundamentales, FX y el screener de
+  capitalización. Todas las llamadas del proceso pasan por **un solo cliente** (`internal/yahoo`, creado por
+  `fogradar api` y `fogradar job`):
   - espaciado mínimo global entre requests de **0,35 s + jitter U(0; 0,25) s**, compartido
     entre hilos;
   - ante HTTP 429, hasta **3 reintentos** con backoff `min(5 · 2^intento, 60) + U(0, 1)` s;
@@ -26,7 +26,7 @@ se citan son relativas a `backend/src/fog_radar/`.
   - caché de históricos en disco (la usa Tendencia, con frescura de 20 h).
   Cada módulo conserva además sus propias pausas anti-bloqueo (se detallan abajo).
 - **FRED** (Federal Reserve Economic Data), solo en Tendencia y solo si se corre con
-  `--macro` y hay `FRED_API_KEY` (`modules/tendencia/macro.py`): curva de tasas (DGS3MO,
+  `--macro` y hay `FRED_API_KEY` (`internal/modules/tend/macro.go`): curva de tasas (DGS3MO,
   DGS2, DGS10, DGS30, T10Y2Y, T10Y3M), spreads de crédito ICE BofA (BAMLH0A0HYM2,
   BAMLC0A0CM, BAMLC0A4CBBB), VIXCLS, postura de la Fed (FEDFUNDS, DFEDTARU, DFEDTARL,
   FEDTARMD) y CFNAI como proxy de actividad.
@@ -34,7 +34,7 @@ se citan son relativas a `backend/src/fog_radar/`.
 
 ## Calendario de actualización
 
-Definido en `jobs/schedule.py` (única fuente de verdad; el crontab de producción se genera
+Definido en `internal/core/schedule.go` (única fuente de verdad; el crontab de producción se genera
 desde ahí). Horas de `America/Santiago`.
 
 | Programa | Módulos (en secuencia, nunca en paralelo) | Cuándo |
@@ -49,7 +49,7 @@ ROADMAP): usa el último `macro_data_*.csv` disponible, si existe.
 
 ## 1. Acciones Chile (IPSA)
 
-Archivos: `modules/cl_stocks/extractor.py`, `scoring.py`, `pipeline.py`, `core/fx.py`.
+Archivos: `internal/modules/cl/{extractor,scoring,pipeline}.go`, `internal/fx/fx.go`.
 
 ### 1.1 Universo
 
@@ -58,7 +58,7 @@ Archivos: `modules/cl_stocks/extractor.py`, `scoring.py`, `pipeline.py`, `core/f
 mantenida a mano. Un ticker que falla en la descarga se omite de la corrida y queda
 registrado en el resumen del job.
 
-### 1.2 Extracción de indicadores (`extractor.py`)
+### 1.2 Extracción de indicadores (`extractor.go`)
 
 Por ticker se lee `yf.Ticker(...).info`, los estados trimestrales y un histórico de 2 años
 (`history(period="2y", auto_adjust=True)`). Se genera `indicadores_acciones_<timestamp>.csv`
@@ -74,7 +74,7 @@ Cálculos propios (no vienen listos de Yahoo para `.SN`):
 | Levered FCF (ttm) | `Operating Cash Flow (ttm) + Σ CapEx de los últimos 4 trimestres` (CapEx viene negativo) |
 | Trailing Annual Dividend Yield (%) | fracción de Yahoo × 100 (el forward y el promedio 5 años ya vienen en %) |
 
-**Conversión de moneda (`core/fx.py`).** Si `currency` (moneda de cotización, p. ej. CLP)
+**Conversión de moneda (`internal/fx`).** Si `currency` (moneda de cotización, p. ej. CLP)
 ≠ `financialCurrency` (moneda de los estados, p. ej. USD), los montos contables (Revenue,
 EBITDA, book value por acción, caja, deuda, flujos…) se multiplican por la tasa
 `financialCurrency → currency`. `FxRates` usa USD como pivote y la convención de Yahoo
@@ -88,7 +88,7 @@ La tasa (o su fallo, `None`) se cachea por par. Con los montos convertidos se **
 los múltiplos: `P/S = MarketCap / Revenue`, `P/B = Precio / BookValuePS`,
 `EV/Revenue`, `EV/EBITDA`. Si la tasa no se pudo obtener, esos montos quedan vacíos.
 
-### 1.3 Pilares y métricas (`scoring.py`)
+### 1.3 Pilares y métricas (`scoring.go`)
 
 20 métricas en 6 pilares. "Invertir" = menor es mejor (se cambia el signo del z-score).
 "Solo > 0" = los valores ≤ 0 se descartan porque no tienen lectura económica.
@@ -166,12 +166,11 @@ deja una advertencia de riesgo de doble conteo.
 
 ## 2. Acciones EEUU
 
-Archivos: `modules/us_stocks/universe.py`, `scanner.py`, `fundamentals.py`,
-`indicators.py`, `scoring.py`, `portfolio.py`.
+Archivos: `internal/modules/us/{universe,scanner,fundamentals,scoring,portfolio}.go`.
 
 ### 2.1 Universo y filtro de capitalización
 
-1. **Candidatos** (`universe.py`): unión de los componentes del **S&P 500 y el Nasdaq-100**
+1. **Candidatos** (`universe.go`): unión de los componentes del **S&P 500 y el Nasdaq-100**
    leídos desde Wikipedia (tickers normalizados a formato Yahoo, `BRK.B → BRK-B`). Si ambas
    páginas fallan se usa `FALLBACK_TICKERS`, una lista estática de ~170 large/mega caps.
 2. **Market cap** de cada candidato vía `fast_info` (la consulta más liviana), con pausa
@@ -192,7 +191,7 @@ Histórico diario de **14 meses** (`yf.download`, `auto_adjust=True`) en una sol
 Los candidatos se ordenan por `momentum_12_1` descendente y el **Top N = 15** se toma de ese
 orden (el score de salud **no** reordena el top: es información complementaria).
 
-### 2.3 Indicadores técnicos (`indicators.py`)
+### 2.3 Indicadores técnicos (`fundamentals.go`)
 
 - SMA 50 y SMA 200 (media simple).
 - RSI 14 de Wilder: medias exponenciales con `α = 1/14` de ganancias y pérdidas;
@@ -200,7 +199,7 @@ orden (el score de salud **no** reordena el top: es información complementaria)
 - MACD (12, 26, 9): `EMA12 − EMA26`, señal = `EMA9` del MACD, histograma = MACD − señal.
 - Volumen del último día y promedio de los últimos 30.
 
-### 2.4 Score de salud (`scoring.py`)
+### 2.4 Score de salud (`scoring.go`)
 
 Heurística de reglas 0–100 (no es un modelo estadístico). Cada métrica se lleva a 0–100 con
 **interpolación lineal por tramos** (saturada en los extremos); cada categoría es el
@@ -217,7 +216,7 @@ disponibles, renormalizando pesos si falta una categoría entera.
 
 Etiquetas: ≥ 75 Fuerte, ≥ 60 Sólido, ≥ 45 Neutral, ≥ 30 Débil, < 30 Muy débil.
 
-### 2.5 Portafolio — modelo único (`portfolio.py`, ver `docs/MODELO_NEW.md`)
+### 2.5 Portafolio — modelo único (`portfolio.go`, ver `docs/MODELO_NEW.md`)
 
 Se calcula a pedido (request HTTP) sobre `prices.json` y `candidates.json` de la última
 corrida, **sin llamar a Yahoo**. Un solo modelo en tres etapas; el resultado es **long-only**
@@ -276,9 +275,9 @@ Archivos: `modules/etf/screener/…` (descarga) y `modules/etf/analysis/…` (an
   eliminación, la última corrida en que validaron y el motivo.
   El proveedor se infiere por palabras clave (iShares, Vanguard, SPDR, Invesco, …; si no,
   "Otro").
-- Se procesa en lotes de 30 con pausas anti rate-limit (`screener/config.py`).
-- **Rendimientos por ventana** (5D, 1M, 6M, YTD, 1Y, 5Y): para cada período se descarga
-  `history(period=…)` y `Performance = (Precio actual / primer cierre del período − 1) · 100`.
+- Se procesa en paralelo con el espaciado global de Yahoo (sin pausas fijas).
+- **Rendimientos por ventana** (5D, 1M, 6M, YTD, 1Y, 5Y): todos los períodos se derivan de
+  **una sola descarga diaria de 5 años** por ETF, y `Performance = (Precio actual / primer cierre del período − 1) · 100`.
 - **Riesgo** (sobre el histórico diario de 1 año, `rf = 2 %` constante, 252 ruedas):
   - `Sharpe = (media(r) · 252 − rf) / (desv(r) · √252)`
   - `Beta = cov(r_ETF, r_mercado) / var(r_mercado)` contra **^GSPC**. Los retornos se
@@ -288,7 +287,7 @@ Archivos: `modules/etf/screener/…` (descarga) y `modules/etf/analysis/…` (an
 - Salida `etf_perf_data_<timestamp>.csv`. Además, `etf_choice_*` lista hasta 30 ETFs con
   rendimientos **no negativos y no decrecientes** 5D ≤ 1M ≤ 6M ≤ 1Y ≤ 5Y, ordenados por 5Y.
 
-### 3.2 Ranking principal (`analysis/etf_ranking_analysis.py`)
+### 3.2 Ranking principal (`ranking.go`)
 
 **Depuración del universo**, en este orden:
 
@@ -298,6 +297,8 @@ Archivos: `modules/etf/screener/…` (descarga) y `modules/etf/analysis/…` (an
 3. Fuera filas incompletas en: 5D, 1M, 6M, 1Y, Sharpe, Treynor, Beta, 52W High, 52W Low,
    Precio, Volumen, AUM.
 4. Liquidez: `Volumen ≥ 10.000` y `AUM ≥ USD 30.000.000`.
+   *(Backend Go: `Volumen` es el de la última sesión completa, tomado del gráfico, no el de la sesión en curso; y el AUM puede venir de una
+   caché de hasta 28 días. Ver `internal/modules/etf/infocache.go`.)*
 5. **Outliers por MAD**: para cada ventana (5D, 1M, 6M, 1Y)
    `z = 0,6745 · (x − mediana) / MAD`, con `MAD = mediana(|x − mediana|)` (si MAD = 0, z = 0).
    Se excluye el ETF si **alguna** ventana tiene `|z| > 6` (`Z_THRESHOLD`). Los excluidos se
@@ -327,9 +328,9 @@ Sharpe y Beta promedio, top 1).
 | Variante | Universo | Criterio |
 |---|---|---|
 | **Top 15 Simple** | Mismo universo depurado | 5 percentiles al 20 % c/u: 5D, 1M, 6M, 1Y (mayor es mejor) y \|Beta\| (menor es mejor) |
-| **Top 15 Vanguard** (`service.py`) | Ranking principal filtrado a `Proveedor == "Vanguard"` | Mismo Score, corte a 15 |
-| **Top 15 Momentum** (`etf_momentum_analysis.py`) | Solo ETF; excluye 22 categorías defensivas (bonos cortos, money market, target maturity, target-date…); exige 4 ventanas + Sharpe/Treynor/Beta. **Sin** filtro de liquidez ni de outliers | `Score_comp` (ver abajo) |
-| **Top 15 Cap.** (`etf_russell3000_momentum.py`) | ETFs en las 9 categorías Large/Mid/Small × Blend/Value/Growth, liquidez igual al ranking principal | 5 mejores por bucket de capitalización (ver abajo) |
+| **Top 15 Vanguard** (`service.go`) | Ranking principal filtrado a `Proveedor == "Vanguard"` | Mismo Score, corte a 15 |
+| **Top 15 Momentum** (`analyses.go`) | Solo ETF; excluye 22 categorías defensivas (bonos cortos, money market, target maturity, target-date…); exige 4 ventanas + Sharpe/Treynor/Beta. **Sin** filtro de liquidez ni de outliers | `Score_comp` (ver abajo) |
+| **Top 15 Cap.** (`analyses.go`) | ETFs en las 9 categorías Large/Mid/Small × Blend/Value/Growth, liquidez igual al ranking principal | 5 mejores por bucket de capitalización (ver abajo) |
 
 **Momentum `Score_comp`.** Con `minmax(x) = 100 · (x − min) / (max − min)` (50 si no hay
 rango):
@@ -356,11 +357,11 @@ rango):
 
 ### 3.4 Categorías, rotación y archivado
 
-- **Ranking por categoría** (`etf_categoria_analysis.py`): sobre el ranking depurado, solo
+- **Ranking por categoría** (`analyses.go`): sobre el ranking depurado, solo
   categorías con **N ≥ 5** ETFs; ordenadas por **Sharpe promedio** (Treynor por mediana, más
   Beta, 1Y y 6M promedio, Score promedio y % con 1Y positivo).
 - **Diversificación**: conteo y % por categoría dentro del Top 15.
-- **Rotación** (`analysis/rotacion.py`): compara el Top 15 vigente contra la corrida
+- **Rotación** (`rotacion.go`): compara el Top 15 vigente contra la corrida
   archivada más reciente (orden por fecha y secuencia del nombre de archivo, no por fecha de
   modificación):
   - *Mantienen*: puesto actual y previo, `Delta_Rank = previo − actual`, `Delta_Score`, y
@@ -370,7 +371,7 @@ rango):
     puesto #n, o no estaba en el universo).
   - *Salidas*: con su destino (pasó a outliers, su categoría se excluyó, bajó al puesto #n, o
     dejó el universo).
-- **Archivado** (`analysis/archivado.py`, `pipeline.py`): el análisis corre primero en una
+- **Archivado** (`storage.go`, `pipeline.go`): el análisis corre primero en una
   carpeta de *staging*; solo si termina sin errores se archiva la corrida vigente en
   `data/etf/hist` (sufijo `_AAAAMMDD` y contador `_2`, `_3`… si ya hay una corrida archivada
   ese día, para no perderla) y se instala la nueva. Las salidas crudas del screener de más de
@@ -380,14 +381,16 @@ rango):
 
 ## 4. Tendencia (Asia + EEUU)
 
-Archivos: `modules/tendencia/config.py`, `universe/discovery.py`, `ingestion/*`,
-`modeling/markowitz.py`, `modeling/trend_forecast.py`, `modeling/momentum.py`.
+Archivos: `internal/modules/tend/{params,discovery,universe,dataset,markowitz,forecast,momentum}.go`.
 
-### 4.1 Universo dinámico (`universe/discovery.py`)
+### 4.1 Universo dinámico (`discovery.go`)
 
 El universo se descubre en cada corrida con el screener de Yahoo (`yf.screen`, orden por
 `intradaymarketcap`) y se guarda en `data/tendencia/universe/universe_<AAAAMMDD>.json`; si
-ya hay un snapshot del día, se reutiliza.
+ya hay un snapshot del día, se reutiliza. **Backend Go:** reutiliza el snapshot si tiene hasta
+3 días (`UniverseMaxAgeDays`); si es más viejo, no existe, o se pasa `--force-discovery`, lo
+redescubre. Con `--offline`/`--skip-discovery` nunca consulta Yahoo. Si el descubrimiento falla
+conserva el snapshot viejo (con aviso en el log) en vez de usar la lista de respaldo.
 
 - **Asia**: regiones `cn` (China), `hk` (Hong Kong), `jp` (Japón), `kr` (Corea del Sur),
   `tw` (Taiwán), `in` (India). Se piden **20 por región**, se deduplica por empresa (nombre
@@ -396,12 +399,12 @@ ya hay un snapshot del día, se reutiliza.
   (sin cuota por país).
 - **EEUU**: se piden 150 candidatas de la región `us` y quedan **todas las mega-caps con
   capitalización ≥ USD 200 mil millones** (tamaño variable, no un top-N fijo).
-  **Filtro de sede**: se descartan las que tienen `Ticker.info["country"] != "United States"`
+  **Filtro de sede**: se descartan las que tienen sede (`assetProfile.country`) distinta de "United States"
   (ADRs de TSMC, Samsung, Toyota…); las de sede desconocida se conservan.
-- Sector desde `Ticker.info` (el screener no lo trae).
+- Sector desde `quoteSummary/assetProfile` (el screener no lo trae).
 - Se excluyen tickers cuya moneda no tenga par FX (ver 4.2).
 - **Fallback**: si el screener falla o devuelve menos de 10 empresas en Asia o en EEUU, se
-  usa la lista estática de `fallback_universe.py` y el snapshot queda marcado
+  usa la lista estática de respaldo (`fallback_gen.go`) y el snapshot queda marcado
   `fallback_static`.
 
 ### 4.2 Precios y conversión a USD
@@ -409,12 +412,12 @@ ya hay un snapshot del día, se reutiliza.
 - Precios **semanales de 5 años** (`period="5y"`, `interval="1wk"`) del universo más los
   tickers de referencia `^VIX` y `^IRX`, con caché en disco y reintentos con backoff.
 - FX: pares `USDXXX=X` (unidades locales por 1 USD). Se acepta **cualquier moneda ISO 4217**
-  (`core/fx.py`), con prioridad para los pares de `CURRENCY_FX_TICKER`. Las subunidades de
+  (`internal/fx`). Las subunidades de
   Yahoo se dividen por 100: `GBp`/`GBX` → GBP, `ZAc`/`ZAC` → ZAR, `ILA` → ILS.
 - `precio_USD = precio_local / FX / divisor`. El FX se alinea al calendario del precio con
   **forward-fill** (último tipo de cambio conocido, sin mirar al futuro).
 
-### 4.3 Armado del dataset (`ingestion/build_dataset.py`)
+### 4.3 Armado del dataset (`dataset.go`)
 
 1. Cada serie se lleva a una fecha por semana (sin duplicados).
 2. Ticker excluido si: no hay datos, falta su FX, o tiene menos de
@@ -425,9 +428,9 @@ ya hay un snapshot del día, se reutiliza.
 5. **Tasa libre de riesgo** (anual, decimal): Treasury 3M (`DGS3MO`) del último
    `macro_data_*.csv` de FRED → si no, último valor de `^IRX` / 100 → si no, **4 %**.
 
-### 4.4 Selección Markowitz (`modeling/markowitz.py`, PyPortfolioOpt)
+### 4.4 Selección Markowitz (`markowitz.go`)
 
-- `μ` = `mean_historical_return(frequency=52)`: **CAGR** geométrico,
+- `μ` = `retorno histórico medio anualizado (52 semanas)`: **CAGR** geométrico,
   `(P_final / P_inicial)^(52 / n_semanas) − 1`.
 - `Σ` = `sample_cov(frequency=52)`: covarianza muestral de retornos semanales × 52.
 - **Paso 1 — universo completo**: máximo Sharpe con `rf`, long-only, tope
@@ -448,7 +451,7 @@ ya hay un snapshot del día, se reutiliza.
   `top_n · MAX_WEIGHT_PER_ASSET < 1` (los pesos no podrían sumar 100 %), si `top_n` supera el
   universo o si un portafolio reducido no es menor que `top_n`.
 
-### 4.5 Señales de tendencia (`modeling/trend_forecast.py`)
+### 4.5 Señales de tendencia (`forecast.go`)
 
 Sobre las acciones seleccionadas, con medias móviles de precios semanales en USD:
 
@@ -475,7 +478,7 @@ escenarios** basado en 5 años de historia, no un pronóstico.
 entre medio normal; spread 10Y-2Y < 0 curva invertida; spread High Yield como referencia de
 apetito por riesgo (estos dos últimos solo si hay datos FRED).
 
-### 4.7 Momentum mensual y semanal (`modeling/momentum.py`)
+### 4.7 Momentum mensual y semanal (`momentum.go`)
 
 Sobre **todo** el universo de cada análisis (no solo la selección Markowitz):
 
@@ -492,7 +495,7 @@ falta). Si falta alguna ventana, el ticker no se rankea. Se publican los **10** 
 
 ### 4.8 Parámetros por corrida
 
-`python -m fog_radar.jobs tendencia` acepta `--top-n`, `--top-n-us` y `--max-weight`, que
+`fogradar job tendencia` acepta `--top-n`, `--top-n-us` y `--max-weight`, que
 sobrescriben `TOP_N_SELECTION`, `TOP_N_SELECTION_US` y `MAX_WEIGHT_PER_ASSET` **solo para esa
 corrida** (se validan con la regla de 4.4). Cada corrida escribe en
 `output/<AAAAMMDD>_<NN>/run_manifest.json` los parámetros efectivos (`top_n`, `top_n_us`,
@@ -503,7 +506,7 @@ corrida** (se validan con la regla de 4.4). Cada corrida escribe en
 
 ## 5. Funciones transversales
 
-Archivo: `transversal/servicio.py`.
+Archivo: `internal/transversal/transversal.go`.
 
 **Frescura del hub.** Para cada módulo con programa asignado:
 

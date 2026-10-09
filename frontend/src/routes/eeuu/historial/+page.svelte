@@ -89,7 +89,7 @@
 {:else if runs.length === 0}
 	<EmptyState>
 		Todavía no hay corridas en el historial. Cada corrida del screener se guarda sola; las
-		anteriores se cargan con <code>python -m fog_radar.jobs us_stocks --backfill</code>.
+		anteriores se cargan con <code>fogradar job us_stocks --backfill</code>.
 	</EmptyState>
 {:else}
 	<Section title="Resumen">

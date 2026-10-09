@@ -17,7 +17,7 @@ func num(v any) *float64 {
 	return &f
 }
 
-// truthy replica el `or` de Python sobre un número (0 es falso).
+// truthy dice si un número es verdadero (0 es falso).
 func truthy(v *float64) bool { return v != nil && *v != 0 }
 
 // BuildValuation arma los múltiplos de valoración desde Ticker.info.
@@ -55,7 +55,7 @@ func BuildShareholderReturn(info map[string]any) ShareholderReturn {
 	return ShareholderReturn{DividendYield: &v}
 }
 
-// --- indicadores técnicos (a mano sobre una serie de precios, como indicators.py) ---
+// --- indicadores técnicos ---
 
 // SMA de la última ventana; nil si hay menos datos que la ventana.
 func SMA(closes []float64, window int) *float64 {

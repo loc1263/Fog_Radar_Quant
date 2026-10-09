@@ -69,67 +69,15 @@ func sameVec(t *testing.T, what string, got, want []float64, tol float64) {
 			ok = math.Abs(got[i]-want[i]) <= tol*math.Max(1, math.Abs(want[i]))
 		}
 		if !ok {
-			t.Fatalf("%s[%d]: %v (go) vs %v (pandas)", what, i, got[i], want[i])
+			t.Fatalf("%s[%d]: %v (obtenido) vs %v (esperado)", what, i, got[i], want[i])
 		}
 	}
-}
-
-func TestParidadConPandas(t *testing.T) {
-	f := load(t)
-	inexactos := 0
-	for ci, c := range f.Cases {
-		v := vec(c.Values)
-		n := len(DropNaN(v))
-		if n > 0 {
-			if got := Mean(v); !same(got, *c.Mean) {
-				inexactos++
-				if math.Abs(got-*c.Mean) > 1e-12*math.Max(1, math.Abs(*c.Mean)) {
-					t.Errorf("caso %d: media %v vs %v", ci, got, *c.Mean)
-				}
-			}
-			if got := StdPop(v); !same(got, *c.Std0) {
-				inexactos++
-				if math.Abs(got-*c.Std0) > 1e-12*math.Max(1, math.Abs(*c.Std0)) {
-					t.Errorf("caso %d: std %v vs %v", ci, got, *c.Std0)
-				}
-			}
-			for qs, want := range c.Q {
-				var q float64
-				if _, err := fmtSscan(qs, &q); err != nil {
-					t.Fatal(err)
-				}
-				if got := Quantile(v, q); !same(got, *want) {
-					t.Errorf("caso %d: cuantil %s %v vs %v", ci, qs, got, *want)
-				}
-			}
-		}
-		sameVec(t, "winsor", Winsorize(v, 0.05, 0.95), vec(c.Winsor), 0)
-		sameVec(t, "z", ZScore(v), vec(c.Z), 1e-12)
-		sameVec(t, "rank", RankMinDesc(v), vec(c.Rank), 0)
-	}
-	t.Logf("media/std con diferencia de bits (dentro de 1e-12): %d de %d casos", inexactos, len(f.Cases)*2)
 }
 
 func fmtSscan(s string, q *float64) (int, error) {
 	v, err := parseFloat(s)
 	*q = v
 	return 1, err
-}
-
-func TestPyReprComoPython(t *testing.T) {
-	for _, c := range load(t).Reprs {
-		if got := PyRepr(c.X); got != c.Repr {
-			t.Errorf("PyRepr(%v) = %q, Python repr = %q", c.X, got, c.Repr)
-		}
-	}
-}
-
-func TestRoundComoNumpy(t *testing.T) {
-	for _, c := range load(t).Rounds {
-		if got := Round(c.X, 4); !same(got, c.R4) {
-			t.Errorf("Round(%v, 4) = %v, numpy = %v", c.X, got, c.R4)
-		}
-	}
 }
 
 func TestOrderDescEstableConNaNAlFinal(t *testing.T) {

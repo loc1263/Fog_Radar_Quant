@@ -23,7 +23,7 @@ const (
 	RunDirPattern = `^\d{8}_\d{2}$`
 	// DashboardFile es el JSON de una corrida.
 	DashboardFile = "dashboard_data.json"
-	sinCorridas   = "Todavía no hay corridas de Tendencia. Ejecuta: python -m fog_radar.jobs tendencia"
+	sinCorridas   = "Todavía no hay corridas de Tendencia. Ejecuta: fogradar job tendencia"
 )
 
 var (

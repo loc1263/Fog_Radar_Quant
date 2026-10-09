@@ -12,7 +12,7 @@ copy .env.example .env        # (Windows) PRIVATE_API_URL / PRIVATE_API_KEY
 npm run dev                   # http://localhost:5173 (el backend debe estar en :8000)
 ```
 
-O levantar backend + frontend juntos desde la raíz: doble clic en `iniciar.bat` o `python iniciar_dev.py`.
+O levantar backend + frontend juntos desde la raíz: doble clic en `iniciar.bat`.
 
 - Vitrina de componentes (solo dev): http://localhost:5173/componentes
 
@@ -32,7 +32,7 @@ O levantar backend + frontend juntos desde la raíz: doble clic en `iniciar.bat`
 
 El navegador solo habla con este servidor. Los datos se cargan en `+page.server.ts`
 con `backend(event)` de `src/lib/server/api.ts`, que agrega la API key y la IP del
-usuario (`X-Forwarded-For`). Los tipos de respuesta vienen del OpenAPI de FastAPI.
+usuario (`X-Forwarded-For`). Los tipos de respuesta vienen del OpenAPI del backend.
 
 ```
 src/

@@ -14,14 +14,14 @@ import (
 	"fogradar/internal/quant"
 )
 
-// Selección de las mejores acciones vía el modelo de Markowitz (media-varianza), port de modeling/markowitz.py.
+// Selección de las mejores acciones vía el modelo de Markowitz (media-varianza).
 //
 //  1. Con los retornos semanales del universo se estiman el retorno esperado anualizado (CAGR) y la covarianza anualizada.
 //  2. Se optimiza el portafolio de máximo Sharpe long-only con tope de concentración y regularización L2.
 //  3. Se seleccionan los top_n activos de mayor peso.
 //  4. Con esos se re-optimiza (tope 30 %, o 1/N) → portafolio final. Más portafolios reducidos (5 y 10).
 //
-// El solver es un QP ADMM propio (quant.MaxSharpe) en vez de cvxpy; en la Fase 0 reprodujo a PyPortfolioOpt a 1.6e-10.
+// El solver es un QP ADMM propio (quant.MaxSharpe) (ADMM).
 
 // Spec de un análisis: key de archivo, etiqueta, universo, cuántas acciones seleccionar y mínimo de tickers.
 type Spec struct {
@@ -272,7 +272,7 @@ func RunSelection(prices *Prices, rf float64, runDir string, u *Universe, spec S
 	}
 	perf := OM{{"universo_completo", perfMetrics(full.Perf)}, {"portafolio_15_finales", perfMetrics(final.Perf)},
 		{"tasa_libre_riesgo_anual", rf}, {"tickers_seleccionados", top}}
-	if err := writeFile(filepath.Join(runDir, "portfolio_performance"+suffix+".json"), PyJSON(perf)); err != nil {
+	if err := writeFile(filepath.Join(runDir, "portfolio_performance"+suffix+".json"), OrderedJSON(perf)); err != nil {
 		return nil, err
 	}
 
@@ -293,7 +293,7 @@ func RunSelection(prices *Prices, rf float64, runDir string, u *Universe, spec S
 		}
 		perfN := OM{{"n_acciones", n}, {"retorno_esperado_anual", red.Perf[0]}, {"volatilidad_anual", red.Perf[1]},
 			{"sharpe_ratio", red.Perf[2]}, {"tickers_seleccionados", append([]string(nil), top[:n]...)}}
-		if err := writeFile(filepath.Join(runDir, "portfolio_performance_top"+sn+suffix+".json"), PyJSON(perfN)); err != nil {
+		if err := writeFile(filepath.Join(runDir, "portfolio_performance_top"+sn+suffix+".json"), OrderedJSON(perfN)); err != nil {
 			return nil, err
 		}
 	}

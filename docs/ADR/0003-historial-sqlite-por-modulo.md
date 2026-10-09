@@ -16,14 +16,14 @@ Cada módulo tiene `data/<modulo>/history.db`, un **índice derivado** de los ar
 de sus corridas (patrón que ya usaba Tendencia):
 
 1. **Los archivos siguen siendo la fuente de verdad** y lo que sirve la "última
-   corrida". La paridad con los originales no depende de la base.
+   corrida". Los resultados de los pipelines no dependen de la base.
 2. **Escritura al final del pipeline**, en una transacción e idempotente (la corrida
    se borra y se reinserta). Si falla, `histdb.guardar_sin_fallar` registra un WARNING
    y la corrida **no** falla.
-3. **Backfill** por módulo (`python -m fog_radar.jobs <modulo> --backfill`) que
+3. **Backfill** por módulo (`fogradar job <modulo> --backfill`) que
    reconstruye la base desde los archivos. Borrar `history.db` nunca pierde datos.
 4. **Lectura en solo lectura** (`mode=ro`); `[]` si la base todavía no existe.
-5. Helper común `core/histdb.py`: WAL (los GET no se bloquean mientras el pipeline
+5. Helper común `internal/core/histdb.go`: WAL (los GET no se bloquean mientras el pipeline
    escribe), `busy_timeout`, versión de esquema en `PRAGMA user_version` con
    migraciones en lista (nunca se editan las publicadas; un cambio es una migración
    nueva al final) y `diff_corridas` para comparar dos rankings.
@@ -51,7 +51,7 @@ reemplaza. Solo se guardan corridas terminadas (EEUU: `status: done`).
 - Los tests de cada módulo verifican que el backfill reproduce los mismos valores que
   los archivos, que es idempotente y que una falla de la base no rompe el pipeline. El
   diff de ETF se valida contra la rotación del original (`rotacion.json`).
-- `historial_corridas.csv`, `rotacion.py` y su racha siguen intactos (paridad). La
+- `historial_corridas.csv`, `rotacion.go` y su racha siguen intactos. La
   versión SQL (`/history/diff`, `/history/top`) generaliza a dos corridas cualesquiera.
 - `history.db` entra en el respaldo diario de `data/`. No usar carpetas sincronizadas
   (OneDrive/Dropbox) para `data/`: corrompen los archivos `-wal`/`-shm`.

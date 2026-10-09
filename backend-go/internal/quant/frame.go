@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-// Kind es el tipo de una columna (como el dtype de pandas): determina cómo se escribe al CSV.
+// Kind es el tipo de una columna: determina cómo se escribe al CSV.
 type Kind uint8
 
 const (
@@ -21,7 +21,7 @@ const (
 	Float Kind = iota
 	// Int: int64 sin faltantes («13»).
 	Int
-	// Str: texto con faltantes explícitos (columna object de pandas).
+	// Str: texto con faltantes explícitos.
 	Str
 )
 
@@ -95,7 +95,7 @@ func (c *Column) At(i int) float64 {
 	return NaN
 }
 
-// Cell devuelve el texto CSV de la fila i, como lo escribe pandas.
+// Cell devuelve el texto CSV de la fila i, en el formato estable de CSV.
 func (c *Column) Cell(i int) string {
 	switch c.Kind {
 	case Int:
@@ -109,7 +109,7 @@ func (c *Column) Cell(i int) string {
 	if math.IsNaN(c.F[i]) {
 		return ""
 	}
-	return PyRepr(c.F[i])
+	return FloatRepr(c.F[i])
 }
 
 // Value es el valor de la fila i para JSON: nil, float64, int64 o string.
@@ -242,7 +242,7 @@ func (f *Frame) Row(i int) map[string]any {
 	return m
 }
 
-// naStrings son los textos que pandas lee como faltantes por defecto.
+// naStrings son los textos que se leen como faltantes por defecto.
 var naStrings = map[string]bool{
 	"": true, "#N/A": true, "#N/A N/A": true, "#NA": true, "-1.#IND": true, "-1.#QNAN": true, "-NaN": true,
 	"-nan": true, "1.#IND": true, "1.#QNAN": true, "<NA>": true, "N/A": true, "NA": true, "NULL": true,
@@ -261,7 +261,7 @@ func ReadCSVSepFile(path string, sep rune) (*Frame, error) {
 	return ReadCSVSep(fh, sep)
 }
 
-// ReadCSVFile lee un CSV como pandas.read_csv: separador coma, encabezado, inferencia de tipo por columna
+// ReadCSVFile lee un CSV con separador coma, encabezado, inferencia de tipo por columna
 // (enteros sin faltantes → Int; numéricos → Float; el resto → Str).
 func ReadCSVFile(path string) (*Frame, error) {
 	fh, err := os.Open(path)
@@ -330,13 +330,13 @@ func inferColumn(name string, raw []string) *Column {
 		}
 	}
 	switch {
-	case nulls == n: // vacía: pandas la lee como float64 NaN
+	case nulls == n: // vacía: float64 NaN
 		return &Column{Name: name, Kind: Float, F: nums}
 	case allNum && allInt && nulls == 0:
 		ints := make([]int64, n)
 		for i, s := range raw {
 			v, err := strconv.ParseInt(strings.TrimSpace(s), 10, 64)
-			if err != nil { // no cabe en int64: pandas lo lee como float
+			if err != nil { // no cabe en int64: se lee como float
 				return &Column{Name: name, Kind: Float, F: nums}
 			}
 			ints[i] = v
@@ -435,7 +435,7 @@ func Cells(name string, vals []any) *Column {
 				if math.IsNaN(x) {
 					c.Null[i] = true
 				} else {
-					c.S[i] = PyRepr(x)
+					c.S[i] = FloatRepr(x)
 				}
 			default:
 				c.S[i] = fmt.Sprint(x)

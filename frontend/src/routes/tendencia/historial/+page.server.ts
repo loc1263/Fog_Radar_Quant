@@ -20,7 +20,9 @@ export const load: PageServerLoad = async (event) => {
 		tryCall(api.GET('/api/tendencia/analyses')),
 		tryCall(
 			api.GET('/api/tendencia/runs', {
-				params: { query: { analysis, from: desde, to: hasta, limit: 5000 } }
+				params: {
+					query: { analysis, from: desde ?? undefined, to: hasta ?? undefined, limit: 5000 }
+				}
 			})
 		),
 		tryCall(api.GET('/api/tendencia/history/sectors', { params: { query: { analysis } } })),

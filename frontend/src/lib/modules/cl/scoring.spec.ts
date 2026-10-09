@@ -99,7 +99,7 @@ describe('recalcularRanking', () => {
 		expect(filas[0].score_compuesto).toBe(data.filas[0].score_compuesto);
 	});
 
-	it('paridad: con los pesos por defecto reproduce el ranking del backend', () => {
+	it('con los pesos por defecto reproduce el ranking del backend', () => {
 		const r = recalcularRanking(data.filas, DEFAULT);
 		expect(r.map((f) => f.simbolo)).toEqual(data.filas.map((f) => f.simbolo));
 		expect(r.map((f) => f.ranking)).toEqual(data.filas.map((f) => f.ranking));

@@ -150,7 +150,7 @@
 	<EmptyState>
 		No hay corridas guardadas todavía para este análisis o rango. Cada corrida del pipeline se
 		guarda sola; las anteriores se cargan con
-		<code>python -m fog_radar.jobs tendencia --backfill</code>.
+		<code>fogradar job tendencia --backfill</code>.
 	</EmptyState>
 {:else}
 	<Section title="Resumen del período">

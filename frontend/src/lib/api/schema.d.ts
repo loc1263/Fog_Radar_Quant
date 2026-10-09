@@ -4,108 +4,6 @@
  */
 
 export interface paths {
-    "/api/health": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Salud del servicio (público) */
-        get: operations["health_api_health_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Estado de los 4 módulos */
-        get: operations["system_status_api_status_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/jobs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Último job de cada módulo */
-        get: operations["jobs_latest_api_jobs_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/jobs/programas": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Programación de las corridas batch */
-        get: operations["jobs_programas_api_jobs_programas_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/jobs/{module}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Historial de jobs de un módulo */
-        get: operations["jobs_history_api_jobs__module__get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/hub": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Estado, frescura y top 3 de cada módulo */
-        get: operations["get_hub_api_hub_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/buscar": {
         parameters: {
             query?: never;
@@ -114,109 +12,7 @@ export interface paths {
             cookie?: never;
         };
         /** Buscador global: en qué módulos aparece un ticker y con qué puntaje */
-        get: operations["get_buscar_api_buscar_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/cl/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Estado del módulo Acciones Chile (IPSA) */
-        get: operations["module_status_api_cl_status_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/cl/ranking": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Último ranking multi-factor del IPSA */
-        get: operations["get_ranking_api_cl_ranking_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/cl/indicadores": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Indicadores financieros crudos (antes del scoring) */
-        get: operations["get_indicadores_api_cl_indicadores_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/cl/history/runs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Corridas guardadas en el historial */
-        get: operations["history_runs_api_cl_history_runs_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/cl/history/ticker/{ticker}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Evolución de una acción */
-        get: operations["history_ticker_api_cl_history_ticker__ticker__get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/cl/history/ticker/{ticker}/indicador/{metrica}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Evolución de un indicador crudo de una acción */
-        get: operations["history_indicador_api_cl_history_ticker__ticker__indicador__metrica__get"];
+        get: operations["get_buscar"];
         put?: never;
         post?: never;
         delete?: never;
@@ -233,7 +29,7 @@ export interface paths {
             cookie?: never;
         };
         /** Cambios de posición entre dos corridas */
-        get: operations["history_diff_api_cl_history_diff_get"];
+        get: operations["cl_history_diff"];
         put?: never;
         post?: never;
         delete?: never;
@@ -242,92 +38,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/us/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Estado del módulo Acciones EEUU */
-        get: operations["module_status_api_us_status_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/us/rankings/latest": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Top 15 por momentum (última corrida) */
-        get: operations["latest_ranking_api_us_rankings_latest_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/us/rankings/latest/candidates": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Todos los candidatos evaluados (última corrida) */
-        get: operations["latest_candidates_api_us_rankings_latest_candidates_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/us/rankings/latest/prices": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Matriz de cierres (última corrida) */
-        get: operations["latest_prices_api_us_rankings_latest_prices_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/us/rankings/runs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Corridas disponibles (más reciente primero) */
-        get: operations["list_runs_api_us_rankings_runs_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/us/history/runs": {
+    "/api/cl/history/runs": {
         parameters: {
             query?: never;
             header?: never;
@@ -335,7 +46,7 @@ export interface paths {
             cookie?: never;
         };
         /** Corridas guardadas en el historial */
-        get: operations["history_runs_api_us_history_runs_get"];
+        get: operations["cl_history_runs"];
         put?: never;
         post?: never;
         delete?: never;
@@ -344,15 +55,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/us/history/ticker/{ticker}": {
+    "/api/cl/history/ticker/{ticker}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Score, momentum y posición de un ticker en cada corrida */
-        get: operations["history_ticker_api_us_history_ticker__ticker__get"];
+        /** Evolución de una acción */
+        get: operations["cl_history_ticker"];
         put?: never;
         post?: never;
         delete?: never;
@@ -361,15 +72,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/us/history/diff": {
+    "/api/cl/history/ticker/{ticker}/indicador/{metrica}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Qué entró y salió del top entre dos corridas */
-        get: operations["history_diff_api_us_history_diff_get"];
+        /** Evolución de un indicador crudo de una acción */
+        get: operations["cl_history_indicador"];
         put?: never;
         post?: never;
         delete?: never;
@@ -378,15 +89,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/us/history/top": {
+    "/api/cl/indicadores": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Permanencia en el top (últimas N corridas) */
-        get: operations["history_top_api_us_history_top_get"];
+        /** Indicadores financieros crudos (antes del scoring) */
+        get: operations["cl_indicadores"];
         put?: never;
         post?: never;
         delete?: never;
@@ -395,15 +106,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/us/tickers/{ticker}/evaluate": {
+    "/api/cl/ranking": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Evalúa un ticker en vivo (Yahoo Finance) */
-        get: operations["evaluate_api_us_tickers__ticker__evaluate_get"];
+        /** Último ranking multi-factor del IPSA */
+        get: operations["cl_ranking"];
         put?: never;
         post?: never;
         delete?: never;
@@ -412,202 +123,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/us/portfolio/limits": {
+    "/api/cl/status": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Límites del modelo de portafolio */
-        get: operations["portfolio_limits_api_us_portfolio_limits_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/us/portfolio/optimize": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Portafolio del modelo único: clusters de correlación + Black-Litterman */
-        post: operations["optimize_api_us_portfolio_optimize_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/etf/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Estado del módulo ETFs */
-        get: operations["module_status_api_etf_status_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/etf/resumen": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Resumen de la corrida vigente + parámetros del modelo */
-        get: operations["resumen_api_etf_resumen_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/etf/top15": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Top 15 recomendados (ranking principal) */
-        get: operations["top15_api_etf_top15_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/etf/top15-simple": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Top 15 por rendimiento y Beta (20 % c/u) */
-        get: operations["top15_simple_api_etf_top15_simple_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/etf/top15-vanguard": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Top 15 del ranking principal, solo Vanguard */
-        get: operations["top15_vanguard_api_etf_top15_vanguard_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/etf/ranking-completo": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Universo depurado completo */
-        get: operations["ranking_completo_api_etf_ranking_completo_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/etf/excluidos": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Excluidos por distorsión (|z MAD| > umbral) */
-        get: operations["excluidos_api_etf_excluidos_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/etf/diversificacion": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Categorías dentro del Top 15 */
-        get: operations["diversificacion_api_etf_diversificacion_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/etf/rotacion": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Rotación del Top 15 vs. la corrida anterior */
-        get: operations["rotacion_api_etf_rotacion_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/etf/momentum/top15": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Top 15 Momentum / crecimiento */
-        get: operations["momentum_top15_api_etf_momentum_top15_get"];
+        /** Estado del módulo Acciones Chile (IPSA) */
+        get: operations["cl_stocks_status"];
         put?: never;
         post?: never;
         delete?: never;
@@ -624,7 +148,7 @@ export interface paths {
             cookie?: never;
         };
         /** Ranking por categoría */
-        get: operations["categorias_ranking_api_etf_categorias_ranking_get"];
+        get: operations["etf_categorias_ranking"];
         put?: never;
         post?: never;
         delete?: never;
@@ -633,15 +157,32 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/etf/russell3000": {
+    "/api/etf/diversificacion": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Top 15 Cap. (momentum factor tipo VFMO) */
-        get: operations["russell3000_api_etf_russell3000_get"];
+        /** Categorías dentro del Top 15 */
+        get: operations["etf_diversificacion"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/excluidos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Excluidos por distorsión (|z MAD| > umbral) */
+        get: operations["etf_excluidos"];
         put?: never;
         post?: never;
         delete?: never;
@@ -658,7 +199,109 @@ export interface paths {
             cookie?: never;
         };
         /** Historial de corridas */
-        get: operations["historial_api_etf_historial_get"];
+        get: operations["etf_historial"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/history/categorias": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Score promedio y presencia en el Top 15 por categoría, en el tiempo */
+        get: operations["etf_history_categorias"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/history/diff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Rotación del Top 15 entre dos corridas */
+        get: operations["etf_history_diff"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/history/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Corridas guardadas en el historial */
+        get: operations["etf_history_runs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/history/ticker/{ticker}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Score, puesto y métricas de un ETF en cada corrida */
+        get: operations["etf_history_ticker"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/history/top": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Permanencia en el Top 15 (últimas N) */
+        get: operations["etf_history_top"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/momentum/top15": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Top 15 Momentum / crecimiento */
+        get: operations["etf_momentum_top15"];
         put?: never;
         post?: never;
         delete?: never;
@@ -675,7 +318,58 @@ export interface paths {
             cookie?: never;
         };
         /** Informe ejecutivo en PDF de la corrida vigente */
-        get: operations["descargar_pdf_api_etf_pdf_get"];
+        get: operations["etf_pdf"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/ranking-completo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Universo depurado completo */
+        get: operations["etf_ranking_completo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/resumen": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Resumen de la corrida vigente + parámetros del modelo */
+        get: operations["etf_resumen"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/etf/rotacion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Rotación del Top 15 vs. la corrida anterior */
+        get: operations["etf_rotacion"];
         put?: never;
         post?: never;
         delete?: never;
@@ -694,22 +388,22 @@ export interface paths {
         get?: never;
         put?: never;
         /** Re-analiza el CSV vigente (no descarga de Yahoo) */
-        post: operations["run_api_etf_run_post"];
+        post: operations["etf_run"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/api/etf/history/runs": {
+    "/api/etf/russell3000": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Corridas guardadas en el historial */
-        get: operations["history_runs_api_etf_history_runs_get"];
+        /** Top 15 Cap. (momentum factor tipo VFMO) */
+        get: operations["etf_russell3000"];
         put?: never;
         post?: never;
         delete?: never;
@@ -718,15 +412,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/etf/history/ticker/{ticker}": {
+    "/api/etf/status": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Score, puesto y métricas de un ETF en cada corrida */
-        get: operations["history_ticker_api_etf_history_ticker__ticker__get"];
+        /** Estado del módulo ETFs */
+        get: operations["etf_status"];
         put?: never;
         post?: never;
         delete?: never;
@@ -735,15 +429,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/etf/history/diff": {
+    "/api/etf/top15": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Rotación del Top 15 entre dos corridas */
-        get: operations["history_diff_api_etf_history_diff_get"];
+        /** Top 15 recomendados (ranking principal) */
+        get: operations["etf_top15"];
         put?: never;
         post?: never;
         delete?: never;
@@ -752,15 +446,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/etf/history/top": {
+    "/api/etf/top15-simple": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Permanencia en el Top 15 (últimas N) */
-        get: operations["history_top_api_etf_history_top_get"];
+        /** Top 15 por rendimiento y Beta (20 % c/u) */
+        get: operations["etf_top15_simple"];
         put?: never;
         post?: never;
         delete?: never;
@@ -769,15 +463,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/etf/history/categorias": {
+    "/api/etf/top15-vanguard": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Score promedio y presencia en el Top 15 por categoría, en el tiempo */
-        get: operations["history_categorias_api_etf_history_categorias_get"];
+        /** Top 15 del ranking principal, solo Vanguard */
+        get: operations["etf_top15_vanguard"];
         put?: never;
         post?: never;
         delete?: never;
@@ -786,15 +480,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/tendencia/status": {
+    "/api/health": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Estado del módulo Tendencia Asia + EEUU */
-        get: operations["module_status_api_tendencia_status_get"];
+        /** Salud del servicio (público) */
+        get: operations["health"];
         put?: never;
         post?: never;
         delete?: never;
@@ -803,15 +497,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/tendencia/latest": {
+    "/api/hub": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Última corrida completa */
-        get: operations["latest_api_tendencia_latest_get"];
+        /** Estado, frescura y top 3 de cada módulo */
+        get: operations["get_hub"];
         put?: never;
         post?: never;
         delete?: never;
@@ -820,15 +514,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/tendencia/runs/{run_dir}/dashboard": {
+    "/api/jobs": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Una corrida completa */
-        get: operations["run_dashboard_api_tendencia_runs__run_dir__dashboard_get"];
+        /** Último job de cada módulo */
+        get: operations["jobs_latest"];
         put?: never;
         post?: never;
         delete?: never;
@@ -837,15 +531,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/tendencia/runs/{run_dir}/files": {
+    "/api/jobs/programas": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Archivos de una corrida */
-        get: operations["run_files_api_tendencia_runs__run_dir__files_get"];
+        /** Programación de las corridas batch */
+        get: operations["jobs_programas"];
         put?: never;
         post?: never;
         delete?: never;
@@ -854,15 +548,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/tendencia/runs/{run_dir}/files/{nombre}": {
+    "/api/jobs/{module}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Descarga un archivo de una corrida (PDF, CSV, JSON, TXT) */
-        get: operations["run_file_api_tendencia_runs__run_dir__files__nombre__get"];
+        /** Historial de jobs de un módulo */
+        get: operations["jobs_history"];
         put?: never;
         post?: never;
         delete?: never;
@@ -871,15 +565,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/tendencia/excluidos": {
+    "/api/status": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Tickers excluidos en el último armado del dataset (con motivo) */
-        get: operations["excluidos_api_tendencia_excluidos_get"];
+        /** Estado de los 4 módulos */
+        get: operations["system_status"];
         put?: never;
         post?: never;
         delete?: never;
@@ -896,7 +590,7 @@ export interface paths {
             cookie?: never;
         };
         /** Análisis vistos en el historial */
-        get: operations["list_analyses_api_tendencia_analyses_get"];
+        get: operations["td_analyses"];
         put?: never;
         post?: never;
         delete?: never;
@@ -905,117 +599,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/tendencia/runs": {
+    "/api/tendencia/excluidos": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Performance por corrida (ascendente) */
-        get: operations["list_runs_api_tendencia_runs_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/tendencia/runs/{run_dir}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Corrida reconstruida desde history.db */
-        get: operations["get_run_api_tendencia_runs__run_dir__get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/tendencia/history/performance": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Serie de performance */
-        get: operations["history_performance_api_tendencia_history_performance_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/tendencia/history/tickers": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Tickers seleccionados alguna vez */
-        get: operations["history_tickers_api_tendencia_history_tickers_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/tendencia/history/ticker/{ticker}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Trayectoria de un ticker */
-        get: operations["history_ticker_api_tendencia_history_ticker__ticker__get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/tendencia/history/universe/{ticker}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Posición de un ticker en el universo completo (pesos de Markowitz) */
-        get: operations["history_universe_api_tendencia_history_universe__ticker__get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/tendencia/history/sectors": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Peso por sector en el tiempo */
-        get: operations["history_sectors_api_tendencia_history_sectors_get"];
+        /** Tickers excluidos en el último armado del dataset (con motivo) */
+        get: operations["td_excluidos"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1032,7 +624,415 @@ export interface paths {
             cookie?: never;
         };
         /** Líderes de momentum por corrida */
-        get: operations["history_momentum_leaders_api_tendencia_history_momentum_leaders_get"];
+        get: operations["td_history_momentum_leaders"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/history/performance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Serie de performance */
+        get: operations["td_history_performance"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/history/sectors": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Peso por sector en el tiempo */
+        get: operations["td_history_sectors"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/history/ticker/{ticker}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Trayectoria de un ticker */
+        get: operations["td_history_ticker"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/history/tickers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Tickers seleccionados alguna vez */
+        get: operations["td_history_tickers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/history/universe/{ticker}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Posición de un ticker en el universo completo (pesos de Markowitz) */
+        get: operations["td_history_universe"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/latest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Última corrida completa */
+        get: operations["td_latest"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Performance por corrida (ascendente) */
+        get: operations["td_runs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/runs/{run_dir}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Corrida reconstruida desde history.db */
+        get: operations["td_run_detalle"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/runs/{run_dir}/dashboard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Una corrida completa */
+        get: operations["td_run_dashboard"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/runs/{run_dir}/files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Archivos de una corrida */
+        get: operations["td_run_files"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/runs/{run_dir}/files/{nombre}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Descarga un archivo de una corrida (PDF, CSV, JSON, TXT) */
+        get: operations["td_run_file"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tendencia/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Estado del módulo Tendencia Asia + EEUU */
+        get: operations["tendencia_status"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/history/diff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Qué entró y salió del top entre dos corridas */
+        get: operations["us_history_diff"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/history/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Corridas guardadas en el historial */
+        get: operations["us_history_runs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/history/ticker/{ticker}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Score, momentum y posición de un ticker en cada corrida */
+        get: operations["us_history_ticker"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/history/top": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Permanencia en el top (últimas N corridas) */
+        get: operations["us_history_top"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/portfolio/limits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Límites del modelo de portafolio */
+        get: operations["us_portfolio_limits"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/portfolio/optimize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Portafolio del modelo único: clusters de correlación + Black-Litterman */
+        post: operations["us_portfolio_optimize"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/rankings/latest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Top 15 por momentum (última corrida) */
+        get: operations["us_latest_ranking"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/rankings/latest/candidates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Todos los candidatos evaluados (última corrida) */
+        get: operations["us_latest_candidates"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/rankings/latest/prices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Matriz de cierres (última corrida) */
+        get: operations["us_latest_prices"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/rankings/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Corridas disponibles (más reciente primero) */
+        get: operations["us_list_runs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Estado del módulo Acciones EEUU */
+        get: operations["us_stocks_status"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/us/tickers/{ticker}/evaluate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Evalúa un ticker en vivo (Yahoo Finance) */
+        get: operations["us_evaluate"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1045,1956 +1045,1448 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** BusquedaResponse */
         BusquedaResponse: {
-            /** Consulta */
             consulta: string;
-            /** Resultados */
             resultados: components["schemas"]["ResultadoBusqueda"][];
         };
-        /** CandidateRow */
         CandidateRow: {
-            /** Ticker */
-            ticker: string;
-            /** Name */
-            name: string | null;
-            /** Sector */
-            sector: string | null;
-            /** Market Cap */
-            market_cap: number | null;
-            /** Price */
-            price: number;
-            /** Momentum 12 1 */
-            momentum_12_1: number;
-            /** Return 1D */
-            return_1d: number | null;
-            /** Return 5D */
-            return_5d: number | null;
-            /** Return 3M */
-            return_3m: number | null;
-            /** Return 6M */
-            return_6m: number | null;
-            /** Return 1Y */
-            return_1y: number | null;
-            /** Return Ytd */
-            return_ytd: number | null;
-            technical: components["schemas"]["Technical"];
-            valuation: components["schemas"]["Valuation"];
-            profitability: components["schemas"]["Profitability"];
             financial_health: components["schemas"]["FinancialHealth"];
-            shareholder_return: components["schemas"]["ShareholderReturn"];
+            /** Format: double */
+            market_cap: number | null;
+            /** Format: double */
+            momentum_12_1: number;
+            name: string | null;
+            /** Format: double */
+            price: number;
+            profitability: components["schemas"]["Profitability"];
+            /** Format: double */
+            return_1d: number | null;
+            /** Format: double */
+            return_1y: number | null;
+            /** Format: double */
+            return_3m: number | null;
+            /** Format: double */
+            return_5d: number | null;
+            /** Format: double */
+            return_6m: number | null;
+            /** Format: double */
+            return_ytd: number | null;
             score: components["schemas"]["Score"];
+            sector: string | null;
+            shareholder_return: components["schemas"]["ShareholderReturn"];
+            technical: components["schemas"]["Technical"];
+            ticker: string;
+            valuation: components["schemas"]["Valuation"];
         };
-        /** ClHistCorrida */
         ClHistCorrida: {
-            /**
-             * Ts
-             * @description Timestamp de la corrida (YYYYMMDD_HHMMSS), su identificador.
-             */
-            ts: string;
-            /**
-             * Run At
-             * Format: date-time
-             */
-            run_at: string;
-            /** Archivo */
             archivo: string;
-            /** N Tickers */
+            /** Format: int64 */
             n_tickers: number;
-            /** Top1 Ticker */
-            top1_ticker: string | null;
-            /** Top1 Score */
-            top1_score: number | null;
-        };
-        /** ClHistIndicadorPunto */
-        ClHistIndicadorPunto: {
-            /** Ts */
-            ts: string;
-            /**
-             * Run At
-             * Format: date-time
-             */
+            /** Format: date-time */
             run_at: string;
-            /** Valor */
+            /** Format: double */
+            top1_score: number | null;
+            top1_ticker: string | null;
+            /** @description Timestamp de la corrida (YYYYMMDD_HHMMSS), su identificador. */
+            ts: string;
+        };
+        ClHistIndicadorPunto: {
+            /** Format: date-time */
+            run_at: string;
+            ts: string;
+            /** Format: double */
             valor: number | null;
         };
-        /** ClHistTickerPunto */
         ClHistTickerPunto: {
-            /** Ts */
-            ts: string;
-            /**
-             * Run At
-             * Format: date-time
-             */
-            run_at: string;
-            /** N Tickers */
-            n_tickers: number;
-            /** Rank */
-            rank: number | null;
-            /** Nombre */
-            nombre: string | null;
-            /** Score Compuesto */
-            score_compuesto: number | null;
-            pilares: components["schemas"]["PilarScores"];
-            /** Metricas Disponibles */
+            /** Format: int64 */
             metricas_disponibles: number | null;
+            /** Format: int64 */
+            n_tickers: number;
+            nombre: string | null;
+            pilares: components["schemas"]["PilarScores"];
+            /** Format: int64 */
+            rank: number | null;
+            /** Format: date-time */
+            run_at: string;
+            /** Format: double */
+            score_compuesto: number | null;
+            ts: string;
         };
-        /** ColumnaInfo */
         ColumnaInfo: {
-            /** Key */
-            key: string;
-            /** Label */
-            label: string;
-            /** Grupo */
-            grupo: string;
-            /**
-             * Unidad
-             * @enum {string}
-             */
-            unidad: "texto" | "numero" | "multiplo" | "pct" | "pct_pts" | "monto" | "cantidad" | "fecha";
-            /** Descripcion */
             descripcion?: string | null;
+            grupo: string;
+            key: string;
+            label: string;
+            /** @enum {string} */
+            unidad: "texto" | "numero" | "monto" | "multiplo" | "pct" | "pct_pts" | "cantidad" | "fecha";
         };
-        /** ErrorResponse */
         ErrorResponse: {
-            /** Detail */
-            detail: string;
-            /** Code */
+            /** @description Código estable (no_data, busy, rate_limited…) */
             code: string;
+            /** @description Mensaje legible */
+            detail: string;
         };
-        /** EtfCap */
         EtfCap: {
-            /** Fecha */
-            fecha: string | null;
-            /** Benchmark Ticker */
-            benchmark_ticker: string | null;
-            /** Benchmark Retorno 1Y */
+            /** Format: double */
             benchmark_retorno_1y: number | null;
-            /** Filas */
-            filas: components["schemas"]["EtfCapFila"][];
-            /** Buckets */
+            benchmark_ticker: string | null;
             buckets: components["schemas"]["EtfCapBucket"][];
+            /** Format: date */
+            fecha: string | null;
+            filas: components["schemas"]["EtfCapFila"][];
         };
-        /** EtfCapBucket */
         EtfCapBucket: {
-            /** Cap Bucket */
-            cap_bucket: string;
-            /** N Universo */
-            n_universo: number;
-            /** Aum Total Bucket */
-            aum_total_bucket: number | null;
-            /** N Seleccionados */
-            n_seleccionados: number;
-            /** Aum Seleccionado */
+            /** Format: double */
             aum_seleccionado: number | null;
-            /** Pct Aum Cubierto */
+            /** Format: double */
+            aum_total_bucket: number | null;
+            cap_bucket: string;
+            /** Format: int64 */
+            n_seleccionados: number;
+            /** Format: int64 */
+            n_universo: number;
+            /** Format: double */
             pct_aum_cubierto: number | null;
         };
-        /** EtfCapFila */
         EtfCapFila: {
-            /** Ticker */
-            ticker: string;
-            /** Nombre */
-            nombre: string | null;
-            /** Categoria */
-            categoria: string | null;
-            /** Proveedor */
-            proveedor: string | null;
-            /** Precio */
-            precio: number | null;
-            /** Volumen */
-            volumen: number | null;
-            /** Aum */
-            aum: number | null;
-            /** Expense Ratio */
-            expense_ratio: number | null;
-            /** Perf 5D */
-            perf_5d: number | null;
-            /** Perf 1M */
-            perf_1m: number | null;
-            /** Perf 6M */
-            perf_6m: number | null;
-            /** Perf Ytd */
-            perf_ytd: number | null;
-            /** Perf 1Y */
-            perf_1y: number | null;
-            /** Perf 5Y */
-            perf_5y: number | null;
-            /** Max 52S */
-            max_52s: number | null;
-            /** Min 52S */
-            min_52s: number | null;
-            /** Sharpe */
-            sharpe: number | null;
-            /** Treynor */
-            treynor: number | null;
-            /** Beta */
-            beta: number | null;
-            /** Dist Max 52S Pct */
-            dist_max_52s_pct: number | null;
-            /** Rango 52S Pct */
-            rango_52s_pct: number | null;
-            /** Periodos Positivos */
-            periodos_positivos: number | null;
-            /** Dispersion Periodos */
-            dispersion_periodos: number | null;
-            /** Pasos Crecientes */
-            pasos_crecientes: number | null;
-            /** S Sharpe */
-            s_sharpe: number | null;
-            /** S Treynor */
-            s_treynor: number | null;
-            /** S 1Y */
-            s_1y: number | null;
-            /** S 6M */
-            s_6m: number | null;
-            /** S Consistencia */
-            s_consistencia: number | null;
-            /** S Tendencia */
-            s_tendencia: number | null;
-            /** S Baja Dispersion */
-            s_baja_dispersion: number | null;
-            /** S Bajo Beta */
-            s_bajo_beta: number | null;
-            /** S Cerca Maximo */
-            s_cerca_maximo: number | null;
-            /** Score */
-            score: number | null;
-            /** Ss 5D */
-            ss_5d: number | null;
-            /** Ss 1M */
-            ss_1m: number | null;
-            /** Ss 6M */
-            ss_6m: number | null;
-            /** Ss 1Y */
-            ss_1y: number | null;
-            /** Ss Bajo Beta */
-            ss_bajo_beta: number | null;
-            /** Score Simple */
-            score_simple: number | null;
-            /** Ventana Atipica */
-            ventana_atipica: string | null;
-            /** Z Score */
-            z_score: number | null;
-            /** M Norm */
-            m_norm: number | null;
-            /** Q Norm */
-            q_norm: number | null;
-            /** Consist Norm */
-            consist_norm: number | null;
-            /** Score Comp */
-            score_comp: number | null;
-            /** Cap Bucket */
-            cap_bucket: string | null;
-            /** Comp T12T1 Aprox */
-            comp_t12t1_aprox: number | null;
-            /** Comp T7T1 Aprox */
-            comp_t7t1_aprox: number | null;
-            /** Alpha Capm Aprox */
+            /** Format: double */
             alpha_capm_aprox: number | null;
-            /** Comp1 Norm */
+            /** Format: double */
+            aum: number | null;
+            /** Format: double */
+            beta: number | null;
+            cap_bucket: string | null;
+            categoria: string | null;
+            /** Format: double */
             comp1_norm: number | null;
-            /** Comp2 Norm */
+            /** Format: double */
             comp2_norm: number | null;
-            /** Comp3 Norm */
+            /** Format: double */
             comp3_norm: number | null;
-            /** Momentum Score */
+            /** Format: double */
+            comp_t12t1_aprox: number | null;
+            /** Format: double */
+            comp_t7t1_aprox: number | null;
+            /** Format: double */
+            consist_norm: number | null;
+            /** Format: double */
+            dispersion_periodos: number | null;
+            /** Format: double */
+            dist_max_52s_pct: number | null;
+            /** Format: double */
+            expense_ratio: number | null;
+            /** Format: double */
+            m_norm: number | null;
+            /** Format: double */
+            max_52s: number | null;
+            /** Format: double */
+            min_52s: number | null;
+            /** Format: double */
             momentum_score: number | null;
-            /** Peso Portfolio */
+            nombre: string | null;
+            /** Format: double */
+            pasos_crecientes: number | null;
+            /** Format: double */
+            perf_1m: number | null;
+            /** Format: double */
+            perf_1y: number | null;
+            /** Format: double */
+            perf_5d: number | null;
+            /** Format: double */
+            perf_5y: number | null;
+            /** Format: double */
+            perf_6m: number | null;
+            /** Format: double */
+            perf_ytd: number | null;
+            /** Format: double */
+            periodos_positivos: number | null;
+            /** Format: double */
             peso_portfolio: number | null;
+            /** Format: double */
+            precio: number | null;
+            proveedor: string | null;
+            /** Format: double */
+            q_norm: number | null;
+            /** Format: double */
+            rango_52s_pct: number | null;
+            /** Format: double */
+            s_1y: number | null;
+            /** Format: double */
+            s_6m: number | null;
+            /** Format: double */
+            s_baja_dispersion: number | null;
+            /** Format: double */
+            s_bajo_beta: number | null;
+            /** Format: double */
+            s_cerca_maximo: number | null;
+            /** Format: double */
+            s_consistencia: number | null;
+            /** Format: double */
+            s_sharpe: number | null;
+            /** Format: double */
+            s_tendencia: number | null;
+            /** Format: double */
+            s_treynor: number | null;
+            /** Format: double */
+            score: number | null;
+            /** Format: double */
+            score_comp: number | null;
+            /** Format: double */
+            score_simple: number | null;
+            /** Format: double */
+            sharpe: number | null;
+            /** Format: double */
+            ss_1m: number | null;
+            /** Format: double */
+            ss_1y: number | null;
+            /** Format: double */
+            ss_5d: number | null;
+            /** Format: double */
+            ss_6m: number | null;
+            /** Format: double */
+            ss_bajo_beta: number | null;
+            ticker: string;
+            /** Format: double */
+            treynor: number | null;
+            ventana_atipica: string | null;
+            /** Format: double */
+            volumen: number | null;
+            /** Format: double */
+            z_score: number | null;
         };
-        /** EtfCategoriaFila */
         EtfCategoriaFila: {
-            /** Categoria */
-            categoria: string;
-            /** N */
-            n: number;
-            /** Sharpe Promedio */
-            sharpe_promedio: number | null;
-            /** Treynor Mediana */
-            treynor_mediana: number | null;
-            /** Beta Promedio */
+            /** Format: double */
             beta_promedio: number | null;
-            /** Perf 1Y Promedio */
-            perf_1y_promedio: number | null;
-            /** Perf 6M Promedio */
-            perf_6m_promedio: number | null;
-            /** Score Promedio */
-            score_promedio: number | null;
-            /** Pct Positivos 1Y */
+            categoria: string;
+            /** Format: int64 */
+            n: number;
+            /** Format: double */
             pct_positivos_1y: number | null;
-            /**
-             * Tickers
-             * @default []
-             */
+            /** Format: double */
+            perf_1y_promedio: number | null;
+            /** Format: double */
+            perf_6m_promedio: number | null;
+            /** Format: double */
+            score_promedio: number | null;
+            /** Format: double */
+            sharpe_promedio: number | null;
+            /** @description Tickers de la categoría, ordenados por Sharpe descendente. */
             tickers: string[];
+            /** Format: double */
+            treynor_mediana: number | null;
         };
-        /** EtfCategorias */
         EtfCategorias: {
-            /** Fecha */
+            /** Format: date */
             fecha: string | null;
-            /** Min N Categoria */
-            min_n_categoria: number;
-            /** Filas */
             filas: components["schemas"]["EtfCategoriaFila"][];
+            /** Format: int64 */
+            min_n_categoria: number;
         };
-        /** EtfDiversificacion */
         EtfDiversificacion: {
-            /** Fecha */
+            /** Format: date */
             fecha: string | null;
-            /** Filas */
             filas: components["schemas"]["EtfDiversificacionFila"][];
         };
-        /** EtfDiversificacionFila */
         EtfDiversificacionFila: {
-            /** Categoria */
             categoria: string;
-            /** Conteo */
+            /** Format: int64 */
             conteo: number;
-            /** Pct */
+            /** Format: double */
             pct: number;
         };
-        /**
-         * EtfFila
-         * @description Un ETF en cualquiera de las tablas (cada tabla trae solo algunos campos).
-         */
         EtfFila: {
-            /** Ticker */
-            ticker: string;
-            /** Nombre */
-            nombre: string | null;
-            /** Categoria */
-            categoria: string | null;
-            /** Proveedor */
-            proveedor: string | null;
-            /** Precio */
-            precio: number | null;
-            /** Volumen */
-            volumen: number | null;
-            /** Aum */
+            /** Format: double */
             aum: number | null;
-            /** Expense Ratio */
-            expense_ratio: number | null;
-            /** Perf 5D */
-            perf_5d: number | null;
-            /** Perf 1M */
-            perf_1m: number | null;
-            /** Perf 6M */
-            perf_6m: number | null;
-            /** Perf Ytd */
-            perf_ytd: number | null;
-            /** Perf 1Y */
-            perf_1y: number | null;
-            /** Perf 5Y */
-            perf_5y: number | null;
-            /** Max 52S */
-            max_52s: number | null;
-            /** Min 52S */
-            min_52s: number | null;
-            /** Sharpe */
-            sharpe: number | null;
-            /** Treynor */
-            treynor: number | null;
-            /** Beta */
+            /** Format: double */
             beta: number | null;
-            /** Dist Max 52S Pct */
-            dist_max_52s_pct: number | null;
-            /** Rango 52S Pct */
-            rango_52s_pct: number | null;
-            /** Periodos Positivos */
-            periodos_positivos: number | null;
-            /** Dispersion Periodos */
-            dispersion_periodos: number | null;
-            /** Pasos Crecientes */
-            pasos_crecientes: number | null;
-            /** S Sharpe */
-            s_sharpe: number | null;
-            /** S Treynor */
-            s_treynor: number | null;
-            /** S 1Y */
-            s_1y: number | null;
-            /** S 6M */
-            s_6m: number | null;
-            /** S Consistencia */
-            s_consistencia: number | null;
-            /** S Tendencia */
-            s_tendencia: number | null;
-            /** S Baja Dispersion */
-            s_baja_dispersion: number | null;
-            /** S Bajo Beta */
-            s_bajo_beta: number | null;
-            /** S Cerca Maximo */
-            s_cerca_maximo: number | null;
-            /** Score */
-            score: number | null;
-            /** Ss 5D */
-            ss_5d: number | null;
-            /** Ss 1M */
-            ss_1m: number | null;
-            /** Ss 6M */
-            ss_6m: number | null;
-            /** Ss 1Y */
-            ss_1y: number | null;
-            /** Ss Bajo Beta */
-            ss_bajo_beta: number | null;
-            /** Score Simple */
-            score_simple: number | null;
-            /** Ventana Atipica */
-            ventana_atipica: string | null;
-            /** Z Score */
-            z_score: number | null;
-            /** M Norm */
-            m_norm: number | null;
-            /** Q Norm */
-            q_norm: number | null;
-            /** Consist Norm */
+            categoria: string | null;
+            /** Format: double */
             consist_norm: number | null;
-            /** Score Comp */
+            /** Format: double */
+            dispersion_periodos: number | null;
+            /** Format: double */
+            dist_max_52s_pct: number | null;
+            /** Format: double */
+            expense_ratio: number | null;
+            /** Format: double */
+            m_norm: number | null;
+            /** Format: double */
+            max_52s: number | null;
+            /** Format: double */
+            min_52s: number | null;
+            nombre: string | null;
+            /** Format: double */
+            pasos_crecientes: number | null;
+            /** Format: double */
+            perf_1m: number | null;
+            /** Format: double */
+            perf_1y: number | null;
+            /** Format: double */
+            perf_5d: number | null;
+            /** Format: double */
+            perf_5y: number | null;
+            /** Format: double */
+            perf_6m: number | null;
+            /** Format: double */
+            perf_ytd: number | null;
+            /** Format: double */
+            periodos_positivos: number | null;
+            /** Format: double */
+            precio: number | null;
+            proveedor: string | null;
+            /** Format: double */
+            q_norm: number | null;
+            /** Format: double */
+            rango_52s_pct: number | null;
+            /** Format: double */
+            s_1y: number | null;
+            /** Format: double */
+            s_6m: number | null;
+            /** Format: double */
+            s_baja_dispersion: number | null;
+            /** Format: double */
+            s_bajo_beta: number | null;
+            /** Format: double */
+            s_cerca_maximo: number | null;
+            /** Format: double */
+            s_consistencia: number | null;
+            /** Format: double */
+            s_sharpe: number | null;
+            /** Format: double */
+            s_tendencia: number | null;
+            /** Format: double */
+            s_treynor: number | null;
+            /** Format: double */
+            score: number | null;
+            /** Format: double */
             score_comp: number | null;
-        };
-        /** EtfHistCategoria */
-        EtfHistCategoria: {
-            /** Run Key */
-            run_key: string;
-            /**
-             * Fecha
-             * Format: date
-             */
-            fecha: string;
-            /** Category */
-            category: string;
-            /** N */
-            n: number | null;
-            /** Score Promedio */
-            score_promedio: number | null;
-            /** Sharpe Promedio */
-            sharpe_promedio: number | null;
-            /** Perf 1Y Promedio */
-            perf_1y_promedio: number | null;
-            /** En Top15 */
-            en_top15: number;
-        };
-        /** EtfHistCorrida */
-        EtfHistCorrida: {
-            /**
-             * Run Key
-             * @description <yyyymmdd> o <yyyymmdd>_<n> (mismo sufijo que hist/).
-             */
-            run_key: string;
-            /**
-             * Fecha
-             * Format: date
-             */
-            fecha: string;
-            /** Secuencia */
-            secuencia: number;
-            /** Run At */
-            run_at: string | null;
-            /** Universo Bruto */
-            universo_bruto: number | null;
-            /** Universo Depurado */
-            universo_depurado: number;
-            /** N Outliers */
-            n_outliers: number | null;
-            /** Sharpe Promedio */
-            sharpe_promedio: number | null;
-            /** Beta Promedio */
-            beta_promedio: number | null;
-            /** Top1 Ticker */
-            top1_ticker: string | null;
-            /** Top1 Score */
-            top1_score: number | null;
-        };
-        /** EtfHistPermanencia */
-        EtfHistPermanencia: {
-            /** Ticker */
+            /** Format: double */
+            score_simple: number | null;
+            /** Format: double */
+            sharpe: number | null;
+            /** Format: double */
+            ss_1m: number | null;
+            /** Format: double */
+            ss_1y: number | null;
+            /** Format: double */
+            ss_5d: number | null;
+            /** Format: double */
+            ss_6m: number | null;
+            /** Format: double */
+            ss_bajo_beta: number | null;
             ticker: string;
-            /** Nombre */
-            nombre: string | null;
-            /** Veces En Top */
-            veces_en_top: number;
-            /** Corridas */
-            corridas: number;
-            /** Racha Actual */
-            racha_actual: number;
-            /** Rank Ultima */
-            rank_ultima: number | null;
-            /** Score Ultima */
-            score_ultima: number | null;
+            /** Format: double */
+            treynor: number | null;
+            ventana_atipica: string | null;
+            /** Format: double */
+            volumen: number | null;
+            /** Format: double */
+            z_score: number | null;
         };
-        /** EtfHistTickerPunto */
-        EtfHistTickerPunto: {
-            /** Run Key */
-            run_key: string;
-            /**
-             * Fecha
-             * Format: date
-             */
+        EtfHistCategoria: {
+            category: string;
+            /** Format: int64 */
+            en_top15: number;
+            /** Format: date */
             fecha: string;
-            /** Universo Depurado */
+            /** Format: int64 */
+            n: number | null;
+            /** Format: double */
+            perf_1y_promedio: number | null;
+            run_key: string;
+            /** Format: double */
+            score_promedio: number | null;
+            /** Format: double */
+            sharpe_promedio: number | null;
+        };
+        EtfHistCorrida: {
+            /** Format: double */
+            beta_promedio: number | null;
+            /** Format: date */
+            fecha: string;
+            /** Format: int64 */
+            n_outliers: number | null;
+            /** Format: date-time */
+            run_at: string | null;
+            /** @description <yyyymmdd> o <yyyymmdd>_<n> (mismo sufijo que hist/). */
+            run_key: string;
+            /** Format: int64 */
+            secuencia: number;
+            /** Format: double */
+            sharpe_promedio: number | null;
+            /** Format: double */
+            top1_score: number | null;
+            top1_ticker: string | null;
+            /** Format: int64 */
+            universo_bruto: number | null;
+            /** Format: int64 */
             universo_depurado: number;
-            /** Nombre */
+        };
+        EtfHistPermanencia: {
+            /** Format: int64 */
+            corridas: number;
             nombre: string | null;
-            /** Category */
+            /** Format: int64 */
+            racha_actual: number;
+            /** Format: int64 */
+            rank_ultima: number | null;
+            /** Format: double */
+            score_ultima: number | null;
+            ticker: string;
+            /** Format: int64 */
+            veces_en_top: number;
+        };
+        EtfHistTickerPunto: {
+            /** Format: double */
+            beta: number | null;
             category: string | null;
+            en_top15: boolean;
+            /** @description Si fue excluido por outlier en esa corrida. */
+            excluido_ventana: string | null;
+            /** Format: double */
+            excluido_z: number | null;
+            /** Format: date */
+            fecha: string;
+            /** Format: int64 */
+            momentum_rank: number | null;
+            /** Format: double */
+            momentum_score: number | null;
+            nombre: string | null;
+            /** Format: double */
+            perf_1m: number | null;
+            /** Format: double */
+            perf_1y: number | null;
+            /** Format: double */
+            perf_6m: number | null;
+            /** Format: double */
+            precio: number | null;
             /**
-             * Rank
+             * Format: int64
              * @description Puesto en el ranking principal (None = no estaba).
              */
             rank: number | null;
-            /** En Top15 */
-            en_top15: boolean;
-            /** Score */
+            run_key: string;
+            /** Format: double */
             score: number | null;
-            /** Score Simple */
+            /** Format: double */
             score_simple: number | null;
-            /** Precio */
-            precio: number | null;
-            /** Sharpe */
+            /** Format: double */
             sharpe: number | null;
-            /** Treynor */
+            /** Format: double */
             treynor: number | null;
-            /** Beta */
-            beta: number | null;
-            /** Perf 1M */
-            perf_1m: number | null;
-            /** Perf 6M */
-            perf_6m: number | null;
-            /** Perf 1Y */
-            perf_1y: number | null;
-            /** Momentum Rank */
-            momentum_rank: number | null;
-            /** Momentum Score */
-            momentum_score: number | null;
-            /**
-             * Excluido Ventana
-             * @description Si fue excluido por outlier en esa corrida.
-             */
-            excluido_ventana: string | null;
-            /** Excluido Z */
-            excluido_z: number | null;
+            /** Format: int64 */
+            universo_depurado: number;
         };
-        /** EtfHistorial */
         EtfHistorial: {
-            /** Filas */
+            /** @description De la corrida más antigua a la más reciente. */
             filas: components["schemas"]["EtfHistorialFila"][];
         };
-        /** EtfHistorialFila */
         EtfHistorialFila: {
-            /**
-             * Fecha
-             * Format: date
-             */
-            fecha: string;
-            /** Universo Bruto */
-            universo_bruto: number;
-            /** Universo Depurado */
-            universo_depurado: number;
-            /** N Outliers */
-            n_outliers: number;
-            /** Sharpe Promedio */
-            sharpe_promedio: number | null;
-            /** Beta Promedio */
+            /** Format: double */
             beta_promedio: number | null;
-            /** Top1 Ticker */
-            top1_ticker: string | null;
-            /** Top1 Score */
+            /** Format: date */
+            fecha: string;
+            /** Format: int64 */
+            n_outliers: number;
+            /** Format: double */
+            sharpe_promedio: number | null;
+            /** Format: double */
             top1_score: number | null;
+            top1_ticker: string | null;
+            /** Format: int64 */
+            universo_bruto: number;
+            /** Format: int64 */
+            universo_depurado: number;
         };
-        /**
-         * EtfModelo
-         * @description Parámetros de las metodologías (el front no los duplica).
-         */
         EtfModelo: {
-            /** Top N */
-            top_n: number;
-            /** Pesos */
-            pesos: components["schemas"]["EtfPeso"][];
-            /** Pesos Simple */
-            pesos_simple: components["schemas"]["EtfPeso"][];
-            /** Pesos Momentum */
-            pesos_momentum: components["schemas"]["EtfPeso"][];
-            /** Pesos Momentum M */
-            pesos_momentum_m: components["schemas"]["EtfPeso"][];
-            /** Z Threshold */
-            z_threshold: number;
-            /** Liq Vol Min */
-            liq_vol_min: number;
-            /** Liq Aum Min */
-            liq_aum_min: number;
-            /** Categorias Excluidas */
-            categorias_excluidas: string[];
-            /** Categorias Excluidas Momentum */
-            categorias_excluidas_momentum: string[];
-            /** Min N Categoria */
-            min_n_categoria: number;
-            /** Cap N Por Bucket */
-            cap_n_por_bucket: number;
-            /** Cap Tope Peso Pct */
-            cap_tope_peso_pct: number;
-            /** Cap Benchmarks */
             cap_benchmarks: string[];
+            /** Format: int64 */
+            cap_n_por_bucket: number;
+            /** Format: double */
+            cap_tope_peso_pct: number;
+            categorias_excluidas: string[];
+            categorias_excluidas_momentum: string[];
+            /** Format: double */
+            liq_aum_min: number;
+            /** Format: double */
+            liq_vol_min: number;
+            /** Format: int64 */
+            min_n_categoria: number;
+            pesos: components["schemas"]["EtfPeso"][];
+            pesos_momentum: components["schemas"]["EtfPeso"][];
+            pesos_momentum_m: components["schemas"]["EtfPeso"][];
+            pesos_simple: components["schemas"]["EtfPeso"][];
+            /** Format: int64 */
+            top_n: number;
+            /** Format: double */
+            z_threshold: number;
         };
-        /** EtfPeso */
         EtfPeso: {
-            /** Clave */
             clave: string;
-            /** Etiqueta */
             etiqueta: string;
-            /** Peso */
+            /** Format: double */
             peso: number;
         };
-        /** EtfResumen */
         EtfResumen: {
-            /** Fecha */
-            fecha: string | null;
-            /** Archivo Csv */
             archivo_csv: string;
-            /** Generado En */
-            generado_en: string | null;
-            /** Tiene Corrida Anterior */
-            tiene_corrida_anterior: boolean;
-            resumen: components["schemas"]["EtfHistorialFila"] | null;
-            modelo: components["schemas"]["EtfModelo"];
-        };
-        /** EtfRotacion */
-        EtfRotacion: {
-            /** Disponible */
-            disponible: boolean;
-            /** Fecha */
+            /** Format: date */
             fecha: string | null;
-            /** Fecha Previa */
+            /** Format: date-time */
+            generado_en: string | null;
+            modelo: components["schemas"]["EtfModelo"];
+            resumen: components["schemas"]["EtfHistorialFila"] | null;
+            tiene_corrida_anterior: boolean;
+        };
+        EtfRotacion: {
+            /** @description False si todavía no hay una corrida archivada con la cual comparar. */
+            disponible: boolean;
+            /** Format: date */
+            fecha: string | null;
+            /** Format: date */
             fecha_previa: string | null;
-            /**
-             * Mantienen
-             * @default []
-             */
             mantienen: components["schemas"]["EtfRotacionFila"][];
-            /**
-             * Nuevos
-             * @default []
-             */
             nuevos: components["schemas"]["EtfRotacionFila"][];
-            /**
-             * Salidas
-             * @default []
-             */
             salidas: components["schemas"]["EtfRotacionFila"][];
         };
-        /** EtfRotacionFila */
         EtfRotacionFila: {
-            /** Ticker */
-            ticker: string;
-            /** Nombre */
-            nombre: string | null;
-            /** Categoria */
-            categoria: string | null;
-            /** Proveedor */
-            proveedor: string | null;
-            /** Precio */
-            precio: number | null;
-            /** Volumen */
-            volumen: number | null;
-            /** Aum */
+            /** Format: double */
             aum: number | null;
-            /** Expense Ratio */
-            expense_ratio: number | null;
-            /** Perf 5D */
-            perf_5d: number | null;
-            /** Perf 1M */
-            perf_1m: number | null;
-            /** Perf 6M */
-            perf_6m: number | null;
-            /** Perf Ytd */
-            perf_ytd: number | null;
-            /** Perf 1Y */
-            perf_1y: number | null;
-            /** Perf 5Y */
-            perf_5y: number | null;
-            /** Max 52S */
-            max_52s: number | null;
-            /** Min 52S */
-            min_52s: number | null;
-            /** Sharpe */
-            sharpe: number | null;
-            /** Treynor */
-            treynor: number | null;
-            /** Beta */
+            /** Format: double */
             beta: number | null;
-            /** Dist Max 52S Pct */
-            dist_max_52s_pct: number | null;
-            /** Rango 52S Pct */
-            rango_52s_pct: number | null;
-            /** Periodos Positivos */
-            periodos_positivos: number | null;
-            /** Dispersion Periodos */
-            dispersion_periodos: number | null;
-            /** Pasos Crecientes */
-            pasos_crecientes: number | null;
-            /** S Sharpe */
-            s_sharpe: number | null;
-            /** S Treynor */
-            s_treynor: number | null;
-            /** S 1Y */
-            s_1y: number | null;
-            /** S 6M */
-            s_6m: number | null;
-            /** S Consistencia */
-            s_consistencia: number | null;
-            /** S Tendencia */
-            s_tendencia: number | null;
-            /** S Baja Dispersion */
-            s_baja_dispersion: number | null;
-            /** S Bajo Beta */
-            s_bajo_beta: number | null;
-            /** S Cerca Maximo */
-            s_cerca_maximo: number | null;
-            /** Score */
-            score: number | null;
-            /** Ss 5D */
-            ss_5d: number | null;
-            /** Ss 1M */
-            ss_1m: number | null;
-            /** Ss 6M */
-            ss_6m: number | null;
-            /** Ss 1Y */
-            ss_1y: number | null;
-            /** Ss Bajo Beta */
-            ss_bajo_beta: number | null;
-            /** Score Simple */
-            score_simple: number | null;
-            /** Ventana Atipica */
-            ventana_atipica: string | null;
-            /** Z Score */
-            z_score: number | null;
-            /** M Norm */
-            m_norm: number | null;
-            /** Q Norm */
-            q_norm: number | null;
-            /** Consist Norm */
+            categoria: string | null;
+            /** Format: double */
             consist_norm: number | null;
-            /** Score Comp */
-            score_comp: number | null;
-            /** Racha */
-            racha: number | null;
-            /** Rank Actual */
-            rank_actual: number | null;
-            /** Rank Previo */
-            rank_previo: number | null;
-            /** Delta Score */
-            delta_score: number | null;
-            /** Delta Rank */
+            /** Format: int64 */
             delta_rank: number | null;
-            /** Score Previo */
-            score_previo: number | null;
-            /** Procedencia */
-            procedencia: string | null;
-            /** Destino */
+            /** Format: double */
+            delta_score: number | null;
             destino: string | null;
+            /** Format: double */
+            dispersion_periodos: number | null;
+            /** Format: double */
+            dist_max_52s_pct: number | null;
+            /** Format: double */
+            expense_ratio: number | null;
+            /** Format: double */
+            m_norm: number | null;
+            /** Format: double */
+            max_52s: number | null;
+            /** Format: double */
+            min_52s: number | null;
+            nombre: string | null;
+            /** Format: double */
+            pasos_crecientes: number | null;
+            /** Format: double */
+            perf_1m: number | null;
+            /** Format: double */
+            perf_1y: number | null;
+            /** Format: double */
+            perf_5d: number | null;
+            /** Format: double */
+            perf_5y: number | null;
+            /** Format: double */
+            perf_6m: number | null;
+            /** Format: double */
+            perf_ytd: number | null;
+            /** Format: double */
+            periodos_positivos: number | null;
+            /** Format: double */
+            precio: number | null;
+            procedencia: string | null;
+            proveedor: string | null;
+            /** Format: double */
+            q_norm: number | null;
+            /** Format: int64 */
+            racha: number | null;
+            /** Format: double */
+            rango_52s_pct: number | null;
+            /** Format: int64 */
+            rank_actual: number | null;
+            /** Format: int64 */
+            rank_previo: number | null;
+            /** Format: double */
+            s_1y: number | null;
+            /** Format: double */
+            s_6m: number | null;
+            /** Format: double */
+            s_baja_dispersion: number | null;
+            /** Format: double */
+            s_bajo_beta: number | null;
+            /** Format: double */
+            s_cerca_maximo: number | null;
+            /** Format: double */
+            s_consistencia: number | null;
+            /** Format: double */
+            s_sharpe: number | null;
+            /** Format: double */
+            s_tendencia: number | null;
+            /** Format: double */
+            s_treynor: number | null;
+            /** Format: double */
+            score: number | null;
+            /** Format: double */
+            score_comp: number | null;
+            /** Format: double */
+            score_previo: number | null;
+            /** Format: double */
+            score_simple: number | null;
+            /** Format: double */
+            sharpe: number | null;
+            /** Format: double */
+            ss_1m: number | null;
+            /** Format: double */
+            ss_1y: number | null;
+            /** Format: double */
+            ss_5d: number | null;
+            /** Format: double */
+            ss_6m: number | null;
+            /** Format: double */
+            ss_bajo_beta: number | null;
+            ticker: string;
+            /** Format: double */
+            treynor: number | null;
+            ventana_atipica: string | null;
+            /** Format: double */
+            volumen: number | null;
+            /** Format: double */
+            z_score: number | null;
         };
-        /** EtfRunResult */
         EtfRunResult: {
             job: components["schemas"]["JobRecord"];
         };
-        /** EtfTabla */
         EtfTabla: {
-            /** Fecha */
+            /** Format: date */
             fecha: string | null;
-            /** Filas */
             filas: components["schemas"]["EtfFila"][];
         };
-        /** FinancialHealth */
         FinancialHealth: {
-            /** Debt To Equity */
-            debt_to_equity: number | null;
-            /** Current Ratio */
+            /** Format: double */
             current_ratio: number | null;
-            /** Free Cash Flow */
+            /** Format: double */
+            debt_to_equity: number | null;
+            /** Format: double */
             free_cash_flow: number | null;
         };
-        /** HTTPValidationError */
-        HTTPValidationError: {
-            /** Detail */
-            detail?: components["schemas"]["ValidationError"][];
-        };
-        /** HealthResponse */
         HealthResponse: {
+            app: string;
+            env: string;
             /**
-             * Status
              * @default ok
-             * @constant
+             * @enum {string}
              */
             status: "ok";
-            /** App */
-            app: string;
-            /** Version */
             version: string;
-            /** Env */
-            env: string;
         };
-        /** HistDiff */
         HistDiff: {
-            /** Desde */
             desde: string;
-            /** Hasta */
-            hasta: string;
-            /** Top N */
-            top_n: number | null;
-            /** Filas */
             filas: components["schemas"]["HistDiffFila"][];
+            hasta: string;
+            /** Format: int64 */
+            top_n: number | null;
         };
-        /**
-         * HistDiffFila
-         * @description Un ticker comparado entre dos corridas. ``estado`` se mide contra el top
-         *     (``top_n``) si el módulo tiene uno, o contra la presencia en el ranking si no:
-         *     ``nuevo`` (entró), ``salio``, ``sigue`` (en ambas) o ``fuera`` (en ninguna de
-         *     las dos dentro del top, pero sí en el ranking).
-         */
         HistDiffFila: {
-            /** Ticker */
-            ticker: string;
-            /** Nombre */
-            nombre: string | null;
-            /** Rank Desde */
-            rank_desde: number | null;
-            /** Rank Hasta */
-            rank_hasta: number | null;
-            /** Score Desde */
-            score_desde: number | null;
-            /** Score Hasta */
-            score_hasta: number | null;
-            /** Delta Rank */
-            delta_rank: number | null;
-            /** Delta Score */
-            delta_score: number | null;
             /**
-             * Estado
-             * @enum {string}
+             * Format: int64
+             * @description Positivo = subió posiciones.
              */
+            delta_rank: number | null;
+            /** Format: double */
+            delta_score: number | null;
+            /** @enum {string} */
             estado: "nuevo" | "salio" | "sigue" | "fuera";
-        };
-        /** HubItem */
-        HubItem: {
-            /** Ticker */
-            ticker: string;
-            /** Nombre */
             nombre: string | null;
-            /** Valor */
+            /** Format: int64 */
+            rank_desde: number | null;
+            /** Format: int64 */
+            rank_hasta: number | null;
+            /** Format: double */
+            score_desde: number | null;
+            /** Format: double */
+            score_hasta: number | null;
+            ticker: string;
+        };
+        HubItem: {
+            nombre: string | null;
+            ticker: string;
+            /** Format: double */
             valor: number | null;
         };
-        /** HubModulo */
         HubModulo: {
-            /** Datos Al */
+            /** Format: date-time */
             datos_al: string | null;
-            /** Metrica */
-            metrica: string;
-            /**
-             * Unidad
-             * @enum {string}
-             */
-            unidad: "fraccion" | "numero";
-            /** Top */
-            top: components["schemas"]["HubItem"][];
-            /** Universo */
-            universo: number | null;
-            /** Key */
-            key: string;
-            /** Titulo */
-            titulo: string;
-            /**
-             * Frescura
-             * @enum {string}
-             */
-            frescura: "al_dia" | "atrasado" | "sin_datos" | "error";
-            /** Edad Horas */
+            /** Format: double */
             edad_horas: number | null;
-            /** Programa */
-            programa: string | null;
-            /** Proxima */
-            proxima: string | null;
-            /** Mensaje */
+            /** @enum {string} */
+            frescura: "al_dia" | "atrasado" | "sin_datos" | "error";
+            key: string;
+            /** @description Motivo si no hay datos o no se pudieron leer. */
             mensaje: string | null;
+            metrica: string;
+            /** @description Cuándo se actualiza en producción (p. ej. "de lunes a viernes a las 18:00"). */
+            programa: string | null;
+            /** Format: date-time */
+            proxima: string | null;
+            titulo: string;
+            top: components["schemas"]["HubItem"][];
             ultimo_job: components["schemas"]["JobRecord"] | null;
+            /** @enum {string} */
+            unidad: "fraccion" | "numero";
+            /** Format: int64 */
+            universo: number | null;
         };
-        /** HubResponse */
         HubResponse: {
-            /**
-             * Generado En
-             * Format: date-time
-             */
+            /** Format: date-time */
             generado_en: string;
-            /** Modulos */
             modulos: components["schemas"]["HubModulo"][];
         };
-        /** IndicadorRow */
         IndicadorRow: {
-            /** Simbolo */
-            simbolo: string;
-            /** Nombre */
-            nombre: string | null;
-            /** Sector */
-            sector: string | null;
-            /** Industria */
             industria: string | null;
-            /** Valores */
+            nombre: string | null;
+            sector: string | null;
+            simbolo: string;
             valores: {
                 [key: string]: number | string | null;
             };
         };
-        /** IndicadoresResponse */
         IndicadoresResponse: {
-            /** Generado Desde */
-            generado_desde: string;
-            /** Generado En */
-            generado_en: string | null;
-            /** Grupos */
-            grupos: string[];
-            /** Columnas */
             columnas: components["schemas"]["ColumnaInfo"][];
-            /** Filas */
             filas: components["schemas"]["IndicadorRow"][];
+            generado_desde: string;
+            /** Format: date-time */
+            generado_en: string | null;
+            grupos: string[];
         };
-        /** JobRecord */
         JobRecord: {
-            /** Id */
+            /** Format: double */
+            duration_s?: number | null;
+            /** Format: date-time */
+            finished_at?: string | null;
             id: string;
-            /** Module */
+            message?: string | null;
             module: string;
-            /**
-             * Status
-             * @enum {string}
-             */
+            /** Format: date-time */
+            started_at: string;
+            /** @enum {string} */
             status: "running" | "success" | "error" | "stale";
             /**
-             * Trigger
              * @default cli
              * @enum {string}
              */
             trigger: "cli" | "cron" | "api";
-            /**
-             * Started At
-             * Format: date-time
-             */
-            started_at: string;
-            /** Finished At */
-            finished_at?: string | null;
-            /** Duration S */
-            duration_s?: number | null;
-            /** Message */
-            message?: string | null;
         };
-        /** Macd */
         Macd: {
-            /** Macd */
-            macd: number;
-            /** Signal */
-            signal: number;
-            /** Histogram */
+            /** Format: double */
             histogram: number;
+            /** Format: double */
+            macd: number;
+            /** Format: double */
+            signal: number;
         };
-        /**
-         * ModeloInfo
-         * @description Parámetros del modelo con que se generó el ranking (punto de partida de los sliders).
-         */
         ModeloInfo: {
-            /** Pilares */
             pilares: components["schemas"]["PilarInfo"][];
-            /** Winsor */
             winsor: [
                 number,
                 number
             ];
         };
-        /** ModuleStatus */
         ModuleStatus: {
-            /** Key */
-            key: string;
-            /** Title */
-            title: string;
-            /** Api Prefix */
             api_prefix: string;
-            /** Source Project */
-            source_project: string;
-            /** Migrated */
-            migrated: boolean;
-            /** Migration Phase */
-            migration_phase: number;
-            /** Data Available */
             data_available: boolean;
-            latest_job?: components["schemas"]["JobRecord"] | null;
+            key: string;
             last_success?: components["schemas"]["JobRecord"] | null;
+            latest_job?: components["schemas"]["JobRecord"] | null;
+            /** @description True cuando el pipeline del módulo ya está portado a Fog Radar. */
+            migrated: boolean;
+            /** Format: int64 */
+            migration_phase: number;
+            source_project: string;
+            title: string;
         };
-        /** PilarInfo */
         PilarInfo: {
-            /**
-             * Key
-             * @enum {string}
-             */
+            /** @enum {string} */
             key: "valor" | "calidad" | "crecimiento" | "salud_financiera" | "dividendo" | "momentum";
-            /** Label */
             label: string;
-            /** Peso */
-            peso: number;
-            /** Metricas */
             metricas: string[];
+            /** Format: double */
+            peso: number;
         };
-        /**
-         * PilarScores
-         * @description z-score promedio de cada pilar (None si la acción no tiene métricas en ese pilar).
-         */
         PilarScores: {
-            /** Valor */
-            valor: number | null;
-            /** Calidad */
+            /** Format: double */
             calidad: number | null;
-            /** Crecimiento */
+            /** Format: double */
             crecimiento: number | null;
-            /** Salud Financiera */
-            salud_financiera: number | null;
-            /** Dividendo */
+            /** Format: double */
             dividendo: number | null;
-            /** Momentum */
+            /** Format: double */
             momentum: number | null;
+            /** Format: double */
+            salud_financiera: number | null;
+            /** Format: double */
+            valor: number | null;
         };
-        /**
-         * PortfolioLimits
-         * @description Límites y valores por defecto del modelo (para validar en el cliente).
-         */
         PortfolioLimits: {
-            /** Min Tickers */
-            min_tickers: number;
-            /** Min Assets */
-            min_assets: number;
-            /** Max Assets */
-            max_assets: number;
-            /** Default Assets */
+            /** Format: int64 */
             default_assets: number;
-            /** Default Max Weight */
+            /** Format: double */
             default_max_weight: number;
-            /** Default Risk Free Rate */
+            /** Format: double */
             default_risk_free_rate: number;
+            /** Format: int64 */
+            max_assets: number;
+            /** Format: int64 */
+            min_assets: number;
+            /** Format: int64 */
+            min_tickers: number;
         };
-        /** PortfolioMetrics */
         PortfolioMetrics: {
-            /** Expected Return */
+            /** Format: double */
             expected_return: number;
-            /** Volatility */
-            volatility: number;
-            /** Sharpe */
+            /** Format: double */
             sharpe: number;
+            /** Format: double */
+            volatility: number;
         };
-        /** PortfolioPick */
         PortfolioPick: {
-            /** Ticker */
-            ticker: string;
             /**
-             * Cluster
+             * Format: int64
              * @description Cluster de correlación (1..n) en orden de score.
              */
             cluster: number;
-            /** Score */
+            /** Format: double */
             score: number | null;
+            ticker: string;
         };
-        /** PortfolioRequest */
         PortfolioRequest: {
             /**
-             * Tickers
-             * @description Universo ya filtrado (etapa 1).
-             */
-            tickers: string[];
-            /**
-             * N Assets
-             * @description Activos de la cartera final (clusters).
-             * @default 10
-             */
-            n_assets: number;
-            /**
-             * Max Weight
+             * Format: double
              * @description Peso máximo por activo.
              * @default 0.25
              */
             max_weight: number;
             /**
-             * Risk Free Rate
+             * Format: int64
+             * @description Activos de la cartera final (clusters).
+             * @default 10
+             */
+            n_assets: number;
+            /**
+             * Format: double
              * @description Tasa libre de riesgo anual; null = valor por defecto.
              */
             risk_free_rate?: number | null;
-            /**
-             * Views
-             * @description Retorno anual esperado por ticker (fracción) que reemplaza la view automática.
-             */
+            /** @description Universo ya filtrado (etapa 1). */
+            tickers: string[];
+            /** @description Retorno anual esperado por ticker (fracción) que reemplaza la view automática. */
             views?: {
                 [key: string]: number;
             } | null;
         };
-        /** PortfolioResult */
         PortfolioResult: {
-            /** Run Id */
-            run_id: string;
-            /** Universe */
-            universe: string[];
-            /** Selection */
-            selection: components["schemas"]["PortfolioPick"][];
-            /** Weights */
-            weights: {
-                [key: string]: number;
-            };
-            /** Max Weight */
+            /** Format: double */
             max_weight: number;
             metrics: components["schemas"]["PortfolioMetrics"];
-            /** Prior Returns */
-            prior_returns: {
-                [key: string]: number;
-            };
-            /** Views */
-            views: {
-                [key: string]: number;
-            };
-            /** Posterior Returns */
             posterior_returns: {
                 [key: string]: number;
             };
+            prior_returns: {
+                [key: string]: number;
+            };
+            run_id: string;
+            selection: components["schemas"]["PortfolioPick"][];
+            universe: string[];
+            views: {
+                [key: string]: number;
+            };
+            weights: {
+                [key: string]: number;
+            };
         };
-        /** PriceMatrix */
         PriceMatrix: {
-            /** Dates */
             dates: string[];
-            /** Prices */
             prices: {
                 [key: string]: (number | null)[];
             };
         };
-        /** Profitability */
         Profitability: {
-            /** Roe */
-            roe: number | null;
-            /** Roa */
-            roa: number | null;
-            /** Net Margin */
+            /** Format: double */
             net_margin: number | null;
-        };
-        /**
-         * ProgramaInfo
-         * @description Una corrida programada del cron de producción (``fog_radar.jobs.schedule``).
-         */
-        ProgramaInfo: {
-            /** Key */
-            key: string;
-            /** Titulo */
-            titulo: string;
-            /** Modulos */
-            modulos: string[];
-            /** Cron */
-            cron: string;
-            /** Descripcion */
-            descripcion: string;
-            /** Zona */
-            zona: string;
-            /**
-             * Proxima
-             * Format: date-time
-             */
-            proxima: string;
-        };
-        /**
-         * RankingMetricas
-         * @description Métricas crudas que alimentan el score (mismas unidades que el CSV).
-         */
-        RankingMetricas: {
-            /** Trailing Pe */
-            trailing_pe: number | null;
-            /** Price Book */
-            price_book: number | null;
-            /** Price Sales */
-            price_sales: number | null;
-            /** Ev Ebitda */
-            ev_ebitda: number | null;
-            /** Ev Revenue */
-            ev_revenue: number | null;
-            /** Profit Margin */
-            profit_margin: number | null;
-            /** Operating Margin */
-            operating_margin: number | null;
-            /** Roa */
+            /** Format: double */
             roa: number | null;
-            /** Roe */
+            /** Format: double */
             roe: number | null;
-            /** Revenue Growth Q */
-            revenue_growth_q: number | null;
-            /** Earnings Growth Q */
-            earnings_growth_q: number | null;
-            /** Debt Equity */
-            debt_equity: number | null;
-            /** Current Ratio */
+        };
+        ProgramaInfo: {
+            cron: string;
+            descripcion: string;
+            key: string;
+            modulos: string[];
+            /** Format: date-time */
+            proxima: string;
+            titulo: string;
+            zona: string;
+        };
+        RankingMetricas: {
+            /** Format: double */
             current_ratio: number | null;
+            /** Format: double */
+            debt_equity: number | null;
             /**
-             * Dividend Yield
+             * Format: double
              * @description En puntos porcentuales (5.1 = 5,1 %).
              */
             dividend_yield: number | null;
-            /** Ret 5D */
-            ret_5d: number | null;
-            /** Ret 1M */
-            ret_1m: number | null;
-            /** Ret 3M */
-            ret_3m: number | null;
-            /** Ret 6M */
-            ret_6m: number | null;
-            /** Ret Ytd */
-            ret_ytd: number | null;
-            /** Ret 1A */
+            /** Format: double */
+            earnings_growth_q: number | null;
+            /** Format: double */
+            ev_ebitda: number | null;
+            /** Format: double */
+            ev_revenue: number | null;
+            /** Format: double */
+            operating_margin: number | null;
+            /** Format: double */
+            price_book: number | null;
+            /** Format: double */
+            price_sales: number | null;
+            /** Format: double */
+            profit_margin: number | null;
+            /** Format: double */
             ret_1a: number | null;
+            /** Format: double */
+            ret_1m: number | null;
+            /** Format: double */
+            ret_3m: number | null;
+            /** Format: double */
+            ret_5d: number | null;
+            /** Format: double */
+            ret_6m: number | null;
+            /** Format: double */
+            ret_ytd: number | null;
+            /** Format: double */
+            revenue_growth_q: number | null;
+            /** Format: double */
+            roa: number | null;
+            /** Format: double */
+            roe: number | null;
+            /** Format: double */
+            trailing_pe: number | null;
         };
-        /** RankingResponse */
         RankingResponse: {
-            /** Generado Desde */
+            filas: components["schemas"]["RankingRow"][];
             generado_desde: string;
-            /** Generado En */
+            /** Format: date-time */
             generado_en: string | null;
             modelo: components["schemas"]["ModeloInfo"];
-            /** Filas */
-            filas: components["schemas"]["RankingRow"][];
         };
-        /** RankingRow */
         RankingRow: {
-            /** Ranking */
-            ranking: number | null;
-            /** Simbolo */
-            simbolo: string;
-            /** Nombre */
-            nombre: string | null;
-            /** Sector */
-            sector: string | null;
-            /** Industria */
-            industria: string | null;
-            /** Score Compuesto */
-            score_compuesto: number | null;
-            pilares: components["schemas"]["PilarScores"];
-            /** Metricas Disponibles */
-            metricas_disponibles: number;
-            /** Metricas Totales */
-            metricas_totales: number;
             /**
-             * Grupo Duplicado
+             * Format: int64
              * @description Mismo id = estados financieros casi idénticos (holding/filial): riesgo de doble conteo.
              */
             grupo_duplicado: number | null;
+            industria: string | null;
             metricas: components["schemas"]["RankingMetricas"];
-        };
-        /** ResultadoBusqueda */
-        ResultadoBusqueda: {
-            /** Ticker */
-            ticker: string;
-            /** Nombre */
+            /** Format: int64 */
+            metricas_disponibles: number;
+            /** Format: int64 */
+            metricas_totales: number;
             nombre: string | null;
-            /** Posicion */
-            posicion: number | null;
-            /** Total */
-            total: number | null;
-            /** Valor */
-            valor: number | null;
-            /** Metrica */
-            metrica: string;
-            /**
-             * Unidad
-             * @enum {string}
-             */
-            unidad: "fraccion" | "numero";
-            /** Contexto */
+            pilares: components["schemas"]["PilarScores"];
+            /** Format: int64 */
+            ranking: number | null;
+            /** Format: double */
+            score_compuesto: number | null;
+            sector: string | null;
+            simbolo: string;
+        };
+        ResultadoBusqueda: {
+            /** @description Dónde aparece (p. ej. "Top 15", "Portafolio Asia + EEUU"). */
             contexto: string | null;
-            /** Modulo */
-            modulo: string;
-            /** Titulo Modulo */
-            titulo_modulo: string;
-            /** Exacto */
+            /** @description El ticker coincide exactamente con la consulta (va primero). */
             exacto: boolean;
+            metrica: string;
+            modulo: string;
+            nombre: string | null;
+            /**
+             * Format: int64
+             * @description Posición en el ranking del módulo (1 = mejor), si aplica.
+             */
+            posicion: number | null;
+            ticker: string;
+            titulo_modulo: string;
+            /** Format: int64 */
+            total: number | null;
+            /** @enum {string} */
+            unidad: "fraccion" | "numero";
+            /** Format: double */
+            valor: number | null;
         };
-        /** RunResponse */
         RunResponse: {
-            /** Run Id */
-            run_id: string;
-            /**
-             * Status
-             * @enum {string}
-             */
-            status: "done" | "error";
-            /** Error */
-            error: string | null;
-            /**
-             * Started At
-             * Format: date-time
-             */
-            started_at: string;
-            /**
-             * Finished At
-             * Format: date-time
-             */
-            finished_at: string;
-            /** Min Market Cap */
-            min_market_cap: number;
-            /** Pause Seconds */
-            pause_seconds: number;
-            /** Universe Total */
-            universe_total: number;
-            /** Candidates Total */
+            /** Format: int64 */
             candidates_total: number;
-            /** Top N */
-            top_n: number;
-            /** Rows */
+            error: string | null;
+            /** Format: date-time */
+            finished_at: string;
+            /** Format: double */
+            min_market_cap: number;
+            /** Format: double */
+            pause_seconds: number;
             rows: components["schemas"]["CandidateRow"][];
+            run_id: string;
+            /** Format: date-time */
+            started_at: string;
+            /** @enum {string} */
+            status: "done" | "error";
+            /** Format: int64 */
+            top_n: number;
+            /** Format: int64 */
+            universe_total: number;
         };
-        /** RunsList */
         RunsList: {
-            /** Runs */
             runs: string[];
         };
-        /** Score */
         Score: {
-            /** Overall */
-            overall: number | null;
-            /**
-             * Label
-             * @default Sin datos
-             */
-            label: string;
             categories: components["schemas"]["ScoreCategories"];
+            label: string;
+            /** Format: double */
+            overall: number | null;
         };
-        /** ScoreCategories */
         ScoreCategories: {
-            /** Valuation */
-            valuation: number | null;
-            /** Profitability */
-            profitability: number | null;
-            /** Financial Health */
+            /** Format: double */
             financial_health: number | null;
-            /** Shareholder Return */
+            /** Format: double */
+            profitability: number | null;
+            /** Format: double */
             shareholder_return: number | null;
-            /** Technical */
+            /** Format: double */
             technical: number | null;
+            /** Format: double */
+            valuation: number | null;
         };
-        /** ShareholderReturn */
         ShareholderReturn: {
             /**
-             * Dividend Yield
+             * Format: double
              * @description Fracción (0.012 = 1,2 %).
              */
             dividend_yield: number | null;
         };
-        /** SystemStatus */
         SystemStatus: {
-            /** App */
             app: string;
-            /** Version */
-            version: string;
-            /** Env */
             env: string;
-            /** Modules */
             modules: components["schemas"]["ModuleStatus"][];
+            version: string;
         };
-        /** TdAnalisis */
         TdAnalisis: {
-            /** Key */
+            holdings: components["schemas"]["TdHolding"][];
+            /** @description "" = Asia + EEUU (principal), "_us" = solo EEUU. */
             key: string;
-            /** Label */
             label: string;
-            /** Universe Size */
-            universe_size: number;
-            /** N Selected */
+            momentum: components["schemas"]["TdMomentumMensual"][];
+            momentum_semanal: components["schemas"]["TdMomentumSemanal"][];
+            /** Format: int64 */
             n_selected: number;
             performance: components["schemas"]["TdPerformance"];
-            /** Holdings */
-            holdings: components["schemas"]["TdHolding"][];
-            /** Sectors */
-            sectors: components["schemas"]["TdSector"][];
-            /**
-             * Momentum
-             * @default []
-             */
-            momentum: components["schemas"]["TdMomentumMensual"][];
-            /**
-             * Momentum Semanal
-             * @default []
-             */
-            momentum_semanal: components["schemas"]["TdMomentumSemanal"][];
-            /**
-             * Portfolio Options
-             * @default []
-             */
             portfolio_options: components["schemas"]["TdPortafolioReducido"][];
+            sectors: components["schemas"]["TdSector"][];
+            /** Format: int64 */
+            universe_size: number;
         };
-        /** TdAnalisisDisponible */
         TdAnalisisDisponible: {
-            /** Analysis Key */
             analysis_key: string;
-            /** Label */
             label: string;
         };
-        /** TdArchivo */
         TdArchivo: {
-            /** Nombre */
-            nombre: string;
-            /** Tipo */
-            tipo: string;
-            /** Bytes */
+            /** Format: int64 */
             bytes: number;
-        };
-        /**
-         * TdDashboard
-         * @description Una corrida completa (mismo contenido que ``dashboard_data.json``).
-         */
-        TdDashboard: {
-            /**
-             * Generated At
-             * Format: date-time
-             */
-            generated_at: string;
-            /** Run Dir */
-            run_dir: string;
-            /** Universe Source */
-            universe_source: string | null;
-            /**
-             * Market Regime Notes
-             * @default []
-             */
-            market_regime_notes: string[];
-            /** Analyses */
-            analyses: components["schemas"]["TdAnalisis"][];
-            /**
-             * Archivos
-             * @default []
-             */
-            archivos: components["schemas"]["TdArchivo"][];
-            parametros: components["schemas"]["TdParametros"] | null;
-            /**
-             * Excluidos
-             * @default []
-             */
-            excluidos: components["schemas"]["TdExcluido"][];
-        };
-        /**
-         * TdExcluido
-         * @description Ticker del universo que quedó fuera del análisis (falta de historia, de FX…).
-         */
-        TdExcluido: {
-            /** Ticker */
-            ticker: string;
-            /** Nombre */
             nombre: string;
-            /** Motivo */
-            motivo: string;
+            tipo: string;
         };
-        /** TdHolding */
-        TdHolding: {
-            /** Ticker */
-            ticker: string;
-            /** Peso Final */
-            peso_final: number;
-            /** Nombre */
-            nombre: string | null;
-            /** Pais */
-            pais: string | null;
-            /** Sector */
-            sector: string | null;
-            /** Precio Actual Usd */
-            precio_actual_usd: number | null;
-            /** Senal Tecnica */
-            senal_tecnica: string | null;
-            /** Ma 10S */
-            ma_10s: number | null;
-            /** Ma 40S */
-            ma_40s: number | null;
-            /** Senal Tecnica 3M */
-            senal_tecnica_3m: string | null;
-            /** Ma 4S */
-            ma_4s: number | null;
-            /** Ma 13S */
-            ma_13s: number | null;
-            /** Momentum 26S Pct */
-            momentum_26s_pct: number | null;
-            /** Retorno Esperado Anual Pct */
-            retorno_esperado_anual_pct: number | null;
-            /** Volatilidad Anual Pct */
-            volatilidad_anual_pct: number | null;
-            /** Precio Proyectado 6M Usd */
-            precio_proyectado_6m_usd: number | null;
-            /** Precio Min 90Pct 6M Usd */
-            precio_min_90pct_6m_usd: number | null;
-            /** Precio Max 90Pct 6M Usd */
-            precio_max_90pct_6m_usd: number | null;
-            /** Retorno Esperado 6M Pct */
-            retorno_esperado_6m_pct: number | null;
-        };
-        /** TdMetricas */
-        TdMetricas: {
-            /** Retorno Esperado Anual */
-            retorno_esperado_anual: number;
-            /** Volatilidad Anual */
-            volatilidad_anual: number;
-            /** Sharpe Ratio */
-            sharpe_ratio: number;
-        };
-        /** TdMomentumLider */
-        TdMomentumLider: {
-            /**
-             * Run Date
-             * Format: date
-             */
-            run_date: string;
-            /** Run Dir */
+        TdDashboard: {
+            analyses: components["schemas"]["TdAnalisis"][];
+            /** @description Archivos descargables de la corrida (PDF, CSV…), ver /runs/{run_dir}/files. */
+            archivos: components["schemas"]["TdArchivo"][];
+            /** @description Tickers excluidos en el último armado del dataset (TD-DATA-1 / TD-OPS-2). */
+            excluidos: components["schemas"]["TdExcluido"][];
+            /** Format: date-time */
+            generated_at: string;
+            market_regime_notes: string[];
+            parametros: components["schemas"]["TdParametros"] | null;
             run_dir: string;
-            /** Ticker */
-            ticker: string | null;
-            /** Momentum Rank */
-            momentum_rank: number | null;
-            /** Momentum Score Pct */
-            momentum_score_pct: number | null;
+            universe_source: string | null;
         };
-        /** TdMomentumMensual */
-        TdMomentumMensual: {
-            /** Rank */
-            rank: number;
-            /** Ticker */
+        TdExcluido: {
+            motivo: string;
+            nombre: string;
             ticker: string;
-            /** Nombre */
-            nombre: string | null;
-            /** Pais */
-            pais: string | null;
-            /** Sector */
-            sector: string | null;
-            /** Precio Actual Usd */
-            precio_actual_usd: number | null;
-            /** Momentum 1M Pct */
-            momentum_1m_pct: number | null;
-            /** Momentum 3M Pct */
-            momentum_3m_pct: number | null;
-            /** Momentum 6M Pct */
-            momentum_6m_pct: number | null;
-            /** Momentum 12M Pct */
-            momentum_12m_pct: number | null;
-            /** Pct Meses Positivos 12M */
-            pct_meses_positivos_12m: number | null;
-            /** Momentum Score Pct */
-            momentum_score_pct: number | null;
         };
-        /** TdMomentumSemanal */
-        TdMomentumSemanal: {
-            /** Rank */
-            rank: number;
-            /** Ticker */
+        TdHolding: {
+            /** Format: double */
+            ma_10s: number | null;
+            /** Format: double */
+            ma_13s: number | null;
+            /** Format: double */
+            ma_40s: number | null;
+            /** Format: double */
+            ma_4s: number | null;
+            /** Format: double */
+            momentum_26s_pct: number | null;
+            nombre: string | null;
+            pais: string | null;
+            /** Format: double */
+            peso_final: number;
+            /** Format: double */
+            precio_actual_usd: number | null;
+            /** Format: double */
+            precio_max_90pct_6m_usd: number | null;
+            /** Format: double */
+            precio_min_90pct_6m_usd: number | null;
+            /** Format: double */
+            precio_proyectado_6m_usd: number | null;
+            /** Format: double */
+            retorno_esperado_6m_pct: number | null;
+            /** Format: double */
+            retorno_esperado_anual_pct: number | null;
+            sector: string | null;
+            senal_tecnica: string | null;
+            senal_tecnica_3m: string | null;
             ticker: string;
-            /** Nombre */
-            nombre: string | null;
-            /** Pais */
-            pais: string | null;
-            /** Sector */
-            sector: string | null;
-            /** Precio Actual Usd */
-            precio_actual_usd: number | null;
-            /** Momentum 1S Pct */
-            momentum_1s_pct: number | null;
-            /** Momentum 2S Pct */
-            momentum_2s_pct: number | null;
-            /** Momentum 3S Pct */
-            momentum_3s_pct: number | null;
-            /** Momentum 4S Pct */
-            momentum_4s_pct: number | null;
-            /** Pct Semanas Positivas 4S */
-            pct_semanas_positivas_4s: number | null;
-            /** Momentum Score Pct */
-            momentum_score_pct: number | null;
+            /** Format: double */
+            volatilidad_anual_pct: number | null;
         };
-        /**
-         * TdParametros
-         * @description Parámetros del modelo (de ``config``), para los textos de metodología.
-         */
-        TdParametros: {
-            /** Top N */
-            top_n: number;
-            /** Top N Us */
-            top_n_us: number;
-            /** Max Peso Por Activo */
-            max_peso_por_activo: number;
-            /** L2 Gamma */
-            l2_gamma: number;
-            /** Semanas Minimas */
-            semanas_minimas: number;
-            /** Horizonte Semanas */
-            horizonte_semanas: number;
-            /** Ma Corta */
-            ma_corta: number;
-            /** Ma Larga */
-            ma_larga: number;
-            /** Ma Corta 3M */
-            ma_corta_3m: number;
-            /** Ma Larga 3M */
-            ma_larga_3m: number;
-            /** Top N Momentum */
-            top_n_momentum: number;
-            /** Tamanos Portafolio */
-            tamanos_portafolio: number[];
-        };
-        /** TdPerformance */
-        TdPerformance: {
-            universo_completo: components["schemas"]["TdMetricas"];
-            portafolio_15_finales: components["schemas"]["TdMetricas"];
-            /** Tasa Libre Riesgo Anual */
-            tasa_libre_riesgo_anual: number;
-            /**
-             * Tickers Seleccionados
-             * @default []
-             */
-            tickers_seleccionados: string[];
-        };
-        /** TdPerformanceReducida */
-        TdPerformanceReducida: {
-            /** Retorno Esperado Anual */
+        TdMetricas: {
+            /** Format: double */
             retorno_esperado_anual: number;
-            /** Volatilidad Anual */
-            volatilidad_anual: number;
-            /** Sharpe Ratio */
+            /** Format: double */
             sharpe_ratio: number;
-            /** N Acciones */
-            n_acciones: number | null;
-            /**
-             * Tickers Seleccionados
-             * @default []
-             */
-            tickers_seleccionados: string[];
+            /** Format: double */
+            volatilidad_anual: number;
         };
-        /** TdPortafolioReducido */
+        TdMomentumLider: {
+            /** Format: int64 */
+            momentum_rank: number | null;
+            /** Format: double */
+            momentum_score_pct: number | null;
+            /** Format: date */
+            run_date: string;
+            run_dir: string;
+            ticker: string | null;
+        };
+        TdMomentumMensual: {
+            /** Format: double */
+            momentum_12m_pct: number | null;
+            /** Format: double */
+            momentum_1m_pct: number | null;
+            /** Format: double */
+            momentum_3m_pct: number | null;
+            /** Format: double */
+            momentum_6m_pct: number | null;
+            /** Format: double */
+            momentum_score_pct: number | null;
+            nombre: string | null;
+            pais: string | null;
+            /** Format: double */
+            pct_meses_positivos_12m: number | null;
+            /** Format: double */
+            precio_actual_usd: number | null;
+            /** Format: int64 */
+            rank: number;
+            sector: string | null;
+            ticker: string;
+        };
+        TdMomentumSemanal: {
+            /** Format: double */
+            momentum_1s_pct: number | null;
+            /** Format: double */
+            momentum_2s_pct: number | null;
+            /** Format: double */
+            momentum_3s_pct: number | null;
+            /** Format: double */
+            momentum_4s_pct: number | null;
+            /** Format: double */
+            momentum_score_pct: number | null;
+            nombre: string | null;
+            pais: string | null;
+            /** Format: double */
+            pct_semanas_positivas_4s: number | null;
+            /** Format: double */
+            precio_actual_usd: number | null;
+            /** Format: int64 */
+            rank: number;
+            sector: string | null;
+            ticker: string;
+        };
+        TdParametros: {
+            /** Format: int64 */
+            horizonte_semanas: number;
+            /** Format: double */
+            l2_gamma: number;
+            /** Format: int64 */
+            ma_corta: number;
+            /** Format: int64 */
+            ma_corta_3m: number;
+            /** Format: int64 */
+            ma_larga: number;
+            /** Format: int64 */
+            ma_larga_3m: number;
+            /** Format: double */
+            max_peso_por_activo: number;
+            /** Format: int64 */
+            semanas_minimas: number;
+            tamanos_portafolio: number[];
+            /** Format: int64 */
+            top_n: number;
+            /** Format: int64 */
+            top_n_momentum: number;
+            /** Format: int64 */
+            top_n_us: number;
+        };
+        TdPerformance: {
+            portafolio_15_finales: components["schemas"]["TdMetricas"];
+            /** Format: double */
+            tasa_libre_riesgo_anual: number;
+            tickers_seleccionados: string[];
+            universo_completo: components["schemas"]["TdMetricas"];
+        };
+        TdPerformanceReducida: {
+            /** Format: int64 */
+            n_acciones: number | null;
+            /** Format: double */
+            retorno_esperado_anual: number;
+            /** Format: double */
+            sharpe_ratio: number;
+            tickers_seleccionados: string[];
+            /** Format: double */
+            volatilidad_anual: number;
+        };
         TdPortafolioReducido: {
-            /** N */
+            holdings: components["schemas"]["TdHolding"][];
+            /** Format: int64 */
             n: number;
             performance: components["schemas"]["TdPerformanceReducida"];
-            /** Holdings */
-            holdings: components["schemas"]["TdHolding"][];
         };
-        /**
-         * TdRunDetalle
-         * @description Corrida reconstruida desde ``history.db`` (endpoint ``/runs/{run_dir}``).
-         */
         TdRunDetalle: {
-            /** Id */
-            id: number;
-            /** Run Dir */
-            run_dir: string;
-            /**
-             * Run Date
-             * Format: date
-             */
-            run_date: string;
-            /**
-             * Generated At
-             * Format: date-time
-             */
-            generated_at: string;
-            /** Universe Source */
-            universe_source: string | null;
-            /**
-             * Market Regime Notes
-             * @default []
-             */
-            market_regime_notes: string[];
-            /** Stored At */
-            stored_at: string | null;
-            /** Analyses */
             analyses: {
                 [key: string]: unknown;
             }[];
+            /** Format: date-time */
+            generated_at: string;
+            /** Format: int64 */
+            id: number;
+            market_regime_notes: string[];
+            /** Format: date */
+            run_date: string;
+            run_dir: string;
+            stored_at: string | null;
+            universe_source: string | null;
         } & {
             [key: string]: unknown;
         };
-        /** TdRunPerformance */
         TdRunPerformance: {
-            /** Run Dir */
-            run_dir: string;
-            /**
-             * Run Date
-             * Format: date
-             */
-            run_date: string;
-            /**
-             * Generated At
-             * Format: date-time
-             */
-            generated_at: string;
-            /** Universe Source */
-            universe_source: string | null;
-            /** Analysis Key */
             analysis_key: string;
-            /** Label */
+            /** Format: date-time */
+            generated_at: string;
             label: string;
-            /** Universe Size */
-            universe_size: number | null;
-            /** N Selected */
+            /** Format: int64 */
             n_selected: number | null;
-            /** Retorno Universo Anual */
-            retorno_universo_anual: number | null;
-            /** Volatilidad Universo Anual */
-            volatilidad_universo_anual: number | null;
-            /** Sharpe Universo */
-            sharpe_universo: number | null;
-            /** Retorno Portafolio Anual */
+            /** Format: double */
             retorno_portafolio_anual: number | null;
-            /** Volatilidad Portafolio Anual */
-            volatilidad_portafolio_anual: number | null;
-            /** Sharpe Portafolio */
+            /** Format: double */
+            retorno_universo_anual: number | null;
+            /** Format: date */
+            run_date: string;
+            run_dir: string;
+            /** Format: double */
             sharpe_portafolio: number | null;
-            /** Tasa Libre Riesgo Anual */
+            /** Format: double */
+            sharpe_universo: number | null;
+            /** Format: double */
             tasa_libre_riesgo_anual: number | null;
+            /** Format: int64 */
+            universe_size: number | null;
+            universe_source: string | null;
+            /** Format: double */
+            volatilidad_portafolio_anual: number | null;
+            /** Format: double */
+            volatilidad_universo_anual: number | null;
         };
-        /** TdSector */
         TdSector: {
-            /** Sector */
-            sector: string;
-            /** N Acciones */
+            /** Format: int64 */
             n_acciones: number;
-            /** Peso Total */
+            /** Format: double */
             peso_total: number;
-            /** Retorno 6M Prom */
+            /** Format: double */
             retorno_6m_prom: number | null;
-            /** Senal Predominante */
+            sector: string;
             senal_predominante: string | null;
-            /**
-             * Tickers
-             * @default
-             */
+            /** @description Tickers del sector separados por coma (formato del original). */
             tickers: string;
         };
-        /** TdSectorHistoria */
         TdSectorHistoria: {
-            /**
-             * Run Date
-             * Format: date
-             */
-            run_date: string;
-            /** Run Dir */
-            run_dir: string;
-            /** Sector */
-            sector: string | null;
-            /** Peso Total */
-            peso_total: number | null;
-            /** N Acciones */
+            /** Format: int64 */
             n_acciones: number | null;
-            /** Retorno 6M Prom */
+            /** Format: double */
+            peso_total: number | null;
+            /** Format: double */
             retorno_6m_prom: number | null;
+            /** Format: date */
+            run_date: string;
+            run_dir: string;
+            sector: string | null;
         };
-        /** TdTickerHistoria */
         TdTickerHistoria: {
-            /**
-             * Run Date
-             * Format: date
-             */
-            run_date: string;
-            /** Run Dir */
-            run_dir: string;
-            /** Peso Final */
-            peso_final: number | null;
-            /** Precio Actual Usd */
-            precio_actual_usd: number | null;
-            /** Senal Tecnica */
-            senal_tecnica: string | null;
-            /** Momentum 26S Pct */
+            /** Format: double */
             momentum_26s_pct: number | null;
-            /** Retorno Esperado 6M Pct */
-            retorno_esperado_6m_pct: number | null;
-            /** Precio Proyectado 6M Usd */
-            precio_proyectado_6m_usd: number | null;
-            /** Precio Min 90Pct 6M Usd */
-            precio_min_90pct_6m_usd: number | null;
-            /** Precio Max 90Pct 6M Usd */
+            /** Format: double */
+            peso_final: number | null;
+            /** Format: double */
+            precio_actual_usd: number | null;
+            /** Format: double */
             precio_max_90pct_6m_usd: number | null;
-        };
-        /** TdTickerNombre */
-        TdTickerNombre: {
-            /** Ticker */
-            ticker: string;
-            /** Nombre */
-            nombre: string | null;
-        };
-        /** TdUniversoHistoria */
-        TdUniversoHistoria: {
-            /**
-             * Run Date
-             * Format: date
-             */
+            /** Format: double */
+            precio_min_90pct_6m_usd: number | null;
+            /** Format: double */
+            precio_proyectado_6m_usd: number | null;
+            /** Format: double */
+            retorno_esperado_6m_pct: number | null;
+            /** Format: date */
             run_date: string;
-            /** Run Dir */
             run_dir: string;
-            /** Universe Rank */
-            universe_rank: number;
-            /** Universe Size */
-            universe_size: number | null;
-            /** Peso Markowitz */
-            peso_markowitz: number | null;
-            /** Retorno Esperado Anual */
-            retorno_esperado_anual: number | null;
-            /** Seleccionado */
-            seleccionado: boolean;
+            senal_tecnica: string | null;
         };
-        /** Technical */
-        Technical: {
-            /** Sma 50 */
-            sma_50: number | null;
-            /** Sma 200 */
-            sma_200: number | null;
-            /** Rsi 14 */
-            rsi_14: number | null;
-            macd: components["schemas"]["Macd"] | null;
-            /** Volume */
-            volume: number | null;
-            /** Average Volume */
-            average_volume: number | null;
-        };
-        /** TickerEvaluation */
-        TickerEvaluation: {
-            /** Ticker */
+        TdTickerNombre: {
+            nombre: string | null;
             ticker: string;
-            /** Name */
-            name: string;
-            /** Sector */
-            sector: string;
-            /** Industry */
-            industry: string;
-            /** Currency */
+        };
+        TdUniversoHistoria: {
+            /** Format: double */
+            peso_markowitz: number | null;
+            /** Format: double */
+            retorno_esperado_anual: number | null;
+            /** Format: date */
+            run_date: string;
+            run_dir: string;
+            seleccionado: boolean;
+            /** Format: int64 */
+            universe_rank: number;
+            /** Format: int64 */
+            universe_size: number | null;
+        };
+        Technical: {
+            /** Format: double */
+            average_volume: number | null;
+            macd: components["schemas"]["Macd"] | null;
+            /** Format: double */
+            rsi_14: number | null;
+            /** Format: double */
+            sma_200: number | null;
+            /** Format: double */
+            sma_50: number | null;
+            /** Format: double */
+            volume: number | null;
+        };
+        TickerEvaluation: {
+            /** @description True si salió de la caché de 5 minutos. */
+            cached: boolean;
             currency: string;
-            /** Price */
-            price: number | null;
-            /** Market Cap */
-            market_cap: number | null;
-            /**
-             * Fetched At
-             * Format: date-time
-             */
+            /** Format: date-time */
             fetched_at: string;
-            valuation: components["schemas"]["Valuation"];
-            profitability: components["schemas"]["Profitability"];
             financial_health: components["schemas"]["FinancialHealth"];
+            industry: string;
+            /** Format: double */
+            market_cap: number | null;
+            name: string;
+            /** Format: double */
+            price: number | null;
+            profitability: components["schemas"]["Profitability"];
+            score: components["schemas"]["Score"];
+            sector: string;
             shareholder_return: components["schemas"]["ShareholderReturn"];
             technical: components["schemas"]["Technical"];
-            score: components["schemas"]["Score"];
-            /**
-             * Cached
-             * @description True si salió de la caché de 5 minutos.
-             * @default false
-             */
-            cached: boolean;
-        };
-        /** UsHistCorrida */
-        UsHistCorrida: {
-            /** Run Id */
-            run_id: string;
-            /**
-             * Started At
-             * Format: date-time
-             */
-            started_at: string;
-            /** Finished At */
-            finished_at: string | null;
-            /** Universe Total */
-            universe_total: number | null;
-            /** Candidates Total */
-            candidates_total: number | null;
-            /** Evaluated Total */
-            evaluated_total: number | null;
-            /** Top N */
-            top_n: number;
-            /** Top1 Ticker */
-            top1_ticker: string | null;
-            /** Top1 Score */
-            top1_score: number | null;
-        };
-        /** UsHistPermanencia */
-        UsHistPermanencia: {
-            /** Ticker */
             ticker: string;
-            /** Nombre */
-            nombre: string | null;
-            /** Veces En Top */
-            veces_en_top: number;
-            /** Corridas */
-            corridas: number;
-            /** Racha Actual */
-            racha_actual: number;
-            /** Rank Ultima */
-            rank_ultima: number | null;
-            /** Score Ultima */
-            score_ultima: number | null;
+            valuation: components["schemas"]["Valuation"];
         };
-        /** UsHistPilares */
-        UsHistPilares: {
-            /** Valuation */
-            valuation: number | null;
-            /** Profitability */
-            profitability: number | null;
-            /** Financial Health */
-            financial_health: number | null;
-            /** Shareholder Return */
-            shareholder_return: number | null;
-            /** Technical */
-            technical: number | null;
-        };
-        /** UsHistTickerPunto */
-        UsHistTickerPunto: {
-            /** Run Id */
-            run_id: string;
-            /**
-             * Started At
-             * Format: date-time
-             */
-            started_at: string;
-            /** Evaluated Total */
+        UsHistCorrida: {
+            /** Format: int64 */
+            candidates_total: number | null;
+            /** Format: int64 */
             evaluated_total: number | null;
-            /** Top N */
+            /** Format: date-time */
+            finished_at: string | null;
+            run_id: string;
+            /** Format: date-time */
+            started_at: string;
+            /** Format: double */
+            top1_score: number | null;
+            top1_ticker: string | null;
+            /** Format: int64 */
             top_n: number;
+            /** Format: int64 */
+            universe_total: number | null;
+        };
+        UsHistPermanencia: {
+            /** Format: int64 */
+            corridas: number;
+            nombre: string | null;
+            /** Format: int64 */
+            racha_actual: number;
+            /** Format: int64 */
+            rank_ultima: number | null;
+            /** Format: double */
+            score_ultima: number | null;
+            ticker: string;
+            /** Format: int64 */
+            veces_en_top: number;
+        };
+        UsHistPilares: {
+            /** Format: double */
+            financial_health: number | null;
+            /** Format: double */
+            profitability: number | null;
+            /** Format: double */
+            shareholder_return: number | null;
+            /** Format: double */
+            technical: number | null;
+            /** Format: double */
+            valuation: number | null;
+        };
+        UsHistTickerPunto: {
+            /** Format: int64 */
+            evaluated_total: number | null;
+            in_top: boolean;
+            /** Format: double */
+            momentum_12_1: number | null;
+            name: string | null;
+            pilares: components["schemas"]["UsHistPilares"];
+            /** Format: double */
+            price: number | null;
             /**
-             * Rank
+             * Format: int64
              * @description Posición por momentum 12-1 entre los candidatos evaluados.
              */
             rank: number;
-            /** In Top */
-            in_top: boolean;
-            /** Name */
-            name: string | null;
-            /** Price */
-            price: number | null;
-            /** Momentum 12 1 */
-            momentum_12_1: number | null;
-            /** Score */
+            run_id: string;
+            /** Format: double */
             score: number | null;
-            /** Score Label */
             score_label: string | null;
-            pilares: components["schemas"]["UsHistPilares"];
+            /** Format: date-time */
+            started_at: string;
+            /** Format: int64 */
+            top_n: number;
         };
-        /** ValidationError */
-        ValidationError: {
-            /** Location */
-            loc: (string | number)[];
-            /** Message */
-            msg: string;
-            /** Error Type */
-            type: string;
-            /** Input */
-            input?: unknown;
-            /** Context */
-            ctx?: Record<string, never>;
-        };
-        /** Valuation */
         Valuation: {
-            /** Per Trailing */
-            per_trailing: number | null;
-            /** Per Forward */
-            per_forward: number | null;
-            /** Peg Ratio */
-            peg_ratio: number | null;
-            /** Ev To Ebitda */
-            ev_to_ebitda: number | null;
-            /** Price To Book */
-            price_to_book: number | null;
-            /** Eps Trailing */
-            eps_trailing: number | null;
-            /** Eps Forward */
+            /** Format: double */
             eps_forward: number | null;
+            /** Format: double */
+            eps_trailing: number | null;
+            /** Format: double */
+            ev_to_ebitda: number | null;
+            /** Format: double */
+            peg_ratio: number | null;
+            /** Format: double */
+            per_forward: number | null;
+            /** Format: double */
+            per_trailing: number | null;
+            /** Format: double */
+            price_to_book: number | null;
         };
     };
     responses: never;
@@ -3005,232 +2497,7 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    health_api_health_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HealthResponse"];
-                };
-            };
-        };
-    };
-    system_status_api_status_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SystemStatus"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    jobs_latest_api_jobs_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        [key: string]: components["schemas"]["JobRecord"] | null;
-                    };
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    jobs_programas_api_jobs_programas_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ProgramaInfo"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    jobs_history_api_jobs__module__get: {
-        parameters: {
-            query?: {
-                limit?: number;
-            };
-            header?: never;
-            path: {
-                module: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JobRecord"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_hub_api_hub_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HubResponse"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_buscar_api_buscar_get: {
+    get_buscar: {
         parameters: {
             query: {
                 /** @description Ticker o parte del nombre */
@@ -3243,7 +2510,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -3252,7 +2519,7 @@ export interface operations {
                     "application/json": components["schemas"]["BusquedaResponse"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3261,16 +2528,16 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3281,25 +2548,30 @@ export interface operations {
             };
         };
     };
-    module_status_api_cl_status_get: {
+    cl_history_diff: {
         parameters: {
-            query?: never;
+            query?: {
+                /** @description YYYYMMDD_HHMMSS */
+                desde?: string;
+                /** @description YYYYMMDD_HHMMSS */
+                hasta?: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ModuleStatus"];
+                    "application/json": components["schemas"]["HistDiff"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3308,7 +2580,16 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3319,7 +2600,7 @@ export interface operations {
             };
         };
     };
-    get_ranking_api_cl_ranking_get: {
+    cl_history_runs: {
         parameters: {
             query?: never;
             header?: never;
@@ -3328,83 +2609,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["RankingResponse"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_indicadores_api_cl_indicadores_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["IndicadoresResponse"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    history_runs_api_cl_history_runs_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -3413,7 +2618,7 @@ export interface operations {
                     "application/json": components["schemas"]["ClHistCorrida"][];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3422,7 +2627,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3433,7 +2638,7 @@ export interface operations {
             };
         };
     };
-    history_ticker_api_cl_history_ticker__ticker__get: {
+    cl_history_ticker: {
         parameters: {
             query?: never;
             header?: never;
@@ -3444,7 +2649,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -3453,7 +2658,7 @@ export interface operations {
                     "application/json": components["schemas"]["ClHistTickerPunto"][];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3462,16 +2667,16 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3482,7 +2687,7 @@ export interface operations {
             };
         };
     };
-    history_indicador_api_cl_history_ticker__ticker__indicador__metrica__get: {
+    cl_history_indicador: {
         parameters: {
             query?: never;
             header?: never;
@@ -3494,7 +2699,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -3503,7 +2708,7 @@ export interface operations {
                     "application/json": components["schemas"]["ClHistIndicadorPunto"][];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3512,16 +2717,16 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3532,59 +2737,7 @@ export interface operations {
             };
         };
     };
-    history_diff_api_cl_history_diff_get: {
-        parameters: {
-            query?: {
-                /** @description YYYYMMDD_HHMMSS */
-                desde?: string | null;
-                /** @description YYYYMMDD_HHMMSS */
-                hasta?: string | null;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HistDiff"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    module_status_api_us_status_get: {
+    cl_indicadores: {
         parameters: {
             query?: never;
             header?: never;
@@ -3593,7 +2746,83 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IndicadoresResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    cl_ranking: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RankingResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    cl_stocks_status: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -3602,7 +2831,7 @@ export interface operations {
                     "application/json": components["schemas"]["ModuleStatus"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3611,7 +2840,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3622,7 +2851,7 @@ export interface operations {
             };
         };
     };
-    latest_ranking_api_us_rankings_latest_get: {
+    etf_categorias_ranking: {
         parameters: {
             query?: never;
             header?: never;
@@ -3631,16 +2860,16 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["RunResponse"];
+                    "application/json": components["schemas"]["EtfCategorias"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3649,7 +2878,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3660,7 +2889,7 @@ export interface operations {
             };
         };
     };
-    latest_candidates_api_us_rankings_latest_candidates_get: {
+    etf_diversificacion: {
         parameters: {
             query?: never;
             header?: never;
@@ -3669,16 +2898,16 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["RunResponse"];
+                    "application/json": components["schemas"]["EtfDiversificacion"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3687,7 +2916,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3698,12 +2927,127 @@ export interface operations {
             };
         };
     };
-    latest_prices_api_us_rankings_latest_prices_get: {
+    etf_excluidos: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfTabla"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    etf_historial: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfHistorial"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    etf_history_categorias: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfHistCategoria"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    etf_history_diff: {
         parameters: {
             query?: {
-                /** @description Solo los últimos N días. */
-                days?: number | null;
-                tickers?: string[] | null;
+                /** @description yyyymmdd[_n] */
+                desde?: string;
+                /** @description yyyymmdd[_n] */
+                hasta?: string;
             };
             header?: never;
             path?: never;
@@ -3711,16 +3055,16 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PriceMatrix"];
+                    "application/json": components["schemas"]["HistDiff"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3729,16 +3073,16 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3749,7 +3093,7 @@ export interface operations {
             };
         };
     };
-    list_runs_api_us_rankings_runs_get: {
+    etf_history_runs: {
         parameters: {
             query?: never;
             header?: never;
@@ -3758,16 +3102,16 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["RunsList"];
+                    "application/json": components["schemas"]["EtfHistCorrida"][];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3776,7 +3120,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3787,45 +3131,7 @@ export interface operations {
             };
         };
     };
-    history_runs_api_us_history_runs_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UsHistCorrida"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    history_ticker_api_us_history_ticker__ticker__get: {
+    etf_history_ticker: {
         parameters: {
             query?: never;
             header?: never;
@@ -3836,16 +3142,16 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["UsHistTickerPunto"][];
+                    "application/json": components["schemas"]["EtfHistTickerPunto"][];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3854,16 +3160,16 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3874,57 +3180,7 @@ export interface operations {
             };
         };
     };
-    history_diff_api_us_history_diff_get: {
-        parameters: {
-            query?: {
-                desde?: string | null;
-                hasta?: string | null;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HistDiff"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    history_top_api_us_history_top_get: {
+    etf_history_top: {
         parameters: {
             query?: {
                 ultimas?: number;
@@ -3935,16 +3191,16 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["UsHistPermanencia"][];
+                    "application/json": components["schemas"]["EtfHistPermanencia"][];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -3953,16 +3209,16 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -3973,56 +3229,7 @@ export interface operations {
             };
         };
     };
-    evaluate_api_us_tickers__ticker__evaluate_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                ticker: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TickerEvaluation"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    portfolio_limits_api_us_portfolio_limits_get: {
+    etf_momentum_top15: {
         parameters: {
             query?: never;
             header?: never;
@@ -4031,172 +3238,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PortfolioLimits"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    optimize_api_us_portfolio_optimize_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PortfolioRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PortfolioResult"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    module_status_api_etf_status_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ModuleStatus"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    resumen_api_etf_resumen_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfResumen"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    top15_api_etf_top15_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4205,7 +3247,7 @@ export interface operations {
                     "application/json": components["schemas"]["EtfTabla"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -4214,7 +3256,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -4225,387 +3267,7 @@ export interface operations {
             };
         };
     };
-    top15_simple_api_etf_top15_simple_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfTabla"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    top15_vanguard_api_etf_top15_vanguard_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfTabla"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    ranking_completo_api_etf_ranking_completo_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfTabla"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    excluidos_api_etf_excluidos_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfTabla"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    diversificacion_api_etf_diversificacion_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfDiversificacion"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    rotacion_api_etf_rotacion_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfRotacion"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    momentum_top15_api_etf_momentum_top15_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfTabla"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    categorias_ranking_api_etf_categorias_ranking_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfCategorias"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    russell3000_api_etf_russell3000_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfCap"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    historial_api_etf_historial_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfHistorial"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    descargar_pdf_api_etf_pdf_get: {
+    etf_pdf: {
         parameters: {
             query?: never;
             header?: never;
@@ -4623,7 +3285,7 @@ export interface operations {
                     "application/pdf": unknown;
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -4632,7 +3294,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -4643,7 +3305,7 @@ export interface operations {
             };
         };
     };
-    run_api_etf_run_post: {
+    etf_ranking_completo: {
         parameters: {
             query?: never;
             header?: never;
@@ -4652,7 +3314,121 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfTabla"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    etf_resumen: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfResumen"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    etf_rotacion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfRotacion"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    etf_run: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4661,7 +3437,7 @@ export interface operations {
                     "application/json": components["schemas"]["EtfRunResult"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -4670,7 +3446,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -4681,7 +3457,7 @@ export interface operations {
             };
         };
     };
-    history_runs_api_etf_history_runs_get: {
+    etf_russell3000: {
         parameters: {
             query?: never;
             header?: never;
@@ -4690,16 +3466,16 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["EtfHistCorrida"][];
+                    "application/json": components["schemas"]["EtfCap"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -4708,7 +3484,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -4719,157 +3495,7 @@ export interface operations {
             };
         };
     };
-    history_ticker_api_etf_history_ticker__ticker__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                ticker: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfHistTickerPunto"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    history_diff_api_etf_history_diff_get: {
-        parameters: {
-            query?: {
-                /** @description yyyymmdd[_n] */
-                desde?: string | null;
-                /** @description yyyymmdd[_n] */
-                hasta?: string | null;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HistDiff"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    history_top_api_etf_history_top_get: {
-        parameters: {
-            query?: {
-                ultimas?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfHistPermanencia"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    history_categorias_api_etf_history_categorias_get: {
+    etf_status: {
         parameters: {
             query?: never;
             header?: never;
@@ -4878,45 +3504,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfHistCategoria"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    module_status_api_tendencia_status_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -4925,7 +3513,7 @@ export interface operations {
                     "application/json": components["schemas"]["ModuleStatus"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -4934,7 +3522,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -4945,7 +3533,7 @@ export interface operations {
             };
         };
     };
-    latest_api_tendencia_latest_get: {
+    etf_top15: {
         parameters: {
             query?: never;
             header?: never;
@@ -4954,16 +3542,16 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TdDashboard"];
+                    "application/json": components["schemas"]["EtfTabla"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -4972,7 +3560,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -4983,159 +3571,7 @@ export interface operations {
             };
         };
     };
-    run_dashboard_api_tendencia_runs__run_dir__dashboard_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description YYYYMMDD_NN */
-                run_dir: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TdDashboard"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    run_files_api_tendencia_runs__run_dir__files_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description YYYYMMDD_NN */
-                run_dir: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TdArchivo"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    run_file_api_tendencia_runs__run_dir__files__nombre__get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description YYYYMMDD_NN */
-                run_dir: string;
-                nombre: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/pdf": unknown;
-                    "text/csv": unknown;
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    excluidos_api_tendencia_excluidos_get: {
+    etf_top15_simple: {
         parameters: {
             query?: never;
             header?: never;
@@ -5144,16 +3580,16 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TdExcluido"][];
+                    "application/json": components["schemas"]["EtfTabla"];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -5162,7 +3598,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -5173,7 +3609,7 @@ export interface operations {
             };
         };
     };
-    list_analyses_api_tendencia_analyses_get: {
+    etf_top15_vanguard: {
         parameters: {
             query?: never;
             header?: never;
@@ -5182,7 +3618,279 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EtfTabla"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    health: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthResponse"];
+                };
+            };
+            /** @description Error */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_hub: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HubResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    jobs_latest: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: components["schemas"]["JobRecord"] | null;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    jobs_programas: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProgramaInfo"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    jobs_history: {
+        parameters: {
+            query?: {
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                module: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobRecord"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    system_status: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SystemStatus"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_analyses: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5191,7 +3899,7 @@ export interface operations {
                     "application/json": components["schemas"]["TdAnalisisDisponible"][];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -5200,7 +3908,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -5211,133 +3919,25 @@ export interface operations {
             };
         };
     };
-    list_runs_api_tendencia_runs_get: {
-        parameters: {
-            query?: {
-                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
-                analysis?: string;
-                from?: string | null;
-                to?: string | null;
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TdRunPerformance"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    get_run_api_tendencia_runs__run_dir__get: {
+    td_excluidos: {
         parameters: {
             query?: never;
             header?: never;
-            path: {
-                /** @description YYYYMMDD_NN */
-                run_dir: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TdRunDetalle"];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    history_performance_api_tendencia_history_performance_get: {
-        parameters: {
-            query?: {
-                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
-                analysis?: string;
-                from?: string | null;
-                to?: string | null;
-            };
-            header?: never;
             path?: never;
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["TdRunPerformance"][];
+                    "application/json": components["schemas"]["TdExcluido"][];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -5346,16 +3946,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;
@@ -5366,211 +3957,7 @@ export interface operations {
             };
         };
     };
-    history_tickers_api_tendencia_history_tickers_get: {
-        parameters: {
-            query?: {
-                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
-                analysis?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TdTickerNombre"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    history_ticker_api_tendencia_history_ticker__ticker__get: {
-        parameters: {
-            query?: {
-                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
-                analysis?: string;
-            };
-            header?: never;
-            path: {
-                ticker: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TdTickerHistoria"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    history_universe_api_tendencia_history_universe__ticker__get: {
-        parameters: {
-            query?: {
-                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
-                analysis?: string;
-            };
-            header?: never;
-            path: {
-                ticker: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TdUniversoHistoria"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    history_sectors_api_tendencia_history_sectors_get: {
-        parameters: {
-            query?: {
-                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
-                analysis?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TdSectorHistoria"][];
-                };
-            };
-            /** @description API key inválida o ausente */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-            /** @description Sin datos disponibles */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    history_momentum_leaders_api_tendencia_history_momentum_leaders_get: {
+    td_history_momentum_leaders: {
         parameters: {
             query?: {
                 /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
@@ -5583,7 +3970,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Successful Response */
+            /** @description OK */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -5592,7 +3979,7 @@ export interface operations {
                     "application/json": components["schemas"]["TdMomentumLider"][];
                 };
             };
-            /** @description API key inválida o ausente */
+            /** @description Unauthorized */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -5601,16 +3988,1130 @@ export interface operations {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Unprocessable Entity */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
-            /** @description Sin datos disponibles */
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_history_performance: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+                from?: string;
+                to?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdRunPerformance"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_history_sectors: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdSectorHistoria"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_history_ticker: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+            };
+            header?: never;
+            path: {
+                ticker: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdTickerHistoria"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_history_tickers: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdTickerNombre"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_history_universe: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+            };
+            header?: never;
+            path: {
+                ticker: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdUniversoHistoria"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_latest: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdDashboard"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_runs: {
+        parameters: {
+            query?: {
+                /** @description '' = Asia + EEUU (principal), '_us' = solo EEUU */
+                analysis?: string;
+                from?: string;
+                to?: string;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdRunPerformance"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_run_detalle: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description YYYYMMDD_NN */
+                run_dir: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdRunDetalle"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_run_dashboard: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description YYYYMMDD_NN */
+                run_dir: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdDashboard"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_run_files: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description YYYYMMDD_NN */
+                run_dir: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TdArchivo"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    td_run_file: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description YYYYMMDD_NN */
+                run_dir: string;
+                nombre: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/pdf": unknown;
+                    "text/csv": unknown;
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    tendencia_status: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModuleStatus"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_history_diff: {
+        parameters: {
+            query?: {
+                desde?: string;
+                hasta?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HistDiff"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_history_runs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsHistCorrida"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_history_ticker: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                ticker: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsHistTickerPunto"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_history_top: {
+        parameters: {
+            query?: {
+                ultimas?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsHistPermanencia"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_portfolio_limits: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PortfolioLimits"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_portfolio_optimize: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PortfolioRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PortfolioResult"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_latest_ranking: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_latest_candidates: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_latest_prices: {
+        parameters: {
+            query?: {
+                /** @description Solo los últimos N días. */
+                days?: number;
+                tickers?: string[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PriceMatrix"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_list_runs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunsList"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_stocks_status: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModuleStatus"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_evaluate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                ticker: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TickerEvaluation"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
             503: {
                 headers: {
                     [name: string]: unknown;

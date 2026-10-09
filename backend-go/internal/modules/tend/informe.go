@@ -12,9 +12,9 @@ import (
 	"fogradar/internal/pdf"
 )
 
-// Informe PDF de la corrida (reporting/pdf_report.py): resumen ejecutivo, portafolio seleccionado + gráfico, proyección a
+// Informe PDF de la corrida: resumen ejecutivo, portafolio seleccionado + gráfico, proyección a
 // 6 meses + gráfico, sector en tendencia y top momentum mensual, una sección por análisis, más contexto de mercado y
-// limitaciones. Vertical (Letter). Los gráficos se dibujan directamente (no hay matplotlib).
+// limitaciones. Vertical (Letter). Los gráficos se dibujan directamente.
 
 var mesesES = []string{"", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"}
 
@@ -300,9 +300,9 @@ func GenerarPDF(runDir string, u *Universe, p Params, hasMacro bool, now time.Ti
 		return "", fmt.Errorf("no se generó ningún análisis (ver Markowitz); no hay nada que reportar")
 	}
 
-	rfNote := "La tasa libre de riesgo usada proviene de ^IRX (yfinance) como respaldo, no de FRED, porque fetch_macro_data.py no se había corrido con una API key de FRED al momento de este informe."
+	rfNote := "La tasa libre de riesgo usada proviene de ^IRX (Yahoo) como respaldo, no de FRED, porque los datos macro no se habían descargado con una API key de FRED al momento de este informe."
 	if hasMacro {
-		rfNote = "La tasa libre de riesgo y el contexto de mercado (curva de tasas, spreads de crédito) provienen de datos reales de FRED (fetch_macro_data.py)."
+		rfNote = "La tasa libre de riesgo y el contexto de mercado (curva de tasas, spreads de crédito) provienen de datos reales de FRED."
 	}
 	limits := []string{
 		"Este informe es un producto cuantitativo (MVP) y no constituye asesoría financiera ni recomendación de inversión. Consulta a un asesor financiero antes de tomar decisiones.",

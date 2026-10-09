@@ -32,6 +32,9 @@ type Client struct {
 	mu   sync.Mutex
 	raw  backend
 	make func() (backend, error)
+
+	scrMu sync.Mutex
+	scr   *screenSession // sesión del screener (screener.go), creada al primer uso
 }
 
 // NewClient crea un cliente real. La sesión (cookie + crumb) se negocia en el primer request, y si

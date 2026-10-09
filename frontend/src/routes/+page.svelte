@@ -60,7 +60,7 @@
 			<Notice kind="warning" title="Hay módulos sin actualizar">
 				<p>
 					{atrasados.map((m) => m.titulo).join(', ')}: en desarrollo se actualizan a pedido con
-					<code>python scripts/run_all_pipelines.py</code> (o <code>correr_pipelines.bat</code>).
+					<code>correr_pipelines.bat</code> (o <code>fogradar job --todos</code>).
 				</p>
 			</Notice>
 		</div>

@@ -1,4 +1,4 @@
-// Package fx son las tasas de cambio (equivale a fog_radar/core/fx.py): spot con caché por par,
+// Package fx son las tasas de cambio: spot con caché por par,
 // normalización de monedas de Yahoo (subunidades GBp/ZAc/ILA) y conversión de series a USD.
 //
 // Convención de Yahoo: el ticker XXX=X vale «cuántas unidades de XXX compra 1 USD».
@@ -170,7 +170,7 @@ type Series struct {
 
 // ToUSD convierte precios en moneda local a USD: precio / fx / divisor.
 //
-// Igual que pandas (fx.reindex(precios.index).ffill()): el tipo de cambio de cada fecha de
+// Reindexado exacto con arrastre hacia adelante (ffill): el tipo de cambio de cada fecha de
 // precio es el de ese mismo instante, si existe; si falta, se arrastra el último de las fechas
 // anteriores (sin mirar al futuro). Antes del primer FX conocido el resultado es NaN.
 func ToUSD(precios, fxLocalPorUSD Series, moneda string) Series {

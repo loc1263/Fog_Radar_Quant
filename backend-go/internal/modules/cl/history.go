@@ -21,7 +21,7 @@ const (
 	tag = "Chile (IPSA)"
 )
 
-// MetricasNumericas son las claves de columnas.py cuya unidad no es «texto» (58).
+// MetricasNumericas son las claves de columnas cuya unidad no es «texto» (58).
 var MetricasNumericas = func() map[string]bool {
 	m := map[string]bool{}
 	for _, k := range strings.Split("tasa_cambio,market_cap,enterprise_value,trailing_pe,forward_pe,peg,"+

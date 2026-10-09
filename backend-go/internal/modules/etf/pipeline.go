@@ -19,6 +19,7 @@ func init() {
 		Run: Run,
 		Options: []jobs.Option{
 			{Flag: "--solo-analisis", Help: "Re-analiza el CSV vigente sin descargar de Yahoo."},
+			{Flag: "--refrescar-info", Help: "Ignora la caché de info de ETFs (nombre, AUM, categoría…) y la pide de nuevo a Yahoo."},
 			jobs.Backfill,
 		},
 	})
@@ -121,7 +122,7 @@ func analizarEInstalar(env *jobs.Env, origenCSV string, archivar bool) (string, 
 	return strings.Join(partes, " · "), nil
 }
 
-// Run es el pipeline batch de ETFs (port de actualizar_datos_semanal.py).
+// Run es el pipeline batch de ETFs.
 //
 //	fogradar job etf                  # screener Yahoo + análisis
 //	fogradar job etf --solo-analisis  # re-analiza el CSV vigente (segundos)
@@ -149,8 +150,9 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 		return "solo análisis · " + r, err
 	}
 
-	env.Log.Info("corriendo el screener de ETFs")
-	res, err := ProcesarETFs(ctx, env.Yahoo, ScreenerOpts{OutputDir: ScreenerDir(s), Concurrencia: s.YahooConcurrencia, Log: env.Log})
+	refrescar, _ := opts["refrescar_info"].(bool)
+	env.Log.Info("corriendo el screener de ETFs", "refrescar_info", refrescar)
+	res, err := ProcesarETFs(ctx, env.Yahoo, ScreenerOpts{OutputDir: ScreenerDir(s), Concurrencia: s.YahooConcurrencia, Log: env.Log, RefrescarInfo: refrescar})
 	if err != nil {
 		return "", err
 	}

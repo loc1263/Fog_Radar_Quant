@@ -8,8 +8,8 @@ import (
 // NaN es math.NaN(), por brevedad.
 var NaN = math.NaN()
 
-// pairwiseSum replica la suma de numpy (suma por pares con 8 acumuladores): con el mismo orden de
-// operaciones se obtienen los mismos bits que pandas en medias y varianzas.
+// pairwiseSum implementa la suma por pares con 8 acumuladores): con el mismo orden de
+// operaciones se obtienen resultados reproducibles en medias y varianzas.
 func pairwiseSum(a []float64) float64 {
 	n := len(a)
 	switch {
@@ -40,7 +40,7 @@ func pairwiseSum(a []float64) float64 {
 	}
 }
 
-// Sum suma como numpy.
+// Sum suma por pares.
 func Sum(a []float64) float64 { return pairwiseSum(a) }
 
 // DropNaN devuelve una copia sin NaN.
@@ -63,8 +63,8 @@ func Mean(a []float64) float64 {
 	return pairwiseSum(v) / float64(len(v))
 }
 
-// StdPop es el desvío poblacional (ddof=0) de los valores presentes, calculado como pandas
-// (nanvar): suma de (x-media)² por pares / n.
+// StdPop es el desvío poblacional (ddof=0) de los valores presentes, calculado como
+// suma de (x-media)² por pares / n.
 func StdPop(a []float64) float64 {
 	v := DropNaN(a)
 	if len(v) == 0 {
@@ -79,7 +79,7 @@ func StdPop(a []float64) float64 {
 	return math.Sqrt(pairwiseSum(sq) / float64(len(v)))
 }
 
-// Quantile es el cuantil q∈[0,1] con interpolación lineal (numpy/pandas por defecto) de los
+// Quantile es el cuantil q∈[0,1] con interpolación lineal de los
 // valores presentes; NaN si no hay ninguno.
 func Quantile(a []float64, q float64) float64 {
 	v := DropNaN(a)
@@ -97,7 +97,7 @@ func Quantile(a []float64, q float64) float64 {
 	}
 	diff := hi - lo
 	if t >= 0.5 {
-		return hi - diff*(1-t) // numpy _lerp
+		return hi - diff*(1-t) // interpolación lineal
 	}
 	return lo + diff*t
 }
@@ -139,8 +139,7 @@ func ZScore(a []float64) []float64 {
 	return out
 }
 
-// RankMinDesc es el ranking descendente con empates en el mínimo (pandas rank(ascending=False,
-// method="min")); los NaN quedan NaN.
+// RankMinDesc es el ranking descendente con empates en el mínimo; los NaN quedan NaN.
 func RankMinDesc(a []float64) []float64 {
 	out := make([]float64, len(a))
 	for i, v := range a {
@@ -160,7 +159,7 @@ func RankMinDesc(a []float64) []float64 {
 }
 
 // OrderDesc devuelve los índices ordenados de mayor a menor, NaN al final; el orden relativo de
-// los empates es el original (estable y documentado; pandas no lo garantiza).
+// los empates es el original.
 func OrderDesc(a []float64) []int {
 	idx := make([]int, len(a))
 	for i := range idx {
@@ -219,7 +218,7 @@ func PctRank(a []float64, ascending bool) []float64 {
 	return out
 }
 
-// StdSample es el desvío muestral (ddof=1) de los valores presentes, como pandas (nanvar).
+// StdSample es el desvío muestral (ddof=1) de los valores presentes.
 func StdSample(a []float64) float64 {
 	v := DropNaN(a)
 	if len(v) < 2 {
@@ -234,7 +233,7 @@ func StdSample(a []float64) float64 {
 	return math.Sqrt(pairwiseSum(sq) / float64(len(v)-1))
 }
 
-// KahanMean es la media con suma compensada de Kahan, como groupby().mean() de pandas.
+// KahanMean es la media con suma compensada de Kahan.
 func KahanMean(a []float64) float64 {
 	var sum, comp float64
 	n := 0

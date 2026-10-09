@@ -150,7 +150,7 @@ func label(score float64) string {
 	return "Muy débil"
 }
 
-// round1 redondea a 1 decimal como round(x, 1) de Python (correctamente redondeado, mitades al par).
+// round1 redondea a 1 decimal con redondeo decimal exacto (mitades al par).
 func round1(x float64) float64 {
 	v, _ := strconv.ParseFloat(strconv.FormatFloat(x, 'f', 1, 64), 64)
 	return v

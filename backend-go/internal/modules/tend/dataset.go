@@ -15,7 +15,7 @@ import (
 	"fogradar/internal/yahoo"
 )
 
-// Construcción del dataset consolidado a partir de los CSV crudos (ingestion/build_dataset.py):
+// Construcción del dataset consolidado a partir de los CSV crudos:
 //   - convierte a USD los tickers que cotizan en moneda local (core.fx, con subunidades GBp/ZAc/ILA);
 //   - alinea las series en un calendario semanal común (semanas que terminan en domingo);
 //   - filtra tickers con historia insuficiente (< MIN_WEEKS_REQUIRED);
@@ -241,7 +241,7 @@ func BuildDataset(moduleDir string, u *Universe, p Params, warn func(string, ...
 		return nil, 0, err
 	}
 	rf := DetermineRiskFreeRate(moduleDir, warn)
-	if err := os.WriteFile(filepath.Join(dir, "risk_free_rate.txt"), []byte(quant.PyRepr(rf)), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "risk_free_rate.txt"), []byte(quant.FloatRepr(rf)), 0o644); err != nil {
 		return nil, 0, err
 	}
 	var sb strings.Builder
@@ -283,7 +283,7 @@ func LoadRiskFree(moduleDir string) (float64, error) {
 	return strconv.ParseFloat(strings.TrimSpace(string(b)), 64)
 }
 
-// WeeklyReturns es prices.pct_change().dropna(how="all"): pct_change rellena hacia adelante los faltantes (pandas 2.x).
+// WeeklyReturns es prices.pct_change().dropna(how="all"): pct_change rellena hacia adelante los faltantes.
 func WeeklyReturns(prices *Prices) *Prices {
 	rets := &Prices{Tickers: prices.Tickers, Cols: make([][]float64, len(prices.Cols))}
 	r := make([][]float64, len(prices.Cols))

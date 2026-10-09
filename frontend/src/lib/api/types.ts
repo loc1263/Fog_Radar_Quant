@@ -1,5 +1,5 @@
 /**
- * Tipos de la API de FastAPI, generados desde su OpenAPI.
+ * Tipos de la API del backend, generados desde su OpenAPI.
  * Regenerar con `npm run gen:api` (backend corriendo en :8000).
  */
 import type { components, paths } from './schema';

@@ -289,7 +289,7 @@ func TestCachePathYFrescura(t *testing.T) {
 	}
 }
 
-func TestReadBarsCSVDePandas(t *testing.T) {
+func TestReadBarsCSVFormatoEstandar(t *testing.T) {
 	f := filepath.Join(t.TempDir(), "p.csv")
 	csv := "Date,Open,High,Low,Close,Volume,Dividends,Stock Splits\n" +
 		"2021-01-04 00:00:00-05:00,1.5,2,1,1.75,1000,0.0,0.0\n" +

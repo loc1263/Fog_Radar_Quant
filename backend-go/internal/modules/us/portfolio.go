@@ -12,7 +12,7 @@ import (
 	"fogradar/internal/quant"
 )
 
-// Constantes del modelo de portafolio (iguales a portfolio.py).
+// Constantes del modelo de portafolio.
 const (
 	TradingDays         = 252
 	MinTickers          = 2
@@ -52,7 +52,7 @@ func LoadPriceMatrix(runDir string, tickers []string) (*Returns, error) {
 	if e := ReadRunFile(runDir, "prices.json", &m); e != nil {
 		if e.Code == "no_data" {
 			return nil, pderr("La corrida más reciente todavía no tiene datos de precios (prices.json). " +
-				"Corré el batch de nuevo (python -m app.batch) para generarlos.")
+				"Corré el batch de nuevo (fogradar job us_stocks) para generarlos.")
 		}
 		return nil, e
 	}

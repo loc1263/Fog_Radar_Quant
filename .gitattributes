@@ -1,6 +1,4 @@
-# Fixtures de paridad: se comparan byte a byte con las salidas del original.
-# Sin conversión de fin de línea (Git para Windows usa core.autocrlf=true por defecto).
-backend/tests/**/fixtures/** -text
+# Fixtures del frontend: sin conversión de fin de línea (Git para Windows usa core.autocrlf=true por defecto).
 frontend/src/lib/modules/*/fixtures/** -text
 *.gz binary
 *.ttf binary

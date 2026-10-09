@@ -9,8 +9,7 @@
 - [ ] **`.git/index.lock` huérfano** (vacío, del 29-09). Bloquea `git stash` y probablemente
       otras operaciones de git. Si no hay otro git corriendo, borrarlo.
 - [ ] **Correr los E2E nuevos** (no se ejecutaron): `chile.e2e.ts` (historial),
-      `eeuu.e2e.ts` (historial) y `etf.e2e.ts` (evolución). `scripts/fixtures_e2e.py` ya hace
-      el backfill de los 4 módulos.
+      `eeuu.e2e.ts` (historial) y `etf.e2e.ts` (evolución), con datos reales y `fogradar job <modulo> --backfill`.
 - [ ] **Revisión visual** de `/chile/historial`, `/eeuu/historial`, `/etf/evolucion` y del gráfico
       nuevo en `/tendencia/historial` (se verificó que cargan con datos reales, pero no se
       revisaron en el navegador).
@@ -22,7 +21,7 @@
 | ID | Ítem | Prioridad |
 |---|---|---|
 | B1-ETF-INC | Guardar en `etf/history.db` las incidencias del screener (`incidencias_*.csv`) y `ETF_eliminados.csv`, para detectar tickers que fallan N corridas seguidas y proponer su eliminación automáticamente. | Media |
-| B1-ETF-SQL | Reescribir la racha y la rotación de `etf/analysis/rotacion.py` sobre SQL, con un test que demuestre el mismo resultado que la versión con CSV. Hoy el diff SQL ya coincide con `rotacion.json` en los tests. Ojo: la racha del original agrupa por `Fecha` (las corridas `_2`/`_3` del mismo día cuentan una vez) y `/history/top` las cuenta por separado. | Baja |
+| B1-ETF-SQL | Reescribir la racha y la rotación de la rotación del ETF (`rotacion.go`) sobre SQL, con un test que demuestre el mismo resultado que la versión con CSV. Ojo: la racha del original agrupa por `Fecha` (las corridas `_2`/`_3` del mismo día cuentan una vez) y `/history/top` las cuenta por separado. | Baja |
 | B1-JOBS | Tabla `jobs` (duración, requests a Yahoo, respuestas 429 y reintentos por corrida) en lugar o además de `data/_jobs/<modulo>.jsonl`, con gráfico en `/estado`. | Baja (opcional) |
 | — | `en_top15_simple` no se guarda en ETF: el Top 15 simple no se archiva en `hist/`. Hoy solo se guarda `score_simple`; el puesto se puede calcular por SQL si hace falta. | Baja |
 | — | Chile: algunas corridas antiguas no tienen `indicadores_acciones_<ts>.csv` con el mismo timestamp que el ranking, así que en esas corridas la tabla `indicadores` queda vacía. | Informativo |
@@ -36,18 +35,8 @@
 
 ## 4. Fallas de tests preexistentes (no causadas por SQLite)
 
-- [ ] **ETF, 13 tests byte a byte** (`test_parity.py::test_salidas_byte_a_byte[*]`,
-      `test_api.py::test_run_reanaliza_y_registra_job`, 2 de `test_pipeline.py`): en Windows,
-      pandas 2.3 escribe los CSV con `\r\n` y los fixtures usan `\n`. En CI (Linux) pasan.
-      Opción: `lineterminator="\n"` en los `to_csv` del análisis ETF, o normalizar en el test.
-- [ ] **EEUU `test_parity.py::test_markowitz`**: difiere en el 9.º decimal
-      (`0.5644299300` vs `0.5644299319`, tolerancia `1e-9`). Está en `portfolio.py`, que no se
-      modificó. No se pudo confirmar contra el commit anterior por el `index.lock`.
-      Probablemente es la versión del optimizador; evaluar subir la tolerancia.
 - [ ] **Frontend `format.spec.ts > fechas sin zona`**: diferencia de ICU o locale de Node en
       el formato de hora (`10:11 p. m.`, probablemente un espacio especial). No se tocó `format.ts`.
-- [ ] `tests/test_core_yahoo.py::test_espaciador_entre_hilos_serializa_turnos` falló una vez y
-      pasó en la corrida siguiente: posible test inestable por tiempos.
 
 ## 5. Producción (Fase 8, en pausa)
 

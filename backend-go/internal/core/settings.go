@@ -1,5 +1,5 @@
 // Package core reúne lo transversal del servicio: configuración, errores, auth,
-// límites, registro de jobs y acceso a history.db. Equivale a fog_radar/core + settings.py.
+// límites, registro de jobs y acceso a history.db.
 package core
 
 import (
@@ -20,7 +20,7 @@ var Version = "0.1.0"
 // clavesDeEjemplo son valores de .env.example: nunca válidos en prod.
 var clavesDeEjemplo = map[string]bool{"cambiar-por-una-clave-larga-aleatoria": true}
 
-// Settings es la configuración del proceso (mismas variables que el backend Python).
+// Settings es la configuración del proceso.
 type Settings struct {
 	Env       string // dev | test | prod
 	AppName   string
@@ -68,7 +68,7 @@ func (s *Settings) ModuleDataDir(m ModuleKey) string { return filepath.Join(s.Da
 func (s *Settings) JobsDir() string { return filepath.Join(s.DataDir, "_jobs") }
 
 // LoadSettings lee variables de entorno y, como respaldo, el archivo .env
-// (ENV_FILE, o ./.env, o ../backend/.env). Una variable de entorno gana al .env.
+// (ENV_FILE, o ./.env, o backend-go/.env). Una variable de entorno gana al .env.
 func LoadSettings() (*Settings, error) {
 	return loadSettings(os.LookupEnv, envFileCandidates())
 }
@@ -77,7 +77,7 @@ func envFileCandidates() []string {
 	if p := os.Getenv("ENV_FILE"); p != "" {
 		return []string{p}
 	}
-	return []string{".env", filepath.Join("..", "backend", ".env")}
+	return []string{".env", filepath.Join("backend-go", ".env")}
 }
 
 func loadSettings(lookup func(string) (string, bool), files []string) (*Settings, error) {
@@ -198,7 +198,7 @@ func splitCSV(v string) []string {
 }
 
 // parseDotenv lee un archivo KEY=VALUE (comentarios con #, comillas opcionales).
-// Las claves se normalizan a mayúsculas, como pydantic-settings.
+// Las claves se normalizan a mayúsculas, para que la búsqueda no distinga mayúsculas.
 func parseDotenv(path string) (map[string]string, error) {
 	f, err := os.Open(path)
 	if err != nil {

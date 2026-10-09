@@ -26,6 +26,9 @@ type Resultado struct {
 	Intentos int
 	Mensaje  string
 	Duracion time.Duration
+	Inicio   time.Time
+	Fin      time.Time
+	Avisos   []Aviso // WARN/ERROR que emitió el módulo durante su corrida
 }
 
 // SecuenciaOpts son los parámetros de CorrerSecuencia (los cero toman el valor de Settings).
@@ -78,6 +81,11 @@ func CorrerSecuencia(ctx context.Context, env *Env, modulos []string, o Secuenci
 	}
 	defer unlock()
 
+	base := env.Log
+	log, tomarAvisos := conAvisos(base)
+	envC := *env // copia con el logger que anota los avisos de cada módulo
+	envC.Log = log
+	env = &envC
 	reg := core.NewJobRegistry(s.JobsDir())
 	env.Log.Info("secuencia de pipelines", "modulos", strings.Join(modulos, " → "))
 	pendientes := 0
@@ -93,7 +101,12 @@ func CorrerSecuencia(ctx context.Context, env *Env, modulos []string, o Secuenci
 			res = append(res, Resultado{Modulo: m, Estado: EstadoOmitido, Mensaje: why})
 			continue
 		}
+		t0 := time.Now()
+		tomarAvisos() // descarta lo de antes (pausa, lock)
 		r := correrModulo(ctx, env, reg, m, o.Trigger, o.Opciones[m], maxRein, espera, sleep)
+		r.Inicio, r.Fin = t0, time.Now()
+		r.Duracion = r.Fin.Sub(t0).Round(100 * time.Millisecond)
+		r.Avisos = tomarAvisos()
 		res = append(res, r)
 		pendientes--
 		if pendientes > 0 && pausa > 0 && ctx.Err() == nil {
@@ -104,6 +117,7 @@ func CorrerSecuencia(ctx context.Context, env *Env, modulos []string, o Secuenci
 
 	var fallidos []Resultado
 	for _, r := range res {
+		env.Log.Info("resultado", "modulo", r.Modulo, "estado", r.Estado, "intentos", r.Intentos, "duracion_s", r.Duracion.Seconds(), "mensaje", r.Mensaje)
 		if r.Estado == EstadoError {
 			fallidos = append(fallidos, r)
 		}
@@ -120,7 +134,6 @@ func correrModulo(ctx context.Context, env *Env, reg *core.JobRegistry, modulo, 
 	opts map[string]any, maxRein int, espera time.Duration, sleep func(time.Duration)) Resultado {
 	r := Resultado{Modulo: modulo, Estado: EstadoError}
 	t0 := time.Now()
-	defer func() { r.Duracion = time.Since(t0).Round(100 * time.Millisecond) }()
 
 	p, ok := Get(modulo)
 	if !ok {
@@ -155,7 +168,7 @@ func correrModulo(ctx context.Context, env *Env, reg *core.JobRegistry, modulo, 
 		})
 		if err != nil {
 			r.Mensaje = err.Error()
-			env.Log.Error("falló", "modulo", modulo, "error", r.Mensaje)
+			env.Log.Error("falló", "modulo", modulo, "intento", intento, "duracion_s", time.Since(t0).Round(100*time.Millisecond).Seconds(), "error", r.Mensaje)
 			if intento <= maxRein && ctx.Err() == nil {
 				env.Log.Info("reintento", "modulo", modulo, "en_s", espera.Seconds())
 				sleep(espera)
@@ -167,7 +180,7 @@ func correrModulo(ctx context.Context, env *Env, reg *core.JobRegistry, modulo, 
 		if rec.Message != nil {
 			r.Mensaje = *rec.Message
 		}
-		env.Log.Info("OK", "modulo", modulo, "mensaje", r.Mensaje)
+		env.Log.Info("OK", "modulo", modulo, "intento", intento, "duracion_s", time.Since(t0).Round(100*time.Millisecond).Seconds(), "mensaje", r.Mensaje)
 		return r
 	}
 	return r
@@ -209,12 +222,32 @@ func alertar(env *Env, fallidos []Resultado, trigger string, custom func(string)
 	resp.Body.Close()
 }
 
-// Resumen formatea la tabla final de una secuencia.
+// Resumen formatea el cierre de una secuencia: una línea por módulo con su tiempo (HH:MM:SS), el tiempo total
+// de la corrida y los avisos (WARN/ERROR) de cada módulo, con el ticker cuando el aviso es de uno.
 func Resumen(res []Resultado) string {
 	iconos := map[string]string{EstadoOK: "OK", EstadoError: "ERROR", EstadoOmitido: "omitido"}
-	lineas := make([]string, len(res))
-	for i, r := range res {
-		lineas[i] = fmt.Sprintf("  %-10s %-8s %7.1fs  %s", r.Modulo, iconos[r.Estado], r.Duracion.Seconds(), r.Mensaje)
+	lineas := make([]string, 0, len(res)+2)
+	var ini, fin time.Time
+	for _, r := range res {
+		lineas = append(lineas, fmt.Sprintf("  %-10s %-8s %s  %s", r.Modulo, iconos[r.Estado], HMS(r.Duracion), r.Mensaje))
+		if r.Inicio.IsZero() {
+			continue
+		}
+		if ini.IsZero() || r.Inicio.Before(ini) {
+			ini = r.Inicio
+		}
+		if r.Fin.After(fin) {
+			fin = r.Fin
+		}
 	}
-	return strings.Join(lineas, "\n")
+	out := strings.Join(lineas, "\n")
+	if !ini.IsZero() {
+		out += fmt.Sprintf("\n  Tiempo total: %s  (%s → %s)", HMS(fin.Sub(ini)), ini.Format("15:04:05"), fin.Format("15:04:05"))
+	}
+	if av := formatAvisos(res); av != "" {
+		out += "\n\nAvisos de la corrida (WARN/ERROR):" + strings.TrimRight(av, "\n")
+	} else {
+		out += "\n\nSin avisos."
+	}
+	return out
 }

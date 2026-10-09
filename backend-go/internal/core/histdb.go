@@ -21,7 +21,7 @@ const busyTimeoutMS = 30_000
 // Fila es una fila de resultado: columna → valor (nil, int64, float64, string o []byte).
 type Fila map[string]any
 
-// Str / Int / Float leen una columna con la conversión que Python haría implícita.
+// Str / Int / Float leen una columna con conversión implícita de tipos.
 func (f Fila) Str(col string) *string {
 	switch v := f[col].(type) {
 	case string:
@@ -151,7 +151,7 @@ func SchemaVersion(db *sql.DB) (int, error) {
 //
 // migraciones[i] lleva la base de la versión i a la i+1, cada una en su propia
 // transacción junto con el cambio de versión. Nunca se edita una migración ya
-// publicada (las mismas listas que usa Python): un cambio de esquema es una
+// publicada: un cambio de esquema es una
 // migración nueva al final. Devuelve la versión final.
 func Migrar(db *sql.DB, migraciones []string) (int, error) {
 	actual, err := SchemaVersion(db)
@@ -172,7 +172,7 @@ func Migrar(db *sql.DB, migraciones []string) (int, error) {
 	return len(migraciones), nil
 }
 
-// HistDiffFila es un ticker comparado entre dos corridas (ver HistDiffFila en Python).
+// HistDiffFila es un ticker comparado entre dos corridas.
 type HistDiffFila struct {
 	Ticker     string   `json:"ticker"`
 	Nombre     *string  `json:"nombre" nullable:"true"`
@@ -292,13 +292,13 @@ func DiffCorridas(desde, hasta []Posicion, topN *int64) []HistDiffFila {
 	return out
 }
 
-// round6 redondea a 6 decimales como round(x, 6) de Python (correctamente redondeado).
+// round6 redondea a 6 decimales con redondeo decimal exacto (mitades al par).
 func round6(x float64) float64 {
 	v, _ := strconv.ParseFloat(strconv.FormatFloat(x, 'f', 6, 64), 64)
 	return v
 }
 
-// HistDiff compara dos corridas (modelo compartido por todos los módulos, como HistDiff de Python).
+// HistDiff compara dos corridas.
 type HistDiff struct {
 	Desde string         `json:"desde"`
 	Hasta string         `json:"hasta"`

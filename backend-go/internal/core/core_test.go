@@ -160,7 +160,7 @@ func TestGate(t *testing.T) {
 	}
 }
 
-func TestFormatISOComoPydantic(t *testing.T) {
+func TestFormatISOSinFraccion(t *testing.T) {
 	scl, _ := time.LoadLocation("America/Santiago")
 	casos := []struct {
 		t    time.Time

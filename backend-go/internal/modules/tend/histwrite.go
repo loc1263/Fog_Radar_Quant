@@ -16,7 +16,7 @@ import (
 	"fogradar/internal/core"
 )
 
-// Escritura de history.db (storage/history_writer.py + backfill.py). Es un índice derivado: los archivos de cada
+// Escritura de history.db. Es un índice derivado: los archivos de cada
 // corrida siguen siendo la fuente de verdad y se reconstruye con --backfill.
 
 var runDateRe = regexp.MustCompile(`^(\d{4})(\d{2})(\d{2})_(\d{2})$`)
@@ -118,7 +118,7 @@ func storeRun(tx execer, payload OM, runPath string) error {
 	if _, err := tx.Exec("DELETE FROM runs WHERE run_dir = ?", runDir); err != nil { // CASCADE borra las hijas
 		return err
 	}
-	// json.dumps(..., ensure_ascii=False) de Python: separador ", ".
+	// separador ", ".
 	var ns []string
 	for _, n := range asList(payload.Get("market_regime_notes")) {
 		ns = append(ns, jsonString(n.(string)))
@@ -281,5 +281,5 @@ func NewRunDir(s *core.Settings, now time.Time) (string, error) {
 		return "", err
 	}
 	manifest := OM{{"created_at", now.In(s.Loc).Format("2006-01-02T15:04:05.000000")}}
-	return dir, os.WriteFile(filepath.Join(dir, "run_manifest.json"), PyJSON(manifest), 0o644)
+	return dir, os.WriteFile(filepath.Join(dir, "run_manifest.json"), OrderedJSON(manifest), 0o644)
 }

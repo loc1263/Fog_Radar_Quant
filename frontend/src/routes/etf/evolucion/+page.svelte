@@ -89,7 +89,7 @@
 {:else if runs.length === 0}
 	<EmptyState>
 		Todavía no hay corridas en el historial. Cada corrida se guarda sola; las archivadas se cargan
-		con <code>python -m fog_radar.jobs etf --backfill</code>.
+		con <code>fogradar job etf --backfill</code>.
 	</EmptyState>
 {:else}
 	<Section title="Filtros">

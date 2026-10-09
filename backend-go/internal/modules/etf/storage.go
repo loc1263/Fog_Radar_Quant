@@ -29,14 +29,14 @@ import (
 //
 // La API solo lee current (y hist para la rotación). El pipeline escribe en una carpeta de staging y recién si
 // el análisis terminó sin errores archiva la corrida vigente e instala la nueva, todo bajo el mismo lock que
-// usan los GET (current/.datos.lock, el mismo archivo que usa Python).
+// usan los GET.
 const (
 	key = core.ModuleKey("etf")
 
 	// LockTimeout: segundos de espera por el lock antes de responder 503 (igual que el original).
 	LockTimeout = 15 * time.Second
 	// SinCorrida es el mensaje cuando no hay corrida procesada.
-	SinCorrida = "Todavía no hay una corrida procesada. Ejecuta: python -m fog_radar.jobs etf"
+	SinCorrida = "Todavía no hay una corrida procesada. Ejecuta: fogradar job etf"
 )
 
 // ModuleDir es data/etf.
@@ -138,7 +138,7 @@ func HayCorridaAnterior(s *core.Settings) bool {
 	return len(m) > 0
 }
 
-// --- Archivado (analysis/archivado.py) ---
+// --- Archivado ---
 
 // OutputFilesDateless son los 8 outputs sin fecha que acompañan al etf_perf_data al archivar.
 var OutputFilesDateless = []string{

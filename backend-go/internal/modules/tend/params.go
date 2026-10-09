@@ -1,6 +1,6 @@
 package tend
 
-// Parámetros del modelo (config.py del original). Son constantes del módulo; el CLI de jobs puede sobrescribir
+// Parámetros del modelo. Son constantes del módulo; el CLI de jobs puede sobrescribir
 // TopN, TopNUS y MaxWeight para UNA corrida (TD-CFG-1) y quedan registrados en run_manifest.json.
 
 // Params agrupa los parámetros ajustables y fijos del modelo.
@@ -19,7 +19,7 @@ type Params struct {
 	MomentumLookbackWeeks int
 }
 
-// DefaultParams son los valores de config.py.
+// DefaultParams son los valores por defecto del modelo.
 func DefaultParams() Params {
 	return Params{
 		TopN: 15, TopNUS: 15, MaxWeight: 0.15, L2Gamma: 0.15, MinWeeks: 200, HorizonWeeks: 26,

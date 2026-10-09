@@ -20,7 +20,7 @@ func init() {
 		Options: []jobs.Option{
 			{Flag: "--skip-fetch", Help: "Reutiliza los precios/FX ya descargados (sin Yahoo)."},
 			{Flag: "--force-refresh", Help: "Ignora la caché de precios y vuelve a descargar todo."},
-			{Flag: "--force-discovery", Help: "Ignora el snapshot de universo de hoy."},
+			{Flag: "--force-discovery", Help: "Vuelve a descubrir el universo aunque haya un snapshot reciente."},
 			{Flag: "--static-universe", Help: "Usa la lista fija de respaldo en vez del screener."},
 			{Flag: "--skip-discovery", Help: "Reutiliza el último snapshot de universo (sin screener)."},
 			{Flag: "--macro", Help: "Descarga antes los datos macro de FRED (requiere FRED_API_KEY)."},
@@ -60,13 +60,28 @@ func SaveSnapshot(moduleDir string, u *Universe, method string, now time.Time) (
 	path := filepath.Join(dir, "universe_"+now.Format("20060102")+".json")
 	snap := OM{{"discovered_at", now.Format("2006-01-02T15:04:05.000000")}, {"method", method},
 		{"asia_tickers", tickers(u.Asia)}, {"us_tickers", tickers(u.US)}, {"sector_map", sectors}}
-	return path, os.WriteFile(path, PyJSON(snap), 0o644)
+	return path, os.WriteFile(path, OrderedJSON(snap), 0o644)
 }
 
-// resolveUniverse decide el universo de la corrida. El screener de Yahoo (EquityQuery) no está portado a Go: sin
-// --static-universe se reutiliza el snapshot de hoy o, si no hay, el más reciente (como --skip-discovery); sin ninguno,
-// la lista fija de respaldo (que se guarda como snapshot).
-func resolveUniverse(moduleDir string, opts map[string]any, now time.Time, warn func(string, ...any)) (*Universe, error) {
+// snapshotAgeDays son los días de calendario entre la fecha del archivo universe_<YYYYMMDD>.json y hoy (ok=false si no se entiende).
+func snapshotAgeDays(path string, now time.Time) (int, bool) {
+	name := strings.TrimSuffix(strings.TrimPrefix(filepath.Base(path), "universe_"), ".json")
+	d, err := time.ParseInLocation("20060102", name, now.Location())
+	if err != nil {
+		return 0, false
+	}
+	hoy := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+	return int(hoy.Sub(d).Hours() / 24), true
+}
+
+// resolveUniverse decide el universo de la corrida:
+//   - --static-universe: la lista fija de respaldo (se guarda como snapshot).
+//   - --skip-discovery: el último snapshot, sin consultar Yahoo (--offline).
+//   - --force-discovery: vuelve a descubrir aunque haya snapshot de hoy.
+//   - por defecto: el snapshot de hoy, o el más reciente si tiene ≤ UniverseMaxAgeDays días; si es más viejo (o no hay)
+//     se descubre de nuevo con el screener. Si el descubrimiento falla, se conserva el snapshot viejo (con aviso); sin
+//     ninguno, se guarda la lista fija de respaldo.
+func resolveUniverse(ctx context.Context, env *jobs.Env, moduleDir string, opts map[string]any, now time.Time, info, warn func(string, ...any)) (*Universe, error) {
 	if flag(opts, "static_universe") {
 		warn("--static-universe activo: se usa la lista fija de respaldo, sin consultar el screener.")
 		u := FallbackUniverse()
@@ -77,18 +92,60 @@ func resolveUniverse(moduleDir string, opts map[string]any, now time.Time, warn 
 		return u, nil
 	}
 	dir := filepath.Join(moduleDir, "universe")
-	today := filepath.Join(dir, "universe_"+now.Format("20060102")+".json")
-	if !flag(opts, "skip_discovery") && !isFile(today) {
-		warn("El descubrimiento por screener no está disponible en el backend Go: se reutiliza el último snapshot de universo (corre el screener con el backend Python si necesitas refrescarlo).")
+	latest := LatestUniverseFile(dir, now)
+	var edad int
+	var edadOK bool
+	if latest != "" {
+		edad, edadOK = snapshotAgeDays(latest, now)
 	}
-	if p := LatestUniverseFile(dir, now); p != "" {
-		if b, err := os.ReadFile(p); err == nil {
+	fresco := latest != "" && edadOK && edad <= UniverseMaxAgeDays
+
+	descubrir := false
+	switch {
+	case flag(opts, "skip_discovery"):
+	case flag(opts, "force_discovery"):
+		descubrir = true
+		info("--force-discovery: se vuelve a descubrir el universo.")
+	case latest == "":
+		descubrir = true
+		info("No hay snapshot de universo: se descubre con el screener de Yahoo.")
+	case !fresco:
+		descubrir = true
+		info("El snapshot de universo %s tiene %d días (máximo %d): se vuelve a descubrir.", filepath.Base(latest), edad, UniverseMaxAgeDays)
+	default:
+		info("Snapshot de universo %s (%d días, máximo %d): se reutiliza.", filepath.Base(latest), edad, UniverseMaxAgeDays)
+	}
+
+	if descubrir {
+		scr, ok := env.Yahoo.(Screener)
+		if !ok {
+			warn("El cliente de Yahoo no admite el screener; no se puede descubrir el universo.")
+		} else if u, err := DiscoverUniverse(ctx, scr, info, warn); err != nil {
+			if ctx.Err() != nil {
+				return nil, ctx.Err()
+			}
+			warn("Descubrimiento dinámico falló (%v).", err)
+		} else {
+			path, err := SaveSnapshot(moduleDir, u, u.Source, now)
+			if err != nil {
+				return nil, err
+			}
+			info("Snapshot de universo guardado: %s (%d Asia + %d EEUU)", path, len(u.Asia), len(u.US))
+			return u, nil
+		}
+	}
+
+	if latest != "" {
+		if b, err := os.ReadFile(latest); err == nil {
 			if u, err := ParseUniverse(b); err == nil {
-				warn("Universo activo: %d Asia + %d EEUU (fuente: %s, %s)", len(u.Asia), len(u.US), u.Source, filepath.Base(p))
+				if descubrir || (edadOK && edad > UniverseMaxAgeDays) {
+					warn("Se usa el snapshot %s (%d días de antigüedad) porque no se pudo refrescar.", filepath.Base(latest), edad)
+				}
+				info("Universo activo: %d Asia + %d EEUU (fuente: %s, %s)", len(u.Asia), len(u.US), u.Source, filepath.Base(latest))
 				return u, nil
 			}
 		}
-		warn("El snapshot %s está dañado; se usa la lista fija de respaldo.", filepath.Base(p))
+		warn("El snapshot %s está dañado; se usa la lista fija de respaldo.", filepath.Base(latest))
 	}
 	u := FallbackUniverse()
 	if _, err := SaveSnapshot(moduleDir, u, "fallback_static", now); err != nil {
@@ -103,7 +160,7 @@ func fetchOptions(opts map[string]any) yahoo.HistoryOptions {
 	return o
 }
 
-// Run es el pipeline batch de Tendencia (pasos 0-8 de pipeline.py).
+// Run es el pipeline batch de Tendencia.
 //
 //	fogradar job tendencia [--skip-fetch] [--force-refresh] [--static-universe] [--macro] [--top-n N] [--max-weight W]
 //	fogradar job tendencia --backfill
@@ -145,7 +202,7 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 		partes = append(partes, "macro "+filepath.Base(out))
 	}
 
-	u, err := resolveUniverse(moduleDir, opts, now, warn)
+	u, err := resolveUniverse(ctx, env, moduleDir, opts, now, info, warn)
 	if err != nil {
 		return "", err
 	}
@@ -195,7 +252,16 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 		info("--skip-fetch activo: se reutiliza raw/ existente.")
 	}
 
-	prices, rf, err := BuildDataset(moduleDir, u, p, warn)
+	// Algunos pasos emiten sus resúmenes de éxito como aviso; aquí van a INFO para que
+	// el resumen de la corrida solo liste problemas reales.
+	avisar := func(f string, a ...any) {
+		if strings.HasPrefix(f, "Dataset construido") || strings.HasPrefix(f, "Proyección a 6 meses") {
+			info(f, a...)
+			return
+		}
+		warn(f, a...)
+	}
+	prices, rf, err := BuildDataset(moduleDir, u, p, avisar)
 	if err != nil {
 		return "", err
 	}
@@ -208,7 +274,7 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 			warn("Análisis '%s' omitido: %v", spec.Label, err)
 		}
 	}
-	if _, err := RunForecast(prices, runDir, moduleDir, u, p, warn); err != nil {
+	if _, err := RunForecast(prices, runDir, moduleDir, u, p, avisar); err != nil {
 		return "", err
 	}
 	if err := RunMomentum(prices, runDir, u, p, warn); err != nil {
@@ -276,7 +342,7 @@ func writeManifest(runDir string, now time.Time, p Params, u *Universe, override
 		set("parametros_sobrescritos", overrides)
 	}
 	tmp := path + ".tmp"
-	if err := os.WriteFile(tmp, PyJSON(manifest), 0o644); err != nil {
+	if err := os.WriteFile(tmp, OrderedJSON(manifest), 0o644); err != nil {
 		return err
 	}
 	return os.Rename(tmp, path)

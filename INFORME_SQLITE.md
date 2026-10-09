@@ -4,7 +4,7 @@
 No se modificó código.*
 
 > **Estado (2026-10-04): implementado** (ADR 0003, `docs/ADR/0003-historial-sqlite-por-modulo.md`).
-> §4 y los pasos 1-4 de §5 están hechos: `core/histdb.py`; Tendencia con WAL, `user_version`,
+> §4 y los pasos 1-4 de §5 están hechos: `internal/core/histdb.go`; Tendencia con WAL, `user_version`,
 > `UNIQUE(analysis_id, ticker)` y `universe_weights`; `history.db` en Chile, EEUU y ETF con backfill
 > y endpoints `/history/*`. Backfill sobre `data/` real: Chile 9 corridas, EEUU 14 (18 045 cierres),
 > ETF 23 (22 de `hist/` + la vigente), Tendencia 8. Quedan pendientes (BACKLOG, Épica B1): incidencias
@@ -21,7 +21,7 @@ No se modificó código.*
 | **Chile** | `ranking_acciones_<ts>.csv` + `indicadores_acciones_<ts>.csv` (+ xlsx) | ❌ | ❌ Solo la última | Sí, agregar `history.db` (el más simple, buen piloto) | Media |
 | **Transversal (jobs)** | `data/_jobs/<modulo>.jsonl` | ❌ | `/estado` lee el último estado | Opcional: tabla `jobs` para tendencias de duración, 429 y fallas | Baja |
 
-**Conclusión:** hoy solo **Tendencia** usa SQLite (los otros `.db` en `data/_cache/yfinance/` son la caché interna de yfinance).
+**Conclusión:** hoy solo **Tendencia** usa SQLite (otros `.db` en `data/_cache/` son cachés internas).
 Los que más ganan con SQLite son **EEUU** y **ETF**: acumulan muchas corridas con puntajes por ticker, pero ese historial está repartido en
 decenas de archivos que nadie consulta en conjunto. **Chile** también gana y es el más barato de hacer, así que sirve como piloto del esquema común.
 Es exactamente la **Épica B1 del BACKLOG** (US-BACK-03, US-BACK-04, US-DATA-03, "CL histórico") y es requisito de la **Épica B2 (backtesting)**.
@@ -32,10 +32,10 @@ Es exactamente la **Épica B1 del BACKLOG** (US-BACK-03, US-BACK-04, US-DATA-03,
 
 Tendencia usa SQLite como **índice consultable de todas las corridas, no como reemplazo** de los archivos:
 
-- Los archivos de cada corrida siguen siendo la fuente de verdad (y lo que sirve la "última corrida"). → **La paridad con los originales no se toca.**
+- Los archivos de cada corrida siguen siendo la fuente de verdad (y lo que sirve la "última corrida"). → **Los resultados de los pipelines no se tocan.**
 - El pipeline escribe en la base **al final**, en una sola transacción e idempotente (si la corrida ya existe, la borra y la reinserta).
 - La API abre la base **solo lectura** (`mode=ro`) y devuelve `[]` si todavía no existe.
-- Un script de *backfill* reconstruye la base desde los archivos (`tendencia/backfill.py`).
+- Un script de *backfill* reconstruye la base desde los archivos (`--backfill`).
 
 Se propone replicar este mismo patrón en los otros 3 módulos: **un `history.db` por módulo en `data/<modulo>/`**
 (como propone el BACKLOG), con la misma estructura base y un helper común.
@@ -47,8 +47,8 @@ Se propone replicar este mismo patrón en los otros 3 módulos: **un `history.db
 ### 3.1 Tendencia (ya usa SQLite)
 
 **Estado:** `data/tendencia/history.db` (136 KB): 8 corridas, 16 análisis, 240 holdings, 88 filas de sectores y 160 de momentum.
-Esquema en `modules/tendencia/storage/db.py` (`runs → analyses → holdings / sectors / momentum`, con `ON DELETE CASCADE`).
-Se escribe en `history_writer.store_run()` y se lee en `service.py` (por ejemplo, `ticker_history`, `sector_history` y `momentum_leaders`).
+Esquema en `internal/modules/tend/histschema.go` (`runs → analyses → holdings / sectors / momentum`, con `ON DELETE CASCADE`).
+Se escribe en `histwrite.go` y se lee en `service.go` (por ejemplo, `ticker_history`, `sector_history` y `momentum_leaders`).
 
 **Mejoras sugeridas (pequeñas):**
 1. **`PRAGMA journal_mode=WAL`** al escribir. Hoy usa el modo por defecto (rollback journal): mientras el pipeline escribe,
@@ -93,8 +93,8 @@ así que ocupa muy poco.
 **Estado:** es el módulo con más volumen (32 MB). Cada corrida semanal archiva ~9 CSV en `data/etf/hist/` (22 corridas, 186 archivos), además de
 `etf_perf_data_*` (~1 226 ETFs × 20 métricas) y los CSV crudos del screener.
 Hay historial "a mano" en tres lugares:
-- `historial_corridas.csv`: una fila resumen por corrida, que se reescribe entera con pandas.
-- `rotacion.py`: busca el archivo previo con `glob` y parseo de nombres, y calcula la **racha** de cada ticker en el top 15
+- `historial_corridas.csv`: una fila resumen por corrida, que se reescribe entera en cada corrida.
+- `rotacion.go`: busca el archivo previo con `glob` y parseo de nombres, y calcula la **racha** de cada ticker en el top 15
   leyendo todos los `etf_top15_recomendados_*.csv`.
 - `incidencias_*.csv` y el nuevo `ETF_eliminados.csv`: problemas del screener, separados por corrida.
 
@@ -153,14 +153,14 @@ Es de baja prioridad: el JSONL funciona bien y es de solo anexar.
 
 ## 4. Propuesta de implementación
 
-**Helper común `core/histdb.py`** (extraído de `tendencia/storage/db.py`):
+**Helper común `internal/core/histdb.go`**:
 - `conectar_escritura(path)`: activa `foreign_keys=ON`, `journal_mode=WAL` y `busy_timeout`, y hace commit o rollback.
-- `conectar_lectura(path)`: abre en `mode=ro` y devuelve `None` si la base no existe (patrón actual de `tendencia/service.py`).
+- `conectar_lectura(path)`: abre en `mode=ro` y devuelve `None` si la base no existe (patrón de lectura de Tendencia).
 - `migrar(conn, migraciones: list[str])`: aplica las migraciones pendientes según `PRAGMA user_version`.
 
-**Por módulo:** `modules/<modulo>/history.py` con `SCHEMA`, `guardar_corrida(...)` (llamada desde `pipeline.py` después de instalar
+**Por módulo:** `internal/modules/<modulo>/history*.go` con el esquema, `GuardarCorrida(...)` (llamada desde `pipeline.go` después de instalar
 los archivos, bajo `lock_pipelines`) y `backfill(settings)` para reconstruir desde los archivos existentes. Se expone en la CLI:
-`python -m fog_radar.jobs <modulo> --backfill-history`.
+`fogradar job <modulo> --backfill`.
 
 **API:** endpoints con la misma forma en los 4 módulos. El hub y el buscador global pueden mostrar "tendencia del ticker" para cualquier módulo.
 - `GET /api/<mod>/history/runs`
@@ -168,13 +168,13 @@ los archivos, bajo `lock_pipelines`) y `backfill(settings)` para reconstruir des
 - `GET /api/<mod>/history/diff?desde=&hasta=`
 
 **Tests:** en cada módulo, un test de backfill que tome los fixtures (`tests/<mod>/fixtures/`) y verifique que la base reproduce
-los mismos valores que los archivos. Los tests de paridad existentes no cambian, porque los archivos siguen igual.
+los mismos valores que los archivos. Los tests existentes no cambian, porque los archivos siguen igual.
 
 **Respaldo:** los `history.db` quedan en `data/<modulo>/` y entran en el respaldo diario de `data/` que ya está en el ROADMAP.
 
 ## 5. Orden sugerido
 
-1. `core/histdb.py` + WAL y `user_version` en Tendencia (sin cambiar su esquema).
+1. `internal/core/histdb.go` + WAL y `user_version` en Tendencia (sin cambiar su esquema).
 2. **Chile** (piloto): esquema, writer, backfill de los 15 CSV, `/history/*` y un gráfico de evolución en `/chile`.
 3. **EEUU**: `runs`, `candidates` y `prices`; backfill de las 14 corridas; histórico por ticker y diff.
 4. **ETF**: `runs` (reemplaza `historial_corridas.csv`), `ranking`, `excluidos`, `categorias` e `incidencias`; backfill de las 22 corridas de `hist/`.

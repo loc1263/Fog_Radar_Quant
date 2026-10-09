@@ -192,7 +192,7 @@ func Fila(d Datos) []KV {
 	bookValuePS := conv(infoF(info, "bookValue"))
 	marketCap, ev := infoF(info, "marketCap"), infoF(info, "enterpriseValue")
 	precio := infoF(info, "currentPrice")
-	if precio == nil || *precio == 0 { // `or` de Python: 0/None → cae al cálculo
+	if precio == nil || *precio == 0 { // 0 o ausente → cae al cálculo
 		precio = dividirSeguro(marketCap, infoF(info, "sharesOutstanding"))
 	}
 	trailing := infoF(info, "trailingAnnualDividendYield")
@@ -275,7 +275,7 @@ type ExtraerOpts struct {
 
 // ExtraerIndicadores descarga los indicadores de todos los tickers (concurrencia acotada; los inicios de
 // request siguen espaciados por el controlador de tráfico). Devuelve la tabla en el orden de los tickers y
-// los que fallaron. Un ticker sin info se omite (queda en la lista de errores). Diferencia con Python: no hay
+// los que fallaron. Un ticker sin info se omite (queda en la lista de errores). No hay
 // pausa fija cada 15 tickers (el espaciado global ya protege) y un símbolo inexistente no genera una fila vacía.
 func ExtraerIndicadores(ctx context.Context, src yahoo.Source, tickers []string, o ExtraerOpts) (*quant.Frame, []string) {
 	rates := fx.NewRates(fx.YahooPrice(src), func(f string, a ...any) { o.Log.Warn(fmt.Sprintf(f, a...)) })

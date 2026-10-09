@@ -1,0 +1,8 @@
+# Proxy delante del backend. El frontend (BFF) solo conoce esta dirección.
+:8080 {
+	encode zstd gzip
+
+	handle /api/* {
+		reverse_proxy go-api:8000
+	}
+}

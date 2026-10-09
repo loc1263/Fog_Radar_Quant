@@ -13,7 +13,7 @@ import (
 	"fogradar/internal/core"
 )
 
-// SchemaV1 de history.db (idéntico a SCHEMA_V1 de Python: ambas implementaciones comparten la base).
+// SchemaV1 de history.db.
 const SchemaV1 = `
 CREATE TABLE runs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -34,7 +34,7 @@ const (
 	Float
 )
 
-// Option es una opción del CLI de un pipeline (PipelineOption de Python).
+// Option es una opción del CLI de un pipeline.
 type Option struct {
 	Flag     string // «--solo-scoring»
 	Help     string

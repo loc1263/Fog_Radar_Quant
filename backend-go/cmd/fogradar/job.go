@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log/slog"
 	"os"
 	"os/signal"
 	"sort"
@@ -20,7 +19,7 @@ import (
 	"fogradar/internal/yahoo"
 )
 
-// Códigos de salida de `fogradar job` (los mismos que `python -m fog_radar.jobs`).
+// Códigos de salida de `fogradar job`.
 const (
 	exitOK      = 0
 	exitFalla   = 1
@@ -275,11 +274,10 @@ func runJob(args []string, stdout, stderr io.Writer) int {
 		}
 	}
 
-	var lvl slog.Level
-	if lvl.UnmarshalText([]byte(s.LogLevel)) != nil {
-		lvl = slog.LevelInfo
-	}
-	log := slog.New(slog.NewTextHandler(stderr, &slog.HandlerOptions{Level: lvl}))
+	log, closeLog := newLogger(s, stderr, "job")
+	defer closeLog()
+	log.Info("job: arranque", "args", strings.Join(args, " "), "trigger", a.trigger, "modulos", strings.Join(mods, ","),
+		"offline", a.offline, "data_dir", s.DataDir, "yahoo_concurrencia", s.YahooConcurrencia)
 	tr := yahoo.NewTraffic(yahoo.PolicyFromSettings(s))
 	tr.SetLogger(func(f string, args ...any) { log.Warn(fmt.Sprintf(f, args...)) })
 	env := &jobs.Env{S: s, Traffic: tr, Yahoo: yahoo.NewClient(tr), Log: log}
@@ -316,9 +314,7 @@ func runJob(args []string, stdout, stderr io.Writer) int {
 		fmt.Fprintln(stderr, "fogradar job:", err)
 		return exitFalla
 	}
-	if len(res) > 1 || a.todos || a.programa != "" {
-		fmt.Fprintln(stdout, "\nResumen de la secuencia:\n"+jobs.Resumen(res))
-	}
+	fmt.Fprintln(stdout, "\nResumen de la corrida:\n"+jobs.Resumen(res))
 	for _, r := range res {
 		if r.Estado == jobs.EstadoError {
 			return exitFalla

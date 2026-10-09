@@ -10,7 +10,7 @@ import (
 	"fogradar/internal/quant"
 )
 
-// Rankings de momentum (mensual y semanal) sobre el universo COMPLETO (modeling/momentum.py): retorno acumulado en 4
+// Rankings de momentum (mensual y semanal) sobre el universo COMPLETO: retorno acumulado en 4
 // ventanas (1, 3, 6 y 12 meses; 1, 2, 3 y 4 semanas) y score = promedio de las 4 ventanas escalado por la consistencia
 // (proporción de períodos positivos en la ventana más larga). No es un ranking ajustado por riesgo.
 
@@ -27,8 +27,8 @@ var freqs = map[string]struct {
 // Frecuencias en orden de ejecución.
 var Frecuencias = []string{"mensual", "semanal"}
 
-// pyRound redondea como round(x, n) de Python sobre un float nativo (correctamente redondeado).
-func pyRound(x float64, n int) float64 {
+// roundExact redondea a n decimales con redondeo decimal exacto (mitades al par).
+func roundExact(x float64, n int) float64 {
 	v, _ := strconv.ParseFloat(strconv.FormatFloat(x, 'f', n, 64), 64)
 	return v
 }
@@ -165,21 +165,21 @@ func MomentumTable(prices *Prices, frequency string, u *Universe) *quant.Frame {
 		if !ok {
 			info = Info{Name: t}
 		}
-		cells := []any{t, info.Name, info.Country, u.SectorOf(t), pyRound(s[len(s)-1], 2)}
+		cells := []any{t, info.Name, info.Country, u.SectorOf(t), roundExact(s[len(s)-1], 2)}
 		for _, m := range moms {
 			if math.IsNaN(m) {
 				cells = append(cells, nil)
 			} else {
-				cells = append(cells, pyRound(m*100, 2))
+				cells = append(cells, roundExact(m*100, 2))
 			}
 		}
 		if math.IsNaN(pctPos) {
 			cells = append(cells, nil)
 		} else {
-			cells = append(cells, pyRound(pctPos*100, 1))
+			cells = append(cells, roundExact(pctPos*100, 1))
 		}
-		cells = append(cells, pyRound(score*100, 2))
-		rows = append(rows, row{cells, pyRound(score*100, 2)})
+		cells = append(cells, roundExact(score*100, 2))
+		rows = append(rows, row{cells, roundExact(score*100, 2)})
 	}
 	names := []string{"ticker", "nombre", "pais", "sector", "precio_actual_usd"}
 	for _, w := range fq.windows {
@@ -242,5 +242,5 @@ func RunMomentum(prices *Prices, runDir string, u *Universe, p Params, warn func
 	return nil
 }
 
-// writeEmptyCSV deja un archivo vacío (pandas escribe un DataFrame vacío sin columnas como una línea en blanco).
+// writeEmptyCSV deja un archivo vacío.
 func writeEmptyCSV(path string) error { return writeFile(path, []byte("\n")) }

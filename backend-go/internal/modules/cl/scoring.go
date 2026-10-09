@@ -21,7 +21,7 @@ const (
 	WinsorSuperior = 0.95
 )
 
-// Metric es una métrica puntuable (scoring.py: Metric).
+// Metric es una métrica puntuable.
 type Metric struct {
 	Columna       string
 	Pilar         string

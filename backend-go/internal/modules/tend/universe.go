@@ -16,7 +16,7 @@ import (
 // Info de un ticker del universo: nombre, país y moneda de cotización.
 type Info struct{ Name, Country, Currency string }
 
-// Universe es el universo de tickers (Asia + EEUU) con orden estable, como los dict de Python.
+// Universe es el universo de tickers (Asia + EEUU) con orden estable, como un diccionario ordenado.
 type Universe struct {
 	Asia, US []string // tickers en orden
 	Info     map[string]Info
@@ -76,7 +76,7 @@ func ParseUniverse(data []byte) (*Universe, error) {
 	if err := json.Unmarshal(data, &top); err != nil {
 		return nil, err
 	}
-	u := &Universe{Info: map[string]Info{}, Sector: map[string]string{}, Source: "dynamic_yfinance_screener"}
+	u := &Universe{Info: map[string]Info{}, Sector: map[string]string{}, Source: "dynamic_yahoo_screener"}
 	read := func(key string) ([]string, error) {
 		keys, vals, err := orderedObject(top[key])
 		if err != nil {

@@ -17,7 +17,7 @@ import (
 	"github.com/loc1263/gohoo"
 )
 
-// HistoryOptions replica OpcionesHistorial de Python.
+// HistoryOptions son las opciones de descarga de históricos.
 type HistoryOptions struct {
 	Range       string
 	Interval    string
@@ -30,7 +30,7 @@ type HistoryOptions struct {
 	CacheMaxAge time.Duration
 }
 
-// DefaultHistoryOptions son los valores de Python (5y semanal, 5 intentos, caché de 20 h).
+// DefaultHistoryOptions son los valores por defecto (5y semanal, 5 intentos, caché de 20 h).
 func DefaultHistoryOptions() HistoryOptions {
 	return HistoryOptions{Range: "5y", Interval: "1wk", MaxRetries: 5,
 		BackoffBase: 5 * time.Second, BackoffMax: 120 * time.Second, Timeout: 30 * time.Second,
@@ -49,10 +49,9 @@ func CacheFresh(path string, maxAge time.Duration) bool {
 	return err == nil && time.Since(st.ModTime()) < maxAge
 }
 
-// History devuelve el histórico de un ticker (precios ajustados, como auto_adjust=True de yfinance)
-// con caché en disco, reintentos y escritura atómica. El CSV usa el formato de pandas
-// (Date,Open,High,Low,Close,Volume,Dividends,Stock Splits) que ya lee y escribe Python, así
-// ambos backends comparten la caché. A diferencia de Python, devuelve error en vez de un
+// History devuelve el histórico de un ticker
+// con caché en disco, reintentos y escritura atómica. El CSV usa el formato
+// (Date,Open,High,Low,Close,Volume,Dividends,Stock Splits). Devuelve error en vez de un
 // DataFrame vacío, y no reintenta los símbolos inexistentes (ErrNotFound).
 func (c *Client) History(ctx context.Context, ticker, cacheDir string, o HistoryOptions, force bool) ([]gohoo.Bar, error) {
 	if err := os.MkdirAll(cacheDir, 0o755); err != nil {
@@ -103,8 +102,8 @@ func (c *Client) History(ctx context.Context, ticker, cacheDir string, o History
 	return nil, fmt.Errorf("%s: %w", ticker, last)
 }
 
-// AutoAdjust deja Close = AdjClose y escala Open/High/Low con el mismo factor (auto_adjust de yfinance).
-// Además lleva la hora de cada barra a la medianoche local (yfinance indexa las velas diarias y semanales
+// AutoAdjust deja Close = AdjClose y escala Open/High/Low con el mismo factor.
+// Además lleva la hora de cada barra a la medianoche local (las velas diarias y semanales
 // por fecha, no por hora de apertura): las comparaciones por fecha («último dato en o antes de…») dependen de eso.
 func AutoAdjust(in []gohoo.Bar) []gohoo.Bar {
 	out := make([]gohoo.Bar, len(in))
@@ -168,7 +167,7 @@ func parseCSVTime(s string) (time.Time, error) {
 	return time.Time{}, fmt.Errorf("fecha inválida %q", s)
 }
 
-// ReadBarsCSV lee un CSV de pandas (la primera columna es la fecha; busca las columnas por nombre).
+// ReadBarsCSV lee un CSV de barras (la primera columna es la fecha; busca las columnas por nombre).
 func ReadBarsCSV(path string) ([]gohoo.Bar, error) {
 	f, err := os.Open(path)
 	if err != nil {

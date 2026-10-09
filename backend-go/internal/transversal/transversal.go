@@ -1,5 +1,5 @@
 // Package transversal es el hub (estado + frescura + top 3 por módulo) y el buscador global de
-// ticker (equivale a fog_radar/transversal + api/transversal.py). Cada módulo aporta un Provider.
+// ticker. Cada módulo aporta un Provider.
 package transversal
 
 import (
@@ -94,7 +94,7 @@ type BusquedaResponse struct {
 	Resultados []ResultadoBusqueda `json:"resultados"`
 }
 
-// Provider es lo que cada módulo expone al hub y al buscador (hub.py: resumen_hub, indice_busqueda).
+// Provider es lo que cada módulo expone al hub y al buscador.
 type Provider interface {
 	ResumenHub(s *core.Settings) (*ResumenModulo, error)
 	IndiceBusqueda(s *core.Settings) ([]EntradaBusqueda, error)

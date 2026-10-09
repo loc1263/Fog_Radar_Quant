@@ -9,7 +9,7 @@ import (
 )
 
 // QP resuelve min ½x'Px + q'x  s.t.  l ≤ Ax ≤ u con ADMM (estilo OSQP, ρ adaptativo). Es el solver
-// de los optimizadores de portafolio (reemplaza a scipy.optimize / cvxpy). Devuelve x y las
+// de los optimizadores de portafolio. Devuelve x y las
 // iteraciones usadas; error si el problema no converge dentro de maxIter.
 func QP(P, A *mat.Dense, q, l, u []float64, tol float64, maxIter int) ([]float64, int, error) {
 	n, _ := P.Dims()
@@ -138,7 +138,7 @@ var ErrSinExcesoPositivo = errors.New("ningún activo supera la tasa libre de ri
 //
 //	min y'Σy + γ·y'y   s.t.  (μ-rf)'y = 1,  Σy = k,  0 ≤ y_i ≤ maxW·k,  k ≥ 0.
 //
-// Equivale al `minimize(neg_sharpe, SLSQP)` del original y a PyPortfolioOpt (Fase 0, Spike C: |Δw| ≈ 1e-10).
+// Maximiza el Sharpe con el QP ADMM propio.
 // Si ningún activo supera rf devuelve ErrSinExcesoPositivo (el problema transformado es infactible).
 func MaxSharpe(mu []float64, cov *mat.Dense, rf, maxW, gamma float64) ([]float64, error) {
 	n := len(mu)

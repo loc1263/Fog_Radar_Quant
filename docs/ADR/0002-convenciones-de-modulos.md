@@ -5,7 +5,7 @@
 
 ## Contexto
 
-Chile fue el piloto para validar la arquitectura (monorepo, FastAPI con un router por
+Chile fue el piloto para validar la arquitectura (monorepo, un backend con un router por
 módulo, SvelteKit como BFF). Al portarlo aparecieron decisiones que conviene fijar antes de
 migrar módulos más grandes.
 
@@ -14,25 +14,23 @@ migrar módulos más grandes.
 ### 1. Estructura del módulo en el backend
 
 ```
-modules/<modulo>/
-  scoring.py | scanner/ | steps/   lógica pura, port fiel del original (sin HTTP ni disco)
-  extractor.py                     descarga (Yahoo…); recibe dependencias inyectables
-  storage.py                       rutas, "último archivo", validación, escritura atómica
-  columnas.py (si aplica)          catálogo: clave API, etiqueta, grupo, unidad
-  schemas.py                       modelos Pydantic de respuesta
-  service.py                       archivo/DataFrame → schema
-  router.py                        solo HTTP (depende de service)
-  pipeline.py                      batch; run(settings, **opciones) -> resumen
-tests/<modulo>/
-  fixtures/                        salidas reales del original (input + output esperado)
-  test_parity.py                   mismo input → mismo output que el original
+internal/modules/<modulo>/
+  scoring.go | scanner.go          lógica pura (sin HTTP ni disco)
+  extractor.go                     descarga (Yahoo…); recibe dependencias inyectables
+  storage.go                       rutas, "último archivo", validación, escritura atómica
+  columnas (si aplica)             catálogo: clave API, etiqueta, grupo, unidad
+  schemas.go                       tipos de respuesta
+  service.go                       archivo/tabla → schema
+  router.go                        solo HTTP (depende de service)
+  pipeline.go                      batch; Run(ctx, env, opciones) -> resumen
+  *_test.go                        tests con dependencias falsas (sin red)
 ```
 
 ### 2. Formato en disco vs. contrato de la API
 
 - En disco se conserva **el formato del proyecto original** (nombres de columnas, archivos con
-  timestamp). Así se copian los históricos sin conversión y la paridad se verifica
-  comparando archivos (en Chile: byte a byte).
+  timestamp). Así se copian los históricos sin conversión y los archivos
+  existentes se siguen leyendo sin conversión.
 - La API expone **claves snake_case estables** y agrupa en objetos (`pilares`, `metricas`).
   Cuando la tabla es dinámica (indicadores), el backend manda el catálogo de columnas con
   su **unidad** (`pct`, `pct_pts`, `multiplo`, `monto`, `fecha`…) y el front formatea por unidad.
@@ -64,7 +62,7 @@ duplica constantes del backend (en el original los pesos estaban copiados en dos
 
 ### 6. Frontend por módulo
 
-- `src/lib/modules/<modulo>/`: lógica TS pura (con tests de paridad contra un JSON real de la
+- `src/lib/modules/<modulo>/`: lógica TS pura (con tests contra un JSON real de la
   API en `fixtures/`) y componentes propios. Lo reutilizable sube a `components/shared`
   (así nació la fila desplegable de `DataTable`).
 - Tipos solo desde `schema.d.ts`; alias con prefijo de módulo en `api/types.ts`
@@ -83,5 +81,5 @@ las pruebas E2E recorran las páginas con datos reales.
 ## Consecuencias
 
 - Cada módulo nuevo se puede revisar contra esta lista.
-- El costo es algo más de archivos por módulo; a cambio, la lógica portada queda aislada y
-  su paridad es verificable sin red.
+- El costo es algo más de archivos por módulo; a cambio, la lógica queda aislada y
+  verificable sin red.

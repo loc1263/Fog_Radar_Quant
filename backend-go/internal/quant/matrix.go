@@ -18,7 +18,7 @@ func PctChange(p []float64) []float64 {
 	return out
 }
 
-// MeanOf es la media aritmética (suma por pares como numpy).
+// MeanOf es la media aritmética.
 func MeanOf(a []float64) float64 {
 	if len(a) == 0 {
 		return NaN

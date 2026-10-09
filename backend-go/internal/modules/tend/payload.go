@@ -15,7 +15,7 @@ import (
 	"fogradar/internal/quant"
 )
 
-// Payload del dashboard (reporting/run_data.py + dashboard_data.py): une, por análisis, los archivos que dejaron
+// Payload del dashboard: une, por análisis, los archivos que dejaron
 // Markowitz, la proyección y el momentum. Se arma como OM para conservar el orden de claves de dashboard_data.json.
 
 // ParseOM decodifica JSON conservando el orden de las claves (objetos → OM, enteros → int64, números → float64).
@@ -368,7 +368,7 @@ func BuildDashboardPayload(runDir string, u *Universe, p Params, now time.Time) 
 func WriteDashboard(runDir string, payload OM) error {
 	path := filepath.Join(runDir, DashboardFile)
 	tmp := path + ".tmp"
-	if err := os.WriteFile(tmp, PyJSON(payload), 0o644); err != nil {
+	if err := os.WriteFile(tmp, OrderedJSON(payload), 0o644); err != nil {
 		return err
 	}
 	return os.Rename(tmp, path)

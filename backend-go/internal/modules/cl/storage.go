@@ -17,7 +17,7 @@ import (
 	"fogradar/internal/quant"
 )
 
-// Archivos de datos (mismo formato que el proyecto original y que Python):
+// Archivos de datos:
 //
 //	indicadores_acciones_<YYYYMMDD_HHMMSS>.csv (+ .xlsx): salida del extractor
 //	ranking_acciones_<YYYYMMDD_HHMMSS>.csv     (+ .xlsx): salida del scoring
@@ -93,7 +93,7 @@ func invalidData(detail string) *core.APIError {
 func cargar(s *core.Settings, patron string, requeridas []string, que string) (*Loaded, *core.APIError) {
 	path := LatestFile(DataDir(s), patron)
 	if path == "" {
-		return nil, core.NoData(fmt.Sprintf("Todavía no hay %s del IPSA. Ejecuta el pipeline: python -m fog_radar.jobs cl_stocks", que))
+		return nil, core.NoData(fmt.Sprintf("Todavía no hay %s del IPSA. Ejecuta el pipeline: fogradar job cl_stocks", que))
 	}
 	df, err := quant.ReadCSVFile(path)
 	if err != nil {

@@ -1,4 +1,4 @@
-// Código generado desde modules/cl_stocks/columnas.py (scripts/gen_columnas.py): no editar a mano.
+// Código generado: no editar a mano.
 
 package cl
 

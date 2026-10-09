@@ -39,7 +39,7 @@ func TimeseriesPoints(data map[string]any, typ string) []Point {
 	return out
 }
 
-// TrailingPEG es el último trailingPegRatio de fundamentals-timeseries (yfinance lo agrega a Ticker.info
+// TrailingPEG es el último trailingPegRatio de fundamentals-timeseries (se agrega a la info del ticker
 // desde ese endpoint; quoteSummary no lo trae). ok=false si Yahoo no tiene el dato.
 func TrailingPEG(ctx context.Context, src Source, ticker string) (v float64, ok bool, err error) {
 	data, err := src.Fundamentals(ctx, ticker, []string{"trailingPegRatio"})

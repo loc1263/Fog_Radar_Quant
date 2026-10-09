@@ -6,7 +6,7 @@ import (
 )
 
 // Merge es una fusión del dendrograma: ids de los dos clusters (0..n-1 son hojas, n+i la fusión i),
-// la distancia y el tamaño resultante (misma convención que scipy.cluster.hierarchy.linkage).
+// la distancia y el tamaño resultante.
 type Merge struct {
 	A, B int
 	Dist float64
@@ -61,7 +61,7 @@ func AverageLinkage(dist [][]float64) []Merge {
 
 // FclusterMaxclust corta el dendrograma en a lo más k clusters (fcluster(criterion="maxclust")):
 // busca el umbral más chico tal que el número de clusters sea ≤ k y devuelve la etiqueta (1..m) de
-// cada hoja. Con alturas empatadas puede dar menos de k clusters, igual que scipy.
+// cada hoja. Con alturas empatadas puede dar menos de k clusters, con el criterio estándar de clustering jerárquico.
 func FclusterMaxclust(merges []Merge, n, k int) []int {
 	parent := make([]int, 2*n)
 	for i := range parent {

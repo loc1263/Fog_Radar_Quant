@@ -11,7 +11,7 @@ import (
 	"fogradar/internal/quant"
 )
 
-// Informe PDF ejecutivo del módulo ETF (informe_pdf.py): mismas secciones y columnas (Top 15, Excluidos por distorsión,
+// Informe PDF ejecutivo del módulo ETF: mismas secciones y columnas (Top 15, Excluidos por distorsión,
 // Rotación, Diversificación, Ranking por categoría, Top 15 Momentum, Top 15 Perf. + Beta y Top 15 Cap.). Apaisado.
 
 // ErrSinCorrida es el error cuando no hay corrida procesada.

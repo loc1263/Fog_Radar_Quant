@@ -9,26 +9,26 @@ import (
 
 var diasES = [...]string{"lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"}
 
-// Programa es una corrida programada del cron de producción (jobs/schedule.py).
+// Programa es una corrida programada del cron de producción.
 type Programa struct {
 	Key     string
 	Titulo  string
 	Modulos []string
-	// Dias: 0 = lunes … 6 = domingo (como Python).
+	// Dias: 0 = lunes … 6 = domingo.
 	Dias   []int
 	Hora   int
 	Minuto int
 }
 
-// Programas es la única fuente de verdad de la programación (idéntica a la de Python).
+// Programas es la única fuente de verdad de la programación.
 var Programas = []Programa{
 	{Key: "semanal", Titulo: "ETFs", Modulos: []string{"etf"}, Dias: []int{0}, Hora: 6},
 	{Key: "diario", Titulo: "Chile, EEUU y Tendencia", Modulos: []string{"cl_stocks", "us_stocks", "tendencia"},
 		Dias: []int{0, 1, 2, 3, 4}, Hora: 18},
 }
 
-// pyWeekday: lunes = 0 … domingo = 6.
-func pyWeekday(t time.Time) int { return (int(t.Weekday()) + 6) % 7 }
+// weekdayMon0: lunes = 0 … domingo = 6.
+func weekdayMon0(t time.Time) int { return (int(t.Weekday()) + 6) % 7 }
 
 // Cron es la expresión cron (en cron el lunes es 1 y el domingo 0/7).
 func (p Programa) Cron() string {
@@ -74,7 +74,7 @@ func (p Programa) Proxima(ahora time.Time) time.Time {
 	y, m, d := ahora.Date()
 	for delta := 0; delta < 8; delta++ {
 		c := time.Date(y, m, d+delta, p.Hora, p.Minuto, 0, 0, ahora.Location())
-		if slices.Contains(p.Dias, pyWeekday(c)) && c.After(ahora) {
+		if slices.Contains(p.Dias, weekdayMon0(c)) && c.After(ahora) {
 			return c
 		}
 	}
@@ -86,7 +86,7 @@ func (p Programa) Anterior(ahora time.Time) time.Time {
 	y, m, d := ahora.Date()
 	for delta := 0; delta < 8; delta++ {
 		c := time.Date(y, m, d-delta, p.Hora, p.Minuto, 0, 0, ahora.Location())
-		if slices.Contains(p.Dias, pyWeekday(c)) && !c.After(ahora) {
+		if slices.Contains(p.Dias, weekdayMon0(c)) && !c.After(ahora) {
 			return c
 		}
 	}

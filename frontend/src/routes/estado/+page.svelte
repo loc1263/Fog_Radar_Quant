@@ -130,7 +130,7 @@
 	<Section title="Corridas programadas (producción)">
 		<p class="text-sm text-brand-muted">
 			Los pipelines corren uno detrás de otro, nunca en paralelo (Yahoo Finance bloquea las ráfagas
-			de requests). En desarrollo: <code>python scripts/run_all_pipelines.py</code> o
+			de requests). En desarrollo: <code>fogradar job --todos</code> o
 			<code>correr_pipelines.bat</code>. Horas de {programas[0].zona}.
 		</p>
 		<DataTable rows={programas} columns={colProgramas} caption="Corridas programadas" />

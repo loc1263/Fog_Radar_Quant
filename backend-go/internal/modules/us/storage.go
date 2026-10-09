@@ -13,7 +13,7 @@ import (
 const key = core.ModuleKey("us_stocks")
 
 // NoRuns es el mensaje cuando todavía no hay corridas.
-const NoRuns = "Todavía no hay corridas del screener EEUU. Ejecuta: python -m fog_radar.jobs us_stocks"
+const NoRuns = "Todavía no hay corridas del screener EEUU. Ejecuta: fogradar job us_stocks"
 
 // RunsDir es data/us_stocks/runs.
 func RunsDir(s *core.Settings) string { return filepath.Join(s.ModuleDataDir(key), "runs") }

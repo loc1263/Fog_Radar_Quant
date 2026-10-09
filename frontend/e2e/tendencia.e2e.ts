@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 /**
  * Módulo Tendencia. Requiere la corrida 20260926_01 en data/tendencia/output y
- * history.db (en CI: scripts/fixtures_e2e.py + `jobs tendencia --backfill`).
+ * history.db (con datos reales y `fogradar job tendencia --backfill`).
  */
 
 test('resumen y selector de análisis en la URL', async ({ page }) => {

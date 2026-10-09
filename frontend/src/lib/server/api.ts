@@ -1,7 +1,7 @@
 /**
- * Cliente del backend FastAPI — SOLO servidor (patrón BFF).
+ * Cliente del backend — SOLO servidor (patrón BFF).
  *
- * El navegador nunca llama a FastAPI: las páginas cargan datos en
+ * El navegador nunca llama al backend: las páginas cargan datos en
  * `+page.server.ts` / `+layout.server.ts` con este cliente, que agrega la
  * API key y la IP del usuario final. Al estar en `$lib/server`, SvelteKit
  * impide importarlo desde código del cliente.

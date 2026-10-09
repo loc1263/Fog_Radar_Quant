@@ -10,7 +10,7 @@ import (
 )
 
 // OptJob es un JobRecord que puede ser null. Huma no admite `nullable` sobre referencias a
-// structs, así que se declara como anyOf [JobRecord, null] (igual que pydantic).
+// structs, así que se declara como anyOf [JobRecord, null].
 type OptJob struct{ *core.JobRecord }
 
 // MarshalJSON escribe null cuando no hay job.

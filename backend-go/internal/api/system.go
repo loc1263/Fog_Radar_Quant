@@ -125,7 +125,7 @@ func registerSystem(h *Host) {
 		return &struct{ Body []core.JobRecord }{h.Jobs.History(in.Module, in.Limit)}, nil
 	})
 
-	// GET /api/<prefijo>/status de cada módulo (make_module_router en Python).
+	// GET /api/<prefijo>/status de cada módulo.
 	for _, m := range modules.All {
 		Protected(h, huma.Operation{
 			OperationID: string(m.Key) + "_status", Method: http.MethodGet, Path: "/api" + m.Prefix + "/status",

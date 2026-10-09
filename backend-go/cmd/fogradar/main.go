@@ -1,7 +1,7 @@
 // Command fogradar es el binario del backend Go. Subcomandos:
 //
 //	fogradar api        # sirve la API HTTP (Fase 1)
-//	fogradar openapi    # imprime el OpenAPI generado (para compararlo con el de FastAPI)
+//	fogradar openapi    # imprime el OpenAPI generado
 //	fogradar job ...    # pipelines batch: un módulo, --todos o --programa (ver `fogradar job --list`)
 //
 
@@ -11,7 +11,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -51,11 +50,7 @@ func newHost() (*api.Host, error) {
 	if err != nil {
 		return nil, err
 	}
-	var lvl slog.Level
-	if err := lvl.UnmarshalText([]byte(s.LogLevel)); err != nil {
-		lvl = slog.LevelInfo
-	}
-	log := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: lvl}))
+	log, _ := newLogger(s, os.Stdout, "api") // vive lo que el proceso
 	h := api.New(s, log)
 	// Cliente de Yahoo del proceso de la API: solo lo usa la evaluación en vivo de un ticker (US).
 	tr := yahoo.NewTraffic(yahoo.PolicyFromSettings(s))

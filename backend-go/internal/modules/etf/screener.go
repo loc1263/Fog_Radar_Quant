@@ -22,7 +22,7 @@ import (
 	"fogradar/internal/yahoo"
 )
 
-// Screener de ETFs (port de Screener_Data_ETF_Script/src/main.py): descarga desde Yahoo precio, AUM, rendimientos por
+// Screener de ETFs: descarga desde Yahoo precio, AUM, rendimientos por
 // período y métricas de riesgo de cada ticker de List_All_ETF.csv y escribe etf_perf_data_<timestamp>.csv (+ xlsx,
 // etf_choice_*, List_All_ETF_valid_* e incidencias_*).
 //
@@ -114,7 +114,7 @@ func (in *Incidencias) Guardar(dir, ts string) (string, error) {
 		return "", err
 	}
 	w := csv.NewWriter(f)
-	w.UseCRLF = true // csv.DictWriter de Python escribe «\r\n»
+	w.UseCRLF = true // CRLF
 	_ = w.Write([]string{"Timestamp", "Tipo", "Ticker", "Detalle"})
 	for _, i := range list {
 		_ = w.Write([]string{i.Timestamp, i.Tipo, i.Ticker, i.Detalle})
@@ -242,7 +242,7 @@ func Sharpe(bars []gohoo.Bar) *float64 {
 	return &v
 }
 
-// Beta respecto del mercado con los retornos emparejados POR FECHA (corrección de la Fase 7 documentada en PARIDAD).
+// Beta respecto del mercado con los retornos emparejados POR FECHA.
 func Beta(etf, market []gohoo.Bar) *float64 {
 	ed, er := retornos(etf)
 	md, mr := retornos(market)
@@ -312,7 +312,7 @@ func infoETF(ctx context.Context, src yahoo.Source, ticker string) (etfInfo, err
 			m["quoteType"] = q
 		}
 	}
-	// yfinance entrega netExpenseRatio en puntos porcentuales (0.0945 = 0,0945 %); Yahoo, la fracción en fundProfile.
+	// El ratio de gastos se entrega en puntos porcentuales (0.0945 = 0,0945 %); Yahoo, la fracción en fundProfile.
 	if f, ok := gohoo.AsFloat(gohoo.RawValue(gohoo.GetPath(qs, "fundProfile", "feesExpensesInvestment", "annualReportExpenseRatio"))); ok && f != 0 {
 		m["netExpenseRatio"] = round(f*100, 4)
 	}
@@ -337,6 +337,8 @@ type ScreenerOpts struct {
 	Concurrencia int
 	Log          *slog.Logger
 	Now          func() time.Time
+	// RefrescarInfo ignora la caché de info y pide el quoteSummary de todos los ETFs (--refrescar-info).
+	RefrescarInfo bool
 }
 
 type validado struct {
@@ -344,6 +346,9 @@ type validado struct {
 	info   etfInfo
 	price  float64
 	bars   []gohoo.Bar
+	// graf trae precio, volumen y 52W del gráfico (nil si se omitió: el ranking lo descarta igual y la fila usa el info en caché).
+	graf    *datosGrafico
+	omitido bool
 }
 
 // ProcesarETFs procesa todos los ETFs de la lista y guarda los resultados. Devuelve nil si Yahoo no validó ninguno.
@@ -363,6 +368,7 @@ func ProcesarETFs(ctx context.Context, src yahoo.Source, o ScreenerOpts) (*Scree
 	}
 	o.Log.Info("tickers importados", "n", len(tickers))
 	inc := &Incidencias{}
+	ic := cargarInfoCache(o.OutputDir, o.RefrescarInfo)
 
 	// El historial del índice se pide UNA vez (sin él no se puede calcular Beta/Treynor de ningún ETF).
 	o.Log.Info("precargando historial de mercado", "indice", marketIndex)
@@ -390,7 +396,7 @@ func ProcesarETFs(ctx context.Context, src yahoo.Source, o ScreenerOpts) (*Scree
 				if ctx.Err() != nil {
 					continue
 				}
-				row := procesarTicker(ctx, src, tickers[i], meta[tickers[i]], market, inc, o)
+				row := procesarTicker(ctx, src, tickers[i], meta[tickers[i]], market, inc, ic, o)
 				results[i] = out{row, row != nil}
 				dmu.Lock()
 				done++
@@ -423,6 +429,10 @@ func ProcesarETFs(ctx context.Context, src yahoo.Source, o ScreenerOpts) (*Scree
 		}
 	}
 	o.Log.Info("validación", "validos", len(rows), "invalidos", invalid)
+	if err := ic.guardar(tickers); err != nil {
+		o.Log.Warn("no se pudo guardar la caché de info de ETFs", "error", err)
+	}
+	o.Log.Info("info de ETFs", "desde_cache", ic.Desdecache, "refrescados", ic.Refrescados, "grafico_omitido", ic.Omitidos)
 	if len(rows) == 0 {
 		o.Log.Warn("No se validó ningún ETF")
 		return nil, nil
@@ -452,7 +462,7 @@ func ProcesarETFs(ctx context.Context, src yahoo.Source, o ScreenerOpts) (*Scree
 }
 
 // procesarTicker valida un ETF (reintentos) y arma su fila; nil si se descarta.
-func procesarTicker(ctx context.Context, src yahoo.Source, ticker string, m Meta, market []gohoo.Bar, inc *Incidencias, o ScreenerOpts) []any {
+func procesarTicker(ctx context.Context, src yahoo.Source, ticker string, m Meta, market []gohoo.Bar, inc *Incidencias, ic *infoCache, o ScreenerOpts) []any {
 	start := time.Now()
 	defer func() {
 		if d := time.Since(start); d > umbralLento {
@@ -463,7 +473,7 @@ func procesarTicker(ctx context.Context, src yahoo.Source, ticker string, m Meta
 	var v *validado
 	var lastErr error
 	for attempt := 0; attempt < maxRetries; attempt++ {
-		v, lastErr = validar(ctx, src, ticker)
+		v, lastErr = validar(ctx, src, ticker, m, ic, o.Now())
 		if lastErr == nil {
 			break
 		}
@@ -490,15 +500,38 @@ func procesarTicker(ctx context.Context, src yahoo.Source, ticker string, m Meta
 	return construirFila(v, m, market, inc, o.Now())
 }
 
-// validar obtiene info + historial; (nil, nil) si el instrumento no tiene precio o historial.
-func validar(ctx context.Context, src yahoo.Source, ticker string) (*validado, error) {
-	info, err := infoETF(ctx, src, ticker)
-	if err != nil {
-		return nil, err
+// validar obtiene el info (de la caché o de Yahoo) y el historial; (nil, nil) si el instrumento no tiene precio o historial.
+//
+// Un ETF que el ranking descartará de todos modos (ver omitirHistorial) no pide el gráfico. Para el resto el gráfico de 5 años es el
+// único request en las corridas normales: el info solo se pide si no está en caché o le toca renovarse (infocache.go).
+func validar(ctx context.Context, src yahoo.Source, ticker string, m Meta, ic *infoCache, now time.Time) (*validado, error) {
+	var info etfInfo
+	entry, cached := ic.get(ticker)
+	if cached && !ic.debeRefrescar(ticker, entry, now) {
+		info = etfInfo(entry.Info)
+		ic.usadoDesdeCache()
+	} else {
+		fresh, err := infoETF(ctx, src, ticker)
+		switch {
+		case err == nil:
+			info = fresh
+			if _, ok := firstNum(info, preciosInfo...); len(info) > 0 && ok {
+				ic.put(ticker, info, now)
+			}
+		case cached && !errors.Is(err, gohoo.ErrNotFound) && ctx.Err() == nil:
+			info = etfInfo(entry.Info) // no se pudo renovar: se sigue con lo guardado
+			ic.usadoDesdeCache()
+		default:
+			return nil, err
+		}
 	}
-	price, ok := firstNum(info, "regularMarketPrice", "currentPrice", "previousClose", "regularMarketPreviousClose")
+	price, ok := firstNum(info, preciosInfo...)
 	if len(info) == 0 || !ok {
 		return nil, nil
+	}
+	if omitirHistorial(info, m) {
+		ic.omitido()
+		return &validado{ticker: ticker, info: info, price: price, omitido: true}, nil
 	}
 	res, err := src.Chart(ctx, ticker, gohoo.ChartParams{Range: "5y", Interval: "1d"})
 	if err != nil {
@@ -507,11 +540,18 @@ func validar(ctx context.Context, src yahoo.Source, ticker string) (*validado, e
 	if len(res.Bars) == 0 {
 		return nil, nil
 	}
+	graf, ok := derivarDeGrafico(res.Bars, now)
+	if !ok {
+		return nil, nil
+	}
 	// AdjClose queda como cierre ajustado (auto_adjust); Time conserva la hora de apertura para derivar los rangos
 	bars := make([]gohoo.Bar, len(res.Bars))
 	copy(bars, res.Bars)
-	return &validado{ticker: ticker, info: info, price: price, bars: bars}, nil
+	return &validado{ticker: ticker, info: info, price: graf.Precio, bars: bars, graf: &graf}, nil
 }
+
+// preciosInfo: claves de info de donde sale el precio de referencia, en orden de preferencia.
+var preciosInfo = []string{"regularMarketPrice", "currentPrice", "previousClose", "regularMarketPreviousClose"}
 
 func infoVal(m etfInfo, k string) any {
 	v, ok := m[k]
@@ -562,10 +602,24 @@ func getProvider(nombre string, company string) string {
 // construirFila arma la fila de resultado (en el orden de ColumnasPerf sin «Fecha»).
 func construirFila(v *validado, m Meta, market []gohoo.Bar, inc *Incidencias, now time.Time) []any {
 	info := v.info
-	per := DerivarPeriodos(v.bars, now)
-	p1y := yahoo.AutoAdjust(per.P1y)
+	// Sin gráfico (v.omitido) el ranking descarta la fila de todos modos: rendimientos y riesgo quedan en N/A y lo demás sale del info.
+	var per Periodos
+	var p1y []gohoo.Bar
+	if !v.omitido {
+		per = DerivarPeriodos(v.bars, now)
+		p1y = yahoo.AutoAdjust(per.P1y)
+	}
 	// los rendimientos usan el cierre ajustado de la primera vela del período
-	perf := func(b []gohoo.Bar) any { return fmtPerf(perfPct(v.price, b)) }
+	perf := func(b []gohoo.Bar) any {
+		if v.omitido {
+			return naValue
+		}
+		return fmtPerf(perfPct(v.price, b))
+	}
+	var sharpe, treynor, beta *float64
+	if !v.omitido {
+		sharpe, treynor, beta = Sharpe(p1y), Treynor(p1y, market), Beta(p1y, market)
+	}
 
 	tipo := ""
 	if s, ok := info["quoteType"].(string); ok {
@@ -598,21 +652,22 @@ func construirFila(v *validado, m Meta, market []gohoo.Bar, inc *Incidencias, no
 	if provName == "" {
 		provName = naValue
 	}
-	sharpe, treynor, beta := Sharpe(p1y), Treynor(p1y, market), Beta(p1y, market)
-
 	row := map[string]any{
 		"Ticker": v.ticker, "TipoInstrumento": tipo, "Nombre": nombreVal, "Precio": round(v.price, 2),
-		"Volumen": intIfWhole(infoVal(info, "volume")), "AUM": intIfWhole(infoVal(info, "totalAssets")), "Expense Ratio": expense,
+		"Volumen": volumenFila(v), "AUM": intIfWhole(infoVal(info, "totalAssets")), "Expense Ratio": expense,
 		"Inception Date": intIfWhole(infoVal(info, "fundInceptionDate")), "Category": cat,
 		"Performance 5D (%)": perf(per.P5d), "Performance 1M (%)": perf(yahoo.AutoAdjust(per.P1m)),
 		"Performance 6M (%)": perf(yahoo.AutoAdjust(per.P6m)), "Performance YTD (%)": perf(yahoo.AutoAdjust(per.Pytd)),
 		"Performance 1Y (%)": perf(p1y), "Performance 5Y (%)": perf(yahoo.AutoAdjust(per.P5y)),
-		"52W High": infoVal(info, "fiftyTwoWeekHigh"), "52W Low": infoVal(info, "fiftyTwoWeekLow"),
+		"52W High": rango52(v, info, true), "52W Low": rango52(v, info, false),
 		"Sharpe Ratio": optVal(sharpe), "Treynor Ratio": optVal(treynor), "Beta": optVal(beta),
 		"Proveedor": getProvider(provName, m.Company),
 	}
 	campos := []string{"Nombre"}
-	if tipo == "ETF" {
+	switch {
+	case v.omitido && tipo == "ETF":
+		campos = append(campos, "AUM") // el resto de los campos críticos no se pidió a propósito
+	case tipo == "ETF":
 		campos = append(campos, camposCriticosRanking...)
 	}
 	var faltan []string

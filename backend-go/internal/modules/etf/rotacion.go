@@ -9,7 +9,7 @@ import (
 	"fogradar/internal/quant"
 )
 
-// Rotación del Top 15 vs. la corrida anterior + diversificación por categoría (analysis/rotacion.py).
+// Rotación del Top 15 vs. la corrida anterior + diversificación por categoría.
 
 // RotFila es una fila de rotación; los campos que no aplican a una tabla quedan nil.
 type RotFila struct {

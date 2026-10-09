@@ -5,7 +5,7 @@
 
 ## Contexto
 
-El frontend SvelteKit actúa como BFF: el navegador nunca llama a FastAPI. Hay dos
+El frontend SvelteKit actúa como BFF: el navegador nunca llama al backend. Hay dos
 formas de mover datos entre el servidor SvelteKit y el navegador:
 
 1. **Load functions + form actions / `+server.ts`** (estables desde SvelteKit 1).

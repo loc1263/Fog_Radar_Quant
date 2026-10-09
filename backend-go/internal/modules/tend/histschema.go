@@ -1,6 +1,6 @@
 package tend
 
-// Esquema de history.db (idéntico a storage/db.py: Python y Go comparten la base). Nunca se edita una migración
+// Esquema de history.db. Nunca se edita una migración
 // publicada; un cambio es una migración nueva al final de Migraciones.
 
 const schemaV1 = `

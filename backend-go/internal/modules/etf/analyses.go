@@ -10,7 +10,7 @@ import (
 	"fogradar/internal/quant"
 )
 
-// --- Momentum / Crecimiento (etf_momentum_analysis.py) ---
+// --- Momentum / Crecimiento ---
 
 const (
 	pesoM5D = 0.10
@@ -164,7 +164,7 @@ func RunMomentum(csvPath, histDir string) (*MomentumResult, error) {
 	return &MomentumResult{FechaTag: tag, Ranking: rOut, Top15: tOut}, nil
 }
 
-// --- Ranking por categoría (etf_categoria_analysis.py) ---
+// --- Ranking por categoría ---
 
 const minNCategoria = 5
 
@@ -246,7 +246,7 @@ func RunCategoria(rankingPath string) (*quant.Frame, error) {
 		}
 		r.tickers = strings.Join(ts, ", ")
 		for _, p := range []*float64{&r.sh, &r.tr, &r.be, &r.p1, &r.p6, &r.sc, &r.pos} {
-			*p = quant.Round(*p, 3) // DataFrame.round (numpy): rint(x·10³)/10³
+			*p = quant.Round(*p, 3) // DataFrame.round: rint(x·10³)/10³
 		}
 		rows[k] = r
 	}
@@ -273,7 +273,7 @@ func RunCategoria(rankingPath string) (*quant.Frame, error) {
 	return out, writeFrame(filepath.Join(dir, CategoriasFile), out)
 }
 
-// --- Top 15 Cap. (etf_russell3000_momentum.py) ---
+// --- Top 15 Cap. ---
 
 // CategoriasCapBucket: las 9 categorías Morningstar con etiqueta de capitalización explícita.
 var CategoriasCapBucket = map[string]string{

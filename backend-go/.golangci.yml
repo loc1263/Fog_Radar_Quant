@@ -21,7 +21,7 @@ linters:
       - linters: [errcheck]
         text: 'fmt[.]Fprint'
       - linters: [staticcheck]
-        text: "ST1005"  # los mensajes de error son texto para el usuario, en español y con punto, como en Python
+        text: "ST1005"  # los mensajes de error son texto para el usuario, en español y con punto
 formatters:
   enable:
     - gofmt

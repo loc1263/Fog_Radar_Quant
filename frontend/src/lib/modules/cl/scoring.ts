@@ -2,7 +2,7 @@
  * Recálculo del Score Compuesto con pesos personalizados, en el navegador.
  *
  * Port de `Stock_Choice_Nacional/.../lib/scoring.ts`, que a su vez replica
- * `calcular_scores()` del backend (`modules/cl_stocks/scoring.py`): un pilar
+ * el cálculo de scores del backend (`internal/modules/cl/scoring.go`): un pilar
  * sin dato no aporta ni al numerador ni al denominador (no se trata como 0).
  * Los pesos por defecto vienen del backend (`modelo.pilares[].peso`).
  */
@@ -63,7 +63,7 @@ export function scorePersonalizado(
 
 /**
  * Recalcula `score_compuesto` y `ranking` de todas las filas, ordenadas de
- * mayor a menor. Empates comparten puesto (`rank(method='min')` de pandas);
+ * mayor a menor. Empates comparten puesto (ranking con empates en el mínimo);
  * las filas sin score quedan al final con ranking null.
  */
 export function recalcularRanking<T extends ClRankingRow>(filas: readonly T[], pesos: Pesos): T[] {

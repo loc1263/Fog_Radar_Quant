@@ -84,7 +84,7 @@
 {:else if runs.length === 0}
 	<EmptyState>
 		Todavía no hay corridas en el historial. Cada corrida del pipeline se guarda sola; los CSV
-		anteriores se cargan con <code>python -m fog_radar.jobs cl_stocks --backfill</code>.
+		anteriores se cargan con <code>fogradar job cl_stocks --backfill</code>.
 	</EmptyState>
 {:else}
 	<Section title="Filtros">

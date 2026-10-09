@@ -22,7 +22,7 @@ import (
 	"fogradar/internal/yahoo"
 )
 
-// Datos macro de referencia (macro.py): curva de tasas, spreads de crédito, VIX, proxies de PMI y postura de la Fed.
+// Datos macro de referencia: curva de tasas, spreads de crédito, VIX, proxies de PMI y postura de la Fed.
 // Salida en data/tendencia/macro/macro_data_<YYYYMMDD>.csv y fomc_latest_statement.txt.
 
 type fredSerie struct{ Label, ID string }
@@ -194,7 +194,7 @@ func fetchVIX(ctx context.Context, o MacroOpts) *macroRow {
 	}
 	res, err := o.Yahoo.Chart(ctx, "^VIX", gohoo.ChartParams{Range: "5d", Interval: "1d"})
 	if err != nil || len(res.Bars) == 0 {
-		o.Log("  [ERROR] VIX vía yfinance: %v", err)
+		o.Log("  [ERROR] VIX vía Yahoo: %v", err)
 		return nil
 	}
 	b := res.Bars[len(res.Bars)-1]

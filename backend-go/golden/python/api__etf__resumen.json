@@ -1,4 +1,0 @@
-{
- "code": "invalid_data",
- "detail": "No se pudo leer historial_corridas.csv: PermissionError"
-}

@@ -1,4 +1,0 @@
-{
- "code": "invalid_data",
- "detail": "No se pudo leer etf_momentum_top15_score_comp.csv: PermissionError"
-}

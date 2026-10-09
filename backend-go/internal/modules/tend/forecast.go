@@ -13,10 +13,10 @@ import (
 	"fogradar/internal/quant"
 )
 
-// Estimación de tendencia a 6 meses (26 semanas) para las acciones seleccionadas (modeling/trend_forecast.py):
+// Estimación de tendencia a 6 meses (26 semanas) para las acciones seleccionadas:
 //  1. Señal técnica: cruce de medias móviles semanales (10 vs 40; «Señal 3m» 4 vs 13). Solo informativa.
 //  2. Proyección tipo GBM con el CAGR histórico (mu) y la volatilidad anual (sigma): mediana = P·(1+mu)^T, banda 90 % =
-//     mediana·exp(±1.645·sigma·√T). (Corrección de la Fase 7 respecto del original, ver docs/PARIDAD.md.)
+//     mediana·exp(±1.645·sigma·√T).
 //  3. Notas de régimen de mercado (VIX, curva 10Y-2Y y spread de crédito High Yield) si hay datos.
 
 // Z90 es el z-score de la banda de confianza ~90 %.
@@ -154,12 +154,12 @@ func RegimeNotes(moduleDir string, warn func(string, ...any)) []string {
 			}
 		}
 	} else {
-		notes = append(notes, "No se encontró macro_data_*.csv (fetch_macro_data.py no se ha corrido con FRED_API_KEY); contexto macro limitado a VIX/^IRX vía yfinance.")
+		notes = append(notes, "No se encontró macro_data_*.csv (los datos macro no se han descargado con FRED_API_KEY); contexto macro limitado a VIX/^IRX vía Yahoo.")
 	}
 	return notes
 }
 
-// readCloseCSV lee la columna Close de un CSV de precios (formato pandas).
+// readCloseCSV lee la columna Close de un CSV de precios.
 func readCloseCSV(path string) ([]float64, error) {
 	f, err := quant.ReadCSVFile(path)
 	if err != nil {
