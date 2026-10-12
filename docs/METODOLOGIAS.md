@@ -283,7 +283,8 @@ Archivos: `modules/etf/screener/…` (descarga) y `modules/etf/analysis/…` (an
 - **Rendimientos por ventana** (5D, 1M, 6M, YTD, 1Y, 5Y): todos los períodos se derivan de
   **una sola descarga diaria de 5 años** por ETF, y `Performance = (Precio actual / primer cierre del período − 1) · 100`.
 - **Riesgo** (sobre el histórico diario de 1 año, `rf = 2 %` constante, 252 ruedas):
-  - `Sharpe = (media(r) · 252 − rf) / (desv(r) · √252)`
+  - `Sharpe = (media(r) · 252 − rf) / (desv(r) · √252)`, con `r` los retornos simples diarios de los cierres
+    ajustados sin NaN (`gohoo.Returns`) y `desv` la desviación muestral n−1 (`gohoo.Volatility`)
   - `Beta = cov(r_ETF, r_mercado) / var(r_mercado)` contra **^GSPC**. Los retornos se
     emparejan **por fecha calendario** (join interno). Corrección Fase 7: el original
     alineaba por posición y un día faltante desfasaba toda la serie.

@@ -213,10 +213,10 @@ func perfPct(price float64, bars []gohoo.Bar) *float64 {
 	return &v
 }
 
-// retornos: pct_change(fill_method=None).dropna() sobre los cierres (descarta los NaN y los que tocan un NaN).
+// retornos: pct_change(fill_method=None).dropna() sobre los cierres ajustados. gohoo.Returns deja en NaN el
+// primero, los que tocan un NaN y los de cierre anterior 0 (que en pandas darían ±inf y también se descartan).
 func retornos(bars []gohoo.Bar) (dates []string, r []float64) {
-	for i := 1; i < len(bars); i++ {
-		v := bars[i].AdjClose/bars[i-1].AdjClose - 1
+	for i, v := range gohoo.Returns(gohoo.AdjCloses(bars)) {
 		if !math.IsNaN(v) && !math.IsInf(v, 0) {
 			dates = append(dates, bars[i].Time.Format("2006-01-02"))
 			r = append(r, v)
@@ -234,7 +234,7 @@ func Sharpe(bars []gohoo.Bar) *float64 {
 		return nil
 	}
 	mean := quant.Mean(r) * tradingDays
-	std := quant.StdSample(r) * math.Sqrt(tradingDays)
+	std := gohoo.Volatility(r, tradingDays) // desvío muestral (n-1) anualizado con √252
 	if std == 0 || math.IsNaN(std) {
 		return nil
 	}
