@@ -192,6 +192,9 @@ func (f *fakeBackend) QuoteSummaryContext(context.Context, string, []string) (ma
 func (f *fakeBackend) FundamentalsTimeseriesContext(context.Context, string, []string) (map[string]any, error) {
 	return nil, nil
 }
+func (f *fakeBackend) Screen(context.Context, gohoo.ScreenParams) (*gohoo.ScreenResult, error) {
+	return &gohoo.ScreenResult{}, nil
+}
 
 func bars(n int) []gohoo.Bar {
 	loc := time.FixedZone("EST", -5*3600)

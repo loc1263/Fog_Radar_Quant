@@ -221,7 +221,7 @@ func (d *discoverer) screenRegion(ctx context.Context, region string, size int) 
 	var last error
 	for attempt := range maxRetries {
 		qs, err := d.src.Screen(ctx, yahoo.ScreenParams{
-			Query: yahoo.EqQuery("region", region), Size: size, SortField: "intradaymarketcap",
+			Query: gohoo.Eq("region", region), Size: size, SortField: "intradaymarketcap",
 		})
 		if err == nil {
 			return qs

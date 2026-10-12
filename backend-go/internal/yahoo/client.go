@@ -23,6 +23,7 @@ type backend interface {
 	ChartRange(ctx context.Context, ticker string, p gohoo.ChartParams) (*gohoo.ChartResult, error)
 	QuoteSummaryContext(ctx context.Context, ticker string, modules []string) (map[string]any, error)
 	FundamentalsTimeseriesContext(ctx context.Context, ticker string, types []string) (map[string]any, error)
+	Screen(ctx context.Context, p gohoo.ScreenParams) (*gohoo.ScreenResult, error)
 }
 
 // Client implementa Source sobre gohoo con el control de tráfico común.
@@ -32,9 +33,6 @@ type Client struct {
 	mu   sync.Mutex
 	raw  backend
 	make func() (backend, error)
-
-	scrMu sync.Mutex
-	scr   *screenSession // sesión del screener (screener.go), creada al primer uso
 }
 
 // NewClient crea un cliente real. La sesión (cookie + crumb) se negocia en el primer request, y si

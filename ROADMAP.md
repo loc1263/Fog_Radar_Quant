@@ -99,7 +99,9 @@ secuencia (`deploy/backend/`). En desarrollo: `correr_pipelines.bat` o `fogradar
 **Desarrollo**
 - [ ] Opcionales: comparador EEUU vs. Tendencia, informe PDF consolidado semanal de los 4 módulos.
 - [ ] Usuario: revisar el sitio con datos reales y archivar los proyectos antiguos.
-- [ ] Mover el screener de Yahoo (`internal/yahoo/screener.go`) a `gohoo` y usar cotizaciones en lote.
+- [x] Mover el screener de Yahoo a `gohoo` (v0.3.0: `Screen`, `GetJSON`/`PostJSON`); `internal/yahoo/screener.go` queda como adaptador fino.
+- [ ] Ampliar `gohoo` según su `DISENO_V0.3.md`: cotizaciones en lote (`Quote`) para el market cap de EEUU y el FX, ganchos de tráfico
+  (`WithLimiter`/`WithRequestHook`), `Info`, `TimeseriesPoints`/`TrailingPEG`, `AutoAdjusted`; luego adelgazar `internal/yahoo`.
 - [ ] Después (con backtest): TD-MODEL-4…9 y US-DATA-08 (`docs/BACKLOG.md`).
 
 **Producción** — ⏸ en pausa hasta tener el desarrollo depurado

@@ -7,116 +7,112 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"sync/atomic"
 	"testing"
-	"time"
+
+	"github.com/loc1263/gohoo"
 )
 
-func testClient(base string) *Client {
-	c := newClientWith(NewTraffic(Policy{Concurrency: 1}), nil)
-	s := newScreenSession()
-	s.base, s.consent = base, base+"/consent"
-	c.scr = s
-	return c
+// screenBackend es un backend falso que solo responde el screener.
+type screenBackend struct {
+	fakeBackend
+	calls atomic.Int32
+	fn    func(n int, p gohoo.ScreenParams) (*gohoo.ScreenResult, error)
 }
 
-func TestScreenPideCrumbYPublicaElCuerpo(t *testing.T) {
-	var crumbs atomic.Int32
-	var gotBody map[string]any
-	var gotQuery map[string][]string
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case "/consent":
-			http.SetCookie(w, &http.Cookie{Name: "A3", Value: "x"})
-			w.WriteHeader(404)
-		case "/v1/test/getcrumb":
-			crumbs.Add(1)
-			io.WriteString(w, "CRUMB1")
-		case "/v1/finance/screener":
-			gotQuery = r.URL.Query()
-			if c, _ := r.Cookie("A3"); c == nil {
-				t.Error("falta la cookie de sesión")
-			}
-			b, _ := io.ReadAll(r.Body)
-			json.Unmarshal(b, &gotBody)
-			io.WriteString(w, `{"finance":{"result":[{"quotes":[{"symbol":"AAPL","marketCap":3.1e12,"currency":"USD"}]}],"error":null}}`)
+func (s *screenBackend) Screen(_ context.Context, p gohoo.ScreenParams) (*gohoo.ScreenResult, error) {
+	return s.fn(int(s.calls.Add(1)), p)
+}
+
+func TestScreenDevuelveLosQuotesCrudos(t *testing.T) {
+	tr, _ := newRelojTraffic(Policy{})
+	sb := &screenBackend{fn: func(_ int, p gohoo.ScreenParams) (*gohoo.ScreenResult, error) {
+		if p.SortField != "intradaymarketcap" || p.Size != 5 {
+			t.Errorf("parámetros: %+v", p)
 		}
-	}))
-	defer srv.Close()
-	c := testClient(srv.URL)
-	qs, err := c.Screen(context.Background(), ScreenParams{Query: EqQuery("region", "us"), Size: 5, SortField: "intradaymarketcap"})
-	if err != nil || len(qs) != 1 || qs[0]["symbol"] != "AAPL" {
+		return &gohoo.ScreenResult{Total: 1, Quotes: []gohoo.ScreenQuote{
+			{Symbol: "AAPL", Raw: map[string]any{"symbol": "AAPL", "marketCap": 3.1e12}},
+		}}, nil
+	}}
+	qs, err := newClientWith(tr, sb).Screen(context.Background(),
+		ScreenParams{Query: gohoo.Eq("region", "us"), Size: 5, SortField: "intradaymarketcap"})
+	if err != nil || len(qs) != 1 || qs[0]["symbol"] != "AAPL" || qs[0]["marketCap"] != 3.1e12 {
 		t.Fatalf("%v %v", qs, err)
 	}
-	if gotQuery["crumb"][0] != "CRUMB1" || gotQuery["formatted"][0] != "false" {
-		t.Errorf("query: %v", gotQuery)
-	}
-	if gotBody["sortType"] != "DESC" || gotBody["quoteType"] != "EQUITY" || gotBody["size"] != float64(5) || gotBody["sortField"] != "intradaymarketcap" {
-		t.Errorf("cuerpo: %v", gotBody)
-	}
-	q := gotBody["query"].(map[string]any)
-	if q["operator"] != "EQ" {
-		t.Errorf("query: %v", q)
-	}
-	// Segunda llamada: reutiliza el crumb.
-	if _, err := c.Screen(context.Background(), ScreenParams{Query: EqQuery("region", "jp"), Size: 5}); err != nil || crumbs.Load() != 1 {
-		t.Fatalf("crumbs=%d err=%v", crumbs.Load(), err)
+	if st := tr.Stats(); st.Requests != 1 {
+		t.Errorf("el screener debe contar en las estadísticas de tráfico: %+v", st)
 	}
 }
 
-func TestScreenRenuevaElCrumbEn401(t *testing.T) {
+func TestScreenSinQuotesEsErrEmptyScreen(t *testing.T) {
+	tr, _ := newRelojTraffic(Policy{})
+	sb := &screenBackend{fn: func(int, gohoo.ScreenParams) (*gohoo.ScreenResult, error) {
+		return &gohoo.ScreenResult{}, nil
+	}}
+	if _, err := newClientWith(tr, sb).Screen(context.Background(), ScreenParams{Query: gohoo.Eq("region", "zz")}); !errors.Is(err, ErrEmptyScreen) {
+		t.Errorf("err = %v", err)
+	}
+}
+
+func TestScreenReintenta429ConTraffic(t *testing.T) {
+	tr, r := newRelojTraffic(Policy{Retries429: 2, BackoffBase: 0, BackoffMax: 0})
+	sb := &screenBackend{fn: func(n int, _ gohoo.ScreenParams) (*gohoo.ScreenResult, error) {
+		if n == 1 {
+			return nil, err429
+		}
+		return &gohoo.ScreenResult{Quotes: []gohoo.ScreenQuote{{Raw: map[string]any{"symbol": "X"}}}}, nil
+	}}
+	qs, err := newClientWith(tr, sb).Screen(context.Background(), ScreenParams{Query: gohoo.Eq("region", "us")})
+	if err != nil || len(qs) != 1 || sb.calls.Load() != 2 || len(r.dormidos) == 0 {
+		t.Fatalf("qs=%v err=%v llamadas=%d esperas=%v", qs, err, sb.calls.Load(), r.dormidos)
+	}
+}
+
+// rewrite redirige todo request (incluido fc.yahoo.com) al servidor de prueba.
+type rewrite struct{ base *url.URL }
+
+func (rw rewrite) RoundTrip(req *http.Request) (*http.Response, error) {
+	req.URL.Scheme, req.URL.Host = rw.base.Scheme, rw.base.Host
+	return http.DefaultTransport.RoundTrip(req)
+}
+
+// Integración con el cliente real de gohoo: sesión, crumb renovado ante 401 y cuerpo del POST.
+func TestScreenConGohooReal(t *testing.T) {
 	var crumbs, posts atomic.Int32
+	var gotBody map[string]any
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case "/v1/test/getcrumb":
-			io.WriteString(w, []string{"VIEJO", "NUEVO"}[min(crumbs.Add(1)-1, 1)])
+			_, _ = io.WriteString(w, []string{"VIEJO", "NUEVO"}[min(crumbs.Add(1)-1, 1)])
 		case "/v1/finance/screener":
 			posts.Add(1)
 			if r.URL.Query().Get("crumb") != "NUEVO" {
-				w.WriteHeader(401)
+				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
-			io.WriteString(w, `{"finance":{"result":[{"quotes":[{"symbol":"X"}]}]}}`)
+			b, _ := io.ReadAll(r.Body)
+			if err := json.Unmarshal(b, &gotBody); err != nil {
+				t.Error(err)
+			}
+			_, _ = io.WriteString(w, `{"finance":{"result":[{"total":1,"quotes":[{"symbol":"AAPL","marketCap":3.1e12}]}],"error":null}}`)
+		default:
+			w.WriteHeader(http.StatusNotFound)
 		}
 	}))
 	defer srv.Close()
-	if _, err := testClient(srv.URL).Screen(context.Background(), ScreenParams{Query: EqQuery("region", "us")}); err != nil || posts.Load() != 2 {
-		t.Fatalf("posts=%d err=%v", posts.Load(), err)
+	base, _ := url.Parse(srv.URL)
+	g, err := gohoo.NewClientWithOptions(gohoo.WithLazyBootstrap(), gohoo.WithHTTPClient(&http.Client{Transport: rewrite{base}}))
+	if err != nil {
+		t.Fatal(err)
 	}
-}
-
-func TestScreenErrores(t *testing.T) {
-	var cuerpo atomic.Value
-	cuerpo.Store(`{"finance":{"result":[{"quotes":[]}]}}`)
-	var status atomic.Int32
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/v1/test/getcrumb" {
-			io.WriteString(w, "C")
-			return
-		}
-		if st := int(status.Load()); st != 0 {
-			w.WriteHeader(st)
-			return
-		}
-		io.WriteString(w, cuerpo.Load().(string))
-	}))
-	defer srv.Close()
-	c := testClient(srv.URL)
-	p := ScreenParams{Query: EqQuery("region", "us")}
-	if _, err := c.Screen(context.Background(), p); !errors.Is(err, ErrEmptyScreen) {
-		t.Errorf("sin quotes: %v", err)
+	tr, _ := newRelojTraffic(Policy{})
+	qs, err := newClientWith(tr, g).Screen(context.Background(),
+		ScreenParams{Query: gohoo.Eq("region", "us"), Size: 5, SortField: "intradaymarketcap"})
+	if err != nil || len(qs) != 1 || qs[0]["symbol"] != "AAPL" || posts.Load() != 2 {
+		t.Fatalf("qs=%v err=%v posts=%d", qs, err, posts.Load())
 	}
-	cuerpo.Store(`{"finance":{"result":null,"error":{"code":"Bad Request","description":"campo inválido"}}}`)
-	if _, err := c.Screen(context.Background(), p); err == nil {
-		t.Error("error de Yahoo debía propagarse")
-	}
-	if _, err := c.Screen(context.Background(), ScreenParams{Query: p.Query, Size: ScreenMaxSize + 1}); err == nil {
-		t.Error("size > 250 debía rechazarse")
-	}
-	status.Store(500)
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	if _, err := c.Screen(ctx, p); err == nil {
-		t.Error("HTTP 500 debía fallar")
+	if gotBody["size"] != float64(5) || gotBody["sortField"] != "intradaymarketcap" || gotBody["sortType"] != "DESC" {
+		t.Errorf("cuerpo: %v", gotBody)
 	}
 }

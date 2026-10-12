@@ -2,6 +2,7 @@ package tend
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -121,7 +122,11 @@ func (f *fakeYahoo) Screen(_ context.Context, p yahoo.ScreenParams) (yahoo.Quote
 	if f.screenErr != nil {
 		return nil, f.screenErr
 	}
-	region := p.Query["operands"].([]any)[1].(string)
+	var q struct{ Operands []any }
+	if err := json.Unmarshal([]byte(p.Query.String()), &q); err != nil {
+		return nil, err
+	}
+	region := q.Operands[1].(string)
 	var qs yahoo.Quotes
 	for i := range 12 {
 		cap := 3e11 + float64(i)*1e9
