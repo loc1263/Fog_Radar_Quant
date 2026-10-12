@@ -114,23 +114,10 @@ func Backoff(attempt int, base, maxD time.Duration, rnd func() float64) time.Dur
 	return d + time.Duration(rnd()*float64(time.Second))
 }
 
-// AutoAdjust deja Close = AdjClose y escala Open/High/Low con el mismo factor.
-// Además lleva la hora de cada barra a la medianoche local (las velas diarias y semanales
-// por fecha, no por hora de apertura): las comparaciones por fecha («último dato en o antes de…») dependen de eso.
-func AutoAdjust(in []gohoo.Bar) []gohoo.Bar {
-	out := make([]gohoo.Bar, len(in))
-	for i, b := range in {
-		f := 1.0
-		if b.Close != 0 && !math.IsNaN(b.Close) && !math.IsNaN(b.AdjClose) {
-			f = b.AdjClose / b.Close
-		}
-		y, m, d := b.Time.Date()
-		b.Time = time.Date(y, m, d, 0, 0, 0, 0, b.Time.Location())
-		out[i] = gohoo.Bar{Time: b.Time, Open: b.Open * f, High: b.High * f, Low: b.Low * f,
-			Close: b.AdjClose, AdjClose: b.AdjClose, Volume: b.Volume}
-	}
-	return out
-}
+// AutoAdjust deja Close = AdjClose, escala Open/High/Low con el mismo factor y lleva la hora de cada
+// barra a la medianoche local (las velas diarias y semanales por fecha, no por hora de apertura): las
+// comparaciones por fecha («último dato en o antes de…») dependen de eso.
+func AutoAdjust(in []gohoo.Bar) []gohoo.Bar { return gohoo.AtMidnight(gohoo.AutoAdjust(in)) }
 
 const csvTimeLayout = "2006-01-02 15:04:05-07:00"
 

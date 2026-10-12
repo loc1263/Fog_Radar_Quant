@@ -102,8 +102,9 @@ secuencia (`deploy/backend/`). En desarrollo: `correr_pipelines.bat` o `fogradar
 - [x] Mover el screener de Yahoo a `gohoo` (v0.3.0: `Screen`, `GetJSON`/`PostJSON`); `internal/yahoo/screener.go` queda como adaptador fino.
 - [x] `gohoo` v0.4.0: market cap de EEUU con `Quotes` en lote; espaciado, contadores y reintento ante 429 instalados dentro de gohoo
   (`WithLimiter`, `WithRequestHook`, `RetryPolicy.RateLimit`, `WithRetryPolicyContext`); se eliminó `Traffic.Do`.
-- [ ] `gohoo` v0.5.0 (ver su `DISENO_V0.3.md`): `Info`, `TimeseriesPoints`/`TrailingPEG`, `AutoAdjusted`; luego borrar
-  `internal/yahoo/{info,fundamentals}.go` y `AutoAdjust`.
+- [x] `gohoo` v0.5.0: `FlattenInfo`, `TimeseriesPoints` y `AutoAdjust`/`AtMidnight` viven en gohoo;
+  `internal/yahoo/{info,fundamentals}.go` y `AutoAdjust` quedan como envoltorios sobre la `Source` (para los falsos de los tests).
+- [ ] Opcional (gohoo v0.6.0): indicadores técnicos sobre `[]gohoo.Bar`.
 - [ ] Después (con backtest): TD-MODEL-4…9 y US-DATA-08 (`docs/BACKLOG.md`).
 
 **Producción** — ⏸ en pausa hasta tener el desarrollo depurado
