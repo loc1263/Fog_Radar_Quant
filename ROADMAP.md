@@ -104,7 +104,7 @@ secuencia (`deploy/backend/`). En desarrollo: `correr_pipelines.bat` o `fogradar
   (`WithLimiter`, `WithRequestHook`, `RetryPolicy.RateLimit`, `WithRetryPolicyContext`); se eliminó `Traffic.Do`.
 - [x] `gohoo` v0.5.0: `FlattenInfo`, `TimeseriesPoints` y `AutoAdjust`/`AtMidnight` viven en gohoo;
   `internal/yahoo/{info,fundamentals}.go` y `AutoAdjust` quedan como envoltorios sobre la `Source` (para los falsos de los tests).
-- [ ] Opcional (gohoo v0.6.0): indicadores técnicos sobre `[]gohoo.Bar`.
+- [x] `gohoo` v0.6.0: indicadores sobre `[]Bar` con períodos configurables y métricas de riesgo (`Returns`, `Volatility`, `MaxDrawdown`).
 - [ ] Después (con backtest): TD-MODEL-4…9 y US-DATA-08 (`docs/BACKLOG.md`).
 
 **Producción** — ⏸ en pausa hasta tener el desarrollo depurado
