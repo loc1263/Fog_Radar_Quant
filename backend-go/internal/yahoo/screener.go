@@ -7,8 +7,7 @@ import (
 	"github.com/loc1263/gohoo"
 )
 
-// Screener de Yahoo sobre gohoo.Screen (misma sesión cookie + crumb que el resto de las llamadas),
-// con el espaciado y el backoff ante 429 de Traffic.
+// Screener de Yahoo sobre gohoo.Screen (misma sesión, espaciado y reintentos que el resto de las llamadas).
 
 // ScreenParams es una consulta al screener (la query se arma con gohoo.Eq, gohoo.And, ...).
 type ScreenParams = gohoo.ScreenParams
@@ -22,15 +21,11 @@ type Quotes []map[string]any
 // Screen consulta el screener de Yahoo y devuelve los quotes crudos. Una página sin quotes
 // devuelve ErrEmptyScreen (para el descubrimiento de universo, una región vacía es una falla).
 func (c *Client) Screen(ctx context.Context, p ScreenParams) (Quotes, error) {
-	var res *gohoo.ScreenResult
-	err := c.T.Do(ctx, "screener", func() error {
-		b, err := c.backend()
-		if err != nil {
-			return err
-		}
-		res, err = b.Screen(ctx, p)
-		return err
-	})
+	b, ctx, err := c.call(ctx)
+	if err != nil {
+		return nil, err
+	}
+	res, err := b.Screen(ctx, p)
 	if err != nil {
 		return nil, err
 	}

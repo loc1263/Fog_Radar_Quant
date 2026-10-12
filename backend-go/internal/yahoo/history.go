@@ -102,6 +102,18 @@ func (c *Client) History(ctx context.Context, ticker, cacheDir string, o History
 	return nil, fmt.Errorf("%s: %w", ticker, last)
 }
 
+// Backoff es min(base·2^intento, max) + U(0, 1) s (reintento externo de History).
+func Backoff(attempt int, base, maxD time.Duration, rnd func() float64) time.Duration {
+	if rnd == nil {
+		rnd = rand.Float64
+	}
+	d := base << min(attempt, 30)
+	if d <= 0 || d > maxD {
+		d = maxD
+	}
+	return d + time.Duration(rnd()*float64(time.Second))
+}
+
 // AutoAdjust deja Close = AdjClose y escala Open/High/Low con el mismo factor.
 // Además lleva la hora de cada barra a la medianoche local (las velas diarias y semanales
 // por fecha, no por hora de apertura): las comparaciones por fecha («último dato en o antes de…») dependen de eso.

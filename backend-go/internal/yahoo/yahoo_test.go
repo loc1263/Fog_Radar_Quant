@@ -3,7 +3,6 @@ package yahoo
 import (
 	"context"
 	"errors"
-	"fmt"
 	"math"
 	"os"
 	"path/filepath"
@@ -35,7 +34,7 @@ func newRelojTraffic(p Policy) (*Traffic, *reloj) {
 	r := &reloj{t: time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)}
 	tr := NewTraffic(p)
 	tr.Space.now, tr.Space.sleep, tr.Space.rnd = r.now, r.sleep, func() float64 { return 0 }
-	tr.sleep, tr.rnd = r.sleep, func() float64 { return 0 }
+	tr.rlJitter = 0
 	return tr, r
 }
 
@@ -98,74 +97,6 @@ func TestSpacerCancelable(t *testing.T) {
 	}
 }
 
-var err429 = fmt.Errorf("agotados 1 intentos: %w", gohoo.ErrRateLimit)
-
-func TestDoReintenta429ConBackoff(t *testing.T) {
-	tr, r := newRelojTraffic(Policy{Retries429: 3, BackoffBase: 2 * time.Second, BackoffMax: 5 * time.Second})
-	resp := []error{err429, err429, nil}
-	i := 0
-	err := tr.Do(context.Background(), "chart/X", func() error { e := resp[i]; i++; return e })
-	if err != nil || i != 3 {
-		t.Fatal(err, i)
-	}
-	// backoff: 2·2^0 y 2·2^1 (el jitter U(0,1) es 0 en el test)
-	if len(r.dormidos) != 2 || r.dormidos[0] != 2*time.Second || r.dormidos[1] != 4*time.Second {
-		t.Fatalf("dormidos: %v", r.dormidos)
-	}
-	st := tr.Stats()
-	if st.Requests != 3 || st.RateLimited != 2 || st.Retries != 2 || st.Wait != 6*time.Second {
-		t.Fatalf("%+v", st)
-	}
-	if st.Summary() != "3 requests a Yahoo, 2 respuestas 429, 2 reintentos, 6 s de espera" {
-		t.Fatal(st.Summary())
-	}
-	tr.ResetStats()
-	if tr.Stats().Requests != 0 {
-		t.Fatal("reset")
-	}
-}
-
-func TestDoDevuelve429SiSeAgotanLosReintentos(t *testing.T) {
-	tr, r := newRelojTraffic(Policy{Retries429: 1})
-	err := tr.Do(context.Background(), "x", func() error { return err429 })
-	if !gohoo.IsRateLimit(err) || len(r.dormidos) != 1 {
-		t.Fatal(err, r.dormidos)
-	}
-}
-
-func TestDoRespetaRetryAfter(t *testing.T) {
-	tr, r := newRelojTraffic(Policy{Retries429: 1, BackoffBase: time.Second, BackoffMax: time.Second})
-	calls := 0
-	_ = tr.Do(context.Background(), "x", func() error {
-		calls++
-		if calls == 1 {
-			return &gohoo.StatusError{StatusCode: 429, RetryAfter: 30 * time.Second}
-		}
-		return nil
-	})
-	if len(r.dormidos) != 1 || r.dormidos[0] != 30*time.Second {
-		t.Fatalf("debe esperar el Retry-After: %v", r.dormidos)
-	}
-}
-
-func TestInteractivoNoReintenta(t *testing.T) {
-	tr, r := newRelojTraffic(Policy{Retries429: 3, BackoffBase: time.Minute, BackoffMax: time.Minute})
-	n := 0
-	err := tr.Do(Interactive(context.Background()), "x", func() error { n++; return err429 })
-	if !gohoo.IsRateLimit(err) || n != 1 || len(r.dormidos) != 0 {
-		t.Fatal(err, n, r.dormidos)
-	}
-}
-
-func TestOtrosErroresNoSeReintentan(t *testing.T) {
-	tr, _ := newRelojTraffic(Policy{Retries429: 3})
-	n := 0
-	boom := errors.New("boom")
-	if err := tr.Do(context.Background(), "x", func() error { n++; return boom }); !errors.Is(err, boom) || n != 1 {
-		t.Fatal(err, n)
-	}
-}
-
 func TestBackoffTieneTope(t *testing.T) {
 	if d := Backoff(10, 5*time.Second, 60*time.Second, func() float64 { return 1 }); d > 61*time.Second {
 		t.Fatal(d)
@@ -194,6 +125,13 @@ func (f *fakeBackend) FundamentalsTimeseriesContext(context.Context, string, []s
 }
 func (f *fakeBackend) Screen(context.Context, gohoo.ScreenParams) (*gohoo.ScreenResult, error) {
 	return &gohoo.ScreenResult{}, nil
+}
+func (f *fakeBackend) Quotes(_ context.Context, symbols []string) ([]gohoo.Quote, error) {
+	out := make([]gohoo.Quote, len(symbols))
+	for i, s := range symbols {
+		out[i] = gohoo.Quote{Symbol: s, Price: 1}
+	}
+	return out, nil
 }
 
 func bars(n int) []gohoo.Bar {
@@ -333,7 +271,9 @@ func TestClientDelegaEnElBackend(t *testing.T) {
 	if err != nil || m["ok"] != true {
 		t.Fatal(m, err)
 	}
-	if c.T.Stats().Requests != 1 {
-		t.Fatal("debe contar el request")
+	qs, err := c.Quotes(context.Background(), []string{"AAPL", "MSFT"})
+	if err != nil || len(qs) != 2 || qs[1].Symbol != "MSFT" {
+		t.Fatal(qs, err)
 	}
+	var _ Quoter = c
 }

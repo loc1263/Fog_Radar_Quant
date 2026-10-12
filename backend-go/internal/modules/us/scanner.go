@@ -227,6 +227,38 @@ func writeJSON(path string, v any) error {
 	return os.Rename(tmp, path)
 }
 
+// batchMarketCaps pide el market cap de todo el universo con cotizaciones en lote (≈ 5 requests para
+// 500 tickers) si la fuente lo permite. Devuelve los caps obtenidos y los índices que faltan (todos si
+// la fuente no da cotizaciones en lote), que se completan uno por uno con quoteSummary: es el mismo
+// dato (price.marketCap) por otro endpoint.
+func batchMarketCaps(ctx context.Context, src yahoo.Source, universe []string, lg *runLog) ([]*float64, []int) {
+	caps := make([]*float64, len(universe))
+	byTicker := map[string]float64{}
+	if q, ok := src.(yahoo.Quoter); ok && len(universe) > 0 {
+		quotes, err := retrying(ctx, func() ([]gohoo.Quote, error) { return q.Quotes(ctx, universe) })
+		if err != nil {
+			lg.warn("Cotizaciones en lote incompletas; el resto se pide ticker por ticker", "error", err)
+		}
+		for _, x := range quotes {
+			if x.MarketCap > 0 {
+				byTicker[x.Symbol] = x.MarketCap
+			}
+		}
+	}
+	var pending []int
+	for i, t := range universe {
+		if v, ok := byTicker[t]; ok {
+			caps[i] = &v
+		} else {
+			pending = append(pending, i)
+		}
+	}
+	if len(byTicker) > 0 {
+		lg.info("market caps en lote", "n", fmt.Sprintf("%d/%d", len(universe)-len(pending), len(universe)))
+	}
+	return caps, pending
+}
+
 // BatchOpts configura RunBatch.
 type BatchOpts struct {
 	MinMarketCap float64
@@ -268,10 +300,11 @@ func RunBatch(ctx context.Context, env *jobs.Env, o BatchOpts) (string, error) {
 		lg.info("Universo", "tickers", len(universe))
 
 		lg.info("Paso 2/7: descargando market cap", "tickers", len(universe))
-		caps := make([]*float64, len(universe))
+		caps, pending := batchMarketCaps(ctx, src, universe, lg)
 		var done int
 		var dmu sync.Mutex
-		workers(ctx, len(universe), conc, func(i int) {
+		workers(ctx, len(pending), conc, func(j int) {
+			i := pending[j]
 			v, err := retrying(ctx, func() (*float64, error) {
 				qs, err := src.QuoteSummary(ctx, universe[i], []string{"price"})
 				if err != nil {
@@ -288,8 +321,8 @@ func RunBatch(ctx context.Context, env *jobs.Env, o BatchOpts) (string, error) {
 			caps[i] = v
 			dmu.Lock()
 			done++
-			if done%25 == 0 || done == len(universe) {
-				lg.info("market caps descargados", "n", fmt.Sprintf("%d/%d", done, len(universe)))
+			if done%25 == 0 || done == len(pending) {
+				lg.info("market caps descargados uno por uno", "n", fmt.Sprintf("%d/%d", done, len(pending)))
 			}
 			dmu.Unlock()
 		})

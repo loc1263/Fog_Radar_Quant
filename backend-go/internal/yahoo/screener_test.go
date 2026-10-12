@@ -40,9 +40,6 @@ func TestScreenDevuelveLosQuotesCrudos(t *testing.T) {
 	if err != nil || len(qs) != 1 || qs[0]["symbol"] != "AAPL" || qs[0]["marketCap"] != 3.1e12 {
 		t.Fatalf("%v %v", qs, err)
 	}
-	if st := tr.Stats(); st.Requests != 1 {
-		t.Errorf("el screener debe contar en las estadísticas de tráfico: %+v", st)
-	}
 }
 
 func TestScreenSinQuotesEsErrEmptyScreen(t *testing.T) {
@@ -52,20 +49,6 @@ func TestScreenSinQuotesEsErrEmptyScreen(t *testing.T) {
 	}}
 	if _, err := newClientWith(tr, sb).Screen(context.Background(), ScreenParams{Query: gohoo.Eq("region", "zz")}); !errors.Is(err, ErrEmptyScreen) {
 		t.Errorf("err = %v", err)
-	}
-}
-
-func TestScreenReintenta429ConTraffic(t *testing.T) {
-	tr, r := newRelojTraffic(Policy{Retries429: 2, BackoffBase: 0, BackoffMax: 0})
-	sb := &screenBackend{fn: func(n int, _ gohoo.ScreenParams) (*gohoo.ScreenResult, error) {
-		if n == 1 {
-			return nil, err429
-		}
-		return &gohoo.ScreenResult{Quotes: []gohoo.ScreenQuote{{Raw: map[string]any{"symbol": "X"}}}}, nil
-	}}
-	qs, err := newClientWith(tr, sb).Screen(context.Background(), ScreenParams{Query: gohoo.Eq("region", "us")})
-	if err != nil || len(qs) != 1 || sb.calls.Load() != 2 || len(r.dormidos) == 0 {
-		t.Fatalf("qs=%v err=%v llamadas=%d esperas=%v", qs, err, sb.calls.Load(), r.dormidos)
 	}
 }
 
@@ -102,12 +85,8 @@ func TestScreenConGohooReal(t *testing.T) {
 	}))
 	defer srv.Close()
 	base, _ := url.Parse(srv.URL)
-	g, err := gohoo.NewClientWithOptions(gohoo.WithLazyBootstrap(), gohoo.WithHTTPClient(&http.Client{Transport: rewrite{base}}))
-	if err != nil {
-		t.Fatal(err)
-	}
-	tr, _ := newRelojTraffic(Policy{})
-	qs, err := newClientWith(tr, g).Screen(context.Background(),
+	tr, _ := newRelojTraffic(Policy{NetRetries: 1}) // la renovación del crumb consume un intento
+	qs, err := realClient(t, tr, base).Screen(context.Background(),
 		ScreenParams{Query: gohoo.Eq("region", "us"), Size: 5, SortField: "intradaymarketcap"})
 	if err != nil || len(qs) != 1 || qs[0]["symbol"] != "AAPL" || posts.Load() != 2 {
 		t.Fatalf("qs=%v err=%v posts=%d", qs, err, posts.Load())

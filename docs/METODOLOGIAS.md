@@ -18,11 +18,13 @@ se citan son relativas a `backend/src/fog_radar/`.
   capitalización. Todas las llamadas del proceso pasan por **un solo cliente** (`internal/yahoo`, creado por
   `fogradar api` y `fogradar job`):
   - espaciado mínimo global entre requests de **0,35 s + jitter U(0; 0,25) s**, compartido
-    entre hilos;
-  - ante HTTP 429, hasta **3 reintentos** con backoff `min(5 · 2^intento, 60) + U(0, 1)` s;
-    hasta 2 reintentos por errores de red;
-  - dentro de un request web (`yahoo.interactivo()`) un 429 se devuelve de inmediato, sin
+    entre hilos y aplicado a cada request HTTP (reintentos y obtención de cookie + crumb incluidos);
+  - ante HTTP 429 (o un "too many requests" en el cuerpo), hasta **3 reintentos** con backoff
+    `min(5 · 2^intento, 60) + U(0, 1)` s, al menos el `Retry-After`; hasta 2 reintentos por errores de red;
+  - dentro de un request web (`yahoo.Interactive()`) un 429 se devuelve de inmediato, sin
     backoff;
+  - estas reglas se instalan dentro de gohoo (`WithLimiter`, `WithRequestHook`, `RetryPolicy.RateLimit`),
+    así que los contadores del resumen de cada corrida cuentan cada request HTTP real;
   - caché de históricos en disco (la usa Tendencia, con frescura de 20 h).
   Cada módulo conserva además sus propias pausas anti-bloqueo (se detallan abajo).
 - **FRED** (Federal Reserve Economic Data), solo en Tendencia y solo si se corre con
@@ -173,8 +175,10 @@ Archivos: `internal/modules/us/{universe,scanner,fundamentals,scoring,portfolio}
 1. **Candidatos** (`universe.go`): unión de los componentes del **S&P 500 y el Nasdaq-100**
    leídos desde Wikipedia (tickers normalizados a formato Yahoo, `BRK.B → BRK-B`). Si ambas
    páginas fallan se usa `FALLBACK_TICKERS`, una lista estática de ~170 large/mega caps.
-2. **Market cap** de cada candidato vía `fast_info` (la consulta más liviana), con pausa
-   de 0,6 s ± 30 % entre tickers y hasta 2 reintentos.
+2. **Market cap** de todos los candidatos con cotizaciones en lote (`/v7/finance/quote`, 100 tickers por
+   request: ~5 requests para el universo completo, hasta 2 reintentos). Los que el lote no trae (o trae sin
+   market cap) se piden uno por uno con `quoteSummary` (`price.marketCap`, el mismo dato por otro endpoint;
+   diferencias medidas < 0,03 %, solo el precio moviéndose entre llamadas).
 3. **Filtro**: `market_cap ≥ USD 200.000.000.000` (`DEFAULT_MIN_MARKET_CAP`).
 
 ### 2.2 Momentum 12-1 y retornos

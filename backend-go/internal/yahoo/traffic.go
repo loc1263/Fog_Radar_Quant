@@ -6,6 +6,10 @@
 //  2. Reintento con backoff exponencial + jitter ante HTTP 429 (respeta Retry-After).
 //  3. Contadores (requests, 429, reintentos, espera) para el resumen de cada corrida.
 //
+// Las tres se aplican dentro de gohoo, por cada request HTTP (reintentos y bootstrap incluidos):
+// el espaciado como gohoo.Limiter, los contadores con el hook de requests y el reintento ante
+// 429 con RetryPolicy.RateLimit.
+//
 // Los módulos reciben una Source (interfaz) y nunca el cliente de gohoo: así los tests no usan red.
 package yahoo
 
@@ -14,6 +18,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand/v2"
+	"net/http"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -126,42 +131,29 @@ func (s *Spacer) Wait(ctx context.Context) (time.Duration, error) {
 	return wait, s.sleep(ctx, wait)
 }
 
-// Backoff es min(base·2^intento, max) + U(0, 1) s.
-func Backoff(attempt int, base, maxD time.Duration, rnd func() float64) time.Duration {
-	if rnd == nil {
-		rnd = rand.Float64
-	}
-	d := base << min(attempt, 30)
-	if d <= 0 || d > maxD {
-		d = maxD
-	}
-	return d + time.Duration(rnd()*float64(time.Second))
-}
-
 type interactiveKey struct{}
 
 // Interactive marca el contexto de una solicitud HTTP: un 429 de Yahoo se devuelve de inmediato
-// (sin dormir decenas de segundos con una conexión del servidor tomada). Equivale a
-// el modo interactivo.
+// (sin dormir decenas de segundos con una conexión del servidor tomada).
 func Interactive(ctx context.Context) context.Context {
 	return context.WithValue(ctx, interactiveKey{}, true)
 }
 
 func isInteractive(ctx context.Context) bool { v, _ := ctx.Value(interactiveKey{}).(bool); return v }
 
-// Traffic aplica espaciado + reintento ante 429 alrededor de una función que hace el request.
+// Traffic tiene las reglas de tráfico del proceso y sus contadores; Client las instala en gohoo.
 type Traffic struct {
 	P     Policy
 	Space *Spacer
 	st    counters
-	sleep func(context.Context, time.Duration) error
-	rnd   func() float64
-	log   func(format string, args ...any)
+	// rlJitter es el jitter del backoff ante 429: U(0, rlJitter) (1 s; 0 en los tests).
+	rlJitter time.Duration
+	log      func(format string, args ...any)
 }
 
 // NewTraffic crea el controlador de tráfico.
 func NewTraffic(p Policy) *Traffic {
-	return &Traffic{P: p, Space: NewSpacer(p.MinInterval, p.Jitter), sleep: sleepCtx, rnd: rand.Float64,
+	return &Traffic{P: p, Space: NewSpacer(p.MinInterval, p.Jitter), rlJitter: time.Second,
 		log: func(string, ...any) {}}
 }
 
@@ -174,46 +166,63 @@ func (t *Traffic) Stats() Stats { return t.st.snapshot() }
 // ResetStats pone los contadores en cero (inicio de una corrida).
 func (t *Traffic) ResetStats() { t.st.reset() }
 
-// Do ejecuta fn respetando el espaciado y reintentando los 429.
-func (t *Traffic) Do(ctx context.Context, what string, fn func() error) error {
-	retries := t.P.Retries429
-	if isInteractive(ctx) {
-		retries = 0
-	}
-	var err error
-	for attempt := 0; attempt <= retries; attempt++ {
-		waited, werr := t.Space.Wait(ctx)
-		if werr != nil {
-			return werr
-		}
-		err = fn()
-		t.st.requests.Add(1)
+// limiter es el espaciado global como gohoo.Limiter (cuenta la espera).
+func (t *Traffic) limiter() gohoo.Limiter {
+	return gohoo.LimiterFunc(func(ctx context.Context) error {
+		waited, err := t.Space.Wait(ctx)
 		t.st.waitNS.Add(int64(waited))
-		if !gohoo.IsRateLimit(err) {
-			return err
-		}
-		t.st.rateLimited.Add(1)
-		if attempt == retries {
-			break
-		}
-		pause := Backoff(attempt, t.P.BackoffBase, t.P.BackoffMax, t.rnd)
-		var se *gohoo.StatusError
-		if errors.As(err, &se) && se.RetryAfter > pause {
-			pause = se.RetryAfter
-		}
-		t.log("Yahoo respondió 429 (%s); reintento %d/%d en %.0f s", shorten(what), attempt+1, retries, pause.Seconds())
-		t.st.retries.Add(1)
-		t.st.waitNS.Add(int64(pause))
-		if serr := t.sleep(ctx, pause); serr != nil {
-			return serr
-		}
-	}
-	return err
+		return err
+	})
 }
 
-func shorten(s string) string {
+// onRequest cuenta cada request HTTP y cada respuesta 429.
+func (t *Traffic) onRequest(ev gohoo.RequestEvent) {
+	t.st.requests.Add(1)
+	if ev.StatusCode == http.StatusTooManyRequests || gohoo.IsRateLimit(ev.Err) {
+		t.st.rateLimited.Add(1)
+	}
+}
+
+// retryPolicy traduce Policy a gohoo: reintentos de red cortos y, ante 429, backoff
+// min(base·2^n, max) + U(0, 1 s) respetando Retry-After. En modo interactivo el 429 no se reintenta.
+func (t *Traffic) retryPolicy(interactive bool) gohoo.RetryPolicy {
+	retries := t.P.Retries429
+	if interactive {
+		retries = 0
+	}
+	return gohoo.RetryPolicy{
+		MaxAttempts:     t.P.NetRetries + 1,
+		BaseDelay:       200 * time.Millisecond,
+		MaxDelay:        5 * time.Second,
+		Jitter:          0.3,
+		HonorRetryAfter: true,
+		RateLimit: &gohoo.RateLimitPolicy{
+			MaxRetries: retries, BaseDelay: t.P.BackoffBase, MaxDelay: t.P.BackoffMax,
+			Jitter: t.rlJitter, HonorRetryAfter: true,
+		},
+		OnRetry: func(_ int, err error, delay time.Duration) {
+			if !gohoo.IsRateLimit(err) {
+				return
+			}
+			t.log("Yahoo respondió 429 (%s); reintento en %.0f s", endpointOf(err), delay.Seconds())
+			t.st.retries.Add(1)
+			t.st.waitNS.Add(int64(delay))
+		},
+	}
+}
+
+// endpointOf es la ruta del request que falló (sin query: nunca se registra el crumb).
+func endpointOf(err error) string {
+	var se *gohoo.StatusError
+	if !errors.As(err, &se) {
+		return "rate limit en la respuesta"
+	}
+	s := se.URL
 	if i := strings.IndexByte(s, '?'); i >= 0 {
 		s = s[:i]
+	}
+	if i := strings.Index(s, "/v"); i >= 0 {
+		s = s[i:]
 	}
 	if len(s) > 80 {
 		s = s[len(s)-80:]
