@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"sort"
+	"strconv"
 	"time"
 )
 
@@ -147,7 +148,9 @@ func runOrder(id string) string {
 	}
 	n := 1
 	if m[2] != "" {
-		fmt.Sscan(m[2], &n)
+		if v, err := strconv.Atoi(m[2]); err == nil {
+			n = v
+		}
 	}
 	return fmt.Sprintf("%s_%06d", m[1], n)
 }

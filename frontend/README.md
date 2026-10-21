@@ -19,15 +19,15 @@ O levantar todo desde la raíz: doble clic en `iniciar.bat` (exporta y arranca).
 
 ## Comandos
 
-| Comando                | Qué hace                                                                  |
-| ---------------------- | ------------------------------------------------------------------------- |
-| `npm run check`        | svelte-check (tipos)                                                      |
-| `npm run lint`         | Prettier + ESLint                                                         |
-| `npm run autofix`      | Autofixer oficial de Svelte (el del Svelte MCP) sobre todos los `.svelte` |
-| `npm test`             | Tests unitarios (Vitest: lógica en Node + componentes en Chromium)        |
-| `npm run test:e2e`     | E2E de humo con Playwright (compila y sirve el sitio estático)            |
-| `npm run gen:api`      | Regenera `src/lib/api/schema.d.ts` desde el OpenAPI del backend           |
-| `npm run build`        | Build estático en `build/` (`BASE_PATH=/subruta` para GitHub Pages)       |
+| Comando            | Qué hace                                                                  |
+| ------------------ | ------------------------------------------------------------------------- |
+| `npm run check`    | svelte-check (tipos)                                                      |
+| `npm run lint`     | Prettier + ESLint                                                         |
+| `npm run autofix`  | Autofixer oficial de Svelte (el del Svelte MCP) sobre todos los `.svelte` |
+| `npm test`         | Tests unitarios (Vitest: lógica en Node + componentes en Chromium)        |
+| `npm run test:e2e` | E2E de humo con Playwright (compila y sirve el sitio estático)            |
+| `npm run gen:api`  | Regenera `src/lib/api/schema.d.ts` desde el OpenAPI del backend           |
+| `npm run build`    | Build estático en `build/` (`BASE_PATH=/subruta` para GitHub Pages)       |
 
 ## Arquitectura (sitio estático, ADR 0005)
 
