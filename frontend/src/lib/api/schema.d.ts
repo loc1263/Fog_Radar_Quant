@@ -361,23 +361,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/etf/run": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Re-analiza el CSV vigente (no descarga de Yahoo) */
-        post: operations["etf_run"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/etf/russell3000": {
         parameters: {
             query?: never;
@@ -905,23 +888,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/us/portfolio/optimize": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Portafolio del modelo único: clusters de correlación + Black-Litterman */
-        post: operations["us_portfolio_optimize"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/us/portfolio/precalculado": {
         parameters: {
             query?: never;
@@ -1016,23 +982,6 @@ export interface paths {
         };
         /** Estado del módulo Acciones EEUU */
         get: operations["us_stocks_status"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/us/tickers/{ticker}/evaluate": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Evalúa un ticker en vivo (Yahoo Finance) */
-        get: operations["us_evaluate"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1647,9 +1596,6 @@ export interface components {
             /** Format: double */
             z_score: number | null;
         };
-        EtfRunResult: {
-            job: components["schemas"]["JobRecord"];
-        };
         EtfTabla: {
             /** Format: date */
             fecha: string | null;
@@ -1867,31 +1813,6 @@ export interface components {
             /** Format: double */
             risk_free_rate: number;
             run_id: string;
-        };
-        PortfolioRequest: {
-            /**
-             * Format: double
-             * @description Peso máximo por activo.
-             * @default 0.25
-             */
-            max_weight: number;
-            /**
-             * Format: int64
-             * @description Activos de la cartera final (clusters).
-             * @default 10
-             */
-            n_assets: number;
-            /**
-             * Format: double
-             * @description Tasa libre de riesgo anual; null = valor por defecto.
-             */
-            risk_free_rate?: number | null;
-            /** @description Universo ya filtrado (etapa 1). */
-            tickers: string[];
-            /** @description Retorno anual esperado por ticker (fracción) que reemplaza la view automática. */
-            views?: {
-                [key: string]: number;
-            } | null;
         };
         PortfolioResult: {
             /** Format: double */
@@ -2401,27 +2322,6 @@ export interface components {
             sma_50: number | null;
             /** Format: double */
             volume: number | null;
-        };
-        TickerEvaluation: {
-            /** @description True si salió de la caché de 5 minutos. */
-            cached: boolean;
-            currency: string;
-            /** Format: date-time */
-            fetched_at: string;
-            financial_health: components["schemas"]["FinancialHealth"];
-            industry: string;
-            /** Format: double */
-            market_cap: number | null;
-            name: string;
-            /** Format: double */
-            price: number | null;
-            profitability: components["schemas"]["Profitability"];
-            score: components["schemas"]["Score"];
-            sector: string;
-            shareholder_return: components["schemas"]["ShareholderReturn"];
-            technical: components["schemas"]["Technical"];
-            ticker: string;
-            valuation: components["schemas"]["Valuation"];
         };
         UsHistCorrida: {
             /** Format: int64 */
@@ -3365,44 +3265,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["EtfRotacion"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Service Unavailable */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    etf_run: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["EtfRunResult"];
                 };
             };
             /** @description Unauthorized */
@@ -4787,57 +4649,6 @@ export interface operations {
             };
         };
     };
-    us_portfolio_optimize: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["PortfolioRequest"];
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PortfolioResult"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Unprocessable Entity */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Service Unavailable */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
     us_portfolio_precalc: {
         parameters: {
             query?: never;
@@ -5061,55 +4872,6 @@ export interface operations {
             };
             /** @description Unauthorized */
             401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Service Unavailable */
-            503: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    us_evaluate: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                ticker: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TickerEvaluation"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-            /** @description Unprocessable Entity */
-            422: {
                 headers: {
                     [name: string]: unknown;
                 };

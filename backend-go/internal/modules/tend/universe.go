@@ -3,14 +3,11 @@ package tend
 import (
 	"encoding/json"
 	"fmt"
-	"math"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 	"time"
-
-	"fogradar/internal/quant"
 )
 
 // Info de un ticker del universo: nombre, país y moneda de cotización.
@@ -171,34 +168,4 @@ func (p *Prices) Subset(tickers []string) *Prices {
 		out.Cols = append(out.Cols, p.Col(t))
 	}
 	return out
-}
-
-// ReadPricesUSD lee processed/prices_usd.csv.
-func ReadPricesUSD(path string) (*Prices, error) {
-	f, err := quant.ReadCSVFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("falta %s: corre el armado del dataset primero: %w", path, err)
-	}
-	if len(f.Cols) < 2 {
-		return nil, fmt.Errorf("%s no tiene columnas de precios", path)
-	}
-	p := &Prices{}
-	for i := 0; i < f.N; i++ {
-		d, err := time.Parse("2006-01-02", strings.Split(f.Cols[0].Cell(i), " ")[0])
-		if err != nil {
-			return nil, fmt.Errorf("fecha inválida en %s: %w", path, err)
-		}
-		p.Dates = append(p.Dates, d)
-	}
-	for _, c := range f.Cols[1:] {
-		p.Tickers = append(p.Tickers, c.Name)
-		v := c.Floats()
-		for i := range v {
-			if c.Kind == quant.Str && c.IsNull(i) {
-				v[i] = math.NaN()
-			}
-		}
-		p.Cols = append(p.Cols, v)
-	}
-	return p, nil
 }

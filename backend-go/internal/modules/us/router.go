@@ -11,21 +11,17 @@ import (
 	"strings"
 
 	"github.com/danielgtaylor/huma/v2"
-	"github.com/loc1263/gohoo"
 
 	"fogradar/internal/api"
 	"fogradar/internal/core"
-	"fogradar/internal/yahoo"
 )
 
 const tag = "Acciones EEUU"
 
 var tickerRe = regexp.MustCompile(TickerPattern)
 
-// Register agrega los endpoints de /api/us: corridas, historial, evaluación en vivo y portafolio.
-// src es el cliente de Yahoo (solo lo usa la evaluación en vivo).
-func Register(h *api.Host, src yahoo.Source) {
-	cache := NewEvalCache()
+// Register agrega los endpoints de /api/us: corridas, historial y portafolio precalculado.
+func Register(h *api.Host) {
 	op := func(id, method, path, summary string) huma.Operation {
 		return huma.Operation{OperationID: id, Method: method, Path: "/api/us" + path, Summary: summary, Tags: []string{tag}}
 	}
@@ -117,27 +113,6 @@ func Register(h *api.Host, src yahoo.Source) {
 		})
 
 	// --- Evaluación en vivo: única llamada a Yahoo dentro de un request (caché de 5 min, rate limit y concurrencia) ---
-	api.ProtectedWith(h, op("us_evaluate", http.MethodGet, "/tickers/{ticker}/evaluate", "Evalúa un ticker en vivo (Yahoo Finance)"),
-		func(ctx context.Context, in *struct {
-			Ticker string `path:"ticker" pattern:"^[A-Za-z0-9.\\-^=]{1,15}$"`
-		}) (*struct{ Body TickerEvaluation }, error) {
-			k := strings.ToUpper(strings.TrimSpace(in.Ticker))
-			if v, ok := cache.Get(k); ok {
-				v.Cached = true
-				return &struct{ Body TickerEvaluation }{v}, nil
-			}
-			ev, err := EvaluateTicker(yahoo.Interactive(ctx), src, k)
-			var nf *TickerNotFoundError
-			switch {
-			case errors.As(err, &nf):
-				return nil, core.Err(http.StatusNotFound, "ticker_not_found", nf.Msg)
-			case err != nil:
-				h.Log.Warn("error consultando Yahoo Finance", "ticker", k, "error", err, "rate_limit", errors.Is(err, gohoo.ErrRateLimit))
-				return nil, core.Err(http.StatusBadGateway, "upstream_error", "Error consultando Yahoo Finance. Intenta más tarde.")
-			}
-			cache.Put(k, *ev)
-			return &struct{ Body TickerEvaluation }{*ev}, nil
-		}, h.Extra("20/minute", "us-evaluate"), h.Concurrent(4))
 
 	// --- Portafolio ---
 	api.Protected(h, op("us_portfolio_limits", http.MethodGet, "/portfolio/limits", "Límites del modelo de portafolio"),
@@ -153,14 +128,6 @@ func Register(h *api.Host, src yahoo.Source) {
 			}
 			return &struct{ Body PortfolioPrecalcResponse }{*res}, nil
 		})
-	api.ProtectedWith(h, op("us_portfolio_optimize", http.MethodPost, "/portfolio/optimize", "Portafolio del modelo único: clusters de correlación + Black-Litterman"),
-		func(_ context.Context, in *struct{ Body PortfolioRequest }) (*struct{ Body PortfolioResult }, error) {
-			res, e := Optimize(h.S, in.Body)
-			if e != nil {
-				return nil, e
-			}
-			return &struct{ Body PortfolioResult }{*res}, nil
-		}, h.Extra("30/minute", "us-optimize"), h.Concurrent(4))
 }
 
 // Optimize arma el portafolio del modelo único sobre la corrida terminada más reciente.

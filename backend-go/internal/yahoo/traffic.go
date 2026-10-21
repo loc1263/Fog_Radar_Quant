@@ -162,16 +162,6 @@ func (s *Spacer) Wait(ctx context.Context) (time.Duration, error) {
 	return wait, s.sleep(ctx, wait)
 }
 
-type interactiveKey struct{}
-
-// Interactive marca el contexto de una solicitud HTTP: un 429 de Yahoo se devuelve de inmediato
-// (sin dormir decenas de segundos con una conexión del servidor tomada).
-func Interactive(ctx context.Context) context.Context {
-	return context.WithValue(ctx, interactiveKey{}, true)
-}
-
-func isInteractive(ctx context.Context) bool { v, _ := ctx.Value(interactiveKey{}).(bool); return v }
-
 // Traffic tiene las reglas de tráfico del proceso y sus contadores; Client las instala en gohoo.
 type Traffic struct {
 	P     Policy
@@ -235,12 +225,8 @@ func (t *Traffic) onRequest(ev gohoo.RequestEvent) {
 }
 
 // retryPolicy traduce Policy a gohoo: reintentos de red cortos y, ante 429, backoff
-// min(base·2^n, max) + U(0, 1 s) respetando Retry-After. En modo interactivo el 429 no se reintenta.
-func (t *Traffic) retryPolicy(interactive bool) gohoo.RetryPolicy {
-	retries := t.P.Retries429
-	if interactive {
-		retries = 0
-	}
+// min(base·2^n, max) + U(0, 1 s) respetando Retry-After.
+func (t *Traffic) retryPolicy() gohoo.RetryPolicy {
 	return gohoo.RetryPolicy{
 		MaxAttempts:     t.P.NetRetries + 1,
 		BaseDelay:       200 * time.Millisecond,
@@ -248,7 +234,7 @@ func (t *Traffic) retryPolicy(interactive bool) gohoo.RetryPolicy {
 		Jitter:          0.3,
 		HonorRetryAfter: true,
 		RateLimit: &gohoo.RateLimitPolicy{
-			MaxRetries: retries, BaseDelay: t.P.BackoffBase, MaxDelay: t.P.BackoffMax,
+			MaxRetries: t.P.Retries429, BaseDelay: t.P.BackoffBase, MaxDelay: t.P.BackoffMax,
 			Jitter: t.rlJitter, HonorRetryAfter: true,
 		},
 		OnRetry: func(_ int, err error, delay time.Duration) {

@@ -174,26 +174,6 @@ type UsHistPermanencia struct {
 	RankUltima  *int64   `json:"rank_ultima" nullable:"true"`
 	ScoreUltima *float64 `json:"score_ultima" nullable:"true"`
 }
-
-// TickerEvaluation es la evaluación en vivo de un ticker.
-type TickerEvaluation struct {
-	Ticker            string            `json:"ticker"`
-	Name              string            `json:"name"`
-	Sector            string            `json:"sector"`
-	Industry          string            `json:"industry"`
-	Currency          string            `json:"currency"`
-	Price             *float64          `json:"price" nullable:"true"`
-	MarketCap         *float64          `json:"market_cap" nullable:"true"`
-	FetchedAt         core.Fecha        `json:"fetched_at"`
-	Valuation         Valuation         `json:"valuation"`
-	Profitability     Profitability     `json:"profitability"`
-	FinancialHealth   FinancialHealth   `json:"financial_health"`
-	ShareholderReturn ShareholderReturn `json:"shareholder_return"`
-	Technical         Technical         `json:"technical"`
-	Score             Score             `json:"score"`
-	Cached            bool              `json:"cached" doc:"True si salió de la caché de 5 minutos."`
-}
-
 // --- Portafolio ---
 
 // PortfolioRequest es el cuerpo de /portfolio/optimize.

@@ -269,20 +269,6 @@ func pricesFrame(p *Prices) *quant.Frame {
 	return f
 }
 
-// LoadPricesUSD lee la matriz que genera BuildDataset.
-func LoadPricesUSD(moduleDir string) (*Prices, error) {
-	return ReadPricesUSD(filepath.Join(moduleDir, "processed", "prices_usd.csv"))
-}
-
-// LoadRiskFree lee processed/risk_free_rate.txt.
-func LoadRiskFree(moduleDir string) (float64, error) {
-	b, err := os.ReadFile(filepath.Join(moduleDir, "processed", "risk_free_rate.txt"))
-	if err != nil {
-		return 0, err
-	}
-	return strconv.ParseFloat(strings.TrimSpace(string(b)), 64)
-}
-
 // WeeklyReturns es prices.pct_change().dropna(how="all"): pct_change rellena hacia adelante los faltantes.
 func WeeklyReturns(prices *Prices) *Prices {
 	rets := &Prices{Tickers: prices.Tickers, Cols: make([][]float64, len(prices.Cols))}

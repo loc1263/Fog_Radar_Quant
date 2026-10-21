@@ -138,26 +138,6 @@ func TestPriceSubset(t *testing.T) {
 	}
 }
 
-func TestEvalCacheTTL(t *testing.T) {
-	c := NewEvalCache()
-	now := time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)
-	c.now = func() time.Time { return now }
-	c.Put("AAPL", TickerEvaluation{Ticker: "AAPL"})
-	if v, ok := c.Get("AAPL"); !ok || v.Ticker != "AAPL" {
-		t.Fatal("debe estar en caché")
-	}
-	now = now.Add(EvalTTL + time.Second)
-	if _, ok := c.Get("AAPL"); ok {
-		t.Fatal("vencida")
-	}
-	for i := 0; i < EvalMax+10; i++ {
-		c.Put(string(rune(1000+i)), TickerEvaluation{})
-	}
-	if len(c.data) > EvalMax {
-		t.Fatalf("la caché creció a %d", len(c.data))
-	}
-}
-
 // Top1 devuelve el ticker #1 de la primera corrida.
 func Top1(t *testing.T, cs []UsHistCorrida) string {
 	t.Helper()

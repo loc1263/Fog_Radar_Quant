@@ -2,7 +2,6 @@ package etf
 
 import (
 	"context"
-	"errors"
 	"net/http"
 	"strings"
 
@@ -10,16 +9,15 @@ import (
 
 	"fogradar/internal/api"
 	"fogradar/internal/core"
-	"fogradar/internal/jobs"
 )
 
 const tag = "ETFs"
 
 // Register agrega los endpoints de /api/etf. El GET /api/status del proyecto original es GET /api/etf/resumen. Todas las lecturas toman el lock de data/etf/current (503 «busy» si
-// el pipeline lo tiene más de 15 s). POST /run re-analiza el CSV vigente (sin Yahoo) y queda en el registro de jobs.
+// el pipeline lo tiene más de 15 s).
 //
 // GET /pdf (informe ejecutivo) se genera con internal/pdf (Carlito) y se cachea por la firma de los CSV.
-func Register(h *api.Host, env func() *jobs.Env) {
+func Register(h *api.Host) {
 	op := func(id, method, path, summary string) huma.Operation {
 		return huma.Operation{OperationID: id, Method: method, Path: "/api/etf" + path, Summary: summary, Tags: []string{tag}}
 	}
@@ -96,40 +94,6 @@ func Register(h *api.Host, env func() *jobs.Env) {
 			}
 			return &struct{ Body EtfHistorial }{*r}, nil
 		})
-
-	// POST /run: re-análisis (sin Yahoo). Mismo lock global que las corridas batch.
-	api.ProtectedWith(h, op("etf_run", http.MethodPost, "/run", "Re-analiza el CSV vigente (no descarga de Yahoo)"),
-		func(ctx context.Context, _ *struct{}) (*struct{ Body EtfRunResult }, error) {
-			reg := h.Jobs
-			if reg.IsRunning("etf") {
-				return nil, core.Err(http.StatusConflict, "run_in_progress", "Ya hay una corrida de ETFs en curso.")
-			}
-			unlock, err := core.LockPipelines(h.S, 0)
-			if errors.Is(err, core.ErrOcupado) {
-				return nil, core.Err(http.StatusConflict, "run_in_progress", "Ya hay una corrida de pipelines en curso.")
-			}
-			if err != nil {
-				return nil, core.Err(http.StatusInternalServerError, "pipeline_error", "Error procesando el análisis; revisa el log del servidor.")
-			}
-			defer unlock()
-			e := env()
-			rec, err := reg.Track("etf", "api", func(rec *core.JobRecord) error {
-				msg, err := Run(ctx, e, map[string]any{"solo_analisis": true})
-				if msg != "" {
-					rec.Message = &msg
-				}
-				return err
-			})
-			if err != nil {
-				var ae *core.APIError
-				if errors.As(err, &ae) {
-					return nil, ae
-				}
-				h.Log.Error("error re-analizando ETFs vía POST /run", "error", err)
-				return nil, core.Err(http.StatusInternalServerError, "pipeline_error", "Error procesando el análisis; revisa el log del servidor.")
-			}
-			return &struct{ Body EtfRunResult }{EtfRunResult{Job: *rec}}, nil
-		}, h.Extra("3/minute", "etf-run"))
 
 	// --- Historial (history.db): no toman el lock de current ---
 	api.Protected(h, op("etf_history_runs", http.MethodGet, "/history/runs", "Corridas guardadas en el historial"),

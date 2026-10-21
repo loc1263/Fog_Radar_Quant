@@ -21,13 +21,11 @@ import (
 
 	"fogradar/internal/api"
 	"fogradar/internal/core"
-	"fogradar/internal/jobs"
 	"fogradar/internal/modules/cl"
 	"fogradar/internal/modules/etf"
 	"fogradar/internal/modules/tend"
 	"fogradar/internal/modules/us"
 	"fogradar/internal/transversal"
-	"fogradar/internal/yahoo"
 )
 
 func main() {
@@ -53,15 +51,10 @@ func newHost() (*api.Host, error) {
 	}
 	log, _ := newLogger(s, os.Stdout, "api") // vive lo que el proceso
 	h := api.New(s, log)
-	// Cliente de Yahoo del proceso de la API: solo lo usa la evaluación en vivo de un ticker (US).
-	tr := yahoo.NewTraffic(yahoo.PolicyFromSettings(s))
-	tr.SetLogger(func(f string, a ...any) { log.Warn(fmt.Sprintf(f, a...)) })
-	client := yahoo.NewClient(tr)
 	cl.Register(h)
 	tend.Register(h)
-	us.Register(h, client)
-	// POST /api/etf/run re-analiza sin Yahoo; el entorno de jobs se arma al usarlo.
-	etf.Register(h, func() *jobs.Env { return &jobs.Env{S: s, Traffic: tr, Yahoo: client, Log: log} })
+	us.Register(h)
+	etf.Register(h)
 	transversal.Register(h)
 	return h, nil
 }

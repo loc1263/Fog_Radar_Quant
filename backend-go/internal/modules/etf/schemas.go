@@ -268,8 +268,3 @@ type EtfHistPermanencia struct {
 	RankUltima  *int64  `json:"rank_ultima" nullable:"true"`
 	ScoreUltima opt     `json:"score_ultima" nullable:"true"`
 }
-
-// EtfRunResult es la respuesta de POST /run.
-type EtfRunResult struct {
-	Job core.JobRecord `json:"job"`
-}

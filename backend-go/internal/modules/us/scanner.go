@@ -474,19 +474,19 @@ func RunBatch(ctx context.Context, env *jobs.Env, o BatchOpts) (string, error) {
 	return runDir, nil
 }
 
-// MarshalIndentJSON (tests) serializa como los archivos de corrida.
-func MarshalIndentJSON(v any) ([]byte, error) {
-	var buf bytes.Buffer
-	enc := json.NewEncoder(&buf)
-	enc.SetEscapeHTML(false)
-	enc.SetIndent("", "  ")
-	err := enc.Encode(v)
-	return bytes.TrimRight(buf.Bytes(), "\n"), err
-}
-
 func derefF(p *float64) any {
 	if p == nil {
 		return nil
 	}
 	return *p
+}
+
+// strOr devuelve el primer valor de texto no vacío de info entre las claves dadas.
+func strOr(info map[string]any, keys ...string) string {
+	for _, k := range keys {
+		if s, ok := info[k].(string); ok && s != "" {
+			return s
+		}
+	}
+	return ""
 }

@@ -233,15 +233,6 @@ func (f *Frame) RoundFloats(d int) *Frame {
 	return out
 }
 
-// Row devuelve la fila i como mapa columna→valor JSON (to_dict(orient="records")).
-func (f *Frame) Row(i int) map[string]any {
-	m := make(map[string]any, len(f.Cols))
-	for _, c := range f.Cols {
-		m[c.Name] = c.Value(i)
-	}
-	return m
-}
-
 // naStrings son los textos que se leen como faltantes por defecto.
 var naStrings = map[string]bool{
 	"": true, "#N/A": true, "#N/A N/A": true, "#NA": true, "-1.#IND": true, "-1.#QNAN": true, "-NaN": true,
@@ -250,16 +241,6 @@ var naStrings = map[string]bool{
 }
 
 var intRe = regexp.MustCompile(`^[+-]?\d+$`)
-
-// ReadCSVSepFile es ReadCSVFile con otro separador (p. ej. ';').
-func ReadCSVSepFile(path string, sep rune) (*Frame, error) {
-	fh, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer fh.Close()
-	return ReadCSVSep(fh, sep)
-}
 
 // ReadCSVFile lee un CSV con separador coma, encabezado, inferencia de tipo por columna
 // (enteros sin faltantes → Int; numéricos → Float; el resto → Str).

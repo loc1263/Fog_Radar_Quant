@@ -51,7 +51,7 @@ func NewClient(t *Traffic) *Client {
 func (t *Traffic) options() []gohoo.Option {
 	return []gohoo.Option{
 		gohoo.WithLazyBootstrap(),
-		gohoo.WithRetryPolicy(t.retryPolicy(false)),
+		gohoo.WithRetryPolicy(t.retryPolicy()),
 		gohoo.WithLimiter(t.limiter()),
 		gohoo.WithRequestHook(t.onRequest),
 	}
@@ -74,14 +74,11 @@ func (c *Client) backend() (backend, error) {
 	return b, nil
 }
 
-// call prepara el backend y el contexto: en modo Interactive, la política sin reintentos ante 429.
+// call prepara el backend y el contexto.
 func (c *Client) call(ctx context.Context) (backend, context.Context, error) {
 	b, err := c.backend()
 	if err != nil {
 		return nil, ctx, err
-	}
-	if isInteractive(ctx) {
-		ctx = gohoo.WithRetryPolicyContext(ctx, c.T.retryPolicy(true))
 	}
 	return b, ctx, nil
 }

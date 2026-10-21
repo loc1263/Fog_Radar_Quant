@@ -81,15 +81,6 @@ func TestTrafficDevuelve429SiSeAgotanLosReintentos(t *testing.T) {
 	}
 }
 
-func TestTrafficInteractivoNoReintenta(t *testing.T) {
-	tr, _ := newRelojTraffic(Policy{Retries429: 3, BackoffBase: time.Minute, BackoffMax: time.Minute})
-	base, calls := chartServer(t, -1)
-	_, err := realClient(t, tr, base).Chart(Interactive(context.Background()), "X", gohoo.ChartParams{Range: "1y"})
-	if !gohoo.IsRateLimit(err) || calls.Load() != 1 {
-		t.Fatal(err, calls.Load())
-	}
-}
-
 func TestTrafficOtrosErroresNoSeReintentan(t *testing.T) {
 	tr, _ := newRelojTraffic(Policy{Retries429: 3})
 	var calls atomic.Int32
@@ -122,14 +113,11 @@ func TestTrafficEspaciaCadaRequestIncluidosReintentos(t *testing.T) {
 
 func TestTrafficPoliticaDeReintentos(t *testing.T) {
 	tr := NewTraffic(Policy{Retries429: 3, BackoffBase: 5 * time.Second, BackoffMax: time.Minute, NetRetries: 2})
-	p := tr.retryPolicy(false)
+	p := tr.retryPolicy()
 	if p.MaxAttempts != 3 || !p.HonorRetryAfter || p.RateLimit == nil {
 		t.Fatalf("%+v", p)
 	}
 	if rl := *p.RateLimit; rl.MaxRetries != 3 || rl.BaseDelay != 5*time.Second || rl.MaxDelay != time.Minute || rl.Jitter != time.Second || !rl.HonorRetryAfter {
 		t.Fatalf("%+v", rl)
-	}
-	if tr.retryPolicy(true).RateLimit.MaxRetries != 0 {
-		t.Fatal("el modo interactivo no reintenta los 429")
 	}
 }
