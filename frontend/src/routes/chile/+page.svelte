@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { ClPilarKey, ClRankingRow } from '$lib/api/types';
-	import { BarChart } from '$lib/charts';
 	import {
 		DataTable,
 		ErrorState,
@@ -58,6 +57,23 @@
 	);
 
 	const lider = $derived(filas[0]);
+
+	// Indicadores destacados (sección Indicadores): el mejor valor de cada métrica entre las acciones con dato.
+	const indicadores = $derived(data.indicadores.ok ? data.indicadores.data : null);
+	function extremo(clave: string, mayor: boolean, soloPositivos = false) {
+		let mejor: { simbolo: string; valor: number } | null = null;
+		for (const f of indicadores?.filas ?? []) {
+			const v = f.valores[clave];
+			if (typeof v !== 'number' || !Number.isFinite(v) || (soloPositivos && v <= 0)) continue;
+			if (!mejor || (mayor ? v > mejor.valor : v < mejor.valor))
+				mejor = { simbolo: f.simbolo, valor: v };
+		}
+		return mejor;
+	}
+	const mejorRoe = $derived(extremo('roe', true));
+	const mejorDividendo = $derived(extremo('dividend_yield', true));
+	const menorPe = $derived(extremo('trailing_pe', false, true));
+	const mejorMargen = $derived(extremo('profit_margin', true));
 	const cobertura = $derived(
 		filas.length ? filas.reduce((acc, f) => acc + f.cobertura, 0) / filas.length : null
 	);
@@ -68,12 +84,6 @@
 		}
 		return Object.values(grupos);
 	});
-	const top10 = $derived(
-		filas
-			.filter((f) => f.score_compuesto !== null)
-			.slice(0, 10)
-			.map((f) => ({ simbolo: f.simbolo.replace(/\.SN$/, ''), score: f.score_compuesto }))
-	);
 
 	const columns = $derived<Column<Fila>[]>([
 		{ key: 'ranking', label: '#', numeric: true },
@@ -143,6 +153,38 @@
 				value={fmtDate(ranking.generado_en, true)}
 				hint={ranking.generado_desde}
 			/>
+			{#if mejorRoe}
+				<KpiCard
+					label="Mayor ROE"
+					value={mejorRoe.simbolo}
+					hint={fmtPct(mejorRoe.valor, { digits: 1 })}
+					tone="green"
+				/>
+			{/if}
+			{#if mejorMargen}
+				<KpiCard
+					label="Mayor margen neto"
+					value={mejorMargen.simbolo}
+					hint={fmtPct(mejorMargen.valor, { digits: 1 })}
+					tone="green"
+				/>
+			{/if}
+			{#if mejorDividendo}
+				<KpiCard
+					label="Mayor dividend yield"
+					value={mejorDividendo.simbolo}
+					hint={fmtPct(mejorDividendo.valor, { digits: 1, isPercent: true })}
+					tone="blue"
+				/>
+			{/if}
+			{#if menorPe}
+				<KpiCard
+					label="Menor P/E (trailing)"
+					value={menorPe.simbolo}
+					hint="{fmtNumber(menorPe.valor, 1)}x"
+					tone="accent"
+				/>
+			{/if}
 		</KpiGrid>
 		{#if duplicados.length}
 			<Notice kind="warning" title="Estados financieros duplicados">
@@ -161,16 +203,6 @@
 			{defaults}
 			onchange={cambiarPeso}
 			onreset={() => (pesosUsuario = null)}
-		/>
-	</Section>
-
-	<Section title="Top 10 por Score Compuesto">
-		<BarChart
-			data={top10}
-			category="simbolo"
-			series={[{ key: 'score', label: 'Score Compuesto' }]}
-			height={300}
-			valueFormat={(v) => fmtNumber(v, 1)}
 		/>
 	</Section>
 

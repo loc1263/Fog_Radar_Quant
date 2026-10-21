@@ -1,14 +1,43 @@
 <script lang="ts">
 	import type { UsCandidateRow } from '$lib/api/types';
 	import { Sparkline } from '$lib/charts';
-	import { DataTable, ErrorState, Notice, Section } from '$lib/components/shared';
+	import { DataTable, ErrorState, KpiCard, KpiGrid, Notice, Section } from '$lib/components/shared';
 	import { RunInfo, UsTicker } from '$lib/modules/us';
-	import { fmtPrice, fmtRet, fmtUsd } from '$lib/modules/us/format';
+	import { fmtNumber } from '$lib/format';
+	import {
+		fmtPrice,
+		fmtRet,
+		fmtScore,
+		fmtShare,
+		fmtUsd,
+		isGrowingPerformance
+	} from '$lib/modules/us/format';
 	import type { Column } from '$lib/table';
 
 	let { data } = $props();
 
 	const run = $derived(data.ranking.ok ? data.ranking.data : null);
+
+	// Un indicador por sección del menú (Candidatos, Evaluación, Rendimiento, Portafolio).
+	const cand = $derived(data.candidates.ok ? data.candidates.data.rows : []);
+	const conScore = $derived(cand.filter((r) => r.score.overall != null));
+	const mejorScore = $derived(
+		conScore.length
+			? conScore.reduce((m, r) => ((r.score.overall ?? 0) > (m.score.overall ?? 0) ? r : m))
+			: null
+	);
+	const scorePromedio = $derived(
+		conScore.length
+			? conScore.reduce((s, r) => s + (r.score.overall ?? 0), 0) / conScore.length
+			: null
+	);
+	const crecientes = $derived(cand.filter((r) => isGrowingPerformance(r)).length);
+	const portafolio = $derived(
+		data.precalc.ok
+			? (data.precalc.data.portafolios.find((p) => p.clave === 'top15') ??
+					data.precalc.data.portafolios[0])
+			: null
+	);
 
 	type Fila = UsCandidateRow & { pos: number; tendencia: null };
 	const filas = $derived<Fila[]>(
@@ -40,6 +69,46 @@
 		{ key: 'return_1y', label: 'Retorno 1a', numeric: true, signed: true, format: (v) => fmtRet(v) }
 	];
 </script>
+
+{#if run}
+	<Section title="Resumen de la corrida">
+		<KpiGrid>
+			<KpiCard
+				label="Líder momentum 12-1"
+				value={run.rows[0]?.ticker ?? '—'}
+				hint={run.rows[0] ? fmtRet(run.rows[0].momentum_12_1) : undefined}
+				tone="accent"
+			/>
+			{#if mejorScore}
+				<KpiCard
+					label="Evaluación: mejor score"
+					value={mejorScore.ticker}
+					hint="score {fmtScore(mejorScore.score.overall)} · promedio {fmtScore(scorePromedio)}"
+					tone="green"
+				/>
+			{/if}
+			{#if cand.length}
+				<KpiCard
+					label="Rendimiento creciente"
+					value="{crecientes} de {cand.length}"
+					hint="rendimientos crecientes por plazo"
+					tone="blue"
+				/>
+			{/if}
+			{#if portafolio}
+				<KpiCard
+					label="Portafolio ({portafolio.titulo})"
+					value="Sharpe {fmtNumber(portafolio.resultado.metrics.sharpe, 2)}"
+					hint="retorno {fmtRet(portafolio.resultado.metrics.expected_return)} · vol. {fmtShare(
+						portafolio.resultado.metrics.volatility,
+						1
+					)}"
+					tone="accent"
+				/>
+			{/if}
+		</KpiGrid>
+	</Section>
+{/if}
 
 <Section title="Top {run?.top_n ?? 15} por momentum 12-1">
 	<div class="flex flex-wrap items-end justify-between gap-4">

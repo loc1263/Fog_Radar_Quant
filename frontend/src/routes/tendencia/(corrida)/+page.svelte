@@ -13,6 +13,24 @@
 	const notas = $derived(a?.key === '' ? (d?.market_regime_notes ?? []) : []);
 	// TD-DATA-1: aviso visible cuando se excluyen tickers por falta de tipo de cambio.
 	const sinFx = $derived((d?.excluidos ?? []).filter((e) => e.motivo.startsWith('falta FX')));
+
+	// Un indicador por sección del menú (Portafolio, Tendencia 6m, Sectores, Momentum, Limitaciones).
+	const mayorPeso = $derived(a?.holdings[0] ?? null);
+	const alcistas = $derived(
+		(a?.holdings ?? []).filter((h) => h.senal_tecnica === 'Alcista').length
+	);
+	const retorno6m = $derived.by(() => {
+		const v = (a?.holdings ?? [])
+			.map((h) => h.retorno_esperado_6m_pct)
+			.filter((x): x is number => typeof x === 'number');
+		return v.length ? v.reduce((s, x) => s + x, 0) / v.length : null;
+	});
+	const sectorTop = $derived(
+		a?.sectors.length ? a.sectors.reduce((m, s) => (s.peso_total > m.peso_total ? s : m)) : null
+	);
+	const liderMensual = $derived(a?.momentum[0] ?? null);
+	const liderSemanal = $derived(a?.momentum_semanal[0] ?? null);
+	const masSube = $derived(a?.retorno_reciente[0] ?? null);
 </script>
 
 {#if d && a}
@@ -39,6 +57,60 @@
 				value={fmtNumber(perf.universo_completo.sharpe_ratio, 2)}
 			/>
 			<KpiCard label="Tasa libre de riesgo" value={pct(perf.tasa_libre_riesgo_anual, 2)} />
+			{#if mayorPeso}
+				<KpiCard
+					label="Portafolio: mayor peso"
+					value={mayorPeso.ticker}
+					hint="{pct(mayorPeso.peso_final)} · {a.n_selected} acciones"
+					tone="accent"
+				/>
+			{/if}
+			{#if a.holdings.length}
+				<KpiCard
+					label="Tendencia 6m: señal alcista"
+					value="{alcistas} de {a.holdings.length}"
+					hint={retorno6m === null
+						? undefined
+						: `retorno esperado 6m: ${fmtNumber(retorno6m, 1)} %`}
+					tone="green"
+				/>
+			{/if}
+			{#if sectorTop}
+				<KpiCard
+					label="Sectores: mayor peso"
+					value={sectorTop.sector}
+					hint="{pct(sectorTop.peso_total)} · {a.sectors.length} sectores"
+					tone="blue"
+				/>
+			{/if}
+			{#if liderMensual}
+				<KpiCard
+					label="Momentum mensual: líder"
+					value={liderMensual.ticker}
+					hint="score {fmtNumber(liderMensual.momentum_score_pct, 1)} %"
+				/>
+			{/if}
+			{#if liderSemanal}
+				<KpiCard
+					label="Momentum semanal: líder"
+					value={liderSemanal.ticker}
+					hint="score {fmtNumber(liderSemanal.momentum_score_pct, 1)} %"
+				/>
+			{/if}
+			{#if masSube}
+				<KpiCard
+					label="Mayor retorno reciente"
+					value={masSube.ticker}
+					hint="{fmtNumber(masSube.retorno_pct, 1)} %"
+					tone="green"
+				/>
+			{/if}
+			<KpiCard
+				label="Limitaciones: tickers excluidos"
+				value={fmtNumber(d.excluidos.length, 0)}
+				hint={sinFx.length ? `${sinFx.length} por falta de tipo de cambio` : undefined}
+				tone={d.excluidos.length ? 'red' : 'text'}
+			/>
 		</KpiGrid>
 		<p>
 			El modelo de Markowitz/covarianza, aplicado sobre el universo '{a.label}' ({a.universe_size}
