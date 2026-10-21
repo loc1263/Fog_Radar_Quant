@@ -53,8 +53,7 @@ para decidir si los datos están al día). Horas de `America/Santiago`.
 
 | Programa | Módulos (en secuencia, nunca en paralelo) | Cuándo |
 |---|---|---|
-| `semanal` | ETFs | Lunes 06:00 |
-| `diario` | Chile → EEUU → Tendencia | Lunes a viernes 18:00 |
+| `diario` | Chile → EEUU → Tendencia → ETFs | Todos los días 18:00 |
 
 La corrida programada de Tendencia **no** incluye hoy `--macro` (pendiente TD-MACRO-1 en el
 ROADMAP): usa el último `macro_data_*.csv` disponible, si existe.

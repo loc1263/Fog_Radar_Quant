@@ -88,8 +88,7 @@ Layout global: header con logo *Fog Radar Quant*, menú principal de 4 módulos,
 | Tendencia | ✅ | ✅ | ✅ `fogradar job tendencia` (universo redescubierto si el snapshot tiene > 3 días) |
 | Hub y estado | ✅ | ✅ | — |
 
-Cadencia esperada (`internal/core/schedule.go`): ETFs los **lunes 06:00**; Chile → EEUU → Tendencia de **lunes a viernes 18:00**, en
-secuencia. En desarrollo: `correr_pipelines.bat` o `fogradar job --todos`.
+Cadencia esperada (`internal/core/schedule.go`): **todos los días a las 18:00** (America/Santiago), los 4 módulos en secuencia (Chile → EEUU → Tendencia → ETFs). En desarrollo: `correr_pipelines.bat` o `fogradar job --todos`.
 
 ## 4. Pendiente
 

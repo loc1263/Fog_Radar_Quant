@@ -25,7 +25,7 @@ Publicar Fog Radar Quant como un sitio estático en GitHub Pages, regenerado por
 Actions genera los datos, levanta la API dentro del runner, prerenderiza el front contra ella y Pages recibe solo archivos.
 
 ```
-1. Disparador        cron semanal o manual, un workflow por módulo
+1. Disparador        cron diario o manual, los 4 módulos en una secuencia
         |
 2. Jobs de datos     fogradar job por módulo, datos en caché entre corridas
         |
@@ -49,7 +49,7 @@ Seis fases, cada una cerrada por una puerta de decisión (go / no-go). Los crite
 3. **Fase 2 · Prerender del módulo piloto.** `adapter-static` con `prerender = true`, `entries()` para cada ruta dinámica y `paths.base` para el subdirectorio de Pages. Revisar enlaces rotos y que el HTML no contenga la API key.
 4. **Fase 3 · Los cuatro módulos.** Replicar el patrón en EEUU, Chile y Tendencia, y en el hub. Retirar o reemplazar las acciones dinámicas.
 5. **Fase 4 · Funciones sin servidor.** Generar los PDFs en el job y mostrar la fecha de la última corrida en el pie.
-6. **Fase 5 · Automatización y cierre.** Cron semanal, aviso si el workflow falla, ADR nuevo en `docs/ADR/` y actualización de `docs/METODOLOGIAS.md` si cambia alguna lógica.
+6. **Fase 5 · Automatización y cierre.** Cron diario, aviso si el workflow falla, ADR nuevo en `docs/ADR/` y actualización de `docs/METODOLOGIAS.md` si cambia alguna lógica.
 
 ## Riesgos y mitigaciones
 
@@ -76,7 +76,7 @@ Cada fase termina con una decisión explícita; si un criterio crítico falla, s
 | 2. Prerender | Todas las rutas del módulo ETF generan HTML sin errores | 0 enlaces rotos; sin secretos en el HTML | Seguir / ajustar | Pendiente |
 | 3. Módulos | Los 4 módulos publican y se ven igual que en local | Revisión visual y `npm run check` en verde | Seguir / ajustar | Pendiente |
 | 4. Funciones | Los PDFs funcionan sin servidor | Sitio < 1 GB | Seguir / recortar | Pendiente |
-| 5. Automatización | Cron semanal estable durante 4 semanas | 0 fallos sin aviso | Adoptar / descartar | Pendiente |
+| 5. Automatización | Cron diario estable durante 4 semanas | 0 fallos sin aviso | Adoptar / descartar | Pendiente |
 
 ## Decisiones tomadas (2026-10-21)
 
@@ -95,7 +95,7 @@ Cada fase termina con una decisión explícita; si un criterio crítico falla, s
 
 - [ ] ¿Repo público o privado? Define si Pages es gratis y qué datos quedan visibles.
 - [ ] ¿Qué funciones se aceptan perder: evaluación en vivo, PDFs bajo demanda, escrituras?
-- [ ] ¿Con qué frecuencia se actualiza: diaria, semanal o manual?
+- [x] Frecuencia: **diaria a las 18:00 (America/Santiago) para los 4 módulos** (2026-10-21).
 - [x] ¿Se mantiene el sitio con servidor? No: se eliminaron el BFF, el despliegue con Docker/Caddy/cron y las protecciones de la API (2026-10-21).
 - [ ] ¿Qué módulo se usa como piloto? Se sugiere ETF (a confirmar).
 

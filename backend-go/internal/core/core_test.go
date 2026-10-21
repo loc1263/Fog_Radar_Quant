@@ -103,18 +103,22 @@ func TestJobRegistry(t *testing.T) {
 }
 
 func TestProgramas(t *testing.T) {
-	if Programas[0].Cron() != "0 6 * * 1" || Programas[1].Cron() != "0 18 * * 1-5" {
-		t.Fatal(Programas[0].Cron(), Programas[1].Cron())
+	if len(Programas) != 1 {
+		t.Fatalf("hay un único programa diario: %d", len(Programas))
 	}
-	if Programas[0].Descripcion() != "los lunes a las 06:00" || Programas[1].Descripcion() != "de lunes a viernes a las 18:00" {
-		t.Fatal(Programas[0].Descripcion(), Programas[1].Descripcion())
+	p := Programas[0]
+	if p.Cron() != "0 18 * * *" || p.Descripcion() != "todos los días a las 18:00" {
+		t.Fatal(p.Cron(), p.Descripcion())
+	}
+	if len(p.Modulos) != 4 {
+		t.Fatalf("módulos: %v", p.Modulos)
 	}
 	scl, _ := time.LoadLocation("America/Santiago")
-	viernes := time.Date(2026, 10, 9, 18, 0, 0, 0, scl) // viernes 18:00 exactos → estrictamente posterior
-	if got := Programas[1].Proxima(viernes); got.Weekday() != time.Monday || got.Hour() != 18 {
-		t.Fatalf("tras el viernes 18:00 viene el lunes: %v", got)
+	sabado := time.Date(2026, 10, 10, 18, 0, 0, 0, scl) // 18:00 exactos → la próxima es estrictamente posterior
+	if got := p.Proxima(sabado); got.Weekday() != time.Sunday || got.Hour() != 18 {
+		t.Fatalf("tras el sábado 18:00 viene el domingo: %v", got)
 	}
-	if got := Programas[0].Proxima(viernes); got.Weekday() != time.Monday || got.Hour() != 6 {
-		t.Fatalf("semanal: %v", got)
+	if got := p.Anterior(sabado.Add(time.Hour)); !got.Equal(sabado) {
+		t.Fatalf("anterior: %v", got)
 	}
 }

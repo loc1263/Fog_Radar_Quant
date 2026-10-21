@@ -16,7 +16,7 @@ import (
 // piden en cada corrida. Precio, volumen y 52W salen siempre del gráfico de 5 años (un request por ETF).
 //
 // Política de refresco (ver debeRefrescar): cada entrada se renueva cada InfoCicloSemanas semanas, repartidas por ticker para que
-// cada corrida semanal renueve ~1/InfoCicloSemanas del universo; nunca antes de InfoEdadMinDias (las corridas repetidas no piden
+// cada semana se renueve ~1/InfoCicloSemanas del universo; nunca antes de InfoEdadMinDias (las corridas repetidas no piden
 // nada) y siempre al pasar InfoEdadMaxDias. El AUM puede tener, por tanto, hasta InfoEdadMaxDias días.
 
 const (

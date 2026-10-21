@@ -9,7 +9,7 @@ import (
 
 var diasES = [...]string{"lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"}
 
-// Programa es una corrida programada del cron de producción.
+// Programa es una corrida programada (la cadencia esperada de los datos).
 type Programa struct {
 	Key     string
 	Titulo  string
@@ -22,9 +22,8 @@ type Programa struct {
 
 // Programas es la única fuente de verdad de la programación.
 var Programas = []Programa{
-	{Key: "semanal", Titulo: "ETFs", Modulos: []string{"etf"}, Dias: []int{0}, Hora: 6},
-	{Key: "diario", Titulo: "Chile, EEUU y Tendencia", Modulos: []string{"cl_stocks", "us_stocks", "tendencia"},
-		Dias: []int{0, 1, 2, 3, 4}, Hora: 18},
+	{Key: "diario", Titulo: "Chile, EEUU, Tendencia y ETFs", Modulos: []string{"cl_stocks", "us_stocks", "tendencia", "etf"},
+		Dias: []int{0, 1, 2, 3, 4, 5, 6}, Hora: 18},
 }
 
 // weekdayMon0: lunes = 0 … domingo = 6.
@@ -38,6 +37,9 @@ func (p Programa) Cron() string {
 	}
 	slices.Sort(dias)
 	var campo string
+	if len(dias) == 7 {
+		return fmt.Sprintf("%d %d * * *", p.Minuto, p.Hora)
+	}
 	consecutivos := len(dias) > 1 && dias[len(dias)-1]-dias[0] == len(dias)-1
 	if consecutivos {
 		campo = fmt.Sprintf("%d-%d", dias[0], dias[len(dias)-1])
@@ -51,10 +53,12 @@ func (p Programa) Cron() string {
 	return fmt.Sprintf("%d %d * * %s", p.Minuto, p.Hora, campo)
 }
 
-// Descripcion es el texto «de lunes a viernes a las 18:00».
+// Descripcion es el texto «todos los días a las 18:00».
 func (p Programa) Descripcion() string {
 	var cuando string
 	switch {
+	case len(p.Dias) == 7:
+		cuando = "todos los días"
 	case slices.Equal(p.Dias, []int{0, 1, 2, 3, 4}):
 		cuando = "de lunes a viernes"
 	case len(p.Dias) == 1:
