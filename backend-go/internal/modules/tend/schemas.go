@@ -71,8 +71,11 @@ type TdMomentumMensual struct {
 	Sector               *string `json:"sector" nullable:"true"`
 	PrecioActualUsd      opt     `json:"precio_actual_usd" nullable:"true"`
 	Momentum1mPct        opt     `json:"momentum_1m_pct" nullable:"true"`
-	Momentum3mPct        opt     `json:"momentum_3m_pct" nullable:"true"`
+	Momentum2mPct        opt     `json:"momentum_2m_pct" nullable:"true"`
+	Momentum4mPct        opt     `json:"momentum_4m_pct" nullable:"true"`
 	Momentum6mPct        opt     `json:"momentum_6m_pct" nullable:"true"`
+	Momentum8mPct        opt     `json:"momentum_8m_pct" nullable:"true"`
+	Momentum10mPct       opt     `json:"momentum_10m_pct" nullable:"true"`
 	Momentum12mPct       opt     `json:"momentum_12m_pct" nullable:"true"`
 	PctMesesPositivos12m opt     `json:"pct_meses_positivos_12m" nullable:"true"`
 	MomentumScorePct     opt     `json:"momentum_score_pct" nullable:"true"`
@@ -94,6 +97,17 @@ type TdMomentumSemanal struct {
 	MomentumScorePct      opt     `json:"momentum_score_pct" nullable:"true"`
 }
 
+// TdRetornoReciente es una fila del ranking por retorno puro de las últimas `retorno_semanas` semanas.
+type TdRetornoReciente struct {
+	Rank            int64   `json:"rank"`
+	Ticker          string  `json:"ticker"`
+	Nombre          *string `json:"nombre" nullable:"true"`
+	Pais            *string `json:"pais" nullable:"true"`
+	Sector          *string `json:"sector" nullable:"true"`
+	PrecioActualUsd opt     `json:"precio_actual_usd" nullable:"true"`
+	RetornoPct      opt     `json:"retorno_pct" nullable:"true"`
+}
+
 // TdPortafolioReducido es un portafolio de N acciones re-optimizado.
 type TdPortafolioReducido struct {
 	N           int64                 `json:"n"`
@@ -112,6 +126,7 @@ type TdAnalisis struct {
 	Sectors          []TdSector             `json:"sectors"`
 	Momentum         []TdMomentumMensual    `json:"momentum"`
 	MomentumSemanal  []TdMomentumSemanal    `json:"momentum_semanal"`
+	RetornoReciente  []TdRetornoReciente    `json:"retorno_reciente"`
 	PortfolioOptions []TdPortafolioReducido `json:"portfolio_options"`
 }
 
@@ -135,6 +150,8 @@ type TdParametros struct {
 	MaCorta3m         int64   `json:"ma_corta_3m"`
 	MaLarga3m         int64   `json:"ma_larga_3m"`
 	TopNMomentum      int64   `json:"top_n_momentum"`
+	TopNRetorno       int64   `json:"top_n_retorno" doc:"Acciones del ranking por retorno reciente."`
+	RetornoSemanas    int64   `json:"retorno_semanas" doc:"Velas semanales de la ventana del ranking por retorno reciente."`
 	TamanosPortafolio []int64 `json:"tamanos_portafolio"`
 }
 

@@ -341,6 +341,7 @@ func AnalysisPayload(runDir string, spec Spec, u *Universe, p Params) (OM, error
 		{"performance", perf}, {"holdings", holdingRecords(merged)}, {"sectors", sectorSummary(merged)},
 		{"momentum", records(readCSVOrEmpty(filepath.Join(runDir, "top_momentum_mensual"+spec.Key+".csv")))},
 		{"momentum_semanal", records(readCSVOrEmpty(filepath.Join(runDir, "top_momentum_semanal"+spec.Key+".csv")))},
+		{"retorno_reciente", records(readCSVOrEmpty(filepath.Join(runDir, "top_retorno_reciente"+spec.Key+".csv")))},
 		{"portfolio_options", options},
 	}, nil
 }

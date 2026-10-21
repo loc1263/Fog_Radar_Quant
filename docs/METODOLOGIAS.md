@@ -490,13 +490,28 @@ Sobre **todo** el universo de cada análisis (no solo la selección Markowitz):
 | | Mensual | Semanal |
 |---|---|---|
 | Vela | último precio del mes calendario | último precio de la semana |
-| Ventanas de retorno | 1, 3, 6, 12 meses | 1, 2, 3, 4 semanas |
+| Ventanas de retorno | 1, 2, 4, 6, 8, 10, 12 meses | 1, 2, 3, 4 semanas |
 | Consistencia | % de meses positivos en los últimos 12 | % de semanas positivas en las últimas 4 |
 | Historia mínima | 13 meses | 5 semanas |
 
-`momentum_score = promedio(4 retornos) · (0,5 + 0,5 · consistencia)` (consistencia 0,5 si
-falta). Si falta alguna ventana, el ticker no se rankea. Se publican los **10** mejores
-(`TOP_N_MOMENTUM`). No es una medida ajustada por riesgo.
+`momentum_score = promedio(retornos de todas las ventanas) · (0,5 + 0,5 · consistencia)`
+(consistencia 0,5 si falta). Si falta alguna ventana, el ticker no se rankea. Se publican los
+**10** mejores (`TOP_N_MOMENTUM`). No es una medida ajustada por riesgo.
+
+Cambio respecto del original: el mensual usaba las ventanas 1, 3, 6 y 12 meses (promedio de 4).
+Ahora usa 1, 2, 4, 6, 8, 10 y 12 (promedio de 7), que da más peso relativo al tramo corto-medio.
+
+**Ranking por retorno reciente** (`RetornoTable`, archivo `top_retorno_reciente<key>.csv`, clave
+`retorno_reciente` en la API): sobre el mismo universo de cada análisis, ordena por el retorno puro de
+las últimas `RETORNO_WEEKS` = 17 velas semanales (≈ 119 días ≈ 4 meses; los precios son semanales,
+no hay velas diarias) y publica las **8** mejores (`TOP_N_RETORNO`). No usa score ni consistencia:
+existe porque el score del mensual promedia ventanas largas y deja fuera a las acciones que
+despegaron hace poco. Historia mínima: 18 velas semanales. Ambos valores viajan en `parametros`
+(`top_n_retorno`, `retorno_semanas`). No se indexa en `history.db`.
+
+Los scores y rankings de corridas anteriores **no son comparables** con los nuevos. En
+`history.db` (migración v3) las filas viejas conservan `momentum_3m_pct` y tienen NULL en
+2m/4m/8m/10m; las nuevas tienen NULL en 3m.
 
 ### 4.8 Parámetros por corrida
 

@@ -27,7 +27,8 @@ var (
 		"precio_min_90pct_6m_usd", "precio_max_90pct_6m_usd", "retorno_esperado_6m_pct"}
 	sectorColumns   = []string{"sector", "n_acciones", "peso_total", "retorno_6m_prom", "senal_predominante", "tickers"}
 	momentumColumns = []string{"momentum_rank", "ticker", "nombre", "pais", "sector", "precio_actual_usd", "momentum_1m_pct",
-		"momentum_3m_pct", "momentum_6m_pct", "momentum_12m_pct", "pct_meses_positivos_12m", "momentum_score_pct"}
+		"momentum_2m_pct", "momentum_3m_pct", "momentum_4m_pct", "momentum_6m_pct", "momentum_8m_pct", "momentum_10m_pct",
+		"momentum_12m_pct", "pct_meses_positivos_12m", "momentum_score_pct"}
 )
 
 func runDate(runDir string) string {

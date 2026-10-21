@@ -18,7 +18,7 @@
 
 	interface Props {
 		rows: T[];
-		/** Ventanas en el orden a mostrar (p. ej. [1, 3, 6, 12]). */
+		/** Ventanas en el orden a mostrar (p. ej. [1, 2, 4, 6, 8, 10, 12]). */
 		windows: number[];
 		/** Sufijo de las columnas del JSON: "m" → momentum_1m_pct, "s" → momentum_1s_pct. */
 		unit: 'm' | 's';

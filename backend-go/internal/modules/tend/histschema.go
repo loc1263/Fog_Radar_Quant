@@ -107,5 +107,14 @@ CREATE TABLE IF NOT EXISTS universe_weights (
 CREATE INDEX IF NOT EXISTS idx_universe_weights_ticker ON universe_weights(ticker);
 `
 
+// v3: el momentum mensual pasa de las ventanas 1, 3, 6, 12 a 1, 2, 4, 6, 8, 10, 12 meses (momentum_3m_pct queda
+// como histórico de las corridas anteriores; las filas viejas no tienen las ventanas nuevas).
+const schemaV3 = `
+ALTER TABLE momentum ADD COLUMN momentum_2m_pct REAL;
+ALTER TABLE momentum ADD COLUMN momentum_4m_pct REAL;
+ALTER TABLE momentum ADD COLUMN momentum_8m_pct REAL;
+ALTER TABLE momentum ADD COLUMN momentum_10m_pct REAL;
+`
+
 // Migraciones de history.db, en orden.
-var Migraciones = []string{schemaV1, schemaV2}
+var Migraciones = []string{schemaV1, schemaV2, schemaV3}

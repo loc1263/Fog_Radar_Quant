@@ -87,6 +87,7 @@ export type TdHolding = Schemas['TdHolding'];
 export type TdSector = Schemas['TdSector'];
 export type TdMomentumMensual = Schemas['TdMomentumMensual'];
 export type TdMomentumSemanal = Schemas['TdMomentumSemanal'];
+export type TdRetornoReciente = Schemas['TdRetornoReciente'];
 export type TdPortafolioReducido = Schemas['TdPortafolioReducido'];
 export type TdParametros = Schemas['TdParametros'];
 export type TdArchivo = Schemas['TdArchivo'];

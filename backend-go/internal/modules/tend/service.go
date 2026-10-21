@@ -24,6 +24,7 @@ func (d *TdDashboard) normalize() {
 		a := &d.Analyses[i]
 		a.Holdings, a.Sectors, a.Momentum = nz(a.Holdings), nz(a.Sectors), nz(a.Momentum)
 		a.MomentumSemanal, a.PortfolioOptions = nz(a.MomentumSemanal), nz(a.PortfolioOptions)
+		a.RetornoReciente = nz(a.RetornoReciente)
 		a.Performance.TickersSeleccionados = nz(a.Performance.TickersSeleccionados)
 		for j := range a.PortfolioOptions {
 			o := &a.PortfolioOptions[j]

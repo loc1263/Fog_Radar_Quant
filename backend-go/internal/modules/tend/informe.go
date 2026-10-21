@@ -194,7 +194,7 @@ func universeSection(d *pdf.Doc, perf OM, holdings, sectors, momentum []OM, intr
 	if len(momentum) > 0 {
 		d.Titulo("TOP ACCIONES POR MOMENTUM MENSUAL" + suffix)
 		d.Parrafo([]pdf.Seg{pdf.T(momIntro)}, 11, 15, pdf.Negro, 0, 6)
-		mw := []float64{0.35, 0.9, 1.75, 0.72, 0.72, 0.72, 0.72, 0.72}
+		mw := []float64{0.3, 0.75, 1.45, 0.58, 0.58, 0.58, 0.58, 0.58, 0.58, 0.58, 0.7}
 		mrow := make([][]pdf.Cell, len(momentum))
 		for i, m := range momentum {
 			rk, _ := fnum(m, "rank")
@@ -207,10 +207,12 @@ func universeSection(d *pdf.Doc, perf OM, holdings, sectors, momentum []OM, intr
 				}
 			}
 			mrow[i] = []pdf.Cell{cell(fmt.Sprint(int(rk))), cell(fstr(m, "ticker")), cell(fstr(m, "nombre")),
-				cell(fmtPct1(m, "momentum_1m_pct")), cell(fmtPct1(m, "momentum_3m_pct")), cell(fmtPct1(m, "momentum_6m_pct")),
+				cell(fmtPct1(m, "momentum_1m_pct")), cell(fmtPct1(m, "momentum_2m_pct")), cell(fmtPct1(m, "momentum_4m_pct")),
+				cell(fmtPct1(m, "momentum_6m_pct")), cell(fmtPct1(m, "momentum_8m_pct")), cell(fmtPct1(m, "momentum_10m_pct")),
 				cell(fmtPct1(m, "momentum_12m_pct")), sc}
 		}
-		d.Tabla([]string{"#", "Ticker", "Empresa", "1m", "3m", "6m", "12m", "Score"}, []string{"r", "l", "l", "r", "r", "r", "r", "r"}, fracs(mw), mrow)
+		d.Tabla([]string{"#", "Ticker", "Empresa", "1m", "2m", "4m", "6m", "8m", "10m", "12m", "Score"},
+			[]string{"r", "l", "l", "r", "r", "r", "r", "r", "r", "r", "r"}, fracs(mw), mrow)
 		d.Spacer(10)
 	}
 }
@@ -288,7 +290,7 @@ func GenerarPDF(runDir string, u *Universe, p Params, hasMacro bool, now time.Ti
 			suffix = " (" + strings.ToUpper(spec.Label) + ")"
 		}
 		intro := fmt.Sprintf("El modelo de Markowitz/covarianza, aplicado sobre el universo '%s' (%d acciones, universo %s) con 5 años de historial semanal de precios en USD, seleccionó las %d acciones que maximizan el Sharpe Ratio del portafolio.", spec.Label, len(spec.Tickers), u.Source, nSel)
-		momIntro := fmt.Sprintf("Ranking independiente de la selección de Markowitz: evalúa el universo '%s' (%d acciones) por fuerza y persistencia de la tendencia mensual (retorno acumulado a 1, 3, 6 y 12 meses, ponderado por la proporción de meses positivos del último año). Puede incluir acciones que el modelo de covarianza descartó por volatilidad o correlación alta, pero que muestran el mejor impulso de corto plazo.", spec.Label, len(spec.Tickers))
+		momIntro := fmt.Sprintf("Ranking independiente de la selección de Markowitz: evalúa el universo '%s' (%d acciones) por fuerza y persistencia de la tendencia mensual (retorno acumulado a 1, 2, 4, 6, 8, 10 y 12 meses, ponderado por la proporción de meses positivos del último año). Puede incluir acciones que el modelo de covarianza descartó por volatilidad o correlación alta, pero que muestran el mejor impulso de corto plazo.", spec.Label, len(spec.Tickers))
 		universeSection(d, perf, rows(a.Get("holdings")), rows(a.Get("sectors")), rows(a.Get("momentum")), intro, momIntro, suffix, nSel)
 		if spec.Key == "" {
 			pf, _ := perf.Get("portafolio_15_finales").(OM)

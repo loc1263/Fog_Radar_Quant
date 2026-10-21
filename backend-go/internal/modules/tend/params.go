@@ -13,6 +13,8 @@ type Params struct {
 	ShortMA, LongMA       int
 	ShortMA3m, LongMA3m   int
 	TopNMomentum          int
+	TopNRetorno           int // acciones del ranking por retorno reciente
+	RetornoWeeks          int // velas semanales de esa ventana (17 ≈ 119 días ≈ 4 meses)
 	PortfolioSizes        []int
 	MinUSTickers          int
 	WeeksPerYear          int
@@ -23,7 +25,7 @@ type Params struct {
 func DefaultParams() Params {
 	return Params{
 		TopN: 15, TopNUS: 15, MaxWeight: 0.15, L2Gamma: 0.15, MinWeeks: 200, HorizonWeeks: 26,
-		ShortMA: 10, LongMA: 40, ShortMA3m: 4, LongMA3m: 13, TopNMomentum: 10, PortfolioSizes: []int{5, 10},
+		ShortMA: 10, LongMA: 40, ShortMA3m: 4, LongMA3m: 13, TopNMomentum: 10, TopNRetorno: 8, RetornoWeeks: 17, PortfolioSizes: []int{5, 10},
 		MinUSTickers: 5, WeeksPerYear: 52, MomentumLookbackWeeks: 26,
 	}
 }
@@ -36,5 +38,6 @@ func (p Params) Td() TdParametros {
 	}
 	return TdParametros{TopN: int64(p.TopN), TopNUs: int64(p.TopNUS), MaxPesoPorActivo: p.MaxWeight, L2Gamma: p.L2Gamma,
 		SemanasMinimas: int64(p.MinWeeks), HorizonteSemanas: int64(p.HorizonWeeks), MaCorta: int64(p.ShortMA), MaLarga: int64(p.LongMA),
-		MaCorta3m: int64(p.ShortMA3m), MaLarga3m: int64(p.LongMA3m), TopNMomentum: int64(p.TopNMomentum), TamanosPortafolio: sizes}
+		MaCorta3m: int64(p.ShortMA3m), MaLarga3m: int64(p.LongMA3m), TopNMomentum: int64(p.TopNMomentum),
+		TopNRetorno: int64(p.TopNRetorno), RetornoSemanas: int64(p.RetornoWeeks), TamanosPortafolio: sizes}
 }

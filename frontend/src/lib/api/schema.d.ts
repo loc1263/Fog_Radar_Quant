@@ -2086,6 +2086,7 @@ export interface components {
             n_selected: number;
             performance: components["schemas"]["TdPerformance"];
             portfolio_options: components["schemas"]["TdPortafolioReducido"][];
+            retorno_reciente: components["schemas"]["TdRetornoReciente"][];
             sectors: components["schemas"]["TdSector"][];
             /** Format: int64 */
             universe_size: number;
@@ -2172,13 +2173,19 @@ export interface components {
         };
         TdMomentumMensual: {
             /** Format: double */
+            momentum_10m_pct: number | null;
+            /** Format: double */
             momentum_12m_pct: number | null;
             /** Format: double */
             momentum_1m_pct: number | null;
             /** Format: double */
-            momentum_3m_pct: number | null;
+            momentum_2m_pct: number | null;
+            /** Format: double */
+            momentum_4m_pct: number | null;
             /** Format: double */
             momentum_6m_pct: number | null;
+            /** Format: double */
+            momentum_8m_pct: number | null;
             /** Format: double */
             momentum_score_pct: number | null;
             nombre: string | null;
@@ -2229,6 +2236,11 @@ export interface components {
             ma_larga_3m: number;
             /** Format: double */
             max_peso_por_activo: number;
+            /**
+             * Format: int64
+             * @description Velas semanales de la ventana del ranking por retorno reciente.
+             */
+            retorno_semanas: number;
             /** Format: int64 */
             semanas_minimas: number;
             tamanos_portafolio: number[];
@@ -2236,6 +2248,11 @@ export interface components {
             top_n: number;
             /** Format: int64 */
             top_n_momentum: number;
+            /**
+             * Format: int64
+             * @description Acciones del ranking por retorno reciente.
+             */
+            top_n_retorno: number;
             /** Format: int64 */
             top_n_us: number;
         };
@@ -2262,6 +2279,18 @@ export interface components {
             /** Format: int64 */
             n: number;
             performance: components["schemas"]["TdPerformanceReducida"];
+        };
+        TdRetornoReciente: {
+            nombre: string | null;
+            pais: string | null;
+            /** Format: double */
+            precio_actual_usd: number | null;
+            /** Format: int64 */
+            rank: number;
+            /** Format: double */
+            retorno_pct: number | null;
+            sector: string | null;
+            ticker: string;
         };
         TdRunDetalle: {
             analyses: {
