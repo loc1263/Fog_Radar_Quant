@@ -35,7 +35,10 @@
 	);
 </script>
 
-<div class="min-w-[160px] flex-1 rounded border border-brand-border bg-brand-card p-4">
+<!-- overflow-wrap: un valor largo (p. ej. MALLPLAZA.SN o un nombre de archivo) no desborda la tarjeta. -->
+<div
+	class="min-w-[180px] flex-1 rounded border border-brand-border bg-brand-card p-4 [overflow-wrap:anywhere]"
+>
 	<div class="text-[12.5px] text-brand-label">{label}</div>
 	<div class={cn('mt-1.5 text-xl font-bold tabular-nums', TONES[effective])}>{value}</div>
 	{#if hint}<div class="mt-1 text-xs text-brand-muted">{hint}</div>{/if}
