@@ -3,7 +3,6 @@ package cl
 import (
 	"encoding/json"
 	"math"
-	"path/filepath"
 
 	"github.com/danielgtaylor/huma/v2"
 
