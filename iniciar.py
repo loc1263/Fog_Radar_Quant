@@ -161,7 +161,7 @@ def export_data() -> None:
     """Genera frontend/static/data (JSON de la API) con `fogradar export`; el sitio lo lee sin backend."""
     info("Exportando los datos del sitio (fogradar export)...")
     try:
-        run_step([str(BACKEND_EXE), "export", "--modulo", "etf,cl,us", "--out", str(FRONTEND_DIR / "static" / "data")],
+        run_step([str(BACKEND_EXE), "export", "--out", str(FRONTEND_DIR / "static" / "data")],
                  BACKEND_DIR, "Exportación de datos")
     except StartupError as e:  # no es fatal: el sitio muestra "sin datos" en las vistas que dependen de esto
         warn(f"{e} Las vistas de ETF pueden aparecer vacías.")

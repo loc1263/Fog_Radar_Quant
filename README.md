@@ -97,20 +97,20 @@ npm run autofix && npm run check && npm run lint && npm test   # validaciones pr
 npm run gen:api                # regenera los tipos TS desde el OpenAPI del backend (backend arriba)
 ```
 
-## Sitio estático (en migración: hub, buscador, ETF, Chile y EEUU listos)
+## Sitio estático (los 4 módulos migrados)
 
-Objetivo: publicar el sitio como SPA en GitHub Pages ([plan](docs/PLAN_GITHUB_PAGES.md)). El **hub, el buscador, ETF, Chile y EEUU** ya leen JSON
-estático en vez de llamar al backend; Tendencia sigue con el backend (BFF) hasta migrarla.
+Objetivo: publicar el sitio como SPA en GitHub Pages ([plan](docs/PLAN_GITHUB_PAGES.md)). Todo el sitio (hub, buscador, ETF, Chile, EEUU, Tendencia y Estado) lee JSON
+estático en vez de llamar al backend; falta publicarlo con GitHub Actions.
 
 ```bash
 # 1. Exportar la instantánea de la API a frontend/static/data (lo hace iniciar.bat solo)
-cd backend-go && ./bin/fogradar.exe export --modulo etf,cl,us --out ../frontend/static/data
+cd backend-go && ./bin/fogradar.exe export --out ../frontend/static/data
 # 2. Construir la SPA (BASE_PATH = subruta de Pages; vacío si va en la raíz)
 cd ../frontend && STATIC_BUILD=1 BASE_PATH=/Fog_Radar_Quant npm run build     # salida en frontend/build
 ```
 
 - `fogradar export` llama a la API en proceso y guarda cada GET en `static/data/<ruta>.json` (carpeta fuera de git), más un `manifest.json`.
-  Deja también el PDF de ETF y los precios de las sparklines de EEUU. Las rutas `/history/*` no se exportan: el sitio estático no tiene vistas de historial.
+  Deja también el PDF de ETF, los archivos de la última corrida de Tendencia y los precios de las sparklines de EEUU. `--modulo etf,cl` limita qué módulos se exportan. Las rutas `/history/*` no se exportan: el sitio estático no tiene vistas de historial.
 - En Git Bash de Windows, `BASE_PATH=/x` se convierte en una ruta de disco: antepón `MSYS_NO_PATHCONV=1`.
 - El buscador global corre en el navegador sobre `api/buscar/indice.json` (~200 KB); el hub muestra la frescura calculada al exportar, no al abrir la página.
 - `404.html` hace de fallback SPA (lo que GitHub Pages sirve para rutas desconocidas).

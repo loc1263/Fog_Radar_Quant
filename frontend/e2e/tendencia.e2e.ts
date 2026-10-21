@@ -39,11 +39,10 @@ test('momentum mensual y semanal', async ({ page }) => {
 	).toHaveCount(10);
 });
 
-test('descarga de archivos de la corrida por el BFF', async ({ request }) => {
-	const res = await request.get('/tendencia/descargar-archivo/20260926_01/top15_seleccion.csv');
+test('descarga de archivos de la corrida (export estático)', async ({ request, page }) => {
+	await page.goto('/tendencia/descargar');
+	const href = await page.getByRole('link', { name: 'top15_seleccion.csv' }).getAttribute('href');
+	const res = await request.get(href!);
 	expect(res.status()).toBe(200);
 	expect(res.headers()['content-type']).toContain('text/csv');
-	expect(
-		(await request.get('/tendencia/descargar-archivo/20260926_01/..%2Fhistory.db')).status()
-	).toBe(404);
 });

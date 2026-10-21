@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { asset } from '$app/paths';
 	import type { TdArchivo } from '$lib/api/types';
 	import { DataTable, Section } from '$lib/components/shared';
 	import { fmtNumber } from '$lib/format';
@@ -39,12 +39,8 @@
 					proyección, sectores y momentum de cada análisis.
 				</p>
 				<a
-					href={resolve('/tendencia/descargar-archivo/[run]/[archivo]', {
-						run: d.run_dir,
-						archivo: pdf.nombre
-					})}
-					download
-					data-sveltekit-reload
+					href={asset(`/data/api/tendencia/archivos/${d.run_dir}/${pdf.nombre}`)}
+					download={pdf.nombre}
 					class="mt-4 inline-block rounded border border-brand-strong bg-brand-strong px-3 py-1.5 text-sm font-bold text-white hover:opacity-90"
 					>Descargar PDF</a
 				>
@@ -54,12 +50,8 @@
 			{#snippet cell({ column, row, text })}
 				{#if column.key === 'nombre'}
 					<a
-						href={resolve('/tendencia/descargar-archivo/[run]/[archivo]', {
-							run: d.run_dir,
-							archivo: row.nombre
-						})}
-						download
-						data-sveltekit-reload
+						href={asset(`/data/api/tendencia/archivos/${d.run_dir}/${row.nombre}`)}
+						download={row.nombre}
 						class="font-bold text-brand-label hover:text-brand-accent hover:underline"
 						>{row.nombre}</a
 					>

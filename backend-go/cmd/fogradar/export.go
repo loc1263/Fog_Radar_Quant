@@ -75,8 +75,7 @@ func parseExportArgs(args []string) (*exportArgs, error) {
 func rutasExportables(h *api.Host, modulos []string) []string {
 	var rutas []string
 	for path, item := range h.API.OpenAPI().Paths {
-		// /history/*: el sitio estático no tiene vistas de historial (history.db solo se sirve con la API).
-		if item.Get == nil || !strings.HasPrefix(path, "/api/") || path == "/api/health" || strings.Contains(path, "/history/") {
+		if item.Get == nil || !strings.HasPrefix(path, "/api/") || sinVista[path] || strings.Contains(path, "/history/") {
 			continue
 		}
 		requerido := false
@@ -91,6 +90,9 @@ func rutasExportables(h *api.Host, modulos []string) []string {
 	sort.Strings(rutas)
 	return rutas
 }
+
+// sinVista: endpoints sobre history.db fuera de /history/ (el sitio estático no tiene vistas de historial).
+var sinVista = map[string]bool{"/api/tendencia/runs": true, "/api/tendencia/analyses": true}
 
 // transversales se exportan siempre: reúnen a todos los módulos (portada y buscador).
 var transversales = map[string]bool{"/api/hub": true, "/api/buscar/indice": true}
@@ -164,11 +166,45 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 		}
 	}
 
+	if moduloIncluido("/api/tendencia/", a.modulos) {
+		archivosDeTendencia(handler, h.S.APIKey, a.out, cuerpos["/api/tendencia/latest"], m)
+	}
+
 	if err := os.MkdirAll(a.out, 0o755); err != nil {
 		return nil, err
 	}
 	b, _ := json.MarshalIndent(m, "", "  ")
 	return m, escribir(filepath.Join(a.out, "manifest.json"), b)
+}
+
+// archivosDeTendencia guarda los archivos (PDF, CSV…) de la última corrida de Tendencia tal cual, en
+// <out>/api/tendencia/archivos/<run_dir>/<nombre>, para los enlaces de «Descargar».
+func archivosDeTendencia(handler http.Handler, apiKey, out string, latest []byte, m *exportManifest) {
+	var l struct {
+		RunDir   string `json:"run_dir"`
+		Archivos []struct {
+			Nombre string `json:"nombre"`
+		} `json:"archivos"`
+	}
+	if json.Unmarshal(latest, &l) != nil || l.RunDir == "" {
+		return
+	}
+	for _, f := range l.Archivos {
+		ruta := "/api/tendencia/runs/" + l.RunDir + "/files/" + f.Nombre
+		req := httptest.NewRequest(http.MethodGet, ruta, nil)
+		req.Header.Set(core.APIKeyHeader, apiKey)
+		rec := httptest.NewRecorder()
+		handler.ServeHTTP(rec, req)
+		e := exportEntrada{Ruta: ruta, Estado: rec.Code}
+		if rec.Code == http.StatusOK {
+			e.Bytes = rec.Body.Len()
+			dest := filepath.Join(out, "api", "tendencia", "archivos", l.RunDir, f.Nombre)
+			if err := escribir(dest, rec.Body.Bytes()); err != nil {
+				e.Estado = http.StatusInternalServerError
+			}
+		}
+		m.Archivos = append(m.Archivos, e)
+	}
 }
 
 // filasDe devuelve los elementos de la respuesta (o de su clave `lista`).

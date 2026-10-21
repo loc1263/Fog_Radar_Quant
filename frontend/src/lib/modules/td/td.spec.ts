@@ -6,11 +6,8 @@ import {
 	analisisSlug,
 	elegirAnalisis,
 	elegirPortafolio,
-	etiquetaCorrida,
-	fechaCorta,
 	pctPts,
 	pesoPorPais,
-	pivotPorGrupo,
 	senal,
 	separarTickers
 } from './format';
@@ -61,28 +58,8 @@ describe('formato', () => {
 		expect(senal('Lateral / mixta')).toBe('mixed');
 		expect(senal(null)).toBe('neutral');
 	});
-	it('porcentajes en puntos, etiquetas de corrida y tickers', () => {
+	it('porcentajes en puntos y tickers', () => {
 		expect(pctPts(17.63, 1, true)).toBe('+17,6 %');
-		expect(etiquetaCorrida('20260924_02')).toBe('24/09 #2');
-		expect(etiquetaCorrida('20260926_01')).toBe('26/09');
-		expect(fechaCorta('2026-09-26')).toBe('26/09/2026');
 		expect(separarTickers('AAA, BBB,CCC')).toEqual(['AAA', 'BBB', 'CCC']);
-	});
-});
-
-describe('pivotPorGrupo (viz.js del original)', () => {
-	it('una fila por corrida y "Otros" más allá de 7 grupos', () => {
-		const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'].flatMap((g, i) => [
-			{ run_dir: '20260921_01', g, v: 10 - i },
-			{ run_dir: '20260922_01', g, v: 10 - i }
-		]);
-		const { filas, grupos } = pivotPorGrupo(
-			rows,
-			(r) => r.g,
-			(r) => r.v
-		);
-		expect(grupos).toEqual(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'Otros']);
-		expect(filas.map((f) => f.corrida)).toEqual(['21/09', '22/09']);
-		expect(filas[0].Otros).toBe(3 + 2); // H (3) + I (2)
 	});
 });
