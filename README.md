@@ -1,7 +1,7 @@
 # Fog Radar Quant
 
 Sitio unificado de análisis cuantitativo: ETFs, acciones EEUU, acciones Chile (IPSA)
-y tendencia/Markowitz Asia + EEUU. Repositorio privado.
+y tendencia/Markowitz Asia + EEUU.
 
 - `backend-go/` — API y pipelines en Go (huma + chi, sqlite sin CGO); ver `backend-go/README.md`
 - `frontend/`   — SvelteKit + TypeScript + Tailwind v4 + LayerChart (ver `frontend/README.md`)

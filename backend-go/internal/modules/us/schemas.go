@@ -174,6 +174,7 @@ type UsHistPermanencia struct {
 	RankUltima  *int64   `json:"rank_ultima" nullable:"true"`
 	ScoreUltima *float64 `json:"score_ultima" nullable:"true"`
 }
+
 // --- Portafolio ---
 
 // PortfolioRequest es el cuerpo de /portfolio/optimize.

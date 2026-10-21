@@ -46,7 +46,7 @@ Fog_Radar_Quant/
 | Tablas | `DataTable` genérico propio (orden, filtro, CSV) | Casi todas las pestañas son tablas. |
 | Pipelines | **Batch fuera del proceso web** (`fogradar job`). Producción: cron en el servidor backend; la API solo lee | Evita bloqueos de Yahoo en requests web. |
 | Estado de corridas | Registro en `data/_jobs/<modulo>.jsonl` + `/api/jobs` + log único `fogradar.log` | El hub muestra "al día / atrasado". |
-| Historial | Retirado (2026-10-21): sin vistas ni `history.db` (ver ADR 0003 y 0005) | El sitio estático no lo necesita. |
+| Historial | Retirado (2026-10-21): sin vistas ni `history.db` (ver ADR 0005) | El sitio estático no lo necesita. |
 | Calidad | `gofmt`, `go vet`, `golangci-lint`, `go test -race` (back); `svelte-check` + ESLint + Prettier + Vitest + Playwright (front); CI en GitHub | |
 
 ### 2.3 Mapa de rutas del sitio
@@ -55,16 +55,14 @@ Fog_Radar_Quant/
 |---|---|
 | `/` | **Hub**: 4 tarjetas (una por módulo) con fecha de última corrida, KPI principal y top 3; accesos directos |
 | `/etf` → `/etf/resumen` | Resumen de la corrida |
-| `/etf/[seccion]` | top15 · universo · excluidos · rotacion · diversificacion · categorias · top15-simple · top15-vanguard · momentum · russell3000 · historial · descargar |
+| `/etf/[seccion]` | top15 · universo · excluidos · rotacion · diversificacion · categorias · top15-simple · top15-vanguard · momentum · top15-cap |
 | `/eeuu` | Top 15 momentum + datos de la corrida |
 | `/eeuu/candidatos` · `/eeuu/evaluacion` · `/eeuu/rendimiento` | Vistas del screener |
-| `/eeuu/portafolio` | Modelo único: clusters de correlación + Black-Litterman (`docs/MODELO_NEW.md`) |
-| `/eeuu/ticker` · `/eeuu/ticker/[ticker]` | Buscador + evaluación en vivo de un ticker |
-| `/chile` | Ranking IPSA + panel de pesos ajustables |
+| `/eeuu/portafolio` | Portafolios precalculados (modelo único: clusters de correlación + Black-Litterman, `docs/MODELO_NEW.md`) |
+| `/chile` | Ranking IPSA |
 | `/chile/indicadores` | Tabla de indicadores crudos |
-| `/tendencia/[seccion]?analisis=…` | resumen · portafolio · tendencia · sectores · momentum |
-| `/tendencia/historial` · `/tendencia/limitaciones` | Historial y limitaciones |
-| `/estado` | Estado de pipelines (`/api/jobs`) y salud del backend |
+| `/tendencia/[seccion]?analisis=…` | resumen · portafolio · tendencia · sectores · momentum · limitaciones |
+| `/estado` | Estado de los módulos y cadencia de actualización (instantánea de la exportación) |
 
 Layout global: header con logo *Fog Radar Quant*, menú principal de 4 módulos, sub-navegación por módulo (tabs como links reales — cada pestaña es una URL compartible), toggle claro/oscuro, footer con disclaimer "no es asesoramiento financiero".
 
@@ -72,23 +70,23 @@ Layout global: header con logo *Fog Radar Quant*, menú principal de 4 módulos,
 
 | Módulo | Prefijo |
 |---|---|
-| Sistema | `/api/health`, `/api/status`, `/api/jobs`, `/api/jobs/programas`, `/api/hub`, `/api/buscar` |
+| Sistema | `/api/health`, `/api/status`, `/api/jobs`, `/api/jobs/programas`, `/api/hub` |
 | ETF | `/api/etf/*` (resumen, top15, ranking-completo, excluidos, rotacion, diversificacion, categorias, momentum, russell3000) |
-| EEUU | `/api/us/*` (rankings, tickers/{t}/evaluate, portfolio/optimize, `/history/*`) |
-| Chile | `/api/cl/*` (ranking, indicadores, `/history/*`) |
-| Tendencia | `/api/tendencia/*` (latest, runs, analyses, excluidos, `/history/*`) |
+| EEUU | `/api/us/*` (rankings, portfolio/limits, portfolio/precalculado) |
+| Chile | `/api/cl/*` (ranking, indicadores) |
+| Tendencia | `/api/tendencia/*` (latest, runs/{run_dir}/dashboard, excluidos) |
 
 ---
 
 ## 3. Estado
 
-| Módulo | Backend | Frontend | Pipeline | Historial | Retirado (2026-10-21): sin vistas ni `history.db` (ver ADR 0003 y 0005) | El sitio estático no lo necesita. |
-|---|---|---|---|---|
-| Chile (IPSA) | ✅ | ✅ | ✅ `fogradar job cl_stocks` (~40 s) | ✅ |
-| EEUU | ✅ | ✅ | ✅ `fogradar job us_stocks` (~4 min) | ✅ |
-| ETF | ✅ | ✅ | ✅ `fogradar job etf` (~7–13 min; caché de info) | ✅ |
-| Tendencia | ✅ | ✅ | ✅ `fogradar job tendencia` (universo redescubierto si el snapshot tiene > 3 días) | ✅ |
-| Hub, buscador, estado | ✅ | ✅ | — | — |
+| Módulo | Backend | Frontend | Pipeline |
+|---|---|---|---|
+| Chile (IPSA) | ✅ | ✅ | ✅ `fogradar job cl_stocks` (~40 s) |
+| EEUU | ✅ | ✅ | ✅ `fogradar job us_stocks` (~4 min) |
+| ETF | ✅ | ✅ | ✅ `fogradar job etf` (~7–13 min; caché de info) |
+| Tendencia | ✅ | ✅ | ✅ `fogradar job tendencia` (universo redescubierto si el snapshot tiene > 3 días) |
+| Hub y estado | ✅ | ✅ | — |
 
 Cadencia esperada (`internal/core/schedule.go`): ETFs los **lunes 06:00**; Chile → EEUU → Tendencia de **lunes a viernes 18:00**, en
 secuencia. En desarrollo: `correr_pipelines.bat` o `fogradar job --todos`.

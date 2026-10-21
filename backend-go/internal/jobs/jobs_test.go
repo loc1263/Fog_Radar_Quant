@@ -48,7 +48,7 @@ func TestSecuenciaEnOrdenYSinPausaSiNoHubo429(t *testing.T) {
 	}
 	// queda en el registro de jobs: success con duración
 	rec := core.NewJobRegistry(env.S.JobsDir()).Latest("a2")
-	if rec == nil || rec.Status != "success" || rec.DurationS == nil || rec.FinishedAt == nil || rec.Trigger != "cli" {
+	if rec == nil || rec.Status != "success" || rec.DurationS == nil || rec.FinishedAt == nil {
 		t.Fatalf("%+v", rec)
 	}
 }
@@ -147,7 +147,7 @@ func TestNoCorreSiElModuloYaEstaEnCurso(t *testing.T) {
 	env := testEnv(t)
 	reg("f1", func(context.Context, map[string]any) (string, error) { t.Fatal("no debía correr"); return "", nil })
 	r := core.NewJobRegistry(env.S.JobsDir())
-	if err := r.Append(core.JobRecord{ID: "x", Module: "f1", Status: "running", Trigger: "cli", StartedAt: core.Fecha{Time: time.Now().UTC()}}); err != nil {
+	if err := r.Append(core.JobRecord{ID: "x", Module: "f1", Status: "running", StartedAt: core.Fecha{Time: time.Now().UTC()}}); err != nil {
 		t.Fatal(err)
 	}
 	res, _ := CorrerSecuencia(context.Background(), env, []string{"f1"}, SecuenciaOpts{})
@@ -188,7 +188,7 @@ func TestRegistroRotaAlPasarElLimite(t *testing.T) {
 	r := core.NewJobRegistry(dir)
 	msg := strings.Repeat("x", 600)
 	for i := 0; i < 1500; i++ {
-		if err := r.Append(core.JobRecord{ID: string(rune('a'+i%26)) + strings.Repeat("0", 3) + time.Duration(i).String(), Module: "m", Status: "success", Trigger: "cli",
+		if err := r.Append(core.JobRecord{ID: string(rune('a'+i%26)) + strings.Repeat("0", 3) + time.Duration(i).String(), Module: "m", Status: "success",
 			StartedAt: core.Fecha{Time: time.Unix(int64(1_700_000_000+i), 0).UTC()}, Message: &msg}); err != nil {
 			t.Fatal(err)
 		}

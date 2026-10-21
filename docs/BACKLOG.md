@@ -28,18 +28,9 @@
 
 ## A — Durante la migración
 
-### Seguridad y despliegue (se unifican: aparecían repetidos en 3 proyectos)
+### Seguridad y despliegue
 
-| ID | Ítem | Fase | Cómo se resuelve |
-|---|---|---|---|
-| ETF-23 · US-BACK-05 | Sin autenticación en ningún endpoint | 1 ✅ | Dependencia `require_api_key` (`X-API-Key`) en todas las rutas salvo `/api/health`; el navegador nunca ve la key. |
-| ETF-24 · US-BACK-02 | Sin rate limiting | 1 ✅ (global) / 4 ✅ (EEUU) / 5 ✅ (ETF `/run` 3/min, `/pdf` 10/min) | rate limit de `internal/core/ratelimit.go` en endpoints costosos (`/run`, `/evaluate`, portafolio) + allowlist de IP del servidor frontend. |
-| ETF-26 | CORS amplio; revisar si hay cookies | 1 ✅ | `ALLOWED_ORIGINS` explícito. El login con cookies (si lo hay) vive en SvelteKit; el backend sigue con API key, sin credenciales CORS. |
-| ETF-27 | `/docs` y `/openapi.json` públicos | 1 ✅ | Deshabilitados en producción (`docs_url=None` según `settings.ENV`); disponibles en dev para `npm run gen:api`. |
-| ETF-28 | Sin HTTPS forzado ni cabeceras de seguridad | 8 | Caddy (HTTPS automático + HSTS) en ambos servidores; CSP en `vite.config.ts` (el BFF y `hooks.server.ts` se retiraron: ADR 0005). |
-| US-SEC-01 · CL (infra) | CORS hardcodeado a localhost | 1 ✅ | `settings.go` + `.env`. |
-| US-SEC-02 | Path param `ticker` sin validar | 4 ✅ | `Path(..., pattern=r"^[A-Z0-9.\-^=]{1,15}$")` (permite `.SN`, `.TW`, `^`, `=X`). |
-| ETF-20 | Host del backend / plan Vercel | 8 | **Reemplazado** por la arquitectura decidida: 2 servidores (front Node + back Go) con disco persistente para `data/` y cron en el backend. |
+Retirado el 2026-10-21 (ADR 0005): ya no hay servidor de frontend, API key, rate limit, CORS ni despliegue en servidores. La API es de solo lectura y de uso local; el sitio se publica estático.
 
 ### Calidad, CI y operación
 
@@ -82,26 +73,12 @@
 
 ## B — Después (post Fase 6)
 
-### Épica B1 · Historial unificado entre corridas — ✅ 2026-10-04
-Una base `data/<modulo>/history.db` por módulo, índice derivado de los archivos de cada
-corrida (ADR 0003, `INFORME_SQLITE.md`). Helper común `internal/core/histdb.go` (WAL, versión de
-esquema, `diff_corridas`); escritura al final del pipeline sin hacerlo fallar; backfill con
-`fogradar job <modulo> --backfill`; endpoints `/api/<mod>/history/*`.
+### Épica B1 · Historial unificado entre corridas — retirada 2026-10-21
 
-| ID | Ítem | Estado |
-|---|---|---|
-| US-BACK-03 | Persistencia en SQLite en vez de JSON por corrida | ✅ `internal/modules/us/history.go` (los JSON se mantienen como fuente de verdad) |
-| US-BACK-04 | Diff entre corridas (entraron/salieron del top, delta de score). ETF ya tiene "Rotación": se generaliza. | ✅ `/history/diff` en Chile, EEUU y ETF; vistas `/eeuu/historial` y `/etf/evolucion` |
-| US-DATA-03 | Histórico de score de un ticker a lo largo de las corridas | ✅ `/history/ticker/{t}` en los 3 módulos |
-| CL (histórico) | Endpoint de histórico de rankings IPSA + gráfico de evolución | ✅ `/api/cl/history/*` + `/chile/historial` |
-| TD (universo) | Guardar los pesos de Markowitz del universo completo (no solo los seleccionados) | ✅ `universe_weights` (history.db v2) + gráfico en `/tendencia/historial` |
-| B1-ETF-INC | Incidencias del screener y `ETF_eliminados.csv` en la base (detectar tickers que fallan N corridas seguidas) | Pendiente |
-| B1-ETF-SQL | Reescribir racha/rotación de `rotacion.go` sobre SQL | Pendiente (no urgente) |
-| B1-JOBS | Tabla `jobs` (duración, requests y 429 de Yahoo por corrida) con gráfico en `/estado` | Pendiente (opcional) |
+Se implementó (`history.db` por módulo, endpoints `/history/*`, vistas de historial) y se eliminó junto con sus vistas al migrar a sitio estático (ADR 0005). Los ítems B1-ETF-INC, B1-ETF-SQL y B1-JOBS quedan descartados.
 
 ### Épica B2 · Backtesting / validación del modelo
-Pedido en los 4 proyectos. B1 ya está hecho: falta acumular corridas. EEUU guarda los
-cierres deduplicados en `us_stocks/history.db` (`prices`) y ETF el `Precio` de cada corrida.
+Pedido en los 4 proyectos. Sin el historial (B1, retirado) habría que reconstruirlo a partir de los archivos de cada corrida.
 
 | ID | Ítem |
 |---|---|
@@ -161,13 +138,6 @@ sub-menú, paginación del historial, PDF de Tendencia (encabezados claros, ≥ 
 | TD-MODEL-9 | Tendencia: la covarianza muestral por pares con historias distintas depende del arreglo de semidefinida positiva; huecos > 2 semanas se pierden del CAGR. | Junto con TD-MODEL-1 (Ledoit-Wolf). |
 | US-DATA-08 | EEUU: la "mejor combinación" se elige por retorno esperado histórico dentro de la muestra (sesgo de selección); en BL rankea con medias históricas y no con el posterior. | Rankear por Sharpe fuera de muestra (con B2) y, en BL, por el posterior. |
 
-### Pendiente — producción (Fase 8, no se hace hasta depurar el desarrollo)
-
-| ID | Ítem | Propuesta |
-|---|---|---|
-| SEC-PROD-1 | Detrás de Caddy sin `ADDRESS_HEADER`/`XFF_DEPTH`, todos los usuarios comparten un balde de rate limit. | Obsoleto: ya no hay servidor de frontend (ADR 0005). |
-| SEC-PROD-2 | Mensajes internos en `/api/jobs` y errores de Yahoo/SQLite visibles en el sitio público. | En prod: mensaje genérico + `code`, detalle solo en el log (el hub ya lo hace). |
-
 ---
 
 ## C — Descartar / cerrar
@@ -183,3 +153,4 @@ sub-menú, paginación del historial, PDF de Tendencia (encabezados claros, ≥ 
 | ID | Decisión | Fecha |
 |---|---|---|
 | TD-LIC-1 | Repositorio **privado** en GitHub, **sin archivo LICENSE** (todos los derechos reservados). No hay archivo de licencia en el repo. | 2026-09-27 |
+| TD-LIC-2 | Repositorio **público** (cambia TD-LIC-1) para publicar en GitHub Pages. | 2026-10-21 |

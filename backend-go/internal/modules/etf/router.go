@@ -27,7 +27,6 @@ func Register(h *api.Host) {
 		})
 	}
 
-
 	api.Public(h, op("etf_resumen", http.MethodGet, "/resumen", "Resumen de la corrida vigente + parámetros del modelo"),
 		func(context.Context, *struct{}) (*struct{ Body EtfResumen }, error) {
 			r, e := Resumen(h.S)

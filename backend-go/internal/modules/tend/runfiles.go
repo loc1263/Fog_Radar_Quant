@@ -26,7 +26,7 @@ const (
 )
 
 var (
-	runDirRe       = regexp.MustCompile(RunDirPattern)
+	runDirRe = regexp.MustCompile(RunDirPattern)
 )
 
 // ModuleDir es data/tendencia.

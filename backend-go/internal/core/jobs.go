@@ -25,7 +25,6 @@ type JobRecord struct {
 	ID         string   `json:"id"`
 	Module     string   `json:"module"`
 	Status     string   `json:"status" enum:"running,success,error,stale"`
-	Trigger    string   `json:"trigger" enum:"cli,cron,api" default:"cli" required:"false"`
 	StartedAt  Fecha    `json:"started_at"`
 	FinishedAt *Fecha   `json:"finished_at" nullable:"true" required:"false"`
 	DurationS  *float64 `json:"duration_s" nullable:"true" required:"false"`
@@ -58,9 +57,6 @@ func (r *JobRegistry) read(module string) []JobRecord {
 		var rec JobRecord
 		if err := json.Unmarshal(line, &rec); err != nil {
 			continue // línea inválida: se ignora
-		}
-		if rec.Trigger == "" {
-			rec.Trigger = "cli"
 		}
 		out = append(out, rec)
 	}
@@ -181,9 +177,9 @@ func (r *JobRegistry) IsRunning(module string) bool {
 
 // Track envuelve una ejecución de pipeline y registra su resultado: una línea «running» al empezar y
 // otra «success»/«error» al terminar, con el mismo id. fn puede fijar rec.Message.
-func (r *JobRegistry) Track(module, trigger string, fn func(rec *JobRecord) error) (*JobRecord, error) {
+func (r *JobRegistry) Track(module string, fn func(rec *JobRecord) error) (*JobRecord, error) {
 	rec := &JobRecord{ID: strings.ReplaceAll(uuid.NewString(), "-", "")[:12], Module: module, Status: "running",
-		Trigger: trigger, StartedAt: Fecha{Time: time.Now().UTC()}}
+		StartedAt: Fecha{Time: time.Now().UTC()}}
 	if err := r.Append(*rec); err != nil {
 		return rec, err
 	}

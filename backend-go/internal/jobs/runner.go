@@ -143,7 +143,7 @@ func correrModulo(ctx context.Context, env *Env, reg *core.JobRegistry, modulo s
 	env.Log.Info("inicio", "modulo", modulo, "opciones", opts)
 	env.Traffic.ResetStats()
 	var detalle string
-	rec, err := reg.Track(modulo, "cli", func(rec *core.JobRecord) error {
+	rec, err := reg.Track(modulo, func(rec *core.JobRecord) error {
 		msg, err := p.Run(ctx, env, opts)
 		detalle = msg
 		if msg != "" {

@@ -1108,11 +1108,6 @@ export interface components {
             started_at: string;
             /** @enum {string} */
             status: "running" | "success" | "error" | "stale";
-            /**
-             * @default cli
-             * @enum {string}
-             */
-            trigger: "cli" | "cron" | "api";
         };
         Macd: {
             /** Format: double */

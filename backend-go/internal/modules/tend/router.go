@@ -17,8 +17,6 @@ func Register(h *api.Host) {
 	op := func(id, path, summary string) huma.Operation {
 		return huma.Operation{OperationID: id, Method: http.MethodGet, Path: "/api/tendencia" + path, Summary: summary, Tags: []string{tag}}
 	}
-	const runPat = `^\d{8}_\d{2}$`
-	const tickerPat = "^[A-Za-z0-9.\\-^=]{1,15}$"
 
 	api.Public(h, op("td_latest", "/latest", "Última corrida completa"),
 		func(context.Context, *struct{}) (*struct{ Body TdDashboard }, error) {

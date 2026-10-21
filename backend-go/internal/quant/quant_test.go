@@ -1,84 +1,9 @@
 package quant
 
 import (
-	"encoding/json"
-	"math"
-	"os"
-	"strconv"
 	"strings"
 	"testing"
 )
-
-type fixture struct {
-	Cases []struct {
-		Values []*float64          `json:"values"`
-		Mean   *float64            `json:"mean"`
-		Std0   *float64            `json:"std0"`
-		Q      map[string]*float64 `json:"q"`
-		Winsor []*float64          `json:"winsor"`
-		Z      []*float64          `json:"z"`
-		Rank   []*float64          `json:"rank"`
-	} `json:"cases"`
-	Reprs []struct {
-		X    float64 `json:"x"`
-		Repr string  `json:"repr"`
-	} `json:"reprs"`
-	Rounds []struct {
-		X  float64 `json:"x"`
-		R4 float64 `json:"r4"`
-	} `json:"rounds"`
-}
-
-func load(t *testing.T) fixture {
-	t.Helper()
-	b, err := os.ReadFile("testdata/stats.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var f fixture
-	if err := json.Unmarshal(b, &f); err != nil {
-		t.Fatal(err)
-	}
-	return f
-}
-
-func vec(in []*float64) []float64 {
-	out := make([]float64, len(in))
-	for i, p := range in {
-		if p == nil {
-			out[i] = NaN
-		} else {
-			out[i] = *p
-		}
-	}
-	return out
-}
-
-func same(a, b float64) bool {
-	return (math.IsNaN(a) && math.IsNaN(b)) || math.Float64bits(a) == math.Float64bits(b)
-}
-
-func sameVec(t *testing.T, what string, got, want []float64, tol float64) {
-	t.Helper()
-	if len(got) != len(want) {
-		t.Fatalf("%s: largo %d vs %d", what, len(got), len(want))
-	}
-	for i := range got {
-		ok := same(got[i], want[i])
-		if !ok && tol > 0 && !math.IsNaN(got[i]) && !math.IsNaN(want[i]) {
-			ok = math.Abs(got[i]-want[i]) <= tol*math.Max(1, math.Abs(want[i]))
-		}
-		if !ok {
-			t.Fatalf("%s[%d]: %v (obtenido) vs %v (esperado)", what, i, got[i], want[i])
-		}
-	}
-}
-
-func fmtSscan(s string, q *float64) (int, error) {
-	v, err := parseFloat(s)
-	*q = v
-	return 1, err
-}
 
 func TestOrderDescEstableConNaNAlFinal(t *testing.T) {
 	got := OrderDesc([]float64{1, NaN, 3, 3, 2, NaN})
@@ -133,5 +58,3 @@ func TestCellsComoDataFrame(t *testing.T) {
 		}
 	}
 }
-
-func parseFloat(s string) (float64, error) { return strconv.ParseFloat(s, 64) }

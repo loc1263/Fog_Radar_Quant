@@ -7,15 +7,6 @@ import (
 	"fogradar/internal/quant"
 )
 
-func norm(b []byte) string { return strings.ReplaceAll(string(b), "\r\n", "\n") }
-
-func at(s []string, i int) string {
-	if i < len(s) {
-		return s[i]
-	}
-	return "<fin>"
-}
-
 func TestFaltanColumnasDeIdentidad(t *testing.T) {
 	f := quant.NewFrame(1)
 	f.SetFloats("Símbolo", []float64{1})

@@ -71,11 +71,11 @@ func TestFormatISOSinFraccion(t *testing.T) {
 func TestJobRegistry(t *testing.T) {
 	dir := t.TempDir()
 	lines := []string{
-		`{"id":"a","module":"etf","status":"running","trigger":"cli","started_at":"2026-10-01T10:00:00Z"}`,
-		`{"id":"a","module":"etf","status":"success","trigger":"cli","started_at":"2026-10-01T10:00:00Z","finished_at":"2026-10-01T10:05:00Z","duration_s":300.0,"message":"ok"}`,
+		`{"id":"a","module":"etf","status":"running","started_at":"2026-10-01T10:00:00Z"}`,
+		`{"id":"a","module":"etf","status":"success","started_at":"2026-10-01T10:00:00Z","finished_at":"2026-10-01T10:05:00Z","duration_s":300.0,"message":"ok"}`,
 		`basura que no es json`,
 		`{"id":"b","module":"etf","status":"error","started_at":"2026-10-02T10:00:00Z","message":"boom"}`,
-		`{"id":"c","module":"etf","status":"running","trigger":"cron","started_at":"2026-10-03T10:00:00Z"}`,
+		`{"id":"c","module":"etf","status":"running","started_at":"2026-10-03T10:00:00Z"}`,
 	}
 	if err := os.WriteFile(filepath.Join(dir, "etf.jsonl"), []byte(strings.Join(lines, "\n")+"\n"), 0o644); err != nil {
 		t.Fatal(err)
@@ -87,7 +87,7 @@ func TestJobRegistry(t *testing.T) {
 	if len(h) != 3 || h[0].ID != "c" || h[1].ID != "b" || h[2].ID != "a" {
 		t.Fatalf("orden/dedupe: %+v", h)
 	}
-	if h[0].Status != "running" || h[1].Trigger != "cli" || h[2].Status != "success" {
+	if h[0].Status != "running" || h[2].Status != "success" {
 		t.Fatalf("estados: %+v", h)
 	}
 	if ls := r.LastSuccess("etf"); ls == nil || ls.ID != "a" {

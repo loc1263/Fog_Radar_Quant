@@ -2,94 +2,12 @@ package us
 
 import (
 	"encoding/json"
-	"math"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 	"time"
 )
-
-const runDir = "testdata/runs/2026-09-25T21-00-01Z"
-
-func loadRun(t *testing.T) ([]CandidateRow, PriceMatrix) {
-	t.Helper()
-	var c RunResponse
-	if e := ReadRunFile(runDir, "candidates.json", &c); e != nil {
-		t.Fatal(e)
-	}
-	var m PriceMatrix
-	if e := ReadRunFile(runDir, "prices.json", &m); e != nil {
-		t.Fatal(e)
-	}
-	return c.Rows, m
-}
-
-func near(a, b, tol float64) bool { return math.Abs(a-b) <= tol*math.Max(1, math.Abs(b)) }
-
-func ptrNear(t *testing.T, what string, got, want *float64, tol float64) {
-	t.Helper()
-	switch {
-	case got == nil && want == nil:
-	case got == nil || want == nil:
-		t.Errorf("%s: %v (go) vs %v (py)", what, got, want)
-	case !near(*got, *want, tol):
-		t.Errorf("%s: %v (go) vs %v (py)", what, *got, *want)
-	}
-}
-
-func seriesDe(t *testing.T, m PriceMatrix, ticker string) ([]time.Time, []float64) {
-	t.Helper()
-	ny, err := time.LoadLocation("America/New_York")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var ts []time.Time
-	var cs []float64
-	for i, d := range m.Dates {
-		tm, err := time.ParseInLocation("2006-01-02", d, ny)
-		if err != nil {
-			t.Fatal(err)
-		}
-		ts = append(ts, tm)
-		if v := m.Prices[ticker][i]; v != nil {
-			cs = append(cs, *v)
-		} else {
-			cs = append(cs, math.NaN())
-		}
-	}
-	return ts, cs
-}
-
-type expected struct {
-	Tickers []string `json:"tickers"`
-	BL      struct {
-		Prior     map[string]float64 `json:"prior_returns"`
-		Views     map[string]float64 `json:"views"`
-		Posterior map[string]float64 `json:"posterior_returns"`
-	} `json:"black_litterman"`
-}
-
-func loadExpected(t *testing.T) expected {
-	t.Helper()
-	b, err := os.ReadFile("testdata/portfolio_expected.json")
-	if err != nil {
-		t.Fatal(err)
-	}
-	var e expected
-	if err := json.Unmarshal(b, &e); err != nil {
-		t.Fatal(err)
-	}
-	return e
-}
-
-func capsScores(rows []CandidateRow) (map[string]*float64, map[string]*float64) {
-	caps, scores := map[string]*float64{}, map[string]*float64{}
-	for _, r := range rows {
-		caps[r.Ticker], scores[r.Ticker] = r.MarketCap, r.Score.Overall
-	}
-	return caps, scores
-}
 
 func TestLoadPriceMatrixErrores(t *testing.T) {
 	dir := t.TempDir()
