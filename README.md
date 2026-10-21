@@ -10,28 +10,92 @@ y tendencia/Markowitz Asia + EEUU. Repositorio privado.
 
 Plan y estado: [ROADMAP.md](ROADMAP.md) · Convenciones: [CLAUDE.md](CLAUDE.md)
 
+## Requisitos
+
+[Go](https://go.dev/) 1.26+ y [Node.js](https://nodejs.org/) 22+ (más Python 3 solo si usas `iniciar.bat`).
+
 ## Todo junto (desarrollo)
 
-Requiere [Go](https://go.dev/) 1.26+ y Node.js 22+.
-
 ```bat
-iniciar.bat              REM backend :8000 + frontend :5173 (dos ventanas)
+iniciar.bat              REM backend :8000 + frontend :5173 (lanza iniciar.py; una consola, con chequeos)
+iniciar.bat --rebuild --no-browser   REM opciones: --rebuild, --no-browser, --backend-port, --frontend-port, --timeout
 ```
 
-## Backend (desarrollo)
+Compila el backend si falta el binario o hay fuentes `.go` más nuevas, y levanta ambos servidores.
+
+## Backend
+
+### Configuración
 
 ```bash
 cd backend-go
-cp .env.example .env                       # (Windows: copy) y completar; en dev API_KEY puede quedar vacía
-go run ./cmd/fogradar api                  # sirve en :8000
+cp .env.example .env     # (Windows: copy .env.example .env) y completar; en dev API_KEY puede quedar vacía
+```
+
+### Compilar
+
+```bash
+cd backend-go
+go build -o bin/fogradar.exe ./cmd/fogradar      # Windows
+go build -o bin/fogradar ./cmd/fogradar          # Linux/macOS
+```
+
+Genera un único binario `fogradar` (API + pipelines). No requiere CGO.
+
+### Correr
+
+```bash
+# con el binario compilado
+./bin/fogradar.exe api          # (Linux: ./bin/fogradar api) sirve en :8000
+
+# o directo desde las fuentes, sin compilar
+go run ./cmd/fogradar api
 ```
 
 - Salud: `GET /api/health` (público). El resto exige el header `X-API-Key` si `API_KEY` está definida.
-- Pipelines: `fogradar job --list` · `fogradar job cl_stocks` · `fogradar job us_stocks` ·
-  `fogradar job etf [--solo-analisis] [--refrescar-info]` · `fogradar job tendencia [--skip-fetch] [--macro] [--backfill] [--force-discovery] [--top-n N] [--max-weight X]`
-- Todos los pipelines en secuencia, a pedido: `fogradar job --todos` (o doble clic en `correr_pipelines.bat`); en producción los corre el cron (`deploy/backend/README.md`).
 - Calidad: `gofmt -l cmd internal && go vet ./... && go test -race ./...`
-- Log único y detallado de todo el backend: `data/_jobs/logs/fogradar.log`.
+
+### Pipelines (batch)
+
+Descargan datos de Yahoo Finance, calculan scoring/Markowitz y escriben en `data/<modulo>/`. Se corren por CLI, nunca dentro de la API.
+Módulos: `cl_stocks`, `us_stocks`, `etf`, `tendencia`.
+
+```bash
+# desde backend-go/ (con binario: ./bin/fogradar.exe ...; sin compilar: go run ./cmd/fogradar ...)
+fogradar job --list                       # módulos y programas disponibles
+fogradar job cl_stocks                    # un módulo
+fogradar job etf --solo-analisis          # opciones propias de cada módulo
+fogradar job --todos                      # todos en secuencia (Chile, EEUU, Tendencia, ETF)
+fogradar job --programa diario            # el grupo diario (Chile, EEUU y Tendencia); también: semanal (ETFs)
+fogradar job --todos --offline            # reutiliza lo ya descargado, sin pedir a Yahoo
+fogradar job --todos --no-cache           # ignora cachés y vuelve a pedir todo
+```
+
+- En Windows, doble clic en `correr_pipelines.bat` equivale a `job --todos`; compila el binario si falta y acepta los mismos argumentos (`correr_pipelines.bat etf`).
+- Opciones por módulo: `etf [--solo-analisis] [--refrescar-info]` · `tendencia [--skip-fetch] [--skip-discovery] [--macro] [--backfill] [--force-discovery] [--top-n N] [--max-weight X]`.
+- `--offline` y `--no-cache` son excluyentes. Otras opciones: `--pausa`, `--reintentos`, `--esperar`, `--crontab` (imprime el crontab de producción).
+- Solo corre un pipeline a la vez (lock global). Códigos de salida: 0 ok, 1 falla, 2 uso, 3 ocupado.
+- Al terminar imprime una tabla resumen (tiempo HH:MM:SS, requests a Yahoo, 429) y los avisos. Detalle completo en `data/_jobs/logs/fogradar.log`.
+- Para probar sobre una copia de los datos: `DATA_DIR=/ruta fogradar job ...`. En producción los corre el cron (`deploy/backend/README.md`).
+
+## Frontend
+
+```bash
+cd frontend
+cp .env.example .env     # (Windows: copy .env.example .env)
+npm install
+npm run dev              # desarrollo en http://localhost:5173
+```
+
+En `.env`, `PRIVATE_API_URL` apunta al backend (`http://localhost:8000`) y `PRIVATE_API_KEY` debe coincidir con `API_KEY` del backend. El backend debe estar corriendo.
+
+Otros comandos:
+
+```bash
+npm run build && npm start     # build de producción (adapter-node) y servidor Node
+npm run autofix && npm run check && npm run lint && npm test   # validaciones previas a un commit
+npm run gen:api                # regenera los tipos TS desde el OpenAPI del backend (backend arriba)
+```
 
 ## Sitio
 
