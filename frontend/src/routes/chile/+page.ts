@@ -1,7 +1,7 @@
 import type { PageLoad } from './$types';
 import { datos } from '$lib/datos';
 
-/** Ranking IPSA y, para las tarjetas del resumen, los indicadores de la sección Indicadores. */
+/** Resumen de Chile: el ranking y los indicadores (una tarjeta por sección del menú). */
 export const load: PageLoad = async ({ fetch }) => {
 	const [ranking, indicadores] = await Promise.all([
 		datos(fetch, '/api/cl/ranking'),

@@ -6,7 +6,7 @@ import { expect, test } from '@playwright/test';
  */
 
 test('top 15 con sparklines y datos de la corrida', async ({ page }) => {
-	await page.goto('/eeuu');
+	await page.goto('/eeuu/top15');
 	const table = page.getByRole('table', { name: 'Top 15 por momentum' });
 	await expect(table.locator('tbody tr')).toHaveCount(15);
 	await expect(page.getByText('Universo (S&P 500 ∪ Nasdaq-100)')).toBeVisible();
@@ -56,4 +56,11 @@ test('Portafolio precalculado: pestañas por universo, selección y pesos', asyn
 		'aria-current',
 		'page'
 	);
+});
+
+test('resumen: tarjetas de las secciones del módulo', async ({ page }) => {
+	await page.goto('/eeuu');
+	await expect(page.getByRole('heading', { name: 'Resumen de la corrida' })).toBeVisible();
+	await expect(page.getByText('Rendimiento creciente')).toBeVisible();
+	await expect(page.getByText(/Portafolio \(/)).toBeVisible();
 });

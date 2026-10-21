@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isActive, MODULES } from './nav';
+import { isActive, MODULES, sinBase } from './nav';
 
 describe('nav', () => {
 	it('isActive respeta los límites de segmento', () => {
@@ -16,5 +16,15 @@ describe('nav', () => {
 			'tendencia',
 			'us_stocks'
 		]);
+	});
+});
+
+describe('sinBase', () => {
+	it('quita la subruta de despliegue y la barra final', () => {
+		expect(sinBase('/Fog_Radar_Quant/chile/ranking', '/Fog_Radar_Quant')).toBe('/chile/ranking');
+		expect(sinBase('/Fog_Radar_Quant/chile/', '/Fog_Radar_Quant')).toBe('/chile');
+		expect(sinBase('/Fog_Radar_Quant', '/Fog_Radar_Quant')).toBe('/');
+		expect(sinBase('/Fog_Radar_Quant/', '/Fog_Radar_Quant')).toBe('/');
+		expect(sinBase('/etf', '')).toBe('/etf');
 	});
 });

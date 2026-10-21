@@ -1,16 +1,18 @@
 <script lang="ts">
 	import '../app.css';
 	import { page } from '$app/state';
-	import { resolve } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import { ThemeToggle } from '$lib/components/shared';
-	import { EXTRA_NAV, MODULES, isActive, keptQuery, type NavItem } from '$lib/nav';
+	import { EXTRA_NAV, MODULES, isActive, keptQuery, sinBase, type NavItem } from '$lib/nav';
 	import { ruta } from '$lib/nav-href';
 	import { cn } from '$lib/utils';
 
 	let { children } = $props();
 
 	const home: NavItem = { label: 'Inicio', href: '/' };
-	const current = $derived(MODULES.find((m) => isActive(page.url.pathname, m.href)));
+	// La ruta se compara sin la subruta de despliegue (BASE_PATH), si no el menú no marca nada en GitHub Pages.
+	const ruta_ = $derived(sinBase(page.url.pathname, base));
+	const current = $derived(MODULES.find((m) => isActive(ruta_, m.href)));
 	const subtitle = $derived(
 		current
 			? current.description
@@ -45,7 +47,7 @@
 	>
 		<div class="flex flex-wrap items-center gap-1">
 			{#each [home, ...MODULES] as item (item.href)}
-				{@const active = isActive(page.url.pathname, item.href)}
+				{@const active = isActive(ruta_, item.href)}
 				<a
 					href={resolve(ruta(item.href))}
 					class={cn(LINK, active ? ACTIVE : IDLE)}
@@ -54,7 +56,7 @@
 			{/each}
 			<span class="mx-1 h-5 w-px bg-brand-border" aria-hidden="true"></span>
 			{#each EXTRA_NAV as item (item.href)}
-				{@const active = isActive(page.url.pathname, item.href)}
+				{@const active = isActive(ruta_, item.href)}
 				<a
 					href={resolve(ruta(item.href))}
 					class={cn(LINK, active ? ACTIVE : IDLE)}
@@ -69,7 +71,7 @@
 				aria-label="Secciones de {current.label}"
 			>
 				{#each current.sections as section (section.href)}
-					{@const active = page.url.pathname === section.href}
+					{@const active = ruta_ === section.href}
 					<a
 						href="{resolve(ruta(section.href))}{keptQuery(page.url, current.keepParams)}"
 						aria-current={active ? 'page' : undefined}

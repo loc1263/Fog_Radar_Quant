@@ -6,7 +6,7 @@ import { expect, test } from '@playwright/test';
  */
 
 test('ranking: tabla, detalle desplegable y pesos personalizados', async ({ page }) => {
-	await page.goto('/chile');
+	await page.goto('/chile/ranking');
 	await expect(page.getByRole('heading', { name: 'Ranking IPSA' })).toBeVisible();
 
 	const table = page.getByRole('table', { name: 'Ranking multi-factor del IPSA' });
@@ -38,7 +38,7 @@ test('ranking: tabla, detalle desplegable y pesos personalizados', async ({ page
 });
 
 test('ranking: el filtro de sector no cambia el puesto', async ({ page }) => {
-	await page.goto('/chile');
+	await page.goto('/chile/ranking');
 	const table = page.getByRole('table', { name: 'Ranking multi-factor del IPSA' });
 	await page.getByLabel('Sector').selectOption('Financial Services');
 	const rows = table.locator('tbody tr');
@@ -62,4 +62,11 @@ test('indicadores: cambia de grupo de columnas', async ({ page }) => {
 		'aria-current',
 		'page'
 	);
+});
+
+test('resumen: tarjetas del ranking y de los indicadores', async ({ page }) => {
+	await page.goto('/chile');
+	await expect(page.getByRole('heading', { name: 'Resumen' })).toBeVisible();
+	await expect(page.getByText('Acciones analizadas')).toBeVisible();
+	await expect(page.getByText('Mayor ROE')).toBeVisible();
 });

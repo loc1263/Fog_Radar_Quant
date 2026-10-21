@@ -23,7 +23,8 @@ export const MODULES: ModuleNav[] = [
 		href: '/chile',
 		description: 'Ranking multi-factor de acciones del IPSA.',
 		sections: [
-			{ label: 'Ranking', href: '/chile' },
+			{ label: 'Resumen', href: '/chile' },
+			{ label: 'Ranking', href: '/chile/ranking' },
 			{ label: 'Indicadores', href: '/chile/indicadores' }
 		]
 	},
@@ -33,7 +34,8 @@ export const MODULES: ModuleNav[] = [
 		href: '/eeuu',
 		description: 'Screener de momentum y salud financiera de large caps de EEUU.',
 		sections: [
-			{ label: 'Top 15', href: '/eeuu' },
+			{ label: 'Resumen', href: '/eeuu' },
+			{ label: 'Top 15', href: '/eeuu/top15' },
 			{ label: 'Candidatos', href: '/eeuu/candidatos' },
 			{ label: 'Evaluación', href: '/eeuu/evaluacion' },
 			{ label: 'Rendimiento', href: '/eeuu/rendimiento' },
@@ -77,6 +79,13 @@ export const MODULES: ModuleNav[] = [
 ];
 
 export const EXTRA_NAV: NavItem[] = [{ label: 'Estado', href: '/estado' }];
+
+/** Ruta del sitio sin la subruta de despliegue (`/repo/chile/` → `/chile`; GitHub Pages sirve bajo `/<repo>`). */
+export function sinBase(pathname: string, base: string): string {
+	let p = base && pathname.startsWith(base) ? pathname.slice(base.length) : pathname;
+	if (!p.startsWith('/')) p = `/${p}`;
+	return p.length > 1 ? p.replace(/\/+$/, '') : p;
+}
 
 /** ¿`pathname` está dentro de `href`? (`/` solo coincide exacto). */
 export function isActive(pathname: string, href: string): boolean {

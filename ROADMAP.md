@@ -56,10 +56,10 @@ Fog_Radar_Quant/
 | `/` | **Hub**: 4 tarjetas (una por módulo) con fecha de última corrida, KPI principal y top 3; accesos directos |
 | `/etf` → `/etf/resumen` | Resumen de la corrida |
 | `/etf/[seccion]` | top15 · universo · excluidos · rotacion · diversificacion · categorias · top15-simple · top15-vanguard · momentum · top15-cap |
-| `/eeuu` | Top 15 momentum + datos de la corrida |
+| `/eeuu` · `/eeuu/top15` | Resumen de la corrida · Top 15 momentum |
 | `/eeuu/candidatos` · `/eeuu/evaluacion` · `/eeuu/rendimiento` | Vistas del screener |
 | `/eeuu/portafolio` | Portafolios precalculados (modelo único: clusters de correlación + Black-Litterman, `docs/MODELO_NEW.md`) |
-| `/chile` | Ranking IPSA |
+| `/chile` · `/chile/ranking` | Resumen · Ranking IPSA |
 | `/chile/indicadores` | Tabla de indicadores crudos |
 | `/tendencia/[seccion]?analisis=…` | resumen · portafolio · tendencia · sectores · momentum · limitaciones |
 | `/estado` | Estado de los módulos y cadencia de actualización (instantánea de la exportación) |
