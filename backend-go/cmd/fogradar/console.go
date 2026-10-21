@@ -11,6 +11,8 @@ import (
 	"sync"
 	"time"
 	"unicode/utf8"
+
+	"fogradar/internal/jobs"
 )
 
 // consoleHandler es la salida de `fogradar job` en la consola, pensada para leerse: una línea por hito con la hora
@@ -120,7 +122,13 @@ func (h *consoleHandler) escribir(r slog.Record, texto string, blanco bool) erro
 	if blanco {
 		_, _ = fmt.Fprintln(h.w)
 	}
-	_, err := fmt.Fprintf(h.w, "%s  %s  %s\n", r.Time.Format("15:04:05"), tag, texto)
+	prefijo := fmt.Sprintf("%s  %s  ", r.Time.Format("15:04:05"), tag)
+	if r.Level >= slog.LevelWarn {
+		// Un aviso largo (p. ej. una lista de 30 tickers) se reparte en varias líneas sangradas bajo el texto.
+		_, err := fmt.Fprint(h.w, jobs.EnvolverAviso(prefijo, texto))
+		return err
+	}
+	_, err := fmt.Fprintf(h.w, "%s%s\n", prefijo, texto)
 	return err
 }
 

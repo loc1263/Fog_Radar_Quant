@@ -2,10 +2,12 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"log/slog"
 	"strings"
 	"testing"
+	"time"
 )
 
 func logConsola(lvl slog.Level) (*slog.Logger, *bytes.Buffer) {
@@ -160,5 +162,25 @@ func TestConsolaBarraNoRetrocedeConHilosDesordenados(t *testing.T) {
 	}
 	if got := strings.Join(vistos, " "); got != "3/30 6/30 9/30 12/30 30/30" {
 		t.Errorf("la barra solo avanza: %q en %q", got, buf.String())
+	}
+}
+
+func TestConsolaPartePorLineaLosAvisosLargos(t *testing.T) {
+	var buf bytes.Buffer
+	h := newConsoleHandler(&buf, slog.LevelInfo)
+	lista := strings.Repeat("TSM (Taiwan), ", 20) + "BHP (Australia)"
+	msg := "[EEUU] excluidas 21 empresas con sede fuera de EEUU (ADR/instrumento en USD de una empresa extranjera): " + lista
+	_ = h.Handle(context.Background(), slog.NewRecord(time.Date(2026, 10, 21, 18, 33, 3, 0, time.UTC), slog.LevelWarn, msg, 0))
+	ls := strings.Split(strings.TrimRight(buf.String(), "\n"), "\n")
+	if len(ls) < 3 || !strings.HasPrefix(ls[0], "18:33:03  AVISO  [EEUU] excluidas 21 empresas") || !strings.HasSuffix(ls[0], "extranjera):") {
+		t.Fatalf("el encabezado va solo en la primera línea:\n%s", buf.String())
+	}
+	for _, l := range ls[1:] {
+		if !strings.HasPrefix(l, strings.Repeat(" ", 19)) || len([]rune(l)) > 120 {
+			t.Errorf("las continuaciones van sangradas y acotadas: %q", l)
+		}
+	}
+	if !strings.Contains(strings.Join(ls, " "), "BHP (Australia)") {
+		t.Error("no debe perderse texto")
 	}
 }

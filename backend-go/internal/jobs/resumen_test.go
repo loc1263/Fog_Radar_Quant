@@ -71,7 +71,7 @@ func TestResumenMarcaLosErrores(t *testing.T) {
 
 func TestEnvolverAvisoLargo(t *testing.T) {
 	msg := "[EEUU] excluidas 30 empresas con sede fuera de EEUU (ADR): " + strings.Repeat("TSM (Taiwan), ", 20) + "BHP (Australia)"
-	out := envolverAviso("    · ", msg)
+	out := EnvolverAviso("    · ", msg)
 	ls := strings.Split(strings.TrimRight(out, "\n"), "\n")
 	if len(ls) < 3 {
 		t.Fatalf("debía partirse en varias líneas:\n%s", out)
@@ -90,7 +90,7 @@ func TestEnvolverAvisoLargo(t *testing.T) {
 	if !strings.Contains(strings.Join(ls, " "), "BHP (Australia)") {
 		t.Error("no debe perderse texto al partir")
 	}
-	if got := envolverAviso("    · ", "corto"); got != "    · corto\n" {
+	if got := EnvolverAviso("    · ", "corto"); got != "    · corto\n" {
 		t.Errorf("un aviso corto queda en una línea: %q", got)
 	}
 }

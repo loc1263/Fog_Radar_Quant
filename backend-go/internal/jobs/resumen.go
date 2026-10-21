@@ -117,7 +117,7 @@ func seccionAvisos(res []Resultado) string {
 			linea(fmt.Sprintf("    %-12s %s\n", a.Ticker, a.Mensaje))
 		}
 		for _, a := range otros {
-			linea(envolverAviso("    · ", a.Mensaje))
+			linea(EnvolverAviso("    · ", a.Mensaje))
 		}
 		if n > maxAvisosPorModulo {
 			fmt.Fprintf(&b, "    … y %d más (ver data/_jobs/logs/fogradar.log)\n", n-maxAvisosPorModulo)
@@ -126,9 +126,9 @@ func seccionAvisos(res []Resultado) string {
 	return b.String()
 }
 
-// envolverAviso parte un aviso largo en varias líneas: el encabezado (hasta los primeros «: ») en la primera y la
+// EnvolverAviso parte un aviso largo en varias líneas: el encabezado (hasta los primeros «: ») en la primera y la
 // lista que sigue repartida en líneas de anchoAviso cortando después de las comas. prefijo encabeza la primera línea.
-func envolverAviso(prefijo, msg string) string {
+func EnvolverAviso(prefijo, msg string) string {
 	sangria := strings.Repeat(" ", utf8.RuneCountInString(prefijo)+2)
 	if utf8.RuneCountInString(msg) <= anchoAviso {
 		return prefijo + msg + "\n"
