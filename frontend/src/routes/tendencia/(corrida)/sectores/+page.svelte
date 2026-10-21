@@ -19,7 +19,9 @@
 	const d = $derived(data.latest.ok ? data.latest.data : null);
 	const a = $derived(d ? elegirAnalisis(d, page.url.searchParams.get('analisis')) : null);
 	const grafico = $derived(
-		(a?.sectors ?? []).map((s) => ({ sector: s.sector, peso: s.peso_total * 100 }))
+		(a?.sectors ?? [])
+			.map((s) => ({ sector: s.sector, peso: s.peso_total * 100 }))
+			.sort((x, y) => y.peso - x.peso)
 	);
 
 	const columns: Column<TdSector>[] = [
@@ -51,7 +53,7 @@
 		<DataTable
 			rows={a.sectors}
 			{columns}
-			initialSort={{ key: 'retorno_6m_prom', dir: 'desc' }}
+			initialSort={{ key: 'peso_total', dir: 'desc' }}
 			csvFilename="tendencia_sectores{a.key}_{d?.run_dir}"
 			caption="Sectores del portafolio"
 		>
