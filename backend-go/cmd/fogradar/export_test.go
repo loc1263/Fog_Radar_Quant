@@ -111,3 +111,46 @@ func TestParseExportArgs(t *testing.T) {
 		t.Fatalf("%+v %v", a, err)
 	}
 }
+
+func TestFilasDe(t *testing.T) {
+	if got := filasDe([]byte(`[{"a":"1"}]`), ""); len(got) != 1 {
+		t.Errorf("arreglo raíz: %v", got)
+	}
+	if got := filasDe([]byte(`{"filas":[{"a":"1"},{"a":"2"}]}`), "filas"); len(got) != 2 {
+		t.Errorf("clave filas: %v", got)
+	}
+}
+
+func TestDiffsDeCorridas(t *testing.T) {
+	defer func(orig []paresDeDiff) { diffsDeCorridas = orig }(diffsDeCorridas)
+	s := &core.Settings{Env: "test", DataDir: t.TempDir(), Loc: time.UTC, RateLimit: "1000/minute"}
+	h := api.New(s, slog.New(slog.DiscardHandler))
+	api.Public(h, huma.Operation{OperationID: "r", Method: http.MethodGet, Path: "/api/zz/runs"},
+		func(context.Context, *vacio) (*listaOut, error) {
+			return &listaOut{Body: []map[string]string{{"k": "1"}, {"k": "2"}, {"k": "3"}}}, nil
+		})
+	api.Public(h, huma.Operation{OperationID: "d", Method: http.MethodGet, Path: "/api/zz/diff"},
+		func(_ context.Context, in *struct {
+			Desde string `query:"desde"`
+			Hasta string `query:"hasta"`
+		}) (*unoOut, error) {
+			return &unoOut{Body: map[string]string{"desde": in.Desde, "hasta": in.Hasta}}, nil
+		})
+	for todos, esperados := range map[bool]int{false: 2, true: 3} {
+		diffsDeCorridas = []paresDeDiff{{"/api/zz/runs", "k", "/api/zz/diff", todos}}
+		out := t.TempDir()
+		m, err := exportar(h, &exportArgs{out: out, modulos: []string{"zz"}}, time.Now())
+		if err != nil {
+			t.Fatal(err)
+		}
+		n := 0
+		for _, e := range m.Archivos {
+			if len(e.Ruta) > 13 && e.Ruta[:13] == "/api/zz/diff?" {
+				n++
+			}
+		}
+		if n != esperados {
+			t.Errorf("todos=%v: %d diffs, esperaba %d", todos, n, esperados)
+		}
+	}
+}

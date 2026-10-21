@@ -97,20 +97,20 @@ npm run autofix && npm run check && npm run lint && npm test   # validaciones pr
 npm run gen:api                # regenera los tipos TS desde el OpenAPI del backend (backend arriba)
 ```
 
-## Sitio estático (en migración, piloto ETF)
+## Sitio estático (en migración: ETF y Chile listos)
 
-Objetivo: publicar el sitio como SPA en GitHub Pages ([plan](docs/PLAN_GITHUB_PAGES.md)). Las vistas de **ETF** ya leen JSON
-estático en vez de llamar al backend; Chile, EEUU y Tendencia siguen con el backend (BFF) hasta migrarlas.
+Objetivo: publicar el sitio como SPA en GitHub Pages ([plan](docs/PLAN_GITHUB_PAGES.md)). Las vistas de **ETF y Chile** ya leen JSON
+estático en vez de llamar al backend; EEUU y Tendencia siguen con el backend (BFF) hasta migrarlas.
 
 ```bash
 # 1. Exportar la instantánea de la API a frontend/static/data (lo hace iniciar.bat solo)
-cd backend-go && ./bin/fogradar.exe export --modulo etf --out ../frontend/static/data
+cd backend-go && ./bin/fogradar.exe export --modulo etf,cl --out ../frontend/static/data
 # 2. Construir la SPA (BASE_PATH = subruta de Pages; vacío si va en la raíz)
 cd ../frontend && STATIC_BUILD=1 BASE_PATH=/Fog_Radar_Quant npm run build     # salida en frontend/build
 ```
 
 - `fogradar export` llama a la API en proceso y guarda cada GET en `static/data/<ruta>.json` (carpeta fuera de git), más un `manifest.json`.
-  Para ETF también deja el PDF, la trayectoria de cada ETF del Top y el diff de cada corrida contra la anterior.
+  Deja también el PDF de ETF, la trayectoria por ticker y el diff entre corridas (ETF: cada una contra la anterior; Chile: todos los pares).
 - En Git Bash de Windows, `BASE_PATH=/x` se convierte en una ruta de disco: antepón `MSYS_NO_PATHCONV=1`.
 - `404.html` hace de fallback SPA (lo que GitHub Pages sirve para rutas desconocidas).
 

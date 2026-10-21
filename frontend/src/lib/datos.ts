@@ -53,14 +53,14 @@ export function datos<P extends RutaGet>(
 	return leer(fetch, rutaConcreta(ruta, params));
 }
 
-/** Diff de una corrida contra la anterior (`fogradar export` no guarda pares arbitrarios). */
-export function datosDiffEtf(
+type RutaDiff = '/api/etf/history/diff' | '/api/cl/history/diff';
+
+/** Diff entre dos corridas: `fogradar export` guarda un archivo por par (ver `diffsDeCorridas`). */
+export function datosDiff<P extends RutaDiff>(
 	fetch: typeof globalThis.fetch,
+	ruta: P,
 	desde: string,
 	hasta: string
-): Promise<Loaded<Respuesta<'/api/etf/history/diff'>>> {
-	return leer(
-		fetch,
-		`/api/etf/history/diff/${encodeURIComponent(desde)}__${encodeURIComponent(hasta)}`
-	);
+): Promise<Loaded<Respuesta<P>>> {
+	return leer(fetch, `${ruta}/${encodeURIComponent(desde)}__${encodeURIComponent(hasta)}`);
 }

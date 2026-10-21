@@ -82,8 +82,8 @@ Cada fase termina con una decisión explícita; si un criterio crítico falla, s
 
 - Repo **público**; módulo piloto **ETF**; por ahora solo desarrollo local (sin Actions ni Pages reales).
 - **SPA pura con JSON estático** (no prerender con BFF): `fogradar export` genera `frontend/static/data/` y las páginas usan `+page.ts` con `$lib/datos`.
-- Implementado: `fogradar export`, `adapter-static` (`STATIC_BUILD=1`, `BASE_PATH`) y las 12 vistas de ETF. Pendiente: Chile, EEUU, Tendencia, hub, buscador (índice JSON) y Actions.
-- Limitaciones de ETF en la versión estática: la rotación histórica compara cada corrida con la anterior (no pares arbitrarios).
+- Implementado: `fogradar export`, `adapter-static` (`STATIC_BUILD=1`, `BASE_PATH`) y las 12 vistas de ETF y las 3 de Chile. Pendiente: EEUU, Tendencia, hub, buscador (índice JSON) y Actions.
+- Limitaciones de ETF en la versión estática: la rotación histórica compara cada corrida con la anterior (no pares arbitrarios). Chile exporta todos los pares de corridas (25 corridas → 300 diffs de ~6 KB); si el historial crece mucho, pasar a calcular el diff en el cliente o limitar a consecutivos.
 
 ## Decisiones abiertas y alternativas
 

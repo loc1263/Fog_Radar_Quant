@@ -23,24 +23,31 @@ import (
 // expansion pide, además, un GET por cada valor de `campo` de la respuesta de `origen`.
 type expansion struct {
 	origen string // ruta ya exportada, p. ej. /api/etf/history/top
-	campo  string // campo de cada elemento del arreglo, p. ej. ticker
+	lista  string // clave del objeto que contiene el arreglo ("" si la respuesta es el arreglo)
+	campo  string // campo de cada elemento, p. ej. ticker
 	plan   string // ruta con un parámetro, p. ej. /api/etf/history/ticker/{ticker}
+	param  string // nombre del parámetro de `plan`
 }
 
 var expansiones = []expansion{
-	{"/api/etf/history/top", "ticker", "/api/etf/history/ticker/{ticker}"},
+	{"/api/etf/history/top", "", "ticker", "/api/etf/history/ticker/{ticker}", "ticker"},
+	{"/api/cl/ranking", "filas", "simbolo", "/api/cl/history/ticker/{ticker}", "ticker"},
 }
 
-// paresConsecutivos exporta el diff de cada corrida contra la anterior (la API acepta dos corridas
-// cualesquiera, pero N² pares no caben en un sitio estático). Se descartan las filas «fuera»
-// (fuera del top en ambas corridas): son todo el universo y no aportan al diff.
-type paresConsecutivos struct {
-	runs string // ruta ya exportada con run_key por corrida, en orden cronológico
-	diff string // ruta de diff (query desde, hasta)
+// paresDeDiff exporta diffs entre corridas (query desde, hasta) como <diff>/<desde>__<hasta>.json.
+// Con todos=false solo cada corrida contra la anterior (universos grandes: N² pares no caben en un
+// sitio estático); con todos=true, cada par desde<hasta. Se descartan las filas «fuera» (fuera del
+// top en ambas corridas): son todo el universo y no aportan al diff.
+type paresDeDiff struct {
+	runs  string // ruta ya exportada con la clave de cada corrida, en orden cronológico
+	clave string // campo de la corrida, p. ej. run_key
+	diff  string // ruta de diff
+	todos bool
 }
 
-var diffsConsecutivos = []paresConsecutivos{
-	{"/api/etf/history/runs", "/api/etf/history/diff"},
+var diffsDeCorridas = []paresDeDiff{
+	{"/api/etf/history/runs", "run_key", "/api/etf/history/diff", false},
+	{"/api/cl/history/runs", "ts", "/api/cl/history/diff", true},
 }
 
 type exportArgs struct {
@@ -150,10 +157,7 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 		if !moduloIncluido(x.plan, a.modulos) {
 			continue
 		}
-		var filas []map[string]any
-		if json.Unmarshal(cuerpos[x.origen], &filas) != nil {
-			continue
-		}
+		filas := filasDe(cuerpos[x.origen], x.lista)
 		vistos := map[string]bool{}
 		for _, f := range filas {
 			v, _ := f[x.campo].(string)
@@ -161,23 +165,30 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 				continue
 			}
 			vistos[v] = true
-			pedir(strings.Replace(x.plan, "{"+x.campo+"}", v, 1))
+			pedir(strings.Replace(x.plan, "{"+x.param+"}", v, 1))
 		}
 	}
 
-	for _, p := range diffsConsecutivos {
+	for _, p := range diffsDeCorridas {
 		if !moduloIncluido(p.diff, a.modulos) {
 			continue
 		}
-		var runs []struct {
-			RunKey string `json:"run_key"`
-		}
+		var runs []map[string]any
 		if json.Unmarshal(cuerpos[p.runs], &runs) != nil {
 			continue
 		}
-		for i := 1; i < len(runs); i++ {
-			d, h := runs[i-1].RunKey, runs[i].RunKey
-			pedirComo(p.diff+"?desde="+d+"&hasta="+h, p.diff+"/"+d+"__"+h, sinFuera)
+		for j := 1; j < len(runs); j++ {
+			hasta, _ := runs[j][p.clave].(string)
+			desde := 0
+			if !p.todos {
+				desde = j - 1
+			}
+			for i := desde; i < j; i++ {
+				d, _ := runs[i][p.clave].(string)
+				if d != "" && hasta != "" {
+					pedirComo(p.diff+"?desde="+d+"&hasta="+hasta, p.diff+"/"+d+"__"+hasta, sinFuera)
+				}
+			}
 		}
 	}
 
@@ -186,6 +197,18 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 	}
 	b, _ := json.MarshalIndent(m, "", "  ")
 	return m, escribir(filepath.Join(a.out, "manifest.json"), b)
+}
+
+// filasDe devuelve los elementos de la respuesta (o de su clave `lista`).
+func filasDe(body []byte, lista string) []map[string]any {
+	var filas []map[string]any
+	if lista == "" {
+		_ = json.Unmarshal(body, &filas)
+		return filas
+	}
+	var obj map[string][]map[string]any
+	_ = json.Unmarshal(body, &obj)
+	return obj[lista]
 }
 
 // sinFuera quita de un diff las filas con estado «fuera».

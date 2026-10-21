@@ -1,5 +1,5 @@
 import type { PageLoad } from './$types';
-import { datos, datosDiffEtf } from '$lib/datos';
+import { datos, datosDiff } from '$lib/datos';
 import { elegir } from '$lib/historial';
 
 /** Corridas recientes que cuenta la tabla de permanencia en el Top 15 (el export usa el default del backend). */
@@ -31,7 +31,7 @@ export const load: PageLoad = async ({ fetch, url }) => {
 
 	const [serie, diff] = await Promise.all([
 		ticker ? datos(fetch, '/api/etf/history/ticker/{ticker}', { ticker }) : null,
-		par ? datosDiffEtf(fetch, par.desde, par.hasta) : null
+		par ? datosDiff(fetch, '/api/etf/history/diff', par.desde, par.hasta) : null
 	]);
 
 	return {
