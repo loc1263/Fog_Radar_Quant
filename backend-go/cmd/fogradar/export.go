@@ -161,44 +161,11 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 		}
 	}
 
-	if moduloIncluido("/api/tendencia/", a.modulos) {
-		archivosDeTendencia(handler, a.out, cuerpos["/api/tendencia/latest"], m)
-	}
-
 	if err := os.MkdirAll(a.out, 0o755); err != nil {
 		return nil, err
 	}
 	b, _ := json.MarshalIndent(m, "", "  ")
 	return m, escribir(filepath.Join(a.out, "manifest.json"), b)
-}
-
-// archivosDeTendencia guarda los archivos (PDF, CSV…) de la última corrida de Tendencia tal cual, en
-// <out>/api/tendencia/archivos/<run_dir>/<nombre>, para los enlaces de «Descargar».
-func archivosDeTendencia(handler http.Handler, out string, latest []byte, m *exportManifest) {
-	var l struct {
-		RunDir   string `json:"run_dir"`
-		Archivos []struct {
-			Nombre string `json:"nombre"`
-		} `json:"archivos"`
-	}
-	if json.Unmarshal(latest, &l) != nil || l.RunDir == "" {
-		return
-	}
-	for _, f := range l.Archivos {
-		ruta := "/api/tendencia/runs/" + l.RunDir + "/files/" + f.Nombre
-		req := httptest.NewRequest(http.MethodGet, ruta, nil)
-		rec := httptest.NewRecorder()
-		handler.ServeHTTP(rec, req)
-		e := exportEntrada{Ruta: ruta, Estado: rec.Code}
-		if rec.Code == http.StatusOK {
-			e.Bytes = rec.Body.Len()
-			dest := filepath.Join(out, "api", "tendencia", "archivos", l.RunDir, f.Nombre)
-			if err := escribir(dest, rec.Body.Bytes()); err != nil {
-				e.Estado = http.StatusInternalServerError
-			}
-		}
-		m.Archivos = append(m.Archivos, e)
-	}
 }
 
 // filasDe devuelve los elementos de la respuesta (o de su clave `lista`).

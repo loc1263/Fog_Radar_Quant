@@ -106,27 +106,3 @@ func TestFilasDe(t *testing.T) {
 		t.Errorf("clave filas: %v", got)
 	}
 }
-
-func TestArchivosDeTendencia(t *testing.T) {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/api/tendencia/runs/20261021_01/files/top15.csv", func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set("Content-Type", "text/csv")
-		_, _ = w.Write([]byte("a,b\n1,2\n"))
-	})
-	out := t.TempDir()
-	m := &exportManifest{}
-	latest := []byte(`{"run_dir":"20261021_01","archivos":[{"nombre":"top15.csv"},{"nombre":"falta.csv"}]}`)
-	archivosDeTendencia(mux, out, latest, m)
-
-	b, err := os.ReadFile(filepath.Join(out, "api", "tendencia", "archivos", "20261021_01", "top15.csv"))
-	if err != nil || string(b) != "a,b\n1,2\n" {
-		t.Fatalf("contenido: %q %v", b, err)
-	}
-	if len(m.Archivos) != 2 || m.Archivos[1].Estado != http.StatusNotFound {
-		t.Errorf("manifest: %+v", m.Archivos)
-	}
-	archivosDeTendencia(mux, out, []byte(`no es json`), m) // sin latest no hace nada
-	if len(m.Archivos) != 2 {
-		t.Errorf("latest inválido no debía pedir archivos: %+v", m.Archivos)
-	}
-}

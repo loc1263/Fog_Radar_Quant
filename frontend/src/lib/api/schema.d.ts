@@ -412,40 +412,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/tendencia/runs/{run_dir}/files": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Archivos de una corrida */
-        get: operations["td_run_files"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/tendencia/runs/{run_dir}/files/{nombre}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Descarga un archivo de una corrida (PDF, CSV, JSON, TXT) */
-        get: operations["td_run_file"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/tendencia/status": {
         parameters: {
             query?: never;
@@ -1434,16 +1400,8 @@ export interface components {
             /** Format: int64 */
             universe_size: number;
         };
-        TdArchivo: {
-            /** Format: int64 */
-            bytes: number;
-            nombre: string;
-            tipo: string;
-        };
         TdDashboard: {
             analyses: components["schemas"]["TdAnalisis"][];
-            /** @description Archivos descargables de la corrida (PDF, CSV…), ver /runs/{run_dir}/files. */
-            archivos: components["schemas"]["TdArchivo"][];
             /** @description Tickers excluidos en el último armado del dataset (TD-DATA-1 / TD-OPS-2). */
             excluidos: components["schemas"]["TdExcluido"][];
             /** Format: date-time */
@@ -2363,72 +2321,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TdDashboard"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    td_run_files: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description YYYYMMDD_NN */
-                run_dir: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TdArchivo"][];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    td_run_file: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description YYYYMMDD_NN */
-                run_dir: string;
-                nombre: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/pdf": unknown;
-                    "text/csv": unknown;
                 };
             };
             /** @description Error */

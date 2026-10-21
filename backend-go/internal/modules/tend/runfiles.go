@@ -15,7 +15,7 @@ import (
 
 // Archivos del módulo que lee la API (data/tendencia):
 //
-//	output/<YYYYMMDD>_<NN>/  una carpeta por corrida (dashboard_data.json, CSV/JSON de Markowitz, tendencia y momentum, PDF)
+//	output/<YYYYMMDD>_<NN>/  una carpeta por corrida (dashboard_data.json, CSV/JSON de Markowitz, tendencia y momentum)
 const (
 	key = core.ModuleKey("tendencia")
 	// RunDirPattern es el nombre válido de una carpeta de corrida.
@@ -27,10 +27,6 @@ const (
 
 var (
 	runDirRe       = regexp.MustCompile(RunDirPattern)
-	nombreArchivo  = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_\-]{0,126}\.[A-Za-z0-9]{1,5}$`)
-	tiposDescargar = map[string]string{
-		".pdf": "application/pdf", ".csv": "text/csv; charset=utf-8", ".json": "application/json", ".txt": "text/plain; charset=utf-8",
-	}
 )
 
 // ModuleDir es data/tendencia.
@@ -88,39 +84,6 @@ func ReadDashboard(d string, v any) *core.APIError {
 		return core.Err(http.StatusServiceUnavailable, "invalid_data", fmt.Sprintf("%s/%s está corrupto.", filepath.Base(d), DashboardFile))
 	}
 	return nil
-}
-
-// Archivos lista los archivos descargables de una corrida.
-func Archivos(d string) []TdArchivo {
-	out := []TdArchivo{}
-	ents, _ := os.ReadDir(d)
-	for _, e := range ents {
-		tipo, ok := tiposDescargar[strings.ToLower(filepath.Ext(e.Name()))]
-		if e.IsDir() || !ok || strings.HasPrefix(e.Name(), ".") {
-			continue
-		}
-		if info, err := e.Info(); err == nil {
-			out = append(out, TdArchivo{Nombre: e.Name(), Tipo: tipo, Bytes: info.Size()})
-		}
-	}
-	return out
-}
-
-// Archivo devuelve la ruta y el tipo de un archivo descargable de la corrida; rechaza rutas y extensiones no permitidas.
-// Lista blanca (no lista negra): sin separadores, unidades de Windows (C:x) ni flujos alternativos NTFS (a:b); y la
-// ruta final debe quedar dentro de la corrida.
-func Archivo(d, nombre string) (path, tipo string, e *core.APIError) {
-	tipo, ok := tiposDescargar[strings.ToLower(filepath.Ext(nombre))]
-	if !nombreArchivo.MatchString(nombre) || !ok {
-		return "", "", core.Err(http.StatusNotFound, "not_found", "Archivo no disponible.")
-	}
-	path = filepath.Join(d, nombre)
-	absD, _ := filepath.Abs(d)
-	absP, _ := filepath.Abs(path)
-	if rel, err := filepath.Rel(absD, absP); err != nil || strings.HasPrefix(rel, "..") || !isFile(path) {
-		return "", "", core.Err(http.StatusNotFound, "not_found", fmt.Sprintf("La corrida %s no tiene %s.", filepath.Base(d), nombre))
-	}
-	return path, tipo, nil
 }
 
 // Excluidos: tickers que el último armado del dataset dejó fuera (processed/excluded_tickers.txt: ticker<TAB>nombre<TAB>motivo).

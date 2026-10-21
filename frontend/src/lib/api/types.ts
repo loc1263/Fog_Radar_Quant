@@ -71,5 +71,4 @@ export type TdMomentumSemanal = Schemas['TdMomentumSemanal'];
 export type TdRetornoReciente = Schemas['TdRetornoReciente'];
 export type TdPortafolioReducido = Schemas['TdPortafolioReducido'];
 export type TdParametros = Schemas['TdParametros'];
-export type TdArchivo = Schemas['TdArchivo'];
 export type TdExcluido = Schemas['TdExcluido'];

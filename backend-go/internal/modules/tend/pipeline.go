@@ -287,9 +287,6 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 	if err := RunMomentum(prices, runDir, u, p, warn); err != nil {
 		return "", err
 	}
-	if _, err := GenerarPDF(runDir, u, p, LatestMacroFile(moduleDir) != "", now); err != nil {
-		warn("No se pudo generar el informe PDF (%v); dashboard_data.json y los CSV sí se generan.", err)
-	}
 
 	payload, err := BuildDashboardPayload(runDir, u, p, now)
 	if err != nil {

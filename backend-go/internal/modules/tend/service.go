@@ -13,7 +13,7 @@ func nz[T any](s []T) []T {
 
 // normalize deja las listas ausentes (corridas antiguas) como [] en vez de null.
 func (d *TdDashboard) normalize() {
-	d.MarketRegimeNotes, d.Archivos, d.Excluidos = nz(d.MarketRegimeNotes), nz(d.Archivos), nz(d.Excluidos)
+	d.MarketRegimeNotes, d.Excluidos = nz(d.MarketRegimeNotes), nz(d.Excluidos)
 	d.Analyses = nz(d.Analyses)
 	for i := range d.Analyses {
 		a := &d.Analyses[i]
@@ -45,7 +45,6 @@ func Dashboard(s *core.Settings, runDir string) (*TdDashboard, *core.APIError) {
 	if e := ReadDashboard(d, &out); e != nil {
 		return nil, e
 	}
-	out.Archivos = Archivos(d)
 	out.Parametros = core.Some(DefaultParams().Td())
 	out.Excluidos = []TdExcluido{}
 	if runDir == "" { // solo aplica a la última corrida: el archivo se reescribe en cada armado

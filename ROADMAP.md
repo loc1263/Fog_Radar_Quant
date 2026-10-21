@@ -19,7 +19,7 @@ Tendencia/Markowitz Asia + EEUU. Los proyectos originales viven en `D:\Claude\<P
 Fog_Radar_Quant/
 ├── backend-go/                     # API + pipelines (un binario: fogradar api | job | openapi)
 │   ├── cmd/fogradar/               # main, CLI de jobs, log único
-│   └── internal/{api,core,modules/{cl,us,etf,tend},yahoo,fx,quant,pdf,jobs,transversal}
+│   └── internal/{api,core,modules/{cl,us,etf,tend},yahoo,fx,quant,jobs,transversal}
 ├── data/                           # fuera del código, ignorado por git
 │   ├── etf/{current,hist,screener}/   us_stocks/runs/   cl_stocks/   tendencia/{output,universe,...}
 │   └── _jobs/                      # registro de corridas (jsonl) y log único (logs/fogradar.log)
@@ -73,7 +73,7 @@ Layout global: header con logo *Fog Radar Quant*, menú principal de 4 módulos,
 | Módulo | Prefijo |
 |---|---|
 | Sistema | `/api/health`, `/api/status`, `/api/jobs`, `/api/jobs/programas`, `/api/hub`, `/api/buscar` |
-| ETF | `/api/etf/*` (resumen, top15, ranking-completo, excluidos, rotacion, diversificacion, categorias, momentum, russell3000, historial, pdf, `POST /run`, `/history/*`) |
+| ETF | `/api/etf/*` (resumen, top15, ranking-completo, excluidos, rotacion, diversificacion, categorias, momentum, russell3000) |
 | EEUU | `/api/us/*` (rankings, tickers/{t}/evaluate, portfolio/optimize, `/history/*`) |
 | Chile | `/api/cl/*` (ranking, indicadores, `/history/*`) |
 | Tendencia | `/api/tendencia/*` (latest, runs, analyses, excluidos, `/history/*`) |

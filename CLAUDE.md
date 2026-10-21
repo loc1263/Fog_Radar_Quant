@@ -46,8 +46,6 @@ módulo: **docs/METODOLOGIAS.md** (actualizarla si cambia la lógica).
 - Datos en `data/<modulo>/` (fuera de git). Rutas y secretos vía `internal/core/settings.go`
   (variables de entorno + `backend-go/.env`).
 - Calidad: `gofmt`, `go vet`, `golangci-lint`, `go test -race`. Toda lógica nueva lleva tests.
-- PDFs: estilo común en `internal/pdf` (paleta, Carlito incluida, tablas, encabezado/pie).
-  Textos ≥ 10 pt, encabezados de tabla claros (nunca fondos oscuros), números a la derecha.
 - **Yahoo Finance:** todo pasa por el cliente común de `internal/yahoo` (espaciado
   global, reintento ante 429). Históricos con caché: `Client.History`.
 - **FX:** `internal/fx` (spot `Rates`, series `ToUSD`, cualquier moneda ISO 4217 y

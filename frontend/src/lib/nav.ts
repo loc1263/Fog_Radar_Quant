@@ -70,8 +70,7 @@ export const MODULES: ModuleNav[] = [
 			{ label: 'Tendencia 6m', href: '/tendencia/proyeccion' },
 			{ label: 'Sectores', href: '/tendencia/sectores' },
 			{ label: 'Momentum', href: '/tendencia/momentum' },
-			{ label: 'Limitaciones', href: '/tendencia/limitaciones' },
-			{ label: 'Descargar', href: '/tendencia/descargar' }
+			{ label: 'Limitaciones', href: '/tendencia/limitaciones' }
 		],
 		keepParams: ['analisis']
 	}

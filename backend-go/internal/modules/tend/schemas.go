@@ -1,6 +1,6 @@
 // Package tend es el módulo Tendencia Asia + EEUU (/api/tendencia): descubrimiento del universo por capitalización,
 // precios y FX en USD, selección de portafolio (Markowitz con tope y L2), proyección a 6 meses (GBM), momentum mensual y
-// semanal e informe PDF. Los nombres de campo son los de dashboard_data.json del original.
+// semanal. Los nombres de campo son los de dashboard_data.json del original.
 package tend
 
 import "fogradar/internal/core"
@@ -130,13 +130,6 @@ type TdAnalisis struct {
 	PortfolioOptions []TdPortafolioReducido `json:"portfolio_options"`
 }
 
-// TdArchivo es un archivo descargable de una corrida.
-type TdArchivo struct {
-	Nombre string `json:"nombre"`
-	Tipo   string `json:"tipo"`
-	Bytes  int64  `json:"bytes"`
-}
-
 // TdParametros son los parámetros del modelo (para los textos de metodología).
 type TdParametros struct {
 	TopN              int64   `json:"top_n"`
@@ -169,7 +162,6 @@ type TdDashboard struct {
 	UniverseSource    *string                `json:"universe_source" nullable:"true"`
 	MarketRegimeNotes []string               `json:"market_regime_notes"`
 	Analyses          []TdAnalisis           `json:"analyses"`
-	Archivos          []TdArchivo            `json:"archivos" doc:"Archivos descargables de la corrida (PDF, CSV…), ver /runs/{run_dir}/files."`
 	Parametros        core.Opt[TdParametros] `json:"parametros"`
 	Excluidos         []TdExcluido           `json:"excluidos" doc:"Tickers excluidos en el último armado del dataset (TD-DATA-1 / TD-OPS-2)."`
 }

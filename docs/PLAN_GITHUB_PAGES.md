@@ -80,10 +80,11 @@ Cada fase termina con una decisión explícita; si un criterio crítico falla, s
 
 ## Decisiones tomadas (2026-10-21)
 
+- Se eliminaron las descargas (PDF de ETF y PDF/CSV de Tendencia) y los PDF del backend.
 - Se eliminó todo el BFF (servidor de frontend, `hooks.server.ts`, `lib/server`, `adapter-node`, `PRIVATE_API_*`).
 - Repo **público**; módulo piloto **ETF**; por ahora solo desarrollo local (sin Actions ni Pages reales).
 - **SPA pura con JSON estático** (no prerender con BFF; ver [ADR 0005](ADR/0005-sitio-estatico-con-datos-exportados.md)): `fogradar export` genera `frontend/static/data/` y las páginas usan `+page.ts` con `$lib/datos`.
-- Implementado: `fogradar export`, `adapter-static` (`BASE_PATH`) y todas las vistas: ETF, Chile, EEUU, Tendencia (con sus descargas: PDF y CSV de la última corrida), hub y Estado (instantánea de la exportación). Pendiente: los workflows de GitHub Actions y la publicación en Pages.
+- Implementado: `fogradar export`, `adapter-static` (`BASE_PATH`) y todas las vistas: ETF, Chile, EEUU, Tendencia, hub y Estado (instantánea de la exportación). Pendiente: los workflows de GitHub Actions y la publicación en Pages.
 - EEUU en la versión estática: sin evaluación en vivo de un ticker ni optimizador a pedido; el portafolio es el **precalculado** del batch (`GET /api/us/portfolio/precalculado`: todos los candidatos, Top 30 y Top 15 con los parámetros por defecto). Las sparklines usan `prices` de los últimos 60 días (el export fija `days=60`).
 - **Sin búsquedas (2026-10-21):** se eliminaron el buscador global (menú, hub, `/buscar`, `GET /api/buscar` y su índice) y los filtros de texto de las tablas; las tablas conservan orden, paginación y CSV.
 - **Sin historial (2026-10-21):** se eliminaron las vistas de historial de todos los módulos (Chile, EEUU, ETF —Historial y Evolución— y Tendencia). La API `/history/*` y `history.db` siguen en el backend (ADR 0003), pero el export no las incluye.
