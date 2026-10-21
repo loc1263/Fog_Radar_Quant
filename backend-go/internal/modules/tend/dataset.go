@@ -19,7 +19,7 @@ import (
 //   - convierte a USD los tickers que cotizan en moneda local (core.fx, con subunidades GBp/ZAc/ILA);
 //   - alinea las series en un calendario semanal común (semanas que terminan en domingo);
 //   - filtra tickers con historia insuficiente (< MIN_WEEKS_REQUIRED);
-//   - determina la tasa libre de riesgo: macro_data (Treasury 3M) > ^IRX > 4 %.
+//   - determina la tasa libre de riesgo: ^IRX > 4 %.
 
 // Excluido es un ticker que quedó fuera del dataset, con su motivo.
 type Excluido struct{ Ticker, Nombre, Motivo string }
@@ -197,22 +197,8 @@ func ffillLimit(p *Prices) [][]float64 {
 	return out
 }
 
-// DetermineRiskFreeRate: macro_data (Treasury 3M) > ^IRX > 4 %.
+// DetermineRiskFreeRate: ^IRX (letra del Tesoro a 3 meses, Yahoo) > 4 %.
 func DetermineRiskFreeRate(cacheDir string, warn func(string, ...any)) float64 {
-	if mf := LatestMacroFile(cacheDir); mf != "" {
-		if df, err := quant.ReadCSVFile(mf); err == nil {
-			ind, val := df.Col("Indicador"), df.Col("Último valor")
-			if ind != nil && val != nil {
-				for i := 0; i < df.N; i++ {
-					if !ind.IsNull(i) && strings.Contains(ind.Cell(i), "Treasury 3M") {
-						return val.At(i) / 100.0
-					}
-				}
-			}
-		} else {
-			warn("No se pudo leer tasa libre de riesgo de %s: %v", mf, err)
-		}
-	}
 	if s, ok := loadPriceCSV(yahoo.CachePath(filepath.Join(cacheDir, "prices"), "^IRX")); ok {
 		if v := quant.DropNaN(s.V); len(v) > 0 {
 			return v[len(v)-1] / 100.0

@@ -6,7 +6,6 @@ import (
 	"math"
 	"os"
 	"path/filepath"
-	"sort"
 	"strconv"
 	"strings"
 
@@ -111,7 +110,7 @@ func ForecastTable(prices *Prices, top []string, u *Universe, p Params) *quant.F
 	return f
 }
 
-// RegimeNotes arma las notas de régimen de mercado (VIX del caché de precios y macro_data_*.csv).
+// RegimeNotes arma las notas de régimen de mercado (VIX del caché de precios).
 func RegimeNotes(cacheDir string, warn func(string, ...any)) []string {
 	var notes []string
 	if bars, err := readCloseCSV(filepath.Join(cacheDir, "prices", "_VIX.csv")); err == nil && len(bars) > 0 {
@@ -124,37 +123,6 @@ func RegimeNotes(cacheDir string, warn func(string, ...any)) []string {
 		default:
 			notes = append(notes, fmt.Sprintf("VIX en %.1f: volatilidad en rango normal.", vix))
 		}
-	}
-	if mf := LatestMacroFile(cacheDir); mf != "" {
-		df, err := quant.ReadCSVFile(mf)
-		if err != nil {
-			warn("No se pudo leer macro_data csv: %v", err)
-		} else {
-			find := func(sub string) (float64, bool) {
-				ind, val := df.Col("Indicador"), df.Col("Último valor")
-				if ind == nil || val == nil {
-					return 0, false
-				}
-				for i := 0; i < df.N; i++ {
-					if !ind.IsNull(i) && strings.Contains(ind.Cell(i), sub) {
-						return val.At(i), true
-					}
-				}
-				return 0, false
-			}
-			if spread, ok := find("Spread 10Y-2Y"); ok {
-				if spread < 0 {
-					notes = append(notes, fmt.Sprintf("Curva 10Y-2Y invertida (%.2f pp): señal histórica de precaución macro / riesgo de recesión.", spread))
-				} else {
-					notes = append(notes, fmt.Sprintf("Curva 10Y-2Y positiva (%.2f pp): sin señal de inversión.", spread))
-				}
-			}
-			if hy, ok := find("Credit Spread High Yield"); ok {
-				notes = append(notes, fmt.Sprintf("Spread de crédito High Yield: %.2f pp (referencia de apetito por riesgo).", hy))
-			}
-		}
-	} else {
-		notes = append(notes, "No se encontró macro_data_*.csv (los datos macro no se han descargado con FRED_API_KEY); contexto macro limitado a VIX/^IRX vía Yahoo.")
 	}
 	return notes
 }
@@ -170,16 +138,6 @@ func readCloseCSV(path string) ([]float64, error) {
 		return nil, fmt.Errorf("%s no tiene columna Close", path)
 	}
 	return dropNaN(c.Floats()), nil
-}
-
-// LatestMacroFile devuelve el macro_data_<fecha>.csv más reciente de cache/macro.
-func LatestMacroFile(cacheDir string) string {
-	files, _ := filepath.Glob(filepath.Join(cacheDir, "macro", "macro_data_*.csv"))
-	if len(files) == 0 {
-		return ""
-	}
-	sort.Slice(files, func(i, j int) bool { return filepath.Base(files[i]) < filepath.Base(files[j]) })
-	return files[len(files)-1]
 }
 
 // RunForecast escribe trend_forecast_6m<key>.csv de cada análisis cuya selección existe, y market_regime_notes.txt.

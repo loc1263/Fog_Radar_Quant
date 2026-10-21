@@ -24,7 +24,6 @@ func init() {
 			{Flag: "--force-discovery", Help: "Vuelve a descubrir el universo aunque haya un snapshot reciente (también ignora la caché de sectores)."},
 			{Flag: "--static-universe", Help: "Usa la lista fija de respaldo en vez del screener."},
 			{Flag: "--skip-discovery", Help: "Reutiliza el último snapshot de universo (sin screener)."},
-			{Flag: "--macro", Help: "Descarga antes los datos macro de FRED (requiere FRED_API_KEY)."},
 			{Flag: "--top-n", Help: "Acciones a seleccionar en Asia + EEUU (por defecto 15).", Kind: jobs.Int, Min: 2, Max: 60},
 			{Flag: "--top-n-us", Help: "Acciones a seleccionar en el análisis solo EEUU (por defecto 15).", Kind: jobs.Int, Min: 2, Max: 60},
 			{Flag: "--max-weight", Help: "Tope de peso por activo, fracción en (0, 1] (por defecto 0.15).", Kind: jobs.Float, Min: 0.01, Max: 1.0},
@@ -173,7 +172,7 @@ func fetchOptions(opts map[string]any) yahoo.HistoryOptions {
 
 // Run es el pipeline batch de Tendencia.
 //
-//	fogradar job tendencia [--skip-fetch] [--force-refresh] [--static-universe] [--macro] [--top-n N] [--max-weight W]
+//	fogradar job tendencia [--skip-fetch] [--force-refresh] [--static-universe] [--top-n N] [--max-weight W]
 //
 // Nunca se ejecuta dentro de un request web. Devuelve un resumen para el registro de jobs.
 func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error) {
@@ -199,13 +198,6 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 	}
 
 	var partes []string
-	if flag(opts, "macro") {
-		out, err := FetchMacro(ctx, filepath.Join(moduleDir, "macro"), MacroOpts{APIKey: s.FredAPIKey, Yahoo: env.Yahoo, Now: now, Log: warn})
-		if err != nil {
-			return "", err
-		}
-		partes = append(partes, "macro "+filepath.Base(out))
-	}
 
 	u, err := resolveUniverse(ctx, env, moduleDir, opts, now, info, warn)
 	if err != nil {

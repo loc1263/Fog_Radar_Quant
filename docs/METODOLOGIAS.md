@@ -39,11 +39,6 @@ se citan son relativas a `backend/src/fog_radar/`.
   - **Pausa entre módulos** de una secuencia (`PIPELINE_PAUSA_S`, 60 s): solo se espera si el módulo
     anterior falló o recibió algún 429 (o reintento ante 429). Con tráfico limpio no se pausa: el espaciado
     global entre requests ya protege, y la pausa fija solo alargaba la secuencia (180 s de 3 pausas).
-- **FRED** (Federal Reserve Economic Data), solo en Tendencia y solo si se corre con
-  `--macro` y hay `FRED_API_KEY` (`internal/modules/tend/macro.go`): curva de tasas (DGS3MO,
-  DGS2, DGS10, DGS30, T10Y2Y, T10Y3M), spreads de crédito ICE BofA (BAMLH0A0HYM2,
-  BAMLC0A0CM, BAMLC0A4CBBB), VIXCLS, postura de la Fed (FEDFUNDS, DFEDTARU, DFEDTARL,
-  FEDTARMD) y CFNAI como proxy de actividad.
 - **Wikipedia** (solo EEUU): componentes del S&P 500 y del Nasdaq-100.
 
 ## Calendario de actualización
@@ -55,8 +50,6 @@ para decidir si los datos están al día). Horas de `America/Santiago`.
 |---|---|---|
 | `diario` | Chile → EEUU → Tendencia → ETFs | Todos los días 18:00 |
 
-La corrida programada de Tendencia **no** incluye hoy `--macro` (pendiente TD-MACRO-1 en el
-ROADMAP): usa el último `macro_data_*.csv` disponible, si existe.
 
 ---
 
@@ -449,8 +442,8 @@ conserva el snapshot viejo (con aviso en el log) en vez de usar la lista de resp
 3. Matriz con la unión de fechas y `ffill(limit=2)` (máx. 2 semanas) para feriados y
    desalineación entre mercados.
 4. Retornos semanales simples. Los excluidos y el motivo quedan en `excluded_tickers.txt`.
-5. **Tasa libre de riesgo** (anual, decimal): Treasury 3M (`DGS3MO`) del último
-   `macro_data_*.csv` de FRED → si no, último valor de `^IRX` / 100 → si no, **4 %**.
+5. **Tasa libre de riesgo** (anual, decimal): último valor de `^IRX` (letra del Tesoro a 3 meses, Yahoo) / 100 →
+   si no, **4 %**.
 
 ### 4.4 Selección Markowitz (`markowitz.go`)
 
@@ -499,8 +492,7 @@ continua y descontando dos veces el *volatility drag*. La proyección es un **ra
 escenarios** basado en 5 años de historia, no un pronóstico.
 
 **Notas de régimen** (`market_regime_notes.txt`): VIX ≥ 25 volatilidad elevada, ≤ 15 baja,
-entre medio normal; spread 10Y-2Y < 0 curva invertida; spread High Yield como referencia de
-apetito por riesgo (estos dos últimos solo si hay datos FRED).
+entre medio normal (el VIX sale del caché de precios de Yahoo).
 
 ### 4.7 Momentum mensual y semanal (`momentum.go`)
 

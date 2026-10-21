@@ -57,7 +57,6 @@ Retirado el 2026-10-21 (ADR 0005): ya no hay servidor de frontend, API key, rate
 | TD-DATA-1 | FX limitado a 6 monedas + sin aviso visible | 6 ✅ (aviso) / 7 ✅ (FX común) | Aviso visible en el resumen y en Limitaciones ✅. `internal/fx` (`USDPair`, `ToUSD`): cualquier moneda ISO 4217 y subunidades GBp/ZAc/ILA ✅. |
 | TD-OPS-2 | `excluded_tickers.txt` sin encabezado | 6 ✅ | `GET /api/tendencia/excluidos` (ticker, nombre, motivo) + tabla con CSV en `/tendencia/limitaciones`. |
 | TD-CFG-1 | Parámetros del modelo solo editables en código | 7 ✅ | `fogradar job tendencia --top-n N --top-n-us N --max-weight X` (validados, solo para esa corrida, quedan en `run_manifest.json`). |
-| TD-MACRO-1 | Datos macro (FRED) solo se actualizan con `--macro` manual | 8 (producción) | Agregar `--macro` a Tendencia en el programa `diario` (lun–vie 18:00) para que la macro esté siempre al día. Requiere `FRED_API_KEY` en el servidor; +segundos de descarga. **Pendiente por decisión del usuario**: se hace junto con la puesta en producción. |
 
 ### Frontend (lo resuelven los componentes comunes)
 

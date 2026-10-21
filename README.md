@@ -83,7 +83,7 @@ fogradar job --todos --no-cache           # ignora cachés y vuelve a pedir todo
 ```
 
 - En Windows, doble clic en `correr_pipelines.bat` equivale a `job --todos`; compila el binario si falta y acepta los mismos argumentos (`correr_pipelines.bat etf`).
-- Opciones por módulo: `etf [--solo-analisis] [--refrescar-info]` · `tendencia [--skip-fetch] [--skip-discovery] [--macro] [--force-discovery] [--top-n N] [--max-weight X]`.
+- Opciones por módulo: `etf [--solo-analisis] [--refrescar-info]` · `tendencia [--skip-fetch] [--skip-discovery] [--force-discovery] [--top-n N] [--max-weight X]`.
 - `--offline` y `--no-cache` son excluyentes. Otras opciones: `--solo mod1,mod2` (con `--todos`) y `--pausa SEGUNDOS` (espera entre módulos si el anterior falló o recibió 429).
 - Al terminar cada módulo, los jobs borran las corridas de más de 7 días (`RETENCION_DIAS`; siempre queda la más reciente). A pedido: `fogradar prune [--dias N] [--dry-run]`.
 - Solo corre un pipeline a la vez (lock global). Códigos de salida: 0 ok, 1 falla, 2 uso, 3 ocupado.

@@ -7,7 +7,7 @@
 
 Cada módulo guardaba sus archivos a su manera: Chile en archivos sueltos con timestamp, ETF en `current/` +
 `hist/` + `screener/` (con archivado, staging y un candado), EEUU en `runs/<id UTC>/`, Tendencia en `output/`,
-`raw/`, `processed/`, `macro/`, `universe/`. Cada convención traía su propia lógica de "última corrida",
+`raw/`, `processed/`, `universe/`. Cada convención traía su propia lógica de "última corrida",
 retención y lectura, y era difícil saber qué se podía borrar.
 
 ## Decisión
@@ -21,7 +21,7 @@ data/
       20261021_180416/       una carpeta por corrida (hora local, YYYYMMDD_HHMMSS; sufijo _n si coincide)
         run.json             marca la corrida como terminada (se escribe al final)
         ...salidas (csv, json) y descargas crudas (raw/, processed/)
-    cache/                   estado que se reutiliza entre corridas (info_cache, sector_cache, prices/, fx/, macro/, universe/, ancla de ETF)
+    cache/                   estado que se reutiliza entre corridas (info_cache, sector_cache, prices/, fx/, universe/, ancla de ETF)
   _sistema/
     jobs/    registro de corridas (<modulo>.jsonl)
     logs/    fogradar.log

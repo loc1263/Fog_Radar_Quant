@@ -7,7 +7,7 @@ API HTTP y pipelines batch del sitio, en Go.
 Sirve las rutas GET de `/api` (sistema, hub, `cl`, `us`, `etf`, `tendencia`), de solo lectura.
 
 Pipelines batch (`fogradar job <modulo>`; nunca dentro de un request): `cl_stocks`, `us_stocks`, `etf`, `tendencia`.
-Tendencia: dataset en USD, Markowitz, proyección a 6 meses, momentum, macro (`--macro`, requiere `FRED_API_KEY`),
+Tendencia: dataset en USD, Markowitz, proyección a 6 meses, momentum,
 `dashboard_data.json`. El universo se redescubre con el screener de Yahoo si su snapshot
 tiene más de 3 días. ETF: caché de info y sin gráfico para los que el ranking descarta (ver `internal/modules/etf/infocache.go`).
 

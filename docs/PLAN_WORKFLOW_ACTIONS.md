@@ -67,7 +67,7 @@ GitHub Actions usa cron en **UTC** y no entiende husos horarios: 18:00 de Santia
 1. `actions/checkout` de `main` y de la rama `datos` en `./data`.
 2. `actions/setup-go` con `backend-go/go.mod` y caché de módulos.
 3. `go build -o fogradar ./cmd/fogradar` con `CGO_ENABLED=0`.
-4. `DATA_DIR=$GITHUB_WORKSPACE/data ./fogradar job --todos` (Chile → EEUU → Tendencia → ETFs; variable `FRED_API_KEY` desde un secret, opcional).
+4. `DATA_DIR=$GITHUB_WORKSPACE/data ./fogradar job --todos` (Chile → EEUU → Tendencia → ETFs).
 5. Si el job terminó bien: commit único y `git push --force` a `datos`.
 6. Si falla: no se sube nada (la rama conserva los datos anteriores) y se avisa (ver 8).
 
@@ -111,7 +111,6 @@ Permisos: `contents: write` (solo `actualizar-datos`), `pages: write` e `id-toke
 - [ ] ¿Rama `datos` (A, recomendada), `actions/cache` (B) o artifacts (C)?
 - [x] Frecuencia: diaria 18:00 para los 4 módulos (decidida).
 - [ ] ¿Nombre del repositorio y usuario/organización? (define `BASE_PATH` y la URL de Pages)
-- [ ] ¿Se quiere una clave `FRED_API_KEY` en secrets para la macro de Tendencia, o se omite?
 - [ ] ¿Aviso por issue además del correo por defecto?
 - [ ] ¿Se publican todos los módulos desde el primer despliegue, o primero solo ETF (piloto del plan original)?
 

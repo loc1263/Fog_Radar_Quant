@@ -107,7 +107,6 @@ Cadencia esperada (`internal/core/schedule.go`): **todos los días a las 18:00**
 - [ ] **Sitio estático**: publicar en GitHub Pages con un workflow de Actions que corra los jobs, `fogradar export` y `npm run build` (`docs/PLAN_GITHUB_PAGES.md`).
 - [ ] Dominios/DNS, respaldo diario de `data/`.
 - [ ] Monitoreo básico: `/api/health` + uptime check; mensajes de error genéricos en prod (SEC-PROD-2).
-- [ ] **TD-MACRO-1**: agregar `--macro` a Tendencia en la corrida diaria (requiere `FRED_API_KEY` en el servidor).
 - [ ] Probar las descargas de Yahoo desde el servidor productivo (las IPs de datacenter se bloquean más seguido).
 
 ---

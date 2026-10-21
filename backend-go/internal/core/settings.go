@@ -39,7 +39,6 @@ type Settings struct {
 	// Corridas batch (internal/jobs).
 	RetencionDias  int     // días de datos que se conservan en data/ (0 = no borrar nada)
 	PipelinePausaS float64 // pausa entre un pipeline y el siguiente de una secuencia
-	FredAPIKey     string
 
 	// YahooConcurrencia es cuántos requests pueden estar en vuelo a la vez (inicios siempre espaciados).
 	YahooConcurrencia int
@@ -125,7 +124,6 @@ func loadSettings(lookup func(string) (string, bool), files []string) (*Settings
 	}
 	s.YahooIntervaloRapidoS = num("YAHOO_INTERVALO_RAPIDO_S", 0.2, 0.01, 3600)
 	s.PipelinePausaS = num("PIPELINE_PAUSA_S", 60, 0, 86400)
-	s.FredAPIKey = get("FRED_API_KEY", "")
 	s.RetencionDias = int(num("RETENCION_DIAS", 7, 0, 3650))
 	if perr != nil {
 		return nil, perr
