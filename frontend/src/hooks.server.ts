@@ -1,3 +1,4 @@
+import { building } from '$app/environment';
 import type { Handle, HandleServerError } from '@sveltejs/kit';
 
 const SECURITY_HEADERS: Record<string, string> = {
@@ -9,7 +10,8 @@ const SECURITY_HEADERS: Record<string, string> = {
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// Detrás de Caddy, getClientAddress() lee ADDRESS_HEADER / XFF_DEPTH (adapter-node).
-	event.locals.clientIp = event.getClientAddress();
+	// Al construir el sitio estático (fallback SPA) no hay cliente.
+	event.locals.clientIp = building ? '' : event.getClientAddress();
 
 	const response = await resolve(event);
 	for (const [name, value] of Object.entries(SECURITY_HEADERS)) {

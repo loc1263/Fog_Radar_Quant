@@ -18,7 +18,7 @@ import (
 )
 
 // Instantánea estática de la API (sitio en GitHub Pages): llama en proceso a cada GET sin parámetros
-// obligatorios y guarda la respuesta JSON en <out>/<ruta>.json. Sin red ni rate limit.
+// obligatorios y guarda la respuesta en <out>/<ruta>.json (los PDF, en .pdf). Sin red ni rate limit.
 
 // expansion pide, además, un GET por cada valor de `campo` de la respuesta de `origen`.
 type expansion struct {
@@ -29,6 +29,18 @@ type expansion struct {
 
 var expansiones = []expansion{
 	{"/api/etf/history/top", "ticker", "/api/etf/history/ticker/{ticker}"},
+}
+
+// paresConsecutivos exporta el diff de cada corrida contra la anterior (la API acepta dos corridas
+// cualesquiera, pero N² pares no caben en un sitio estático). Se descartan las filas «fuera»
+// (fuera del top en ambas corridas): son todo el universo y no aportan al diff.
+type paresConsecutivos struct {
+	runs string // ruta ya exportada con run_key por corrida, en orden cronológico
+	diff string // ruta de diff (query desde, hasta)
+}
+
+var diffsConsecutivos = []paresConsecutivos{
+	{"/api/etf/history/runs", "/api/etf/history/diff"},
 }
 
 type exportArgs struct {
@@ -98,26 +110,33 @@ func moduloIncluido(path string, modulos []string) bool {
 }
 
 // archivoDe convierte /api/etf/top15 en <out>/api/etf/top15.json.
-func archivoDe(out, ruta string) string {
-	return filepath.Join(out, filepath.FromSlash(strings.TrimPrefix(ruta, "/")+".json"))
+func archivoDe(out, ruta, ext string) string {
+	return filepath.Join(out, filepath.FromSlash(strings.TrimPrefix(ruta, "/")+ext))
 }
 
 func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error) {
 	handler := h.Handler()
 	m := &exportManifest{GeneradoEn: now.In(h.S.Loc).Format(time.RFC3339), Version: core.Version}
 	cuerpos := map[string][]byte{}
+	var pedirComo func(ruta, archivo string, filtro func([]byte) []byte)
 
-	pedir := func(ruta string) {
+	pedir := func(ruta string) { pedirComo(ruta, ruta, nil) }
+	pedirComo = func(ruta, archivo string, filtro func([]byte) []byte) {
 		req := httptest.NewRequest(http.MethodGet, ruta, nil)
 		req.Header.Set(core.APIKeyHeader, h.S.APIKey)
 		rec := httptest.NewRecorder()
 		handler.ServeHTTP(rec, req)
 		e := exportEntrada{Ruta: ruta, Estado: rec.Code}
-		if rec.Code == http.StatusOK && strings.Contains(rec.Header().Get("Content-Type"), "json") {
+		tipo := rec.Header().Get("Content-Type")
+		ext := map[bool]string{true: ".json", false: ".pdf"}[strings.Contains(tipo, "json")]
+		if rec.Code == http.StatusOK && (ext == ".json" || strings.Contains(tipo, "pdf")) {
 			body := rec.Body.Bytes()
-			cuerpos[ruta] = body
+			if filtro != nil {
+				body = filtro(body)
+			}
+			cuerpos[archivo] = body
 			e.Bytes = len(body)
-			if err := escribir(archivoDe(a.out, ruta), body); err != nil {
+			if err := escribir(archivoDe(a.out, archivo, ext), body); err != nil {
 				e.Estado = http.StatusInternalServerError
 			}
 		}
@@ -146,11 +165,49 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 		}
 	}
 
+	for _, p := range diffsConsecutivos {
+		if !moduloIncluido(p.diff, a.modulos) {
+			continue
+		}
+		var runs []struct {
+			RunKey string `json:"run_key"`
+		}
+		if json.Unmarshal(cuerpos[p.runs], &runs) != nil {
+			continue
+		}
+		for i := 1; i < len(runs); i++ {
+			d, h := runs[i-1].RunKey, runs[i].RunKey
+			pedirComo(p.diff+"?desde="+d+"&hasta="+h, p.diff+"/"+d+"__"+h, sinFuera)
+		}
+	}
+
 	if err := os.MkdirAll(a.out, 0o755); err != nil {
 		return nil, err
 	}
 	b, _ := json.MarshalIndent(m, "", "  ")
 	return m, escribir(filepath.Join(a.out, "manifest.json"), b)
+}
+
+// sinFuera quita de un diff las filas con estado «fuera».
+func sinFuera(body []byte) []byte {
+	var d map[string]any
+	if json.Unmarshal(body, &d) != nil {
+		return body
+	}
+	filas, _ := d["filas"].([]any)
+	utiles := make([]any, 0, len(filas))
+	for _, f := range filas {
+		if m, ok := f.(map[string]any); ok && m["estado"] == "fuera" {
+			continue
+		}
+		utiles = append(utiles, f)
+	}
+	d["filas"] = utiles
+	out, err := json.Marshal(d)
+	if err != nil {
+		return body
+	}
+	return out
 }
 
 func escribir(path string, b []byte) error {

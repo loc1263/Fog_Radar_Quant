@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { asset } from '$app/paths';
 	import { ErrorState, Section } from '$lib/components/shared';
 	import { fmtFechaCorrida } from '$lib/modules/etf/format';
 
@@ -39,9 +39,8 @@
 				{/each}
 			</ul>
 			<a
-				href={resolve('/etf/descargar/informe.pdf')}
-				download
-				data-sveltekit-reload
+				href={asset('/data/api/etf/pdf.pdf')}
+				download="etf_informe.pdf"
 				class="mt-4 inline-block rounded border border-brand-strong bg-brand-strong px-3 py-1.5 text-sm font-bold text-white hover:opacity-90"
 				>Descargar PDF</a
 			>

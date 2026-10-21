@@ -1,8 +1,7 @@
-import type { PageServerLoad } from './$types';
-import { backend } from '$lib/server/api';
-import { tryCall } from '$lib/server/safe';
+import type { PageLoad } from './$types';
+import { datos } from '$lib/datos';
 
-/** Campos que usa la tabla: el universo completo (~700 ETFs) no viaja entero al navegador. */
+/** Campos que usa la tabla: se descartan el resto para no retener el universo completo (~700 ETFs) en memoria. */
 const CAMPOS = [
 	'ticker',
 	'nombre',
@@ -20,8 +19,8 @@ const CAMPOS = [
 	'score'
 ] as const;
 
-export const load: PageServerLoad = async (event) => {
-	const res = await tryCall(backend(event).GET('/api/etf/ranking-completo'));
+export const load: PageLoad = async ({ fetch }) => {
+	const res = await datos(fetch, '/api/etf/ranking-completo');
 	if (!res.ok) return { tabla: res };
 	const filas = res.data.filas.map((f) => Object.fromEntries(CAMPOS.map((k) => [k, f[k]])));
 	return {

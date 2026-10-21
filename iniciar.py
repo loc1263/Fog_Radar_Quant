@@ -7,6 +7,7 @@ Uso:  python iniciar.py [--rebuild] [--no-browser] [--no-kill] [--backend-port N
 - Verifica requisitos (Go, Node/npm, dependencias, puertos libres: si están ocupados, cierra el proceso que los usa;
   con --no-kill falla en su lugar).
 - Compila el backend si falta el binario o hay fuentes .go más nuevas.
+- Exporta los datos del sitio (frontend/static/data) con `fogradar export`.
 - Muestra la salida de ambos servidores en una sola consola, con prefijo y color.
 - Espera a que respondan, imprime las URLs y vigila que ninguno se caiga.
 - Ctrl+C (o la caída de uno de los dos) detiene ambos limpiamente.
@@ -154,6 +155,16 @@ def build_backend(go: str, force: bool) -> None:
         BACKEND_DIR, "Compilación del backend", env,
     )
     ok(f"Backend compilado en {time.time() - t0:.1f}s.")
+
+
+def export_data() -> None:
+    """Genera frontend/static/data (JSON de la API) con `fogradar export`; el sitio lo lee sin backend."""
+    info("Exportando los datos del sitio (fogradar export)...")
+    try:
+        run_step([str(BACKEND_EXE), "export", "--modulo", "etf", "--out", str(FRONTEND_DIR / "static" / "data")],
+                 BACKEND_DIR, "Exportación de datos")
+    except StartupError as e:  # no es fatal: el sitio muestra "sin datos" en las vistas que dependen de esto
+        warn(f"{e} Las vistas de ETF pueden aparecer vacías.")
 
 
 # -------------------------------------------------------------------- puertos
@@ -354,6 +365,7 @@ def main() -> int:
         check_ports({"backend": args.backend_port, "frontend": args.frontend_port},
                     kill=not args.no_kill)
         build_backend(go, args.rebuild)
+        export_data()
 
         back_env = {**os.environ, "ADDR": f":{args.backend_port}"}
         back = Service("Backend", "back", [str(BACKEND_EXE), "api"], BACKEND_DIR,

@@ -41,3 +41,6 @@ output/
 
 # Archivos que la app de Claude deja en la carpeta
 Claude outputs/
+
+# Python
+__pycache__/

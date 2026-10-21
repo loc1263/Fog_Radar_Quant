@@ -76,6 +76,22 @@ func TestExportarEscribeJSONYExpande(t *testing.T) {
 	}
 }
 
+func TestSinFuera(t *testing.T) {
+	in := `{"desde":"a","hasta":"b","filas":[{"ticker":"X","estado":"nuevo"},{"ticker":"Y","estado":"fuera"}]}`
+	var d struct {
+		Desde string `json:"desde"`
+		Filas []struct {
+			Ticker string `json:"ticker"`
+		} `json:"filas"`
+	}
+	if err := json.Unmarshal(sinFuera([]byte(in)), &d); err != nil {
+		t.Fatal(err)
+	}
+	if d.Desde != "a" || len(d.Filas) != 1 || d.Filas[0].Ticker != "X" {
+		t.Errorf("%+v", d)
+	}
+}
+
 func TestExportarFiltraPorModulo(t *testing.T) {
 	h := hostDePrueba(t)
 	m, err := exportar(h, &exportArgs{out: t.TempDir(), modulos: []string{"etf"}}, time.Now())

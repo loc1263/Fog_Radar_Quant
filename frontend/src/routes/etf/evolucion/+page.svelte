@@ -107,16 +107,10 @@
 			</label>
 			{#if data.par}
 				<label class="text-sm">
-					<span class="mb-1 block font-bold text-brand-label">Comparar desde</span>
-					<select name="desde" class={INPUT} value={data.par.desde}>
-						{#each runs as r (r.run_key)}<option value={r.run_key}>{fmtRunKey(r.run_key)}</option
-							>{/each}
-					</select>
-				</label>
-				<label class="text-sm">
-					<span class="mb-1 block font-bold text-brand-label">hasta</span>
+					<span class="mb-1 block font-bold text-brand-label">Rotación de la corrida</span>
 					<select name="hasta" class={INPUT} value={data.par.hasta}>
-						{#each runs as r (r.run_key)}<option value={r.run_key}>{fmtRunKey(r.run_key)}</option
+						{#each runs.slice(1) as r (r.run_key)}<option value={r.run_key}
+								>{fmtRunKey(r.run_key)}</option
 							>{/each}
 					</select>
 				</label>
@@ -200,9 +194,8 @@
 		{:else if data.diff?.ok}
 			<Notice>
 				<p>
-					{fmtRunKey(data.diff.data.desde)} → {fmtRunKey(data.diff.data.hasta)}. A diferencia de la
-					pestaña Rotación (vigente contra la anterior), acá se pueden comparar dos corridas
-					cualesquiera del historial.
+					{fmtRunKey(data.diff.data.desde)} → {fmtRunKey(data.diff.data.hasta)}. Cada corrida se
+					compara con la anterior; el historial completo está en la pestaña Rotación.
 				</p>
 			</Notice>
 			<HistDiffTable diff={data.diff.data} scoreDigits={1} csvFilename="etf_rotacion_historica">
