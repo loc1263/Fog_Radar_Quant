@@ -22,6 +22,14 @@ iniciar.bat --rebuild --no-browser   REM opciones: --api, --rebuild, --no-browse
 
 Compila el backend si falta el binario o hay fuentes `.go` más nuevas, exporta los datos y levanta el sitio (y la API con `--api`). Cierra lo que ocupe los puertos antes de arrancar.
 
+## Publicación (GitHub Actions)
+
+- `actualizar-datos.yml`: todos los días a las 18:00 (Santiago) corre `fogradar job --todos`, guarda `data/` en la
+  rama `datos` y dispara la publicación. También se lanza a mano (con la opción de ignorar cachés).
+- `publicar.yml`: exporta los datos de la rama `datos`, construye el sitio con `BASE_PATH=/<repo>` y lo despliega en
+  GitHub Pages (Settings → Pages → Source: *GitHub Actions*).
+- Detalle y decisiones en [docs/PLAN_WORKFLOW_ACTIONS.md](docs/PLAN_WORKFLOW_ACTIONS.md).
+
 ## Estructura de `data/`
 
 Igual para los cuatro módulos (ver [ADR 0006](docs/ADR/0006-estructura-estandar-de-data.md)):

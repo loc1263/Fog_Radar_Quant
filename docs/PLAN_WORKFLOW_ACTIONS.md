@@ -1,6 +1,6 @@
 # Plan del workflow de GitHub Actions
 
-Fecha: 2026-10-21. Estado: **propuesta para revisar, sin implementar**. Continúa [PLAN_GITHUB_PAGES.md](PLAN_GITHUB_PAGES.md) (Fases 0 a 5) y [ADR 0005](ADR/0005-sitio-estatico-con-datos-exportados.md).
+Fecha: 2026-10-21. Estado: **workflows escritos** (`actualizar-datos.yml` y `publicar.yml`), sin ejecutar todavía en GitHub; faltan el spike de Yahoo y la primera corrida real (sección 9). Continúa [PLAN_GITHUB_PAGES.md](PLAN_GITHUB_PAGES.md) (Fases 0 a 5) y [ADR 0005](ADR/0005-sitio-estatico-con-datos-exportados.md).
 
 ## 1. Objetivo
 
@@ -114,11 +114,25 @@ Permisos: `contents: write` (solo `actualizar-datos`), `pages: write` e `id-toke
 - [ ] ¿Aviso por issue además del correo por defecto?
 - [ ] ¿Se publican todos los módulos desde el primer despliegue, o primero solo ETF (piloto del plan original)?
 
+## 10 bis. Implementación (2026-10-21)
+
+- **Rama `datos`** (opción A): cada corrida sube `data/` como una sola confirmación huérfana con `push --force`
+  (sin `_sistema/logs` ni `locks`; el log se guarda como artefacto 7 días).
+- **Hora:** dos cron (21:00 y 22:00 UTC) y un primer paso que deja correr solo el que cae a las 18:00 en Santiago.
+- **Fallos parciales:** si un módulo falla, igual se suben y publican los datos de los que terminaron bien y el
+  workflow termina en rojo (aviso por correo); el hub marca "atrasado" el módulo que falló.
+- **Disparo de la publicación:** un push hecho con `GITHUB_TOKEN` no dispara otros workflows y la rama `datos` no
+  tiene workflows, así que `actualizar-datos` llama a `gh workflow run publicar.yml` al terminar. Si subes datos
+  desde tu PC a `datos`, dispara la publicación a mano (`gh workflow run publicar.yml`).
+- **`BASE_PATH`** sale del nombre del repositorio (`/${{ github.event.repository.name }}`).
+- **Para activarlo:** crear el repositorio público, `git push`, y en Settings → Pages elegir *Source: GitHub Actions*.
+  La primera vez, lanzar "Actualizar datos" a mano (crea la rama `datos`); luego "Publicar sitio".
+
 ## 11. Archivos que se crearán
 
 ```
-.github/workflows/spike-etf.yml          (temporal, se borra tras la Fase 1)
-.github/workflows/publicar.yml
-.github/workflows/actualizar-datos.yml
+.github/workflows/spike-etf.yml          (no se escribió: el spike es lanzar "Actualizar datos" 3 veces a mano)
+.github/workflows/publicar.yml            (escrito)
+.github/workflows/actualizar-datos.yml    (escrito)
 docs/PLAN_WORKFLOW_ACTIONS.md            (este documento, se actualiza con el resultado de cada fase)
 ```

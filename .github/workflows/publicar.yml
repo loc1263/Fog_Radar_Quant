@@ -1,0 +1,102 @@
+name: Publicar sitio
+
+# Exporta los datos de la rama `datos`, construye la SPA estática y la despliega en GitHub Pages.
+# Se dispara con un cambio de código en main, a mano, o desde "Actualizar datos" al terminar una corrida.
+# (Un push a la rama `datos` no dispara nada: esa rama solo tiene datos, sin workflows.)
+# Requiere en el repositorio: Settings → Pages → Source: GitHub Actions.
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - ".github/workflows/ci.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  TIMEZONE: America/Santiago
+  CGO_ENABLED: "0"
+
+jobs:
+  construir:
+    name: Exportar y construir
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Dejar libre la carpeta data/
+        run: rm -rf data
+
+      - name: Traer los datos (rama datos)
+        uses: actions/checkout@v5
+        with:
+          ref: datos
+          path: data
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: backend-go/go.mod
+          cache-dependency-path: backend-go/go.sum
+
+      - name: Compilar fogradar
+        working-directory: backend-go
+        run: go build -trimpath -o ../fogradar ./cmd/fogradar
+
+      - name: Exportar los datos del sitio
+        env:
+          DATA_DIR: ${{ github.workspace }}/data
+        run: ./fogradar export --out frontend/static/data
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Instalar dependencias del sitio
+        working-directory: frontend
+        run: npm ci
+
+      - name: Construir el sitio
+        working-directory: frontend
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+        run: npm run build
+
+      - name: Verificar el resultado
+        working-directory: frontend
+        run: |
+          test -f build/404.html || { echo "::error::falta build/404.html"; exit 1; }
+          test -f build/data/api/hub.json || { echo "::error::falta build/data/api/hub.json (¿la exportación salió vacía?)"; exit 1; }
+          n="$(python3 -c "import json;print(len(json.load(open('build/data/api/hub.json'))['modulos']))")"
+          [ "$n" = "4" ] || { echo "::error::el hub trae $n módulos (se esperaban 4)"; exit 1; }
+          size_mb="$(du -sm build | cut -f1)"
+          echo "Tamaño del sitio: ${size_mb} MB"
+          [ "$size_mb" -lt 1000 ] || { echo "::error::el sitio supera 1 GB"; exit 1; }
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: frontend/build
+
+  desplegar:
+    name: Desplegar en Pages
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

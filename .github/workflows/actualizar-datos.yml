@@ -1,0 +1,127 @@
+name: Actualizar datos
+
+# Corre los pipelines (Chile, EEUU, Tendencia y ETFs) todos los días a las 18:00 de Santiago, guarda el resultado en
+# la rama `datos` y dispara la publicación del sitio. Ver docs/PLAN_WORKFLOW_ACTIONS.md.
+#
+# El cron de GitHub va en UTC: 18:00 de Santiago son las 21:00 UTC con horario de verano (UTC-3) y las 22:00 UTC en
+# invierno (UTC-4). Se programan las dos horas y el primer paso deja correr solo la que cae a las 18:00 locales.
+on:
+  schedule:
+    - cron: "0 21 * * *"
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+    inputs:
+      sin_cache:
+        description: "Ignorar las cachés y pedir todo de nuevo a Yahoo (--no-cache)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: actualizar-datos
+  cancel-in-progress: false
+
+permissions:
+  contents: write # push a la rama datos
+  actions: write # disparar publicar.yml
+
+env:
+  TIMEZONE: America/Santiago
+  CGO_ENABLED: "0"
+
+jobs:
+  actualizar:
+    name: Pipelines y rama datos
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: ¿Es la hora de la corrida?
+        id: hora
+        run: |
+          local_hour="$(TZ=America/Santiago date +%H)"
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$local_hour" != "18" ]; then
+            echo "Son las $local_hour h en Santiago: esta no es la ejecución de las 18:00, se omite."
+            echo "correr=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "correr=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v5
+        if: steps.hora.outputs.correr == 'true'
+
+      - name: Dejar libre la carpeta data/
+        if: steps.hora.outputs.correr == 'true'
+        run: rm -rf data
+
+      - name: Restaurar los datos anteriores (rama datos)
+        if: steps.hora.outputs.correr == 'true'
+        uses: actions/checkout@v5
+        continue-on-error: true # la primera vez la rama no existe
+        with:
+          ref: datos
+          path: data
+
+      - uses: actions/setup-go@v6
+        if: steps.hora.outputs.correr == 'true'
+        with:
+          go-version-file: backend-go/go.mod
+          cache-dependency-path: backend-go/go.sum
+
+      - name: Compilar fogradar
+        if: steps.hora.outputs.correr == 'true'
+        working-directory: backend-go
+        run: go build -trimpath -o ../fogradar ./cmd/fogradar
+
+      - name: Correr los pipelines
+        id: jobs
+        if: steps.hora.outputs.correr == 'true'
+        continue-on-error: true # lo que terminó bien se publica igual; al final el workflow falla para avisar
+        env:
+          DATA_DIR: ${{ github.workspace }}/data
+          SIN_CACHE: ${{ inputs.sin_cache }}
+        run: |
+          mkdir -p data
+          args="--todos"
+          if [ "$SIN_CACHE" = "true" ]; then args="$args --no-cache"; fi
+          ./fogradar job $args
+
+      - name: Aplicar la retención (7 días)
+        if: steps.hora.outputs.correr == 'true'
+        env:
+          DATA_DIR: ${{ github.workspace }}/data
+        run: ./fogradar prune
+
+      - name: Guardar el log como artefacto
+        if: steps.hora.outputs.correr == 'true' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: log-pipelines
+          path: data/_sistema/logs/
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Publicar los datos en la rama datos
+        id: subir
+        if: steps.hora.outputs.correr == 'true'
+        run: |
+          cd data
+          rm -rf .git _sistema/logs _sistema/locks
+          du -sh . || true
+          git init -q -b datos
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "datos: $(TZ=America/Santiago date '+%Y-%m-%d %H:%M') (Santiago)"
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push --force origin datos # una sola confirmación: el historial de datos no crece
+
+      - name: Disparar la publicación del sitio
+        if: steps.hora.outputs.correr == 'true' && steps.subir.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run publicar.yml --repo "${{ github.repository }}"
+
+      - name: Fallar si algún módulo no terminó bien
+        if: steps.hora.outputs.correr == 'true' && steps.jobs.outcome == 'failure'
+        run: |
+          echo "::error::Algún módulo falló. Se publicaron los datos de los que terminaron bien; revisa el artefacto log-pipelines."
+          exit 1
