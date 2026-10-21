@@ -45,7 +45,7 @@ jobs:
             echo "correr=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         if: steps.hora.outputs.correr == 'true'
 
       - name: Dejar libre la carpeta data/
@@ -54,13 +54,13 @@ jobs:
 
       - name: Restaurar los datos anteriores (rama datos)
         if: steps.hora.outputs.correr == 'true'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         continue-on-error: true # la primera vez la rama no existe
         with:
           ref: datos
           path: data
 
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v7
         if: steps.hora.outputs.correr == 'true'
         with:
           go-version-file: backend-go/go.mod
@@ -92,7 +92,7 @@ jobs:
 
       - name: Guardar el log como artefacto
         if: steps.hora.outputs.correr == 'true' && always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: log-pipelines
           path: data/_sistema/logs/
