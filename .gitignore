@@ -44,3 +44,6 @@ Claude outputs/
 
 # Python
 __pycache__/
+
+# Binarios compilados
+*.exe
