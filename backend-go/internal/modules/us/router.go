@@ -60,21 +60,7 @@ func Register(h *api.Host) {
 			}
 			return &struct{ Body PriceMatrix }{PriceSubset(m, in.Days, wanted)}, nil
 		})
-	api.Public(h, op("us_list_runs", http.MethodGet, "/rankings/runs", "Corridas disponibles (más reciente primero)"),
-		func(context.Context, *struct{}) (*struct{ Body RunsList }, error) {
-			names := []string{}
-			for _, d := range ListRuns(h.S) {
-				names = append(names, filepath.Base(d))
-			}
-			return &struct{ Body RunsList }{RunsList{Runs: names}}, nil
-		})
-
 	// --- Portafolio ---
-	api.Public(h, op("us_portfolio_limits", http.MethodGet, "/portfolio/limits", "Límites del modelo de portafolio"),
-		func(context.Context, *struct{}) (*struct{ Body PortfolioLimits }, error) {
-			return &struct{ Body PortfolioLimits }{PortfolioLimits{MinTickers: MinTickers, MinAssets: MinNAssets, MaxAssets: MaxNAssets,
-				DefaultAssets: DefaultNAssets, DefaultMaxWeight: DefaultMaxWeight, DefaultRiskFreeRate: DefaultRiskFree}}, nil
-		})
 	api.Public(h, op("us_portfolio_precalc", http.MethodGet, "/portfolio/precalculado", "Portafolios precalculados con los parámetros por defecto (universo completo, Top 30, Top 15)"),
 		func(context.Context, *struct{}) (*struct{ Body PortfolioPrecalcResponse }, error) {
 			res, e := PortfolioPrecalculado(h.S)

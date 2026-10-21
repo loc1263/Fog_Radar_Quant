@@ -119,11 +119,6 @@ type PriceMatrix struct {
 	Prices map[string][]*float64 `json:"prices"`
 }
 
-// RunsList son las corridas disponibles.
-type RunsList struct {
-	Runs []string `json:"runs"`
-}
-
 // --- Historial ---
 
 // UsHistCorrida es una corrida guardada.
@@ -211,14 +206,4 @@ type PortfolioResult struct {
 	PriorReturns     map[string]float64 `json:"prior_returns"`
 	Views            map[string]float64 `json:"views"`
 	PosteriorReturns map[string]float64 `json:"posterior_returns"`
-}
-
-// PortfolioLimits son los límites y valores por defecto del modelo.
-type PortfolioLimits struct {
-	MinTickers          int     `json:"min_tickers"`
-	MinAssets           int     `json:"min_assets"`
-	MaxAssets           int     `json:"max_assets"`
-	DefaultAssets       int     `json:"default_assets"`
-	DefaultMaxWeight    float64 `json:"default_max_weight"`
-	DefaultRiskFreeRate float64 `json:"default_risk_free_rate"`
 }

@@ -23,7 +23,7 @@ func TestDiscoveryLive(t *testing.T) {
 	log := func(f string, a ...any) { t.Logf(f, a...) }
 	ctx, cancel := context.WithTimeout(context.Background(), 14*time.Minute)
 	defer cancel()
-	u, err := DiscoverUniverse(ctx, c, log, log)
+	u, err := DiscoverUniverseOpts(ctx, c, DiscoverOpts{}, log, log)
 	if err != nil {
 		t.Fatal(err)
 	}

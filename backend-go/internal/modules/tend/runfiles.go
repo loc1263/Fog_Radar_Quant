@@ -53,18 +53,6 @@ func RunDirs(s *core.Settings) []string {
 	return out
 }
 
-// RunDir devuelve la carpeta de una corrida por nombre (404 si no es válida o no existe).
-func RunDir(s *core.Settings, name string) (string, *core.APIError) {
-	if !runDirRe.MatchString(name) {
-		return "", core.Err(http.StatusNotFound, "not_found", fmt.Sprintf("'%s' no es un nombre de corrida válido (YYYYMMDD_NN).", name))
-	}
-	d := filepath.Join(OutputDir(s), name)
-	if !isFile(filepath.Join(d, DashboardFile)) {
-		return "", core.Err(http.StatusNotFound, "not_found", fmt.Sprintf("No existe la corrida '%s'.", name))
-	}
-	return d, nil
-}
-
 // LatestRun es la corrida terminada más reciente.
 func LatestRun(s *core.Settings) (string, *core.APIError) {
 	d := RunDirs(s)

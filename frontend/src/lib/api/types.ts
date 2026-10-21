@@ -43,7 +43,6 @@ export type UsScoreCategories = Schemas['ScoreCategories'];
 export type UsPriceMatrix = Schemas['PriceMatrix'];
 export type UsPortfolioResult = Schemas['PortfolioResult'];
 export type UsPortfolioPick = Schemas['PortfolioPick'];
-export type UsPortfolioLimits = Schemas['PortfolioLimits'];
 export type UsPortfolioPrecalc = Schemas['PortfolioPrecalcResponse'];
 
 // --- Módulo ETF ---

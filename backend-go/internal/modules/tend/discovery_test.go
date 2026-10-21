@@ -164,7 +164,7 @@ func quiet(string, ...any) {}
 
 func TestDiscoverUniverse(t *testing.T) {
 	f := &fakeYahoo{}
-	u, err := DiscoverUniverse(context.Background(), f, quiet, quiet)
+	u, err := DiscoverUniverseOpts(context.Background(), f, DiscoverOpts{}, quiet, quiet)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -191,7 +191,7 @@ func TestDiscoverUniverseInsuficiente(t *testing.T) {
 	screenBackoff = 0
 	defer func() { screenBackoff = 3 * time.Second }()
 	f := &fakeYahoo{screenErr: yahoo.ErrEmptyScreen}
-	if _, err := DiscoverUniverse(context.Background(), f, quiet, quiet); err == nil {
+	if _, err := DiscoverUniverseOpts(context.Background(), f, DiscoverOpts{}, quiet, quiet); err == nil {
 		t.Fatal("debía fallar")
 	}
 }

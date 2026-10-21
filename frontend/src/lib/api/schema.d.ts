@@ -38,23 +38,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/cl/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Estado del módulo Acciones Chile (IPSA) */
-        get: operations["cl_stocks_status"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/etf/categorias/ranking": {
         parameters: {
             query?: never;
@@ -191,23 +174,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/etf/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Estado del módulo ETFs */
-        get: operations["etf_status"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/etf/top15": {
         parameters: {
             query?: never;
@@ -293,23 +259,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/jobs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Último job de cada módulo */
-        get: operations["jobs_latest"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/jobs/programas": {
         parameters: {
             query?: never;
@@ -319,23 +268,6 @@ export interface paths {
         };
         /** Programación de las corridas batch */
         get: operations["jobs_programas"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/jobs/{module}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Historial de jobs de un módulo */
-        get: operations["jobs_history"];
         put?: never;
         post?: never;
         delete?: never;
@@ -361,23 +293,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/tendencia/excluidos": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Tickers excluidos en el último armado del dataset (con motivo) */
-        get: operations["td_excluidos"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/tendencia/latest": {
         parameters: {
             query?: never;
@@ -387,57 +302,6 @@ export interface paths {
         };
         /** Última corrida completa */
         get: operations["td_latest"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/tendencia/runs/{run_dir}/dashboard": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Una corrida completa */
-        get: operations["td_run_dashboard"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/tendencia/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Estado del módulo Tendencia Asia + EEUU */
-        get: operations["tendencia_status"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/us/portfolio/limits": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Límites del modelo de portafolio */
-        get: operations["us_portfolio_limits"];
         put?: never;
         post?: never;
         delete?: never;
@@ -506,40 +370,6 @@ export interface paths {
         };
         /** Matriz de cierres (última corrida) */
         get: operations["us_latest_prices"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/us/rankings/runs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Corridas disponibles (más reciente primero) */
-        get: operations["us_list_runs"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/us/status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Estado del módulo Acciones EEUU */
-        get: operations["us_stocks_status"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1159,20 +989,6 @@ export interface components {
             /** Format: double */
             valor: number | null;
         };
-        PortfolioLimits: {
-            /** Format: int64 */
-            default_assets: number;
-            /** Format: double */
-            default_max_weight: number;
-            /** Format: double */
-            default_risk_free_rate: number;
-            /** Format: int64 */
-            max_assets: number;
-            /** Format: int64 */
-            min_assets: number;
-            /** Format: int64 */
-            min_tickers: number;
-        };
         PortfolioMetrics: {
             /** Format: double */
             expected_return: number;
@@ -1344,9 +1160,6 @@ export interface components {
             top_n: number;
             /** Format: int64 */
             universe_total: number;
-        };
-        RunsList: {
-            runs: string[];
         };
         Score: {
             categories: components["schemas"]["ScoreCategories"];
@@ -1682,35 +1495,6 @@ export interface operations {
             };
         };
     };
-    cl_stocks_status: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ModuleStatus"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
     etf_categorias_ranking: {
         parameters: {
             query?: never;
@@ -1943,35 +1727,6 @@ export interface operations {
             };
         };
     };
-    etf_status: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ModuleStatus"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
     etf_top15: {
         parameters: {
             query?: never;
@@ -2117,37 +1872,6 @@ export interface operations {
             };
         };
     };
-    jobs_latest: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        [key: string]: components["schemas"]["JobRecord"] | null;
-                    };
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
     jobs_programas: {
         parameters: {
             query?: never;
@@ -2164,39 +1888,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ProgramaInfo"][];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    jobs_history: {
-        parameters: {
-            query?: {
-                limit?: number;
-            };
-            header?: never;
-            path: {
-                module: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["JobRecord"][];
                 };
             };
             /** @description Error */
@@ -2239,35 +1930,6 @@ export interface operations {
             };
         };
     };
-    td_excluidos: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TdExcluido"][];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
     td_latest: {
         parameters: {
             query?: never;
@@ -2284,96 +1946,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TdDashboard"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    td_run_dashboard: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description YYYYMMDD_NN */
-                run_dir: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TdDashboard"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    tendencia_status: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ModuleStatus"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    us_portfolio_limits: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PortfolioLimits"];
                 };
             };
             /** @description Error */
@@ -2494,64 +2066,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PriceMatrix"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    us_list_runs: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["RunsList"];
-                };
-            };
-            /** @description Error */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ErrorResponse"];
-                };
-            };
-        };
-    };
-    us_stocks_status: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ModuleStatus"];
                 };
             };
             /** @description Error */

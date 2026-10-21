@@ -57,9 +57,6 @@ func (t *Traffic) options() []gohoo.Option {
 	}
 }
 
-// newClientWith crea un cliente sobre un backend dado (tests).
-func newClientWith(t *Traffic, b backend) *Client { return &Client{T: t, raw: b} }
-
 func (c *Client) backend() (backend, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()

@@ -29,15 +29,9 @@ func (d *TdDashboard) normalize() {
 	}
 }
 
-// Dashboard sirve una corrida completa (la última si runDir == "").
-func Dashboard(s *core.Settings, runDir string) (*TdDashboard, *core.APIError) {
-	var d string
-	var e *core.APIError
-	if runDir == "" {
-		d, e = LatestRun(s)
-	} else {
-		d, e = RunDir(s, runDir)
-	}
+// Dashboard sirve la última corrida completa.
+func Dashboard(s *core.Settings) (*TdDashboard, *core.APIError) {
+	d, e := LatestRun(s)
 	if e != nil {
 		return nil, e
 	}
@@ -46,10 +40,7 @@ func Dashboard(s *core.Settings, runDir string) (*TdDashboard, *core.APIError) {
 		return nil, e
 	}
 	out.Parametros = core.Some(DefaultParams().Td())
-	out.Excluidos = []TdExcluido{}
-	if runDir == "" { // solo aplica a la última corrida: el archivo se reescribe en cada armado
-		out.Excluidos = Excluidos(s)
-	}
+	out.Excluidos = Excluidos(s) // el archivo se reescribe en cada armado del dataset
 	out.normalize()
 	return &out, nil
 }

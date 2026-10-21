@@ -404,12 +404,8 @@ type DiscoverOpts struct {
 	Workers int          // consultas de quoteSummary en paralelo (0 = discWorkers)
 }
 
-// DiscoverUniverse arma el universo dinámico (Asia + mega-cap de EEUU). Falla si el screener devuelve muy pocas.
-func DiscoverUniverse(ctx context.Context, src Screener, info, warn func(string, ...any)) (*Universe, error) {
-	return DiscoverUniverseOpts(ctx, src, DiscoverOpts{}, info, warn)
-}
-
-// DiscoverUniverseOpts es DiscoverUniverse con caché de sectores y paralelismo configurables.
+// DiscoverUniverseOpts arma el universo dinámico (Asia + mega-cap de EEUU) con caché de sectores y paralelismo
+// configurables. Falla si el screener devuelve muy pocas empresas.
 func DiscoverUniverseOpts(ctx context.Context, src Screener, o DiscoverOpts, info, warn func(string, ...any)) (*Universe, error) {
 	workers := o.Workers
 	if workers <= 0 {
