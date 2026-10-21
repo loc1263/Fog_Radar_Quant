@@ -35,14 +35,7 @@
 	]);
 </script>
 
-<DataTable
-	{rows}
-	{columns}
-	{csvFilename}
-	{caption}
-	initialSort={{ key: 'rank', dir: 'asc' }}
-	searchKeys={['ticker', 'nombre', 'sector']}
->
+<DataTable {rows} {columns} {csvFilename} {caption} initialSort={{ key: 'rank', dir: 'asc' }}>
 	{#snippet cell({ column, row, text })}
 		{#if column.key === 'ticker'}
 			<TickerLink ticker={row.ticker} />

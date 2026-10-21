@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import { ErrorState, Notice, Section } from '$lib/components/shared';
 	import { CorridaInfo, EtfTable } from '$lib/modules/etf';
 	import { col, conPosicion, csvColumnas, csvName } from '$lib/modules/etf/format';
@@ -36,9 +35,6 @@
 		<EtfTable
 			rows={filas}
 			{columns}
-			searchKeys={['ticker', 'nombre', 'categoria']}
-			initialQuery={page.url.searchParams.get('q') ?? ''}
-			searchPlaceholder="Ticker, nombre o categoría…"
 			pageSize={50}
 			csvFilename={csvName('etf_ranking_completo', t.fecha)}
 			csvColumns={csvColumnas<Fila>()}

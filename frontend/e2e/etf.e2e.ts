@@ -22,14 +22,13 @@ test('top 15 y exportación CSV con la fecha de la corrida', async ({ page }) =>
 	expect((await download).suggestedFilename()).toBe('etf_top15_recomendados_20260924.csv');
 });
 
-test('universo completo: paginado y búsqueda', async ({ page }) => {
+test('universo completo: paginado', async ({ page }) => {
 	await page.goto('/etf/universo');
 	const table = page.getByRole('table', { name: 'Universo depurado' });
 	await expect(table.locator('tbody tr')).toHaveCount(50);
 	await expect(page.getByText('Página 1 de 14')).toBeVisible();
-	await page.getByRole('searchbox', { name: 'Buscar', exact: true }).fill('semiconductor');
-	await expect(page.getByText('Página 1 de 14')).toBeHidden();
-	expect(await table.locator('tbody tr').count()).toBeGreaterThan(0);
+	await page.getByRole('button', { name: /Siguiente/ }).click();
+	await expect(page.getByText('Página 2 de 14')).toBeVisible();
 });
 
 test('rotación y categorías', async ({ page }) => {

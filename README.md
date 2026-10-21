@@ -99,7 +99,7 @@ npm run gen:api                # regenera los tipos TS desde el OpenAPI del back
 
 ## Sitio estático (los 4 módulos migrados)
 
-Objetivo: publicar el sitio como SPA en GitHub Pages ([plan](docs/PLAN_GITHUB_PAGES.md)). Todo el sitio (hub, buscador, ETF, Chile, EEUU, Tendencia y Estado) lee JSON
+Objetivo: publicar el sitio como SPA en GitHub Pages ([plan](docs/PLAN_GITHUB_PAGES.md)). Todo el sitio (hub, ETF, Chile, EEUU, Tendencia y Estado) lee JSON
 estático en vez de llamar al backend; falta publicarlo con GitHub Actions.
 
 ```bash
@@ -112,13 +112,11 @@ cd ../frontend && STATIC_BUILD=1 BASE_PATH=/Fog_Radar_Quant npm run build     # 
 - `fogradar export` llama a la API en proceso y guarda cada GET en `static/data/<ruta>.json` (carpeta fuera de git), más un `manifest.json`.
   Deja también el PDF de ETF, los archivos de la última corrida de Tendencia y los precios de las sparklines de EEUU. `--modulo etf,cl` limita qué módulos se exportan. Las rutas `/history/*` no se exportan: el sitio estático no tiene vistas de historial.
 - En Git Bash de Windows, `BASE_PATH=/x` se convierte en una ruta de disco: antepón `MSYS_NO_PATHCONV=1`.
-- El buscador global corre en el navegador sobre `api/buscar/indice.json` (~200 KB); el hub muestra la frescura calculada al exportar, no al abrir la página.
+- El hub muestra la frescura calculada al exportar, no al abrir la página.
 - `404.html` hace de fallback SPA (lo que GitHub Pages sirve para rutas desconocidas).
 
 ## Sitio
 
 - **Inicio (hub):** estado de cada módulo con la fecha de sus datos, si están al día respecto
   de la corrida programada, su top 3 y la próxima corrida.
-- **Buscador global** (menú superior o `/buscar?q=`): en qué módulos aparece un ticker, en qué
-  posición y con qué puntaje; cada resultado lleva a la vista del módulo ya filtrada.
 - **Estado:** jobs recientes y programación de producción.

@@ -51,30 +51,3 @@ test('el hub muestra el top 3 y la frescura de cada módulo', async ({ page }) =
 		tarjetas.first().getByText(/Datos al día|Datos atrasados/, { exact: true })
 	).toBeVisible();
 });
-
-test('buscador global: encuentra un ticker y lleva a su módulo', async ({ page }) => {
-	await page.goto('/');
-	const buscador = page
-		.getByRole('navigation', { name: 'Navegación principal' })
-		.getByRole('searchbox');
-	await buscador.fill('vapores');
-	await buscador.press('Enter');
-	await expect(page).toHaveURL(/\/buscar\?q=vapores/);
-	const primera = page.locator('tbody tr').first();
-	await expect(primera).toContainText('Acciones Chile');
-	await expect(primera).toContainText('exacto');
-	await primera.getByRole('link', { name: 'VAPORES.SN' }).click();
-	await expect(page).toHaveURL(/\/chile\?q=VAPORES\.SN/);
-	// La tabla de Chile llega filtrada por el ticker.
-	await expect(page.getByRole('searchbox', { name: 'Buscar', exact: true })).toHaveValue(
-		'VAPORES.SN'
-	);
-	await expect(
-		page.getByRole('table', { name: 'Ranking multi-factor del IPSA' }).locator('tbody tr')
-	).toHaveCount(1);
-});
-
-test('buscador global sin coincidencias', async ({ page }) => {
-	await page.goto('/buscar?q=zzzzzz');
-	await expect(page.getByText('Ningún módulo tiene ese ticker o nombre')).toBeVisible();
-});

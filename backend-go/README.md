@@ -4,7 +4,7 @@ API HTTP y pipelines batch del sitio, en Go.
 
 ## Estado
 
-Sirve las **61 rutas** de `/api` (sistema, hub, buscador, `cl`, `us`, `etf`, `tendencia`; incluye
+Sirve las **61 rutas** de `/api` (sistema, hub, `cl`, `us`, `etf`, `tendencia`; incluye
 `POST /api/us/portfolio/optimize` y `GET /api/etf/pdf`).
 
 Pipelines batch (`fogradar job <modulo>`; nunca dentro de un request): `cl_stocks`, `us_stocks`, `etf`, `tendencia`.
@@ -36,7 +36,7 @@ cmd/fogradar/            main (api | openapi | job: --todos, --list, --crontab, 
 internal/api/            servidor huma+chi: errores {detail, code}, CORS, rate limit, API key
 internal/core/           settings, errores, ratelimit (+Gate = límite de concurrencia), jobs, histdb, schedule, fechas
 internal/modules/        registro de módulos; un paquete por módulo (cl, us, etf, tend)
-internal/{yahoo,fx,quant,jobs,transversal}  cliente Yahoo común, FX, biblioteca numérica, runner de pipelines, hub y buscador
+internal/{yahoo,fx,quant,jobs,transversal}  cliente Yahoo común, FX, biblioteca numérica, runner de pipelines y hub
 ```
 
 ## Pipelines

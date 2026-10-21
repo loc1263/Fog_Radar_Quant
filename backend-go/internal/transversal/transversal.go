@@ -1,20 +1,15 @@
-// Package transversal es el hub (estado + frescura + top 3 por módulo) y el buscador global de
-// ticker. Cada módulo aporta un Provider.
+// Package transversal es el hub (estado + frescura + top 3 por módulo). Cada módulo aporta un Provider.
 package transversal
 
 import (
 	"context"
 	"errors"
 	"net/http"
-	"sort"
 	"strconv"
-	"strings"
 	"sync"
 	"time"
-	"unicode"
 
 	"github.com/danielgtaylor/huma/v2"
-	"golang.org/x/text/unicode/norm"
 
 	"fogradar/internal/api"
 	"fogradar/internal/core"
@@ -23,11 +18,6 @@ import (
 
 // MargenCorrida: margen para que una corrida programada termine antes de considerar atrasados sus datos.
 const MargenCorrida = 3 * time.Hour
-
-// MaxResultados del buscador.
-const MaxResultados = 50
-
-const ttlIndice = 60 * time.Second
 
 // HubItem es un instrumento del top del hub.
 type HubItem struct {
@@ -68,50 +58,9 @@ type HubResponse struct {
 	Modulos    []HubModulo `json:"modulos"`
 }
 
-// EntradaBusqueda es un instrumento en el índice de búsqueda de un módulo.
-type EntradaBusqueda struct {
-	Ticker   string   `json:"ticker"`
-	Nombre   *string  `json:"nombre" nullable:"true"`
-	Posicion *int64   `json:"posicion" nullable:"true" doc:"Posición en el ranking del módulo (1 = mejor), si aplica."`
-	Total    *int64   `json:"total" nullable:"true"`
-	Valor    *float64 `json:"valor" nullable:"true"`
-	Metrica  string   `json:"metrica"`
-	Unidad   string   `json:"unidad" enum:"fraccion,numero"`
-	Contexto *string  `json:"contexto" nullable:"true" doc:"Dónde aparece (p. ej. \"Top 15\", \"Portafolio Asia + EEUU\")."`
-}
-
-// ResultadoBusqueda es una entrada con su módulo.
-type ResultadoBusqueda struct {
-	EntradaBusqueda
-	Modulo       string `json:"modulo"`
-	TituloModulo string `json:"titulo_modulo"`
-	Exacto       bool   `json:"exacto" doc:"El ticker coincide exactamente con la consulta (va primero)."`
-}
-
-// BusquedaResponse es la respuesta de /buscar.
-type BusquedaResponse struct {
-	Consulta   string              `json:"consulta"`
-	Resultados []ResultadoBusqueda `json:"resultados"`
-}
-
-// EntradaIndice es una entrada del índice completo, con su módulo y el orden del módulo en el sitio.
-type EntradaIndice struct {
-	EntradaBusqueda
-	Modulo       string `json:"modulo"`
-	TituloModulo string `json:"titulo_modulo"`
-	Orden        int    `json:"orden" doc:"Posición del módulo en el sitio (desempata los resultados)."`
-}
-
-// IndiceResponse es el índice de búsqueda completo: el sitio estático busca con él en el navegador.
-type IndiceResponse struct {
-	GeneradoEn core.Fecha      `json:"generado_en"`
-	Entradas   []EntradaIndice `json:"entradas"`
-}
-
-// Provider es lo que cada módulo expone al hub y al buscador.
+// Provider es lo que cada módulo expone al hub.
 type Provider interface {
 	ResumenHub(s *core.Settings) (*ResumenModulo, error)
-	IndiceBusqueda(s *core.Settings) ([]EntradaBusqueda, error)
 }
 
 var (
@@ -214,128 +163,7 @@ func hubModulo(s *core.Settings, info modules.Info, jobs *core.JobRegistry, ahor
 	return h
 }
 
-// --- Buscador -------------------------------------------------------------------------
-
-type cacheKey struct{ dir, modulo string }
-
-type cacheVal struct {
-	at      time.Time
-	entries []EntradaBusqueda
-}
-
-var (
-	cacheMu sync.Mutex
-	cache   = map[cacheKey]cacheVal{}
-)
-
-// LimpiarCache vacía el índice de búsqueda (tests).
-func LimpiarCache() {
-	cacheMu.Lock()
-	cache = map[cacheKey]cacheVal{}
-	cacheMu.Unlock()
-}
-
-func indice(s *core.Settings, modulo string) []EntradaBusqueda {
-	k := cacheKey{s.DataDir, modulo}
-	cacheMu.Lock()
-	if v, ok := cache[k]; ok && time.Since(v.at) < ttlIndice {
-		cacheMu.Unlock()
-		return v.entries
-	}
-	cacheMu.Unlock()
-	var entries []EntradaBusqueda
-	if p := provider(modulo); p != nil {
-		if e, err := p.IndiceBusqueda(s); err == nil {
-			entries = e
-		}
-	}
-	cacheMu.Lock()
-	cache[k] = cacheVal{time.Now(), entries}
-	cacheMu.Unlock()
-	return entries
-}
-
-// normalizar quita tildes, pasa a minúsculas y colapsa espacios.
-func normalizar(t string) string {
-	var b strings.Builder
-	for _, r := range norm.NFKD.String(t) {
-		if r < unicode.MaxASCII {
-			b.WriteRune(unicode.ToLower(r))
-		}
-	}
-	return strings.Join(strings.Fields(b.String()), " ")
-}
-
-// baseTicker: «VAPORES.SN» → «vapores»; «^VIX» → «vix».
-func baseTicker(t string) string {
-	base, _, _ := strings.Cut(t, ".")
-	return normalizar(strings.TrimLeft(base, "^"))
-}
-
-// Buscar busca por ticker (exacto, sin sufijo de bolsa o por prefijo) y por nombre (contiene).
-// Orden: coincidencia exacta de ticker, luego prefijo, luego nombre; dentro de cada grupo, por
-// módulo y posición en su ranking.
-func Buscar(s *core.Settings, consulta string, limite int) BusquedaResponse {
-	q := normalizar(consulta)
-	out := BusquedaResponse{Consulta: consulta, Resultados: []ResultadoBusqueda{}}
-	if q == "" {
-		return out
-	}
-	type item struct {
-		key [3]int
-		r   ResultadoBusqueda
-	}
-	var items []item
-	for ord, info := range modules.All {
-		for _, e := range indice(s, string(info.Key)) {
-			t := normalizar(e.Ticker)
-			var grupo int
-			switch {
-			case t == q || baseTicker(e.Ticker) == q:
-				grupo = 0
-			case strings.HasPrefix(t, q):
-				grupo = 1
-			case len(q) >= 3 && e.Nombre != nil && strings.Contains(normalizar(*e.Nombre), q):
-				grupo = 2
-			default:
-				continue
-			}
-			pos := 1_000_000
-			if e.Posicion != nil {
-				pos = int(*e.Posicion)
-			}
-			items = append(items, item{[3]int{grupo, ord, pos}, ResultadoBusqueda{
-				EntradaBusqueda: e, Modulo: string(info.Key), TituloModulo: info.Title, Exacto: grupo == 0}})
-		}
-	}
-	sort.SliceStable(items, func(i, j int) bool {
-		a, b := items[i].key, items[j].key
-		for k := range a {
-			if a[k] != b[k] {
-				return a[k] < b[k]
-			}
-		}
-		return false
-	})
-	for i := 0; i < len(items) && i < limite; i++ {
-		out.Resultados = append(out.Resultados, items[i].r)
-	}
-	return out
-}
-
-// IndiceCompleto reúne el índice de búsqueda de todos los módulos.
-func IndiceCompleto(s *core.Settings, ahora time.Time) IndiceResponse {
-	out := IndiceResponse{GeneradoEn: core.Fecha{Time: ahora}, Entradas: []EntradaIndice{}}
-	for ord, info := range modules.All {
-		for _, e := range indice(s, string(info.Key)) {
-			out.Entradas = append(out.Entradas, EntradaIndice{
-				EntradaBusqueda: e, Modulo: string(info.Key), TituloModulo: info.Title, Orden: ord})
-		}
-	}
-	return out
-}
-
-// Register agrega /api/hub, /api/buscar y /api/buscar/indice.
+// Register agrega /api/hub.
 func Register(h *api.Host) {
 	api.Protected(h, huma.Operation{
 		OperationID: "get_hub", Method: http.MethodGet, Path: "/api/hub",
@@ -343,22 +171,4 @@ func Register(h *api.Host) {
 	}, func(context.Context, *struct{}) (*struct{ Body HubResponse }, error) {
 		return &struct{ Body HubResponse }{Hub(h.S, h.Jobs, time.Now().In(h.S.Loc))}, nil
 	})
-
-	api.Protected(h, huma.Operation{
-		OperationID: "get_buscar_indice", Method: http.MethodGet, Path: "/api/buscar/indice",
-		Summary: "Índice de búsqueda completo (para buscar en el cliente, sitio estático)", Tags: []string{"Transversal"},
-	}, func(context.Context, *struct{}) (*struct{ Body IndiceResponse }, error) {
-		return &struct{ Body IndiceResponse }{IndiceCompleto(h.S, time.Now().In(h.S.Loc))}, nil
-	})
-
-	op := huma.Operation{
-		OperationID: "get_buscar", Method: http.MethodGet, Path: "/api/buscar",
-		Summary: "Buscador global: en qué módulos aparece un ticker y con qué puntaje", Tags: []string{"Transversal"},
-	}
-	api.ProtectedWith(h, op, func(_ context.Context, in *struct {
-		Q      string `query:"q" required:"true" minLength:"1" maxLength:"40" doc:"Ticker o parte del nombre"`
-		Limite int    `query:"limite" default:"20" minimum:"1" maximum:"50"`
-	}) (*struct{ Body BusquedaResponse }, error) {
-		return &struct{ Body BusquedaResponse }{Buscar(h.S, in.Q, in.Limite)}, nil
-	}, h.Extra("120/minute", "buscar"))
 }

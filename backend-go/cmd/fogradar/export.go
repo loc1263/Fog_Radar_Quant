@@ -94,8 +94,8 @@ func rutasExportables(h *api.Host, modulos []string) []string {
 // sinVista: endpoints sobre history.db fuera de /history/ (el sitio estático no tiene vistas de historial).
 var sinVista = map[string]bool{"/api/tendencia/runs": true, "/api/tendencia/analyses": true}
 
-// transversales se exportan siempre: reúnen a todos los módulos (portada y buscador).
-var transversales = map[string]bool{"/api/hub": true, "/api/buscar/indice": true}
+// transversales se exportan siempre: reúnen a todos los módulos (portada).
+var transversales = map[string]bool{"/api/hub": true}
 
 func moduloIncluido(path string, modulos []string) bool {
 	if len(modulos) == 0 || transversales[path] {

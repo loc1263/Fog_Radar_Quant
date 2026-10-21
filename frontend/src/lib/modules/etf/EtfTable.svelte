@@ -31,9 +31,6 @@
 		extra?: Snippet<[{ column: Column<T>; row: T; value: unknown; text: string }]>;
 		csvFilename?: string;
 		csvColumns?: Column<T>[];
-		searchKeys?: string[];
-		searchPlaceholder?: string;
-		initialQuery?: string;
 		initialSort?: SortState;
 		pageSize?: number;
 		emptyText?: string;

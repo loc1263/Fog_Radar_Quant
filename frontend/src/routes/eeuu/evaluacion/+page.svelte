@@ -70,8 +70,6 @@
 			rows={filas}
 			{columns}
 			initialSort={{ key: 'overall', dir: 'desc' }}
-			searchKeys={['ticker', 'name', 'sector']}
-			searchPlaceholder="Ticker, empresa o sector…"
 			csvFilename="evaluacion_{run.run_id}"
 			{csvColumns}
 			caption="Evaluación de salud de los candidatos"

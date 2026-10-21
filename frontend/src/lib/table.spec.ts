@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { filterRows, nextSort, sortRows, toCsv, type Column } from './table';
+import { nextSort, sortRows, toCsv, type Column } from './table';
 
 const rows = [
 	{ ticker: 'SQM-B', nombre: 'Soquimich', score: 1.2 },
@@ -36,14 +36,6 @@ describe('nextSort', () => {
 		expect(s).toEqual({ key: 'score', dir: 'asc' });
 		expect(nextSort(s, 'score', true)).toBeNull();
 		expect(nextSort(s, 'nombre', false)).toEqual({ key: 'nombre', dir: 'asc' });
-	});
-});
-
-describe('filterRows', () => {
-	it('ignora mayúsculas y tildes', () => {
-		expect(filterRows(rows, 'SOQUÍMICH', ['nombre']).map((r) => r.ticker)).toEqual(['SQM-B']);
-		expect(filterRows(rows, 'chile', ['ticker', 'nombre'])).toHaveLength(2);
-		expect(filterRows(rows, '  ', ['ticker'])).toHaveLength(4);
 	});
 });
 

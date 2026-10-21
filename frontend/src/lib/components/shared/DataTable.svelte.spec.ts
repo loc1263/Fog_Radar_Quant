@@ -31,13 +31,6 @@ describe('DataTable', () => {
 		expect(tickers()).toEqual(['AAA', 'CCC', 'BBB']);
 	});
 
-	it('filtra con la búsqueda y muestra el contador', async () => {
-		render(DataTable, { rows, columns, searchKeys: ['ticker'] });
-		await page.getByRole('searchbox').fill('bb');
-		expect(tickers()).toEqual(['BBB']);
-		await expect.element(page.getByText('1 de 3')).toBeInTheDocument();
-	});
-
 	it('muestra el texto de vacío', async () => {
 		render(DataTable, { rows: [], columns, emptyText: 'Nada por aquí' });
 		await expect.element(page.getByText('Nada por aquí')).toBeInTheDocument();

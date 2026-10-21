@@ -96,8 +96,6 @@
 		<DataTable
 			rows={filas}
 			{columns}
-			searchKeys={['simbolo', 'nombre', 'sector']}
-			searchPlaceholder="Símbolo, nombre o sector…"
 			csvFilename={csvName}
 			caption="Indicadores financieros del IPSA"
 		>

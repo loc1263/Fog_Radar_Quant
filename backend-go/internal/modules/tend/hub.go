@@ -57,41 +57,4 @@ func (hubProvider) ResumenHub(s *core.Settings) (*transversal.ResumenModulo, err
 	return out, nil
 }
 
-// IndiceBusqueda: acciones de los portafolios (cada análisis) y líderes de momentum de la última corrida.
-func (hubProvider) IndiceBusqueda(s *core.Settings) ([]transversal.EntradaBusqueda, error) {
-	p, err := ultima(s)
-	if err != nil {
-		return nil, err
-	}
-	var out []transversal.EntradaBusqueda
-	vistos := map[string]bool{}
-	for _, a := range p.Analyses {
-		hs := byPeso(a.Holdings)
-		ctx := "Portafolio " + a.Label
-		total := int64(len(hs))
-		for i, h := range hs {
-			pos, v := int64(i+1), h.PesoFinal
-			out = append(out, transversal.EntradaBusqueda{Ticker: h.Ticker, Nombre: h.Nombre, Posicion: &pos, Total: &total,
-				Valor: &v, Metrica: metricaHub, Unidad: "fraccion", Contexto: &ctx})
-			vistos[h.Ticker] = true
-		}
-		for _, m := range a.Momentum {
-			if vistos[m.Ticker] {
-				continue
-			}
-			vistos[m.Ticker] = true
-			rank := m.Rank
-			var v *float64
-			if m.MomentumScorePct != nil {
-				x := *m.MomentumScorePct / 100
-				v = &x
-			}
-			c := "Momentum mensual " + a.Label
-			out = append(out, transversal.EntradaBusqueda{Ticker: m.Ticker, Nombre: m.Nombre, Posicion: &rank, Valor: v,
-				Metrica: "Score de momentum", Unidad: "fraccion", Contexto: &c})
-		}
-	}
-	return out, nil
-}
-
 func init() { transversal.RegisterProvider(string(key), hubProvider{}) }

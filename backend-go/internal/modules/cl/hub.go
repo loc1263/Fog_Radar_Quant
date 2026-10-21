@@ -41,20 +41,4 @@ func (hubProvider) ResumenHub(s *core.Settings) (*transversal.ResumenModulo, err
 	return &transversal.ResumenModulo{DatosAl: r.GeneradoEn, Metrica: metricaHub, Unidad: "numero", Top: top, Universo: &n}, nil
 }
 
-// IndiceBusqueda es el aporte de Chile al buscador global.
-func (hubProvider) IndiceBusqueda(s *core.Settings) ([]transversal.EntradaBusqueda, error) {
-	_, filas, err := filasOrdenadas(s)
-	if err != nil {
-		return nil, err
-	}
-	ctx := "Ranking IPSA"
-	total := int64(len(filas))
-	out := make([]transversal.EntradaBusqueda, 0, len(filas))
-	for _, f := range filas {
-		out = append(out, transversal.EntradaBusqueda{Ticker: f.Simbolo, Nombre: f.Nombre, Posicion: f.Ranking,
-			Total: &total, Valor: f.ScoreCompuesto, Metrica: metricaHub, Unidad: "numero", Contexto: &ctx})
-	}
-	return out, nil
-}
-
 func init() { transversal.RegisterProvider(string(key), hubProvider{}) }

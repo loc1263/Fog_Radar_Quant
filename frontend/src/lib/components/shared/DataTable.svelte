@@ -1,21 +1,13 @@
 <!--
   Tabla común del sitio (Dashboard ejecutivo §5.5): orden por clic en todos los
-  encabezados, búsqueda opcional y exportación a CSV de la vista filtrada.
+  encabezados y exportación a CSV de la vista ordenada.
 -->
 <script lang="ts" generics="T extends Row">
-	import { untrack, type Snippet } from 'svelte';
+	import type { Snippet } from 'svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
 	import { signedClass } from '$lib/format';
-	import {
-		filterRows,
-		nextSort,
-		sortRows,
-		toCsv,
-		type Column,
-		type Row,
-		type SortState
-	} from '$lib/table';
+	import { nextSort, sortRows, toCsv, type Column, type Row, type SortState } from '$lib/table';
 
 	interface Props {
 		rows: T[];
@@ -35,18 +27,13 @@
 		/** Texto accesible del botón de detalle. */
 		detailLabel?: (row: T) => string;
 		initialSort?: SortState;
-		/** Columnas donde busca el filtro de texto (sin filtro si se omite). */
-		searchKeys?: string[];
-		searchPlaceholder?: string;
-		/** Texto inicial del filtro (p. ej. `?q=` de la URL, desde el buscador global). */
-		initialQuery?: string;
 		/** Nombre del CSV (sin extensión). Sin valor, no se muestra el botón. */
 		csvFilename?: string;
 		/** Columnas del CSV si difieren de las visibles (p. ej. exportar todos los campos). */
 		csvColumns?: Column<T>[];
 		emptyText?: string;
 		caption?: string;
-		/** Filas por página (sin valor, todas). La búsqueda y el orden vuelven a la página 1. */
+		/** Filas por página (sin valor, todas). El orden vuelve a la página 1. */
 		pageSize?: number;
 		class?: string;
 	}
@@ -59,9 +46,6 @@
 		rowKey,
 		detailLabel = () => 'Ver detalle',
 		initialSort = null,
-		searchKeys,
-		searchPlaceholder = 'Buscar…',
-		initialQuery = '',
 		csvFilename,
 		csvColumns,
 		emptyText = 'Sin datos para mostrar.',
@@ -71,8 +55,6 @@
 	}: Props = $props();
 
 	let sort = $state<SortState>(null);
-	// Solo el valor inicial: después el filtro es del usuario.
-	let query = $state(untrack(() => initialQuery));
 	let sortTouched = $state(false);
 	let openKey = $state<string | null>(null);
 	let pageIndex = $state(0);
@@ -86,8 +68,7 @@
 	}
 
 	const effectiveSort = $derived(sortTouched ? sort : initialSort);
-	const filtered = $derived(searchKeys ? filterRows(rows, query, searchKeys) : rows);
-	const visible = $derived(sortRows(filtered, effectiveSort));
+	const visible = $derived(sortRows(rows, effectiveSort));
 	const pageCount = $derived(pageSize ? Math.max(1, Math.ceil(visible.length / pageSize)) : 1);
 	const currentPage = $derived(Math.min(pageIndex, pageCount - 1));
 	const shown = $derived(
@@ -134,29 +115,13 @@
 </script>
 
 <div class={cn('space-y-2', className)}>
-	{#if searchKeys || csvFilename}
-		<div class="flex flex-wrap items-end justify-between gap-2">
-			{#if searchKeys}
-				<label class="block">
-					<span class="mb-1 block text-sm font-bold text-brand-label">Buscar</span>
-					<input
-						type="search"
-						bind:value={query}
-						oninput={() => (pageIndex = 0)}
-						placeholder={searchPlaceholder}
-						class="w-64 rounded border border-brand-border bg-brand-bg px-2 py-1.5 text-sm"
-					/>
-				</label>
-			{:else}
-				<span></span>
-			{/if}
+	{#if csvFilename}
+		<div class="flex flex-wrap items-end justify-end gap-2">
 			<div class="flex items-center gap-3 text-sm text-brand-muted">
 				<span class="tabular-nums">{visible.length} de {rows.length}</span>
-				{#if csvFilename}
-					<Button size="sm" onclick={downloadCsv} disabled={visible.length === 0}>
-						Descargar CSV
-					</Button>
-				{/if}
+				<Button size="sm" onclick={downloadCsv} disabled={visible.length === 0}>
+					Descargar CSV
+				</Button>
 			</div>
 		</div>
 	{/if}

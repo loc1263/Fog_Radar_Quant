@@ -79,8 +79,6 @@
 			rows={filas}
 			{columns}
 			initialSort={{ key: 'return_1d', dir: 'desc' }}
-			searchKeys={['ticker', 'name', 'sector']}
-			searchPlaceholder="Ticker, empresa o sector…"
 			csvFilename="rendimiento_{run.run_id}"
 			{csvColumns}
 			caption="Rendimiento por plazo"

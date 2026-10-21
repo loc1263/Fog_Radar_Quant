@@ -54,13 +54,7 @@
 </Section>
 
 <Section title="Tabla (orden, búsqueda y CSV)">
-	<DataTable
-		{rows}
-		{columns}
-		searchKeys={['ticker', 'nombre', 'sector']}
-		csvFilename="vitrina"
-		initialSort={{ key: 'score', dir: 'desc' }}
-	>
+	<DataTable {rows} {columns} csvFilename="vitrina" initialSort={{ key: 'score', dir: 'desc' }}>
 		{#snippet cell({ column, row, text })}
 			{#if column.key === 'ticker'}
 				<TickerLink ticker={row.ticker} />

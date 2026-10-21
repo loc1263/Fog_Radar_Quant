@@ -82,11 +82,6 @@ export function isGrowingPerformance(
 	return true;
 }
 
-/** Texto para buscar un candidato: ticker, nombre y sector. */
-export function searchText(row: Pick<UsCandidateRow, 'ticker' | 'name' | 'sector'>): string {
-	return `${row.ticker} ${row.name ?? ''} ${row.sector ?? ''}`;
-}
-
 /** Fila plana con el 100 % de los datos de un candidato (para CSV). */
 export function flattenCandidate(row: UsCandidateRow): Record<string, string | number | null> {
 	const t = row.technical;

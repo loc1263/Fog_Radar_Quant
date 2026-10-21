@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import type { UsCandidateRow } from '$lib/api/types';
 	import { Sparkline } from '$lib/charts';
 	import { DataTable, ErrorState, Section } from '$lib/components/shared';
@@ -54,9 +53,6 @@
 			rows={filas}
 			{columns}
 			initialSort={{ key: 'market_cap', dir: 'desc' }}
-			searchKeys={['ticker', 'name', 'sector']}
-			initialQuery={page.url.searchParams.get('q') ?? ''}
-			searchPlaceholder="Ticker, empresa o sector…"
 			csvFilename="candidatos_{run.run_id}"
 			{csvColumns}
 			caption="Candidatos de la última corrida"

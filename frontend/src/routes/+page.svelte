@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import { ErrorState, ModuleCard, Notice, Section } from '$lib/components/shared';
 	import { MODULES } from '$lib/nav';
 	import { fmtDate } from '$lib/format';
@@ -13,33 +12,6 @@
 		data.hub.ok ? data.hub.data.modulos.filter((m) => m.frescura !== 'al_dia') : []
 	);
 </script>
-
-<Section title="Buscar un ticker en los 4 módulos">
-	<form
-		method="GET"
-		action={resolve('/buscar')}
-		class="flex flex-wrap items-end gap-2"
-		role="search"
-	>
-		<label class="block">
-			<span class="mb-1 block text-sm font-bold text-brand-label">Ticker o nombre</span>
-			<input
-				type="search"
-				name="q"
-				required
-				maxlength="40"
-				placeholder="p. ej. NVDA, SQM-B, Samsung"
-				class="w-72 rounded border border-brand-border bg-brand-bg px-2 py-1.5 text-sm"
-			/>
-		</label>
-		<button
-			type="submit"
-			class="rounded bg-brand-strong px-3 py-1.5 text-sm font-bold text-white hover:opacity-90"
-		>
-			Buscar
-		</button>
-	</form>
-</Section>
 
 <Section title="Módulos">
 	{#if !data.hub.ok}

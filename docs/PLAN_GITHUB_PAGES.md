@@ -48,7 +48,7 @@ Seis fases, cada una cerrada por una puerta de decisión (go / no-go). Los crite
 2. **Fase 1 · Datos.** Elegir la persistencia (`actions/cache`, artifact o rama `data`) y definir qué se publica (resultados) y qué no (`history.db`, descargas brutas).
 3. **Fase 2 · Prerender del módulo piloto.** `adapter-static` con `prerender = true`, `entries()` para cada ruta dinámica y `paths.base` para el subdirectorio de Pages. Revisar enlaces rotos y que el HTML no contenga la API key.
 4. **Fase 3 · Los cuatro módulos.** Replicar el patrón en EEUU, Chile y Tendencia, y en el hub. Retirar o reemplazar las acciones dinámicas.
-5. **Fase 4 · Funciones sin servidor.** Sustituir `GET /api/buscar` por un índice JSON en el cliente, generar los PDFs en el job y mostrar la fecha de la última corrida en el pie.
+5. **Fase 4 · Funciones sin servidor.** Generar los PDFs en el job y mostrar la fecha de la última corrida en el pie.
 6. **Fase 5 · Automatización y cierre.** Cron semanal, aviso si el workflow falla, ADR nuevo en `docs/ADR/` y actualización de `docs/METODOLOGIAS.md` si cambia alguna lógica.
 
 ## Riesgos y mitigaciones
@@ -75,15 +75,16 @@ Cada fase termina con una decisión explícita; si un criterio crítico falla, s
 | 1. Datos | Los resultados persisten y la 2.ª corrida reutiliza caché | 2.ª corrida al menos 50 % más rápida | Seguir / ajustar | Pendiente |
 | 2. Prerender | Todas las rutas del módulo ETF generan HTML sin errores | 0 enlaces rotos; sin secretos en el HTML | Seguir / ajustar | Pendiente |
 | 3. Módulos | Los 4 módulos publican y se ven igual que en local | Revisión visual y `npm run check` en verde | Seguir / ajustar | Pendiente |
-| 4. Funciones | Buscador y PDFs funcionan sin servidor | Búsqueda < 200 ms; sitio < 1 GB | Seguir / recortar | Pendiente |
+| 4. Funciones | Los PDFs funcionan sin servidor | Sitio < 1 GB | Seguir / recortar | Pendiente |
 | 5. Automatización | Cron semanal estable durante 4 semanas | 0 fallos sin aviso | Adoptar / descartar | Pendiente |
 
 ## Decisiones tomadas (2026-10-21)
 
 - Repo **público**; módulo piloto **ETF**; por ahora solo desarrollo local (sin Actions ni Pages reales).
 - **SPA pura con JSON estático** (no prerender con BFF): `fogradar export` genera `frontend/static/data/` y las páginas usan `+page.ts` con `$lib/datos`.
-- Implementado: `fogradar export`, `adapter-static` (`STATIC_BUILD=1`, `BASE_PATH`) y todas las vistas: ETF, Chile, EEUU, Tendencia (con sus descargas: PDF y CSV de la última corrida), hub, buscador (índice JSON, `GET /api/buscar/indice`) y Estado (instantánea de la exportación). Pendiente: los workflows de GitHub Actions y la publicación en Pages.
+- Implementado: `fogradar export`, `adapter-static` (`STATIC_BUILD=1`, `BASE_PATH`) y todas las vistas: ETF, Chile, EEUU, Tendencia (con sus descargas: PDF y CSV de la última corrida), hub y Estado (instantánea de la exportación). Pendiente: los workflows de GitHub Actions y la publicación en Pages.
 - EEUU en la versión estática: sin evaluación en vivo de un ticker ni optimizador a pedido; el portafolio es el **precalculado** del batch (`GET /api/us/portfolio/precalculado`: todos los candidatos, Top 30 y Top 15 con los parámetros por defecto). Las sparklines usan `prices` de los últimos 60 días (el export fija `days=60`).
+- **Sin búsquedas (2026-10-21):** se eliminaron el buscador global (menú, hub, `/buscar`, `GET /api/buscar` y su índice) y los filtros de texto de las tablas; las tablas conservan orden, paginación y CSV.
 - **Sin historial (2026-10-21):** se eliminaron las vistas de historial de todos los módulos (Chile, EEUU, ETF —Historial y Evolución— y Tendencia). La API `/history/*` y `history.db` siguen en el backend (ADR 0003), pero el export no las incluye.
 
 ## Decisiones abiertas y alternativas

@@ -1,8 +1,6 @@
 package us
 
 import (
-	"sort"
-
 	"fogradar/internal/core"
 	"fogradar/internal/transversal"
 )
@@ -29,41 +27,6 @@ func (hubProvider) ResumenHub(s *core.Settings) (*transversal.ResumenModulo, err
 	}
 	n := r.CandidatesTotal
 	return &transversal.ResumenModulo{DatosAl: &fin, Metrica: metricaHub, Unidad: "fraccion", Top: top, Universo: &n}, nil
-}
-
-// IndiceBusqueda: los candidatos evaluados, ordenados por momentum (la posición del Top 15 sale de ahí).
-func (hubProvider) IndiceBusqueda(s *core.Settings) ([]transversal.EntradaBusqueda, error) {
-	dir, e := LatestFinishedRun(s)
-	if e != nil {
-		return nil, e
-	}
-	var res RunResponse
-	if e := ReadRunFile(dir, "result.json", &res); e != nil {
-		return nil, e
-	}
-	top := map[string]bool{}
-	for _, r := range res.Rows {
-		top[r.Ticker] = true
-	}
-	filas := res.Rows
-	var cand RunResponse
-	if ReadRunFile(dir, "candidates.json", &cand) == nil && cand.Rows != nil {
-		filas = cand.Rows // corridas sin candidates.json: solo el Top 15
-	}
-	filas = append([]CandidateRow(nil), filas...)
-	sort.SliceStable(filas, func(i, j int) bool { return filas[i].Momentum121 > filas[j].Momentum121 })
-	total := int64(len(filas))
-	out := make([]transversal.EntradaBusqueda, 0, len(filas))
-	for i, r := range filas {
-		pos, m := int64(i+1), r.Momentum121
-		ctx := "Candidatos"
-		if top[r.Ticker] {
-			ctx = "Top 15"
-		}
-		out = append(out, transversal.EntradaBusqueda{Ticker: r.Ticker, Nombre: r.Name, Posicion: &pos, Total: &total,
-			Valor: &m, Metrica: metricaHub, Unidad: "fraccion", Contexto: &ctx})
-	}
-	return out, nil
 }
 
 func init() { transversal.RegisterProvider(string(key), hubProvider{}) }

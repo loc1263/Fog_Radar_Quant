@@ -69,8 +69,7 @@ módulo: **docs/METODOLOGIAS.md** (actualizarla si cambia la lógica).
 - En disco, el formato del proyecto original; en la API, claves snake_case. Parámetros del
   modelo (pesos, umbrales) viajan en la respuesta: el front no los duplica.
 - Fechas con zona (`Settings.Loc`); en el front, `fmtDate` (zona fija).
-- Cada módulo expone `hub.go` (resumen del hub e índice de búsqueda) para el
-  hub y el buscador global (`internal/transversal`, `GET /api/hub`, `GET /api/buscar`).
+- Cada módulo expone `hub.go` (resumen del hub) para el hub (`internal/transversal`, `GET /api/hub`).
 - Front: `src/lib/modules/<modulo>/` para lógica y componentes propios del módulo.
 - Las diferencias de lógica respecto del proyecto original se documentan en `docs/METODOLOGIAS.md`.
 

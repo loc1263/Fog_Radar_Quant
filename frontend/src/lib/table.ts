@@ -58,19 +58,6 @@ export function nextSort(current: SortState, key: string, numeric: boolean): Sor
 	return null;
 }
 
-function normalize(s: string): string {
-	return s
-		.normalize('NFD')
-		.replace(/\p{Diacritic}/gu, '')
-		.toLowerCase();
-}
-
-export function filterRows<T extends Row>(rows: readonly T[], query: string, keys: string[]): T[] {
-	const q = normalize(query.trim());
-	if (!q) return [...rows];
-	return rows.filter((r) => keys.some((k) => normalize(String(r[k] ?? '')).includes(q)));
-}
-
 /**
  * Celda CSV. Los textos que empiezan con `= + - @` (o tab/CR) se prefijan con `'`
  * para que Excel no los ejecute como fórmula (inyección CSV, OWASP); los números

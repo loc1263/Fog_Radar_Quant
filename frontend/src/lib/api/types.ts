@@ -20,9 +20,6 @@ export type HubModulo = Schemas['HubModulo'];
 export type HubItem = Schemas['HubItem'];
 export type Frescura = HubModulo['frescura'];
 export type Unidad = HubModulo['unidad'];
-export type BusquedaResponse = Schemas['BusquedaResponse'];
-export type ResultadoBusqueda = Schemas['ResultadoBusqueda'];
-export type EntradaIndice = Schemas['EntradaIndice'];
 
 /** Resultado de `tryCall` (lib/server/safe.ts): datos o error mostrable. */
 export type Loaded<T> =

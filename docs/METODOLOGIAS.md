@@ -560,17 +560,6 @@ secuencia diaria ~25 min, más reintentos). Ejemplo: un martes a las 19:00 la re
 `martes 16:00 → lunes 18:00`; recién desde las 21:00 del martes se exigen datos del martes.
 Sin datos: `sin_datos`; datos ilegibles: `error` (el hub nunca se cae por un módulo).
 
-**Buscador global.** La consulta se normaliza (sin tildes, minúsculas, espacios simples) y
-se compara con el índice de cada módulo (caché de 60 s). Orden de resultados:
-
-1. Coincidencia exacta de ticker, o del ticker sin sufijo de bolsa (`VAPORES.SN` → `vapores`,
-   `^VIX` → `vix`).
-2. Ticker que empieza con la consulta.
-3. Nombre que contiene la consulta (solo si tiene ≥ 3 caracteres).
-
-Dentro de cada grupo: por módulo (Chile, EEUU, ETF, Tendencia) y luego por posición en el
-ranking de ese módulo. Máximo 50 resultados.
-
 ---
 
 ## 6. Limitaciones y supuestos comunes

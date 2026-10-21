@@ -44,7 +44,6 @@
 			rows={filas}
 			{columns}
 			scoreKey={null}
-			searchKeys={['ticker', 'nombre', 'categoria']}
 			csvFilename={csvName('etf_excluidos_outliers', t.fecha)}
 			caption="Excluidos por distorsión"
 			emptyText="Ningún ETF fue excluido por distorsión en esta corrida."

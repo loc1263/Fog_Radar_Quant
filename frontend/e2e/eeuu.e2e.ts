@@ -16,13 +16,10 @@ test('top 15 con sparklines y datos de la corrida', async ({ page }) => {
 	);
 });
 
-test('candidatos: búsqueda', async ({ page }) => {
+test('candidatos: tabla de la última corrida', async ({ page }) => {
 	await page.goto('/eeuu/candidatos');
 	const table = page.getByRole('table', { name: 'Candidatos de la última corrida' });
 	expect(await table.locator('tbody tr').count()).toBeGreaterThan(20);
-	await page.getByRole('searchbox', { name: 'Buscar', exact: true }).fill('nvidia');
-	await expect(table.locator('tbody tr')).toHaveCount(1);
-	await expect(table.getByRole('link', { name: 'NVDA', exact: true })).toBeVisible();
 });
 
 test('evaluación ordenada por score y rendimiento creciente', async ({ page }) => {
