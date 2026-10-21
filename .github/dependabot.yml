@@ -1,0 +1,33 @@
+# Dependabot: abre PR semanales con las actualizaciones de dependencias (el CI los valida).
+# Las menores y los parches van agrupados en un solo PR por ecosistema; las mayores, por separado.
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directory: /backend-go
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: America/Santiago
+    groups:
+      go-menores:
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: America/Santiago
+    groups:
+      npm-menores:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: America/Santiago
+    groups:
+      actions:
+        patterns: ["*"]
