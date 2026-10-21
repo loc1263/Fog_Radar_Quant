@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 /**
- * Módulo EEUU. Requiere una corrida en data/us_stocks/runs (en CI se copia
- * la de backend/tests/us_stocks/fixtures).
+ * Módulo EEUU. Requiere una corrida en data/us_stocks/runs y el export estático
+ * (`fogradar export --modulo us`, que deja frontend/static/data).
  */
 
 test('top 15 con sparklines y datos de la corrida', async ({ page }) => {
@@ -10,9 +10,10 @@ test('top 15 con sparklines y datos de la corrida', async ({ page }) => {
 	const table = page.getByRole('table', { name: 'Top 15 por momentum' });
 	await expect(table.locator('tbody tr')).toHaveCount(15);
 	await expect(page.getByText('Universo (S&P 500 ∪ Nasdaq-100)')).toBeVisible();
-	await expect(
-		table.locator('tbody tr').first().getByRole('link', { name: 'evaluar' })
-	).toBeVisible();
+	await expect(table.locator('tbody tr').first().getByRole('link').first()).toHaveAttribute(
+		'href',
+		/stockanalysis\.com/
+	);
 });
 
 test('candidatos: búsqueda', async ({ page }) => {
@@ -44,28 +45,20 @@ test('evaluación ordenada por score y rendimiento creciente', async ({ page }) 
 	expect(n).toBeLessThanOrEqual(total);
 });
 
-test('Portafolio: selección por cluster y pesos Black-Litterman', async ({ page }) => {
+test('Portafolio precalculado: pestañas por universo, selección y pesos', async ({ page }) => {
 	await page.goto('/eeuu/portafolio');
-	await page.getByRole('button', { name: 'Desmarcar todos' }).click();
-	await expect(page.getByRole('button', { name: 'Optimizar' })).toBeDisabled();
-	await page.getByRole('button', { name: 'Todos', exact: true }).click();
-	await page.getByRole('button', { name: 'Optimizar' }).click();
+	await expect(page.getByText('Portafolios precalculados')).toBeVisible();
 	await expect(
 		page.getByRole('table', { name: /Selección por cluster y retornos de Black-Litterman/ })
-	).toBeVisible({ timeout: 20_000 });
+	).toBeVisible();
 	await expect(page.getByRole('list', { name: 'Composición del portafolio' })).toBeVisible();
-	// La selección se conserva tras optimizar (use:enhance sin reset)
-	await expect(page.getByText(/seleccionados de/)).toBeVisible();
-});
 
-test('evaluación en vivo: ticker inválido y página de ticker', async ({ page }) => {
-	await page.goto('/eeuu/ticker?t=no%20valido');
-	await expect(page.getByText('no es un ticker válido')).toBeVisible();
-
-	await page.goto('/eeuu/ticker?t=aapl');
-	await expect(page).toHaveURL(/\/eeuu\/ticker\/AAPL$/);
-	// Con o sin acceso a Yahoo, la página responde (resultado o error controlado)
-	await expect(page.getByRole('heading', { name: /Evaluación en vivo · AAPL/ })).toBeVisible();
+	await page.getByRole('link', { name: /Top 15 por score/ }).click();
+	await expect(page).toHaveURL(/u=top15/);
+	await expect(page.getByRole('link', { name: /Top 15 por score/ })).toHaveAttribute(
+		'aria-current',
+		'page'
+	);
 });
 
 test('historial desde history.db', async ({ page }) => {

@@ -956,6 +956,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/us/portfolio/precalculado": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Portafolios precalculados con los parámetros por defecto (universo completo, Top 30, Top 15) */
+        get: operations["us_portfolio_precalc"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/us/rankings/latest": {
         parameters: {
             query?: never;
@@ -1902,6 +1919,22 @@ export interface components {
             /** Format: double */
             score: number | null;
             ticker: string;
+        };
+        PortfolioPrecalc: {
+            /** @description todos | top30 | top15 … */
+            clave: string;
+            resultado: components["schemas"]["PortfolioResult"];
+            titulo: string;
+        };
+        PortfolioPrecalcResponse: {
+            /** Format: double */
+            max_weight: number;
+            /** Format: int64 */
+            n_assets: number;
+            portafolios: components["schemas"]["PortfolioPrecalc"][];
+            /** Format: double */
+            risk_free_rate: number;
+            run_id: string;
         };
         PortfolioRequest: {
             /**
@@ -4966,6 +4999,44 @@ export interface operations {
             };
             /** @description Unprocessable Entity */
             422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    us_portfolio_precalc: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PortfolioPrecalcResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };

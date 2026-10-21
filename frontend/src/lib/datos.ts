@@ -53,7 +53,7 @@ export function datos<P extends RutaGet>(
 	return leer(fetch, rutaConcreta(ruta, params));
 }
 
-type RutaDiff = '/api/etf/history/diff' | '/api/cl/history/diff';
+type RutaDiff = '/api/etf/history/diff' | '/api/cl/history/diff' | '/api/us/history/diff';
 
 /** Diff entre dos corridas: `fogradar export` guarda un archivo por par (ver `diffsDeCorridas`). */
 export function datosDiff<P extends RutaDiff>(

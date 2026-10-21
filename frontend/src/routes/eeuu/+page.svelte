@@ -2,7 +2,7 @@
 	import type { UsCandidateRow } from '$lib/api/types';
 	import { Sparkline } from '$lib/charts';
 	import { DataTable, ErrorState, Notice, Section } from '$lib/components/shared';
-	import { RunInfo, TickerSearch, UsTicker } from '$lib/modules/us';
+	import { RunInfo, UsTicker } from '$lib/modules/us';
 	import { fmtPrice, fmtRet, fmtUsd } from '$lib/modules/us/format';
 	import type { Column } from '$lib/table';
 
@@ -48,7 +48,6 @@
 			capitalización sobre el umbral. Datos de la corrida batch más reciente; esta página no
 			descarga nada.
 		</p>
-		<TickerSearch />
 	</div>
 	{#if !run}
 		{#if !data.ranking.ok}

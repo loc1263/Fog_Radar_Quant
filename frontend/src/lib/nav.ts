@@ -39,7 +39,6 @@ export const MODULES: ModuleNav[] = [
 			{ label: 'Evaluación', href: '/eeuu/evaluacion' },
 			{ label: 'Rendimiento', href: '/eeuu/rendimiento' },
 			{ label: 'Portafolio', href: '/eeuu/portafolio' },
-			{ label: 'Evaluar ticker', href: '/eeuu/ticker' },
 			{ label: 'Historial', href: '/eeuu/historial' }
 		]
 	},

@@ -15,6 +15,7 @@ import (
 
 	"fogradar/internal/api"
 	"fogradar/internal/core"
+	"fogradar/internal/modules/us"
 )
 
 // Instantánea estática de la API (sitio en GitHub Pages): llama en proceso a cada GET sin parámetros
@@ -32,6 +33,7 @@ type expansion struct {
 var expansiones = []expansion{
 	{"/api/etf/history/top", "", "ticker", "/api/etf/history/ticker/{ticker}", "ticker"},
 	{"/api/cl/ranking", "filas", "simbolo", "/api/cl/history/ticker/{ticker}", "ticker"},
+	{"/api/us/history/top", "", "ticker", "/api/us/history/ticker/{ticker}", "ticker"},
 }
 
 // paresDeDiff exporta diffs entre corridas (query desde, hasta) como <diff>/<desde>__<hasta>.json.
@@ -48,6 +50,12 @@ type paresDeDiff struct {
 var diffsDeCorridas = []paresDeDiff{
 	{"/api/etf/history/runs", "run_key", "/api/etf/history/diff", false},
 	{"/api/cl/history/runs", "ts", "/api/cl/history/diff", true},
+	{"/api/us/history/runs", "run_id", "/api/us/history/diff", true},
+}
+
+// consultasFijas: rutas que el sitio estático pide siempre con la misma query (el archivo no la lleva).
+var consultasFijas = map[string]string{
+	"/api/us/rankings/latest/prices": fmt.Sprintf("days=%d", us.SparkDays),
 }
 
 type exportArgs struct {
@@ -154,6 +162,10 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 	}
 
 	for _, r := range rutasExportables(h, a.modulos) {
+		if q, ok := consultasFijas[r]; ok {
+			pedirComo(r+"?"+q, r, nil)
+			continue
+		}
 		pedir(r)
 	}
 	for _, x := range expansiones {

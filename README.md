@@ -97,14 +97,14 @@ npm run autofix && npm run check && npm run lint && npm test   # validaciones pr
 npm run gen:api                # regenera los tipos TS desde el OpenAPI del backend (backend arriba)
 ```
 
-## Sitio estático (en migración: hub, buscador, ETF y Chile listos)
+## Sitio estático (en migración: hub, buscador, ETF, Chile y EEUU listos)
 
-Objetivo: publicar el sitio como SPA en GitHub Pages ([plan](docs/PLAN_GITHUB_PAGES.md)). El **hub, el buscador, ETF y Chile** ya leen JSON
-estático en vez de llamar al backend; EEUU y Tendencia siguen con el backend (BFF) hasta migrarlas.
+Objetivo: publicar el sitio como SPA en GitHub Pages ([plan](docs/PLAN_GITHUB_PAGES.md)). El **hub, el buscador, ETF, Chile y EEUU** ya leen JSON
+estático en vez de llamar al backend; Tendencia sigue con el backend (BFF) hasta migrarla.
 
 ```bash
 # 1. Exportar la instantánea de la API a frontend/static/data (lo hace iniciar.bat solo)
-cd backend-go && ./bin/fogradar.exe export --modulo etf,cl --out ../frontend/static/data
+cd backend-go && ./bin/fogradar.exe export --modulo etf,cl,us --out ../frontend/static/data
 # 2. Construir la SPA (BASE_PATH = subruta de Pages; vacío si va en la raíz)
 cd ../frontend && STATIC_BUILD=1 BASE_PATH=/Fog_Radar_Quant npm run build     # salida en frontend/build
 ```

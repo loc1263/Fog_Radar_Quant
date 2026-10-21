@@ -57,6 +57,7 @@ export type UsPortfolioRequest = Schemas['PortfolioRequest'];
 export type UsPortfolioResult = Schemas['PortfolioResult'];
 export type UsPortfolioPick = Schemas['PortfolioPick'];
 export type UsPortfolioLimits = Schemas['PortfolioLimits'];
+export type UsPortfolioPrecalc = Schemas['PortfolioPrecalcResponse'];
 export type UsHistCorrida = Schemas['UsHistCorrida'];
 export type UsHistTickerPunto = Schemas['UsHistTickerPunto'];
 export type UsHistPermanencia = Schemas['UsHistPermanencia'];

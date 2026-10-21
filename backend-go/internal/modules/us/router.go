@@ -145,6 +145,14 @@ func Register(h *api.Host, src yahoo.Source) {
 			return &struct{ Body PortfolioLimits }{PortfolioLimits{MinTickers: MinTickers, MinAssets: MinNAssets, MaxAssets: MaxNAssets,
 				DefaultAssets: DefaultNAssets, DefaultMaxWeight: DefaultMaxWeight, DefaultRiskFreeRate: DefaultRiskFree}}, nil
 		})
+	api.Protected(h, op("us_portfolio_precalc", http.MethodGet, "/portfolio/precalculado", "Portafolios precalculados con los parámetros por defecto (universo completo, Top 30, Top 15)"),
+		func(context.Context, *struct{}) (*struct{ Body PortfolioPrecalcResponse }, error) {
+			res, e := PortfolioPrecalculado(h.S)
+			if e != nil {
+				return nil, e
+			}
+			return &struct{ Body PortfolioPrecalcResponse }{*res}, nil
+		})
 	api.ProtectedWith(h, op("us_portfolio_optimize", http.MethodPost, "/portfolio/optimize", "Portafolio del modelo único: clusters de correlación + Black-Litterman"),
 		func(_ context.Context, in *struct{ Body PortfolioRequest }) (*struct{ Body PortfolioResult }, error) {
 			res, e := Optimize(h.S, in.Body)

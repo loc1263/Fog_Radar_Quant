@@ -8,7 +8,6 @@ import {
 	isGrowingPerformance,
 	scoreSignal
 } from './format';
-import { parseFraction, parseInt10, parseTickers, parseViews } from './portfolio';
 
 describe('formato EEUU', () => {
 	it('montos USD compactos', () => {
@@ -47,32 +46,5 @@ describe('formato EEUU', () => {
 		expect(Object.keys(flat)).toHaveLength(41);
 		expect(flat.ticker).toBe('AAA');
 		expect(flat.score_overall).toBeNull();
-	});
-});
-
-describe('formularios de portafolio', () => {
-	it('tickers normalizados y sin duplicados', () => {
-		const f = new FormData();
-		for (const t of ['aapl', 'MSFT', 'AAPL', 'bad ticker', 'BRK-B']) f.append('tickers', t);
-		expect(parseTickers(f)).toEqual(['AAPL', 'MSFT', 'BRK-B']);
-	});
-
-	it('views en % → fracción, solo de tickers seleccionados', () => {
-		const f = new FormData();
-		f.set('view:AAPL', '12,5');
-		f.set('view:MSFT', '');
-		f.set('view:NVDA', '30');
-		f.set('view:META', 'abc');
-		expect(parseViews(f, ['AAPL', 'MSFT', 'META'])).toEqual({ AAPL: 0.125 });
-		expect(parseViews(new FormData(), ['AAPL'])).toBeUndefined();
-	});
-
-	it('parámetros', () => {
-		expect(parseInt10('4', 5)).toBe(4);
-		expect(parseInt10(null, 5)).toBe(5);
-		expect(parseFraction('25', 0.25)).toBe(0.25);
-		expect(parseFraction('30,5', 0.25)).toBeCloseTo(0.305);
-		expect(parseFraction('', 0.25)).toBe(0.25);
-		expect(parseFraction('abc', 0.25)).toBe(0.25);
 	});
 });
