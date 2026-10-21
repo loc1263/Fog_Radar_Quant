@@ -1,4 +1,4 @@
-<!-- Ticker con enlace a Yahoo Finance + acceso a la evaluación en vivo en el sitio. -->
+<!-- Ticker con enlace a StockAnalysis + acceso a la evaluación en vivo en el sitio. -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { TickerLink } from '$lib/components/shared';

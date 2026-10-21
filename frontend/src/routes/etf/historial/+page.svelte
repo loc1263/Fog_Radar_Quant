@@ -101,7 +101,7 @@
 		<DataTable rows={filas} {columns} csvFilename="etf_historial_corridas" caption="Historial">
 			{#snippet cell({ column, row, text })}
 				{#if column.key === 'top1_ticker' && row.top1_ticker}
-					<TickerLink ticker={row.top1_ticker} />
+					<TickerLink ticker={row.top1_ticker} etf />
 				{:else if column.key === 'top1_score'}
 					<span class="font-bold text-brand-accent">{text}</span>
 				{:else if column.key === 'fecha'}

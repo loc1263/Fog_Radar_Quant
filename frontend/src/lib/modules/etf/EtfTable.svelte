@@ -46,7 +46,7 @@
 <DataTable {...rest}>
 	{#snippet cell({ column, row, value, text })}
 		{#if column.key === 'ticker' && row.ticker}
-			<TickerLink ticker={row.ticker} />
+			<TickerLink ticker={row.ticker} etf />
 		{:else if column.key === 'nombre'}
 			<NombreCategoria nombre={row.nombre} categoria={row.categoria} />
 		{:else if column.key === 'rango52'}

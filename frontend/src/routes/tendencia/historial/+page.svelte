@@ -238,7 +238,7 @@
 					>Ver</button
 				>
 				{#if f.ticker}<span class="py-1.5"
-						>Ver <TickerLink ticker={f.ticker} /> en Yahoo Finance ↗</span
+						>Ver <TickerLink ticker={f.ticker} /> en StockAnalysis ↗</span
 					>{/if}
 			</form>
 			{#if data.trayectoria && !data.trayectoria.ok}

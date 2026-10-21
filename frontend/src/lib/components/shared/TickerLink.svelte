@@ -1,16 +1,18 @@
-<!-- Ticker que abre su página de Yahoo Finance en otra pestaña. -->
+<!-- Ticker que abre su página de StockAnalysis en otra pestaña. `etf` usa la sección de ETFs para tickers de EEUU. -->
 <script lang="ts">
-	let { ticker }: { ticker: string } = $props();
+	import { stockAnalysisPath } from '$lib/stockanalysis';
 
-	const symbol = $derived(encodeURIComponent(ticker));
+	let { ticker, etf = false }: { ticker: string; etf?: boolean } = $props();
+
+	const path = $derived(stockAnalysisPath(ticker, etf));
 </script>
 
 <a
-	href="https://finance.yahoo.com/quote/{symbol}"
+	href="https://stockanalysis.com{path}"
 	target="_blank"
 	rel="noopener noreferrer"
 	class="font-bold whitespace-nowrap text-brand-label hover:text-brand-accent hover:underline"
-	title="Ver {ticker} en Yahoo Finance"
+	title="Ver {ticker} en StockAnalysis"
 >
 	{ticker}
 </a>

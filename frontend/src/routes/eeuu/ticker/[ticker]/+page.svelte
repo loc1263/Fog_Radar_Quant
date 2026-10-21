@@ -98,7 +98,7 @@
 				{ev.name} <span class="font-normal text-brand-label">· {ev.sector || '—'}</span>
 			</p>
 			<p class="text-sm text-brand-muted">
-				{ev.industry || '—'} · <TickerLink ticker={ev.ticker} /> en Yahoo Finance · evaluado {fmtDate(
+				{ev.industry || '—'} · <TickerLink ticker={ev.ticker} /> en StockAnalysis · evaluado {fmtDate(
 					ev.fetched_at,
 					true
 				)}{ev.cached ? ' (caché de 5 min)' : ''}
