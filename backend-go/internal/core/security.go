@@ -2,7 +2,7 @@ package core
 
 import "crypto/subtle"
 
-// APIKeyHeader es el header de autenticación servidor-a-servidor (BFF → API).
+// APIKeyHeader es el header de autenticación de la API (`API_KEY`).
 const APIKeyHeader = "X-API-Key"
 
 // KeyValid compara en tiempo constante. Sin clave configurada (solo dev/test) acepta todo.

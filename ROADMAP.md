@@ -23,8 +23,8 @@ Fog_Radar_Quant/
 ├── data/                           # fuera del código, ignorado por git
 │   ├── etf/{current,hist,screener}/   us_stocks/runs/   cl_stocks/   tendencia/{output,universe,...}
 │   └── _jobs/                      # registro de corridas (jsonl) y log único (logs/fogradar.log)
-├── frontend/                       # SvelteKit + TS + Tailwind v4 · adapter-node (SSR)
-├── deploy/                         # backend (cron), caddy, frontend
+├── frontend/                       # SvelteKit + TS + Tailwind v4 · adapter-static (SPA)
+├── deploy/                         # backend (cron), caddy
 ├── docs/                           # DESIGN_SYSTEM · METODOLOGIAS · BACKLOG · ADR/
 ├── iniciar.bat → iniciar.py · correr_pipelines.bat
 └── .github/workflows/ci.yml
@@ -36,11 +36,11 @@ Fog_Radar_Quant/
 |---|---|---|
 | Backend | **Go**: huma sobre chi, sqlite sin CGO, `gohoo` para Yahoo, gonum; rutas `/api/<modulo>` | Un binario estático, pipelines rápidos, despliegue simple (ADR 0004). |
 | Contratos API | Tipos de respuesta en el backend + tipos TS generados con `openapi-typescript` (`npm run gen:api`) | Una sola fuente de verdad; el front no se desincroniza del back. |
-| Frontend | **SvelteKit 2 + Svelte 5 (runes)** con **`adapter-node`** (SSR) | Se publica en **2 servidores separados**: frontend (Node) y backend (Go). |
-| Comunicación front ↔ back | Patrón **BFF**: el navegador solo habla con SvelteKit; SvelteKit llama al backend desde el servidor | El backend no queda expuesto al público; la API key nunca llega al cliente. |
+| Frontend | **SvelteKit 2 + Svelte 5 (runes)** con **`adapter-static`** (SPA) | Se publica como sitio estático (ADR 0005, `docs/PLAN_GITHUB_PAGES.md`). |
+| Comunicación front ↔ back | `fogradar export` genera JSON estático y el sitio lo lee (`$lib/datos`) | No hay servidor ni API key en el sitio (ADR 0005). |
 | Seguridad del backend | Header `X-API-Key` + allowlist de IP del servidor frontend + HTTPS | Protege los endpoints costosos (consumen Yahoo/CPU). |
-| Configuración | Front: `PRIVATE_API_URL`, `PRIVATE_API_KEY`, `ORIGIN` · Back: `API_KEY`, `ALLOWED_ORIGINS`, `DATA_DIR`… | Mismo código en dev y producción. |
-| Dev | 2 procesos: `vite dev` (:5173) + `fogradar api` (:8000) (`iniciar.bat`) | Replica la topología de producción. |
+| Configuración | Front: `BASE_PATH` (subruta de Pages) · Back: `API_KEY`, `ALLOWED_ORIGINS`, `DATA_DIR`… | Mismo código en dev y producción. |
+| Dev | `iniciar.bat`: exporta los datos y levanta `vite dev` (:5173); `--api` agrega `fogradar api` (:8000) | El sitio no depende de la API en ejecución. |
 | Deploy | Docker por servidor + **Caddy** (HTTPS automático) | Despliegues independientes. |
 | UI | **Tailwind v4** + **shadcn-svelte** + tokens del *Dashboard ejecutivo* (`docs/DESIGN_SYSTEM.md`) | Continuidad visual. |
 | Gráficos | **LayerChart 2.5** | Librería nativa de Svelte, estilable con tokens `brand-*`. |
@@ -109,7 +109,7 @@ secuencia (`deploy/backend/`). En desarrollo: `correr_pipelines.bat` o `fogradar
 
 **Producción** — ⏸ en pausa hasta tener el desarrollo depurado
 - [ ] **Servidor backend**: Docker (`backend-go/Dockerfile`) + volumen persistente para `data/` + cron de pipelines + Caddy con HTTPS; firewall que solo acepte el puerto 443 desde la IP del servidor frontend (y SSH).
-- [ ] **Servidor frontend**: Docker (`node build`) + Caddy con HTTPS; variables `ORIGIN`, `PRIVATE_API_URL`, `PRIVATE_API_KEY`, `ADDRESS_HEADER`/`XFF_DEPTH` (SEC-PROD-1).
+- [ ] **Sitio estático**: publicar en GitHub Pages con un workflow de Actions que corra los jobs, `fogradar export` y `npm run build` (`docs/PLAN_GITHUB_PAGES.md`).
 - [ ] Dominios/DNS, rotación de la API key, respaldo diario de `data/` (incluye `history.db`).
 - [ ] Autenticación de usuarios en el frontend si el sitio no será público.
 - [ ] CI/CD: GitHub Actions construye y publica imágenes separadas y despliega cada servidor de forma independiente.

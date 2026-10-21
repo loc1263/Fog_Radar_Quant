@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""Levanta el backend Go (:8000) y el frontend SvelteKit (:5173) en modo desarrollo.
+"""Levanta el sitio (SvelteKit, :5173) en modo desarrollo; con --api, también la API Go (:8000).
 
-Uso:  python iniciar.py [--rebuild] [--no-browser] [--no-kill] [--backend-port N] [--frontend-port N]
+Uso:  python iniciar.py [--api] [--rebuild] [--no-browser] [--no-kill] [--backend-port N] [--frontend-port N]
       (o doble clic en iniciar.bat)
 
 - Verifica requisitos (Go, Node/npm, dependencias, puertos libres: si están ocupados, cierra el proceso que los usa;
   con --no-kill falla en su lugar).
 - Compila el backend si falta el binario o hay fuentes .go más nuevas.
 - Exporta los datos del sitio (frontend/static/data) con `fogradar export`.
-- Muestra la salida de ambos servidores en una sola consola, con prefijo y color.
+- El sitio lee los datos exportados (no llama a la API); --api levanta además la API (/docs, tipos, pruebas).
+- Muestra la salida de los servidores en una sola consola, con prefijo y color.
 - Espera a que respondan, imprime las URLs y vigila que ninguno se caiga.
-- Ctrl+C (o la caída de uno de los dos) detiene ambos limpiamente.
+- Ctrl+C (o la caída de uno) detiene todo limpiamente.
 """
 
 from __future__ import annotations
@@ -109,9 +110,6 @@ def check_requirements() -> tuple[str, str]:
         warn("Falta frontend/node_modules: ejecutando npm install (puede tardar)...")
         run_step([npm, "install"], FRONTEND_DIR, "npm install")
 
-    if not (FRONTEND_DIR / ".env").exists():
-        warn("No existe frontend/.env (se usan los valores por defecto: backend en http://localhost:8000).")
-        warn("Cópialo desde frontend/.env.example si necesitas otra URL o API key.")
     if not (BACKEND_DIR / ".env").exists():
         warn("No existe backend-go/.env (se usan los valores por defecto). Ver backend-go/.env.example.")
     return go or "", npm  # type: ignore[return-value]
@@ -348,7 +346,8 @@ def supervise(services: list[Service]) -> int:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Levanta backend Go + frontend SvelteKit (dev).")
+    ap = argparse.ArgumentParser(description="Levanta el sitio SvelteKit (dev); con --api, también la API Go.")
+    ap.add_argument("--api", action="store_true", help="levanta también la API Go (:8000)")
     ap.add_argument("--rebuild", action="store_true", help="fuerza recompilar el backend")
     ap.add_argument("--no-browser", action="store_true", help="no abrir el navegador")
     ap.add_argument("--backend-port", type=int, default=8000)
@@ -362,21 +361,23 @@ def main() -> int:
     try:
         info(f"Proyecto: {ROOT}")
         go, npm = check_requirements()
-        check_ports({"backend": args.backend_port, "frontend": args.frontend_port},
-                    kill=not args.no_kill)
+        puertos = {"frontend": args.frontend_port}
+        if args.api:
+            puertos["backend"] = args.backend_port
+        check_ports(puertos, kill=not args.no_kill)
         build_backend(go, args.rebuild)
         export_data()
 
-        back_env = {**os.environ, "ADDR": f":{args.backend_port}"}
-        back = Service("Backend", "back", [str(BACKEND_EXE), "api"], BACKEND_DIR,
-                       args.backend_port, "/api/health", back_env)
-        front_env = {**os.environ, "PRIVATE_API_URL": f"http://localhost:{args.backend_port}"} \
-            if args.backend_port != 8000 else None
         front = Service("Frontend", "front",
                         [npm, "run", "dev", "--", "--port", str(args.frontend_port), "--strictPort"],
-                        FRONTEND_DIR, args.frontend_port, "/", front_env)
+                        FRONTEND_DIR, args.frontend_port, "/")
+        back = None
+        if args.api:
+            back_env = {**os.environ, "ADDR": f":{args.backend_port}"}
+            back = Service("Backend", "back", [str(BACKEND_EXE), "api"], BACKEND_DIR,
+                           args.backend_port, "/api/health", back_env)
 
-        for s in (back, front):  # backend primero: el frontend lo necesita para cargar datos
+        for s in [x for x in (back, front) if x]:
             info(f"Iniciando {s.name}...")
             services.append(s)
             s.start()
@@ -384,9 +385,10 @@ def main() -> int:
 
         print()
         print(c("  Todo en marcha:", "ok"))
-        print(f"    Sitio (frontend): {front.url}")
-        print(f"    API (backend):    {back.url}   docs: {back.url}/docs")
-        print(c("  Ctrl+C para detener ambos servidores.\n", "warn"))
+        print(f"    Sitio: {front.url}")
+        if back:
+            print(f"    API:   {back.url}   docs: {back.url}/docs")
+        print(c("  Ctrl+C para detener.\n", "warn"))
         if not args.no_browser:
             webbrowser.open(front.url)
         return supervise(services)

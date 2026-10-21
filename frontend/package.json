@@ -16,14 +16,12 @@
 		"test": "npm run test:unit -- --run",
 		"test:e2e": "playwright test",
 		"autofix": "node scripts/svelte-autofix.mjs",
-		"gen:api": "npx -y openapi-typescript@7 ${API_URL:-http://localhost:8000}/openapi.json -o src/lib/api/schema.d.ts",
-		"start": "node build"
+		"gen:api": "npx -y openapi-typescript@7 ${API_URL:-http://localhost:8000}/openapi.json -o src/lib/api/schema.d.ts"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@lucide/svelte": "^1.48.0",
 		"@playwright/test": "^1.60.0",
-		"@sveltejs/adapter-node": "^5.5.4",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.63.0",
 		"@sveltejs/mcp": "^0.1.26",
@@ -41,7 +39,6 @@
 		"eslint-plugin-svelte": "^3.19.0",
 		"globals": "^17.6.0",
 		"layerchart": "^2.5.0",
-		"openapi-fetch": "^0.17.0",
 		"playwright": "^1.60.0",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^4.1.0",

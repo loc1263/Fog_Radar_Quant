@@ -1,13 +1,10 @@
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
-import adapterNode from '@sveltejs/adapter-node';
-import adapterStatic from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
 
-// STATIC_BUILD=1: sitio estático (SPA para GitHub Pages). BASE_PATH = subruta de Pages (p. ej. /Fog_Radar_Quant).
-const estatico = process.env.STATIC_BUILD === '1';
-
+// BASE_PATH = subruta de GitHub Pages (p. ej. /Fog_Radar_Quant); vacío si el sitio va en la raíz.
 export default defineConfig({
 	plugins: [
 		tailwindcss(),
@@ -17,7 +14,7 @@ export default defineConfig({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			adapter: estatico ? adapterStatic({ fallback: '404.html' }) : adapterNode(),
+			adapter: adapter({ fallback: '404.html' }),
 			paths: { base: (process.env.BASE_PATH ?? '') as '' | `/${string}` },
 			// CSP: el script de tema es un archivo propio (static/tema.js), sin nonce, para poder prerenderizar.
 			// style-src necesita 'unsafe-inline' por los style: de Svelte y LayerChart.
@@ -50,8 +47,7 @@ export default defineConfig({
 						provider: playwright(),
 						instances: [{ browser: 'chromium', headless: true }]
 					},
-					include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
-					exclude: ['src/lib/server/**']
+					include: ['src/**/*.svelte.{test,spec}.{js,ts}']
 				}
 			},
 

@@ -21,7 +21,7 @@ export type HubItem = Schemas['HubItem'];
 export type Frescura = HubModulo['frescura'];
 export type Unidad = HubModulo['unidad'];
 
-/** Resultado de `tryCall` (lib/server/safe.ts): datos o error mostrable. */
+/** Resultado de `datos` (lib/datos.ts): datos o error mostrable. */
 export type Loaded<T> =
 	{ ok: true; data: T } | { ok: false; message: string; code: string; status?: number };
 

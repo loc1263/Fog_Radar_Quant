@@ -7,10 +7,10 @@ módulo: **docs/METODOLOGIAS.md** (actualizarla si cambia la lógica).
 
 ## Stack (decidido, no relitigar)
 - **Frontend:** SvelteKit 2 + **Svelte 5 (runes)** + TypeScript estricto + Tailwind v4 +
-  shadcn-svelte + **LayerChart**. `adapter-node` (SSR).
+  shadcn-svelte + **LayerChart**. `adapter-static` (SPA estática, sin servidor).
 - **Backend:** Go 1.26 (`backend-go/`): un solo binario `fogradar` con la API (huma sobre chi,
   rutas `/api/etf`, `/api/us`, `/api/cl`, `/api/tendencia`) y los pipelines batch (`fogradar job`).
-- **Producción:** 2 servidores separados (frontend Node / backend Go), Docker + Caddy.
+- **Publicación:** sitio estático en GitHub Pages; los datos los genera el backend (`fogradar export`).
 
 ## Reglas de Svelte (obligatorias)
 1. Usar **solo sintaxis Svelte 5**: `$props()`, `$state`, `$derived`, `$effect`,
@@ -29,13 +29,13 @@ módulo: **docs/METODOLOGIAS.md** (actualizarla si cambia la lógica).
    1.0.12, adaptados a los tokens); los propios del sitio en `components/shared` y
    gráficos en `src/lib/charts` (LayerChart).
 
-## Arquitectura front ↔ back (patrón BFF)
-- El navegador **nunca** llama al backend directamente. Toda carga de datos va en
-  `+page.server.ts` / `+layout.server.ts`; mutaciones en form actions, `+server.ts`
-  o remote functions.
-- El cliente del backend vive en `src/lib/server/api.ts` (`backend(event)`, `call`,
-  `tryCall`) y usa `$env/dynamic/private` (`PRIVATE_API_URL`, `PRIVATE_API_KEY`).
-- Remote functions: no por ahora (experimentales). Ver `docs/ADR/0001-*.md`.
+## Arquitectura front ↔ back (sitio estático, ADR 0005)
+- No hay servidor de frontend: el backend exporta su API a JSON (`fogradar export` →
+  `frontend/static/data/`, fuera de git) y el sitio lo lee. El navegador no llama a ninguna API.
+- Toda carga de datos va en `+page.ts` / `+layout.ts` con `datos(fetch, ruta)` de `$lib/datos.ts`
+  (tipado por ruta). **Prohibido** `+page.server.ts`, `+server.ts`, form actions y remote functions.
+- Lo que el sitio necesite de un endpoint nuevo se agrega en el backend (sin parámetros obligatorios,
+  para que el export lo incluya) y se regenera la instantánea.
 - Los tipos TS de la API se **generan** desde el OpenAPI del backend
   (`npm run gen:api`); no escribir tipos de respuesta a mano.
 - Todo endpoint del backend declara su tipo de respuesta (el OpenAPI sale de ahí).

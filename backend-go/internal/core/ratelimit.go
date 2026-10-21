@@ -61,8 +61,8 @@ func (l *Limiter) Hit(count int, window time.Duration, scope, key string) bool {
 	return true
 }
 
-// ClientKey es la IP del usuario final: el BFF la reenvía en X-Forwarded-For
-// (confiable: el backend solo acepta requests del servidor frontend).
+// ClientKey es la IP del cliente: la de X-Forwarded-For si hay un proxy delante (confiable solo
+// detrás de uno propio), si no la dirección remota.
 func ClientKey(r *http.Request) string {
 	if fwd := r.Header.Get("X-Forwarded-For"); fwd != "" {
 		first, _, _ := strings.Cut(fwd, ",")

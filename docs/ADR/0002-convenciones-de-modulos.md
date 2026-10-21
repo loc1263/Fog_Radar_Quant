@@ -6,7 +6,7 @@
 ## Contexto
 
 Chile fue el piloto para validar la arquitectura (monorepo, un backend con un router por
-módulo, SvelteKit como BFF). Al portarlo aparecieron decisiones que conviene fijar antes de
+módulo, SvelteKit consumiendo su API). Al portarlo aparecieron decisiones que conviene fijar antes de
 migrar módulos más grandes.
 
 ## Decisiones
@@ -70,7 +70,7 @@ duplica constantes del backend (en el original los pesos estaban copiados en dos
 - Estado de UI derivado: guardar solo lo que el usuario cambia
   (`pesosUsuario = $state<Pesos | null>(null)`, `pesos = $derived(pesosUsuario ?? defaults)`),
   sin copiar props a `$state`.
-- Cargas con `tryCall`: sin datos (`no_data`) o datos corruptos (`invalid_data`) la página
+- Cargas con `datos()` (`$lib/datos`): sin datos (`sin_datos`) o con error de lectura la página
   muestra `ErrorState`, no tumba el sitio.
 
 ### 7. Tests E2E con datos

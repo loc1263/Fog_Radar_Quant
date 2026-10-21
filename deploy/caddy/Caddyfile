@@ -1,4 +1,4 @@
-# Proxy delante del backend. El frontend (BFF) solo conoce esta dirección.
+# Proxy delante del backend (API).
 :8080 {
 	encode zstd gzip
 

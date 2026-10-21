@@ -448,7 +448,7 @@ export const theme = new ThemeState();
 
 ## 8. Stack de referencia
 
-- SvelteKit 2 + Svelte 5 (runes) + TypeScript, `adapter-node`
+- SvelteKit 2 + Svelte 5 (runes) + TypeScript, `adapter-static` (SPA)
 - Tailwind CSS v4 (`@tailwindcss/vite`), tokens definidos con `@theme` en `src/app.css`
 - shadcn-svelte (bits-ui) para componentes base
 - LayerChart para gráficos

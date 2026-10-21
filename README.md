@@ -17,11 +17,11 @@ Plan y estado: [ROADMAP.md](ROADMAP.md) · Convenciones: [CLAUDE.md](CLAUDE.md)
 ## Todo junto (desarrollo)
 
 ```bat
-iniciar.bat              REM backend :8000 + frontend :5173 (lanza iniciar.py; una consola, con chequeos)
-iniciar.bat --rebuild --no-browser   REM opciones: --rebuild, --no-browser, --backend-port, --frontend-port, --timeout
+iniciar.bat              REM exporta los datos y levanta el sitio :5173 (lanza iniciar.py; con --api también la API :8000)
+iniciar.bat --rebuild --no-browser   REM opciones: --api, --rebuild, --no-browser, --no-kill, --backend-port, --frontend-port, --timeout
 ```
 
-Compila el backend si falta el binario o hay fuentes `.go` más nuevas, y levanta ambos servidores.
+Compila el backend si falta el binario o hay fuentes `.go` más nuevas, exporta los datos y levanta el sitio (y la API con `--api`). Cierra lo que ocupe los puertos antes de arrancar.
 
 ## Backend
 
@@ -82,19 +82,16 @@ fogradar job --todos --no-cache           # ignora cachés y vuelve a pedir todo
 
 ```bash
 cd frontend
-cp .env.example .env     # (Windows: copy .env.example .env)
 npm install
 npm run dev              # desarrollo en http://localhost:5173
 ```
 
-En `.env`, `PRIVATE_API_URL` apunta al backend (`http://localhost:8000`) y `PRIVATE_API_KEY` debe coincidir con `API_KEY` del backend. El backend debe estar corriendo.
-
-Otros comandos:
+El sitio lee JSON estático de `frontend/static/data/` (no llama a ninguna API): genéralo antes con
+`fogradar export` (lo hace `iniciar.bat` solo; ver más abajo). Comandos habituales:
 
 ```bash
-npm run build && npm start     # build de producción (adapter-node) y servidor Node
 npm run autofix && npm run check && npm run lint && npm test   # validaciones previas a un commit
-npm run gen:api                # regenera los tipos TS desde el OpenAPI del backend (backend arriba)
+npm run gen:api          # regenera los tipos TS desde el OpenAPI del backend (con la API arriba: fogradar api)
 ```
 
 ## Sitio estático (los 4 módulos migrados)
@@ -106,7 +103,7 @@ estático en vez de llamar al backend; falta publicarlo con GitHub Actions.
 # 1. Exportar la instantánea de la API a frontend/static/data (lo hace iniciar.bat solo)
 cd backend-go && ./bin/fogradar.exe export --out ../frontend/static/data
 # 2. Construir la SPA (BASE_PATH = subruta de Pages; vacío si va en la raíz)
-cd ../frontend && STATIC_BUILD=1 BASE_PATH=/Fog_Radar_Quant npm run build     # salida en frontend/build
+cd ../frontend && BASE_PATH=/Fog_Radar_Quant npm run build     # salida en frontend/build
 ```
 
 - `fogradar export` llama a la API en proceso y guarda cada GET en `static/data/<ruta>.json` (carpeta fuera de git), más un `manifest.json`.

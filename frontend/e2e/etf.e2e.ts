@@ -44,8 +44,8 @@ test('rotación y categorías', async ({ page }) => {
 	await expect(page.getByText('7 ETFs en la categoría')).toBeVisible();
 });
 
-test('descarga del PDF por el BFF', async ({ request }) => {
-	const res = await request.get('/etf/descargar/informe.pdf');
+test('descarga del PDF exportado', async ({ request }) => {
+	const res = await request.get('/data/api/etf/pdf.pdf');
 	expect(res.status()).toBe(200);
 	expect(res.headers()['content-type']).toBe('application/pdf');
 	expect((await res.body()).subarray(0, 4).toString()).toBe('%PDF');

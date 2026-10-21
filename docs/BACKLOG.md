@@ -32,11 +32,11 @@
 
 | ID | Ítem | Fase | Cómo se resuelve |
 |---|---|---|---|
-| ETF-23 · US-BACK-05 | Sin autenticación en ningún endpoint | 1 ✅ | Dependencia `require_api_key` (`X-API-Key`) en todas las rutas salvo `/api/health`; el navegador nunca ve la key (BFF). |
+| ETF-23 · US-BACK-05 | Sin autenticación en ningún endpoint | 1 ✅ | Dependencia `require_api_key` (`X-API-Key`) en todas las rutas salvo `/api/health`; el navegador nunca ve la key. |
 | ETF-24 · US-BACK-02 | Sin rate limiting | 1 ✅ (global) / 4 ✅ (EEUU) / 5 ✅ (ETF `/run` 3/min, `/pdf` 10/min) | rate limit de `internal/core/ratelimit.go` en endpoints costosos (`/run`, `/evaluate`, portafolio) + allowlist de IP del servidor frontend. |
 | ETF-26 | CORS amplio; revisar si hay cookies | 1 ✅ | `ALLOWED_ORIGINS` explícito. El login con cookies (si lo hay) vive en SvelteKit; el backend sigue con API key, sin credenciales CORS. |
 | ETF-27 | `/docs` y `/openapi.json` públicos | 1 ✅ | Deshabilitados en producción (`docs_url=None` según `settings.ENV`); disponibles en dev para `npm run gen:api`. |
-| ETF-28 | Sin HTTPS forzado ni cabeceras de seguridad | 8 | Caddy (HTTPS automático + HSTS) en ambos servidores; CSP y cabeceras en `hooks.server.ts`. |
+| ETF-28 | Sin HTTPS forzado ni cabeceras de seguridad | 8 | Caddy (HTTPS automático + HSTS) en ambos servidores; CSP en `vite.config.ts` (el BFF y `hooks.server.ts` se retiraron: ADR 0005). |
 | US-SEC-01 · CL (infra) | CORS hardcodeado a localhost | 1 ✅ | `settings.go` + `.env`. |
 | US-SEC-02 | Path param `ticker` sin validar | 4 ✅ | `Path(..., pattern=r"^[A-Z0-9.\-^=]{1,15}$")` (permite `.SN`, `.TW`, `^`, `=X`). |
 | ETF-20 | Host del backend / plan Vercel | 8 | **Reemplazado** por la arquitectura decidida: 2 servidores (front Node + back Go) con disco persistente para `data/` y cron en el backend. |
@@ -165,7 +165,7 @@ sub-menú, paginación del historial, PDF de Tendencia (encabezados claros, ≥ 
 
 | ID | Ítem | Propuesta |
 |---|---|---|
-| SEC-PROD-1 | Detrás de Caddy sin `ADDRESS_HEADER`/`XFF_DEPTH`, todos los usuarios comparten un balde de rate limit. | `hooks.server.ts` falla al arrancar si `ORIGIN` está sin `ADDRESS_HEADER`; revisar el salto de `X-Forwarded-For` que se toma en el backend. |
+| SEC-PROD-1 | Detrás de Caddy sin `ADDRESS_HEADER`/`XFF_DEPTH`, todos los usuarios comparten un balde de rate limit. | Obsoleto: ya no hay servidor de frontend (ADR 0005). |
 | SEC-PROD-2 | Mensajes internos en `/api/jobs` y errores de Yahoo/SQLite visibles en el sitio público. | En prod: mensaje genérico + `code`, detalle solo en el log (el hub ya lo hace). |
 
 ---
