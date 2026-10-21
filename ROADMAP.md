@@ -26,7 +26,7 @@ Fog_Radar_Quant/
 ├── frontend/                       # SvelteKit + TS + Tailwind v4 · adapter-node (SSR)
 ├── deploy/                         # backend (cron), caddy, frontend
 ├── docs/                           # DESIGN_SYSTEM · METODOLOGIAS · BACKLOG · ADR/
-├── iniciar.bat · correr_pipelines.bat
+├── iniciar.bat → iniciar.py · correr_pipelines.bat
 └── .github/workflows/ci.yml
 ```
 
