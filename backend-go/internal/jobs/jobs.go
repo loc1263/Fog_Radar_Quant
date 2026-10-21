@@ -103,6 +103,13 @@ var Backfill = Option{Flag: "--backfill", Help: "Solo carga en history.db las co
 // OrdenTodos: los diarios primero y ETF (el más largo, ~30 min) al final.
 var OrdenTodos = []string{"cl_stocks", "us_stocks", "tendencia", "etf"}
 
+// OpcionesSinCache hace que un módulo ignore sus cachés y pida todo de nuevo a Yahoo (--no-cache). cl_stocks y
+// us_stocks no tienen caché: siempre descargan, así que no necesitan opciones.
+var OpcionesSinCache = map[string]map[string]any{
+	"etf":       {"refrescar_info": true},
+	"tendencia": {"force_refresh": true, "force_discovery": true},
+}
+
 // OpcionesOffline corre un módulo sin descargar de Yahoo, sobre los datos ya descargados.
 // us_stocks no tiene modo sin descarga: con --offline se omite.
 var OpcionesOffline = map[string]map[string]any{

@@ -25,8 +25,22 @@ se citan son relativas a `backend/src/fog_radar/`.
     backoff;
   - estas reglas se instalan dentro de gohoo (`WithLimiter`, `WithRequestHook`, `RetryPolicy.RateLimit`),
     así que los contadores del resumen de cada corrida cuentan cada request HTTP real;
+  - **espaciado adaptivo** (`YAHOO_ADAPTATIVO`, por defecto activo; `internal/yahoo/adaptive.go`): el intervalo
+    entre inicios de request parte en `YAHOO_INTERVALO_RAPIDO_S` (0,2 s) en vez de `YAHOO_MIN_INTERVALO_S`
+    (0,35 s). Ante un 429 se ensancha al doble, nunca por debajo del mínimo seguro y hasta 2 s (varios 429
+    simultáneos cuentan como uno: enfriamiento de 3 s); tras 50 requests seguidos sin 429 baja un 20 % hacia
+    el rápido. El intervalo aprendido se conserva entre módulos de una secuencia. El resumen de cada corrida
+    lo informa («espaciado adaptivo 0,20 s (ensanchado N veces)»). Con `YAHOO_ADAPTATIVO=false` el espaciado
+    vuelve a ser fijo en `YAHOO_MIN_INTERVALO_S`.
   - caché de históricos en disco (la usa Tendencia, con frescura de 20 h).
   Cada módulo conserva además sus propias pausas anti-bloqueo (se detallan abajo).
+  - **`--no-cache`** (`fogradar job`, un módulo o `--todos`): ignora todas las cachés y vuelve a pedir
+    todo a Yahoo. Equivale a `--force-refresh --force-discovery` en Tendencia (precios, FX, universo y
+    `sector_cache.json`) y a `--refrescar-info` en ETF; Chile y EEUU no tienen caché y siempre descargan.
+    Es excluyente con `--offline`. Lo que pida el usuario a mano tiene prioridad.
+  - **Pausa entre módulos** de una secuencia (`PIPELINE_PAUSA_S`, 60 s): solo se espera si el módulo
+    anterior falló o recibió algún 429 (o reintento ante 429). Con tráfico limpio no se pausa: el espaciado
+    global entre requests ya protege, y la pausa fija solo alargaba la secuencia (180 s de 3 pausas).
 - **FRED** (Federal Reserve Economic Data), solo en Tendencia y solo si se corre con
   `--macro` y hay `FRED_API_KEY` (`internal/modules/tend/macro.go`): curva de tasas (DGS3MO,
   DGS2, DGS10, DGS30, T10Y2Y, T10Y3M), spreads de crédito ICE BofA (BAMLH0A0HYM2,
@@ -406,7 +420,12 @@ conserva el snapshot viejo (con aviso en el log) en vez de usar la lista de resp
   capitalización ≥ USD 200 mil millones** (tamaño variable, no un top-N fijo).
   **Filtro de sede**: se descartan las que tienen sede (`assetProfile.country`) distinta de "United States"
   (ADRs de TSMC, Samsung, Toyota…); las de sede desconocida se conservan.
-- Sector desde `quoteSummary/assetProfile` (el screener no lo trae).
+- Sector desde `quoteSummary/assetProfile` (el screener no lo trae). Las consultas corren en paralelo
+  (`YAHOO_CONCURRENCIA`; el espaciado global fija la tasa) y sin pausa fija entre ellas. Sector y sede de cada
+  ticker se guardan en `data/tendencia/sector_cache.json` con vigencia de **60 días**: una corrida de
+  descubrimiento solo consulta a Yahoo por los tickers nuevos o vencidos (antes eran ~106 consultas
+  en serie con 1 s de pausa, ~2 min). Las consultas fallidas no se guardan. Borrar el archivo fuerza
+  a consultar todo de nuevo.
 - Se excluyen tickers cuya moneda no tenga par FX (ver 4.2).
 - **Fallback**: si el screener falla o devuelve menos de 10 empresas en Asia o en EEUU, se
   usa la lista estática de respaldo (`fallback_gen.go`) y el snapshot queda marcado

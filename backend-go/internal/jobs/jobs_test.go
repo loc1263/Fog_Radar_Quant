@@ -25,7 +25,7 @@ func reg(name string, run func(ctx context.Context, opts map[string]any) (string
 	Register(name, Pipeline{Run: func(ctx context.Context, _ *Env, o map[string]any) (string, error) { return run(ctx, o) }})
 }
 
-func TestSecuenciaEnOrdenYPausaEntreModulos(t *testing.T) {
+func TestSecuenciaEnOrdenYSinPausaSiNoHubo429(t *testing.T) {
 	env := testEnv(t)
 	var orden []string
 	for _, m := range []string{"a1", "a2", "a3"} {
@@ -38,7 +38,7 @@ func TestSecuenciaEnOrdenYPausaEntreModulos(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if strings.Join(orden, ",") != "a1,a2,a3" || len(dormido) != 2 {
+	if strings.Join(orden, ",") != "a1,a2,a3" || len(dormido) != 0 { // tráfico limpio: no se duerme entre módulos
 		t.Fatalf("orden=%v pausas=%v", orden, dormido)
 	}
 	for _, r := range res {
@@ -50,6 +50,48 @@ func TestSecuenciaEnOrdenYPausaEntreModulos(t *testing.T) {
 	rec := core.NewJobRegistry(env.S.JobsDir()).Latest("a2")
 	if rec == nil || rec.Status != "success" || rec.DurationS == nil || rec.FinishedAt == nil || rec.Trigger != "cli" {
 		t.Fatalf("%+v", rec)
+	}
+}
+
+func TestPausaTrasUnModuloQueFalla(t *testing.T) {
+	env := testEnv(t)
+	reg("p1", func(context.Context, map[string]any) (string, error) { return "", errors.New("boom") })
+	reg("p2", func(context.Context, map[string]any) (string, error) { return "ok", nil })
+	reg("p3", func(context.Context, map[string]any) (string, error) { return "ok", nil })
+	var dormido []time.Duration
+	pausa, cero := 7*time.Second, 0
+	_, err := CorrerSecuencia(context.Background(), env, []string{"p1", "p2", "p3"},
+		SecuenciaOpts{Pausa: &pausa, Reintentos: &cero, Sleep: func(d time.Duration) { dormido = append(dormido, d) }, Alert: func(string) {}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(dormido) != 1 || dormido[0] != pausa { // solo tras p1 (falló); p2 → p3 fue limpio
+		t.Fatalf("pausas = %v, quería [7s]", dormido)
+	}
+}
+
+func TestNecesitaPausa(t *testing.T) {
+	ok, mal := Resultado{Estado: EstadoOK}, Resultado{Estado: EstadoError}
+	casos := []struct {
+		nombre string
+		r      Resultado
+		st     yahoo.Stats
+		want   bool
+	}{
+		{"tráfico limpio", ok, yahoo.Stats{Requests: 900}, false},
+		{"sin requests", ok, yahoo.Stats{}, false},
+		{"hubo 429", ok, yahoo.Stats{Requests: 50, RateLimited: 1}, true},
+		{"hubo reintentos", ok, yahoo.Stats{Requests: 50, Retries: 2}, true},
+		{"el módulo falló", mal, yahoo.Stats{Requests: 10}, true},
+	}
+	for _, c := range casos {
+		if got := necesitaPausa(c.r, c.st); got != c.want {
+			t.Errorf("%s: necesitaPausa = %v, quería %v", c.nombre, got, c.want)
+		}
+	}
+	if !strings.Contains(motivoPausa(mal, yahoo.Stats{}), "falló") ||
+		!strings.Contains(motivoPausa(ok, yahoo.Stats{RateLimited: 3}), "3 respuestas 429") {
+		t.Error("el motivo de la pausa debe decir por qué se espera")
 	}
 }
 

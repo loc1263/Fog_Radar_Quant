@@ -20,7 +20,7 @@ func init() {
 		Options: []jobs.Option{
 			{Flag: "--skip-fetch", Help: "Reutiliza los precios/FX ya descargados (sin Yahoo)."},
 			{Flag: "--force-refresh", Help: "Ignora la caché de precios y vuelve a descargar todo."},
-			{Flag: "--force-discovery", Help: "Vuelve a descubrir el universo aunque haya un snapshot reciente."},
+			{Flag: "--force-discovery", Help: "Vuelve a descubrir el universo aunque haya un snapshot reciente (también ignora la caché de sectores)."},
 			{Flag: "--static-universe", Help: "Usa la lista fija de respaldo en vez del screener."},
 			{Flag: "--skip-discovery", Help: "Reutiliza el último snapshot de universo (sin screener)."},
 			{Flag: "--macro", Help: "Descarga antes los datos macro de FRED (requiere FRED_API_KEY)."},
@@ -120,7 +120,7 @@ func resolveUniverse(ctx context.Context, env *jobs.Env, moduleDir string, opts 
 		scr, ok := env.Yahoo.(Screener)
 		if !ok {
 			warn("El cliente de Yahoo no admite el screener; no se puede descubrir el universo.")
-		} else if u, err := DiscoverUniverse(ctx, scr, info, warn); err != nil {
+		} else if u, err := DiscoverUniverseOpts(ctx, scr, discoverOpts(env, moduleDir, opts, now), info, warn); err != nil {
 			if ctx.Err() != nil {
 				return nil, ctx.Err()
 			}
@@ -152,6 +152,17 @@ func resolveUniverse(ctx context.Context, env *jobs.Env, moduleDir string, opts 
 		return nil, err
 	}
 	return u, nil
+}
+
+// discoverOpts arma la caché de sectores del módulo y el paralelismo del descubrimiento (el de Yahoo en Settings).
+// --force-discovery ignora la caché al leer (vuelve a consultar todo) y la deja actualizada.
+func discoverOpts(env *jobs.Env, moduleDir string, opts map[string]any, now time.Time) DiscoverOpts {
+	o := DiscoverOpts{Cache: LoadSectorCache(filepath.Join(moduleDir, SectorCacheFile), func() time.Time { return now })}
+	o.Cache.Refresh = flag(opts, "force_discovery")
+	if env.S != nil {
+		o.Workers = env.S.YahooConcurrencia
+	}
+	return o
 }
 
 func fetchOptions(opts map[string]any) yahoo.HistoryOptions {

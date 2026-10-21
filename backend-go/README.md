@@ -32,7 +32,7 @@ Docker (contexto `backend-go/`): `docker build -t fogradar-api backend-go` → i
 ## Estructura
 
 ```
-cmd/fogradar/            main (api | openapi | job: --todos, --list, --crontab, --offline, --backfill…)
+cmd/fogradar/            main (api | openapi | job: --todos, --list, --crontab, --offline, --no-cache, --backfill…)
 internal/api/            servidor huma+chi: errores {detail, code}, CORS, rate limit, API key
 internal/core/           settings, errores, ratelimit (+Gate = límite de concurrencia), jobs, histdb, schedule, fechas
 internal/modules/        registro de módulos; un paquete por módulo (cl, us, etf, tend)
@@ -45,6 +45,7 @@ internal/{yahoo,fx,quant,jobs,transversal}  cliente Yahoo común, FX, biblioteca
 go run ./cmd/fogradar job --list
 go run ./cmd/fogradar job tendencia --skip-fetch --skip-discovery   # offline, sobre raw/ ya descargado
 go run ./cmd/fogradar job --todos --offline
+go run ./cmd/fogradar job --todos --no-cache     # ignora todas las cachés y pide todo de nuevo a Yahoo
 go run ./cmd/fogradar job --crontab
 ```
 Códigos de salida: 0 ok, 1 falla, 2 uso, 3 ocupado (otro pipeline tiene el lock global). Usa `DATA_DIR=/ruta` para correr sobre

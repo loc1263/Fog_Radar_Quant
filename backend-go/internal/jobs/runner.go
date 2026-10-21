@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"fogradar/internal/core"
+	"fogradar/internal/yahoo"
 )
 
 // Estado de un módulo en una secuencia.
@@ -110,8 +111,13 @@ func CorrerSecuencia(ctx context.Context, env *Env, modulos []string, o Secuenci
 		res = append(res, r)
 		pendientes--
 		if pendientes > 0 && pausa > 0 && ctx.Err() == nil {
-			env.Log.Info("pausa antes del siguiente módulo (anti bloqueo de Yahoo)", "segundos", pausa.Seconds())
-			sleep(pausa)
+			if st := env.Traffic.Stats(); necesitaPausa(r, st) {
+				env.Log.Info("pausa antes del siguiente módulo (anti bloqueo de Yahoo)", "segundos", pausa.Seconds(),
+					"motivo", motivoPausa(r, st))
+				sleep(pausa)
+			} else {
+				env.Log.Info("sin pausa antes del siguiente módulo: el anterior no recibió 429 (el espaciado global de Yahoo sigue activo)")
+			}
 		}
 	}
 
@@ -126,6 +132,20 @@ func CorrerSecuencia(ctx context.Context, env *Env, modulos []string, o Secuenci
 		alertar(env, fallidos, o.Trigger, o.Alert)
 	}
 	return res, nil
+}
+
+// necesitaPausa dice si conviene esperar antes del siguiente módulo: solo si el anterior falló o Yahoo le respondió 429.
+// Con tráfico limpio el espaciado global entre requests ya protege, y la pausa fija solo alargaba la secuencia.
+// st son las estadísticas del último intento del módulo (se reinician en cada intento).
+func necesitaPausa(r Resultado, st yahoo.Stats) bool {
+	return r.Estado == EstadoError || st.RateLimited > 0 || st.Retries > 0
+}
+
+func motivoPausa(r Resultado, st yahoo.Stats) string {
+	if r.Estado == EstadoError {
+		return "el módulo anterior falló"
+	}
+	return fmt.Sprintf("el módulo anterior recibió %d respuestas 429", st.RateLimited)
 }
 
 func secs(f float64) time.Duration { return time.Duration(f * float64(time.Second)) }

@@ -33,6 +33,9 @@ import (
 type Policy struct {
 	MinInterval time.Duration
 	Jitter      time.Duration
+	// Fast activa el espaciado adaptivo si es menor que MinInterval: los requests parten espaciados Fast y, ante un
+	// 429, el intervalo se ensancha (nunca menos que MinInterval) y vuelve a bajar poco a poco. 0 = espaciado fijo.
+	Fast        time.Duration
 	Retries429  int
 	BackoffBase time.Duration
 	BackoffMax  time.Duration
@@ -44,10 +47,18 @@ type Policy struct {
 func PolicyFromSettings(s *core.Settings) Policy {
 	sec := func(f float64) time.Duration { return time.Duration(f * float64(time.Second)) }
 	return Policy{
-		MinInterval: sec(s.YahooMinIntervaloS), Jitter: sec(s.YahooJitterS),
+		MinInterval: sec(s.YahooMinIntervaloS), Jitter: sec(s.YahooJitterS), Fast: fastFromSettings(s),
 		Retries429: s.Yahoo429Reintentos, BackoffBase: sec(s.YahooBackoffBaseS), BackoffMax: sec(s.YahooBackoffMaxS),
 		NetRetries: s.YahooRedReintentos, Concurrency: max(1, s.YahooConcurrencia),
 	}
+}
+
+// fastFromSettings es el intervalo inicial del modo adaptivo (0 si está apagado).
+func fastFromSettings(s *core.Settings) time.Duration {
+	if !s.YahooAdaptativo {
+		return 0
+	}
+	return time.Duration(s.YahooIntervaloRapidoS * float64(time.Second))
 }
 
 // Stats son los contadores de una corrida.
@@ -56,20 +67,32 @@ type Stats struct {
 	RateLimited int64
 	Retries     int64
 	Wait        time.Duration
+	// Interval es el espaciado vigente entre requests en el modo adaptivo (0 = espaciado fijo) y Widened cuántas
+	// veces se ensanchó durante la corrida.
+	Interval time.Duration
+	Widened  int64
 }
 
 // Summary es el texto que va al registro de jobs.
 func (s Stats) Summary() string {
-	return fmt.Sprintf("%d requests a Yahoo, %d respuestas 429, %d reintentos, %.0f s de espera",
+	out := fmt.Sprintf("%d requests a Yahoo, %d respuestas 429, %d reintentos, %.0f s de espera",
 		s.Requests, s.RateLimited, s.Retries, s.Wait.Seconds())
+	if s.Interval > 0 {
+		out += fmt.Sprintf(", espaciado adaptivo %.2f s", s.Interval.Seconds())
+		if s.Widened > 0 {
+			out += fmt.Sprintf(" (ensanchado %d veces)", s.Widened)
+		}
+	}
+	return out
 }
 
 type counters struct {
-	requests, rateLimited, retries, waitNS atomic.Int64
+	requests, rateLimited, retries, waitNS, widened atomic.Int64
 }
 
 func (c *counters) snapshot() Stats {
-	return Stats{c.requests.Load(), c.rateLimited.Load(), c.retries.Load(), time.Duration(c.waitNS.Load())}
+	return Stats{Requests: c.requests.Load(), RateLimited: c.rateLimited.Load(), Retries: c.retries.Load(),
+		Wait: time.Duration(c.waitNS.Load()), Widened: c.widened.Load()}
 }
 
 func (c *counters) reset() {
@@ -77,6 +100,7 @@ func (c *counters) reset() {
 	c.rateLimited.Store(0)
 	c.retries.Store(0)
 	c.waitNS.Store(0)
+	c.widened.Store(0)
 }
 
 // Spacer garantiza un intervalo mínimo (con jitter) entre el inicio de dos requests.
@@ -108,6 +132,13 @@ func sleepCtx(ctx context.Context, d time.Duration) error {
 	case <-t.C:
 		return nil
 	}
+}
+
+// SetMin cambia el intervalo mínimo; vale para los turnos que se reserven desde ahora.
+func (s *Spacer) SetMin(d time.Duration) {
+	s.mu.Lock()
+	s.min = max(0, d)
+	s.mu.Unlock()
 }
 
 // Wait espera el turno y devuelve cuánto esperó.
@@ -146,6 +177,7 @@ type Traffic struct {
 	P     Policy
 	Space *Spacer
 	st    counters
+	ad    *adaptive // nil = espaciado fijo
 	// rlJitter es el jitter del backoff ante 429: U(0, rlJitter) (1 s; 0 en los tests).
 	rlJitter time.Duration
 	log      func(format string, args ...any)
@@ -153,15 +185,30 @@ type Traffic struct {
 
 // NewTraffic crea el controlador de tráfico.
 func NewTraffic(p Policy) *Traffic {
-	return &Traffic{P: p, Space: NewSpacer(p.MinInterval, p.Jitter), rlJitter: time.Second,
+	t := &Traffic{P: p, Space: NewSpacer(p.MinInterval, p.Jitter), rlJitter: time.Second,
 		log: func(string, ...any) {}}
+	if p.Fast > 0 && p.Fast < p.MinInterval {
+		t.Space.SetMin(p.Fast)
+		t.ad = newAdaptive(p.Fast, p.MinInterval, t.Space.SetMin)
+		t.ad.onWiden = func(from, to time.Duration) {
+			t.st.widened.Add(1)
+			t.log("Yahoo respondió 429: el espaciado entre requests pasa de %.2f s a %.2f s", from.Seconds(), to.Seconds())
+		}
+	}
+	return t
 }
 
 // SetLogger instala un logger de advertencias (formato printf).
 func (t *Traffic) SetLogger(f func(format string, args ...any)) { t.log = f }
 
 // Stats copia los contadores.
-func (t *Traffic) Stats() Stats { return t.st.snapshot() }
+func (t *Traffic) Stats() Stats {
+	st := t.st.snapshot()
+	if t.ad != nil {
+		st.Interval = t.ad.Interval()
+	}
+	return st
+}
 
 // ResetStats pone los contadores en cero (inicio de una corrida).
 func (t *Traffic) ResetStats() { t.st.reset() }
@@ -178,8 +225,12 @@ func (t *Traffic) limiter() gohoo.Limiter {
 // onRequest cuenta cada request HTTP y cada respuesta 429.
 func (t *Traffic) onRequest(ev gohoo.RequestEvent) {
 	t.st.requests.Add(1)
-	if ev.StatusCode == http.StatusTooManyRequests || gohoo.IsRateLimit(ev.Err) {
+	limited := ev.StatusCode == http.StatusTooManyRequests || gohoo.IsRateLimit(ev.Err)
+	if limited {
 		t.st.rateLimited.Add(1)
+	}
+	if t.ad != nil {
+		t.ad.observe(limited, ev.Err == nil)
 	}
 }
 

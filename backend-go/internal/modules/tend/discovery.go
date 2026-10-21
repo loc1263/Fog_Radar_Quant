@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 	"unicode"
 
@@ -32,8 +33,12 @@ const (
 	discMinViable           = 10
 )
 
-// discSectorPause es la pausa tras cada quoteSummary del enriquecimiento (el espaciado global ya aplica); var para los tests.
-var discSectorPause = time.Second
+// discWorkers son las consultas de quoteSummary en vuelo a la vez si el llamador no indica otra cifra. El espaciado
+// global de Yahoo sigue fijando la tasa de requests: los workers solo ocultan la latencia.
+const discWorkers = 4
+
+// profileRetryWait es la espera entre los 2 intentos de quoteSummary de un ticker; var para los tests.
+var profileRetryWait = 2 * time.Second
 
 // screenBackoff es la espera base entre reintentos del screener (3 s, 6 s…); var para los tests.
 var screenBackoff = 3 * time.Second
@@ -210,9 +215,11 @@ func excludeForeignHQ(cs []*candidate, log func(string, ...any)) []*candidate {
 }
 
 type discoverer struct {
-	src  Screener
-	info func(string, ...any)
-	warn func(string, ...any)
+	src     Screener
+	info    func(string, ...any)
+	warn    func(string, ...any)
+	cache   *SectorCache // nil = sin caché
+	workers int
 }
 
 // screenRegion pide las `size` mayores empresas de una región, con 3 intentos. Sin resultado devuelve nil.
@@ -250,48 +257,94 @@ func sleepCtx(ctx context.Context, dur time.Duration) bool {
 	}
 }
 
-// enrich completa sector (y sede si captureHQ) de los candidatos pendientes con quoteSummary/assetProfile, 2 intentos c/u.
-func (d *discoverer) enrich(ctx context.Context, cs []*candidate, label string, captureHQ bool) {
-	var pending []*candidate
-	for _, c := range cs {
-		if c.Sector == "Otro" || (captureHQ && !c.hqKnown) {
-			pending = append(pending, c)
+// profile consulta assetProfile (2 intentos) y devuelve el sector y la sede; ok=false si ambos fallaron.
+func (d *discoverer) profile(ctx context.Context, label, symbol string) (sector, country string, ok bool) {
+	for attempt := range 2 {
+		qs, err := d.src.QuoteSummary(ctx, symbol, []string{"assetProfile"})
+		if err == nil {
+			ap, _ := qs["assetProfile"].(map[string]any)
+			info := yahoo.FlattenInfo(map[string]any{"assetProfile": ap})
+			country, _ = info["country"].(string)
+			return firstStr(info, "sector", "industry", "Otro"), country, true
+		}
+		d.warn("[%s] [sector] %s: intento %d/2 falló: %v", label, symbol, attempt+1, err)
+		if ctx.Err() != nil || (attempt == 0 && !sleepCtx(ctx, profileRetryWait)) {
+			break
 		}
 	}
-	if len(pending) == 0 {
+	return "Otro", "", false
+}
+
+// enrich completa sector (y sede si captureHQ) de los candidatos pendientes: primero desde la caché y el resto con
+// quoteSummary/assetProfile en paralelo (el espaciado global de Yahoo limita la tasa).
+func (d *discoverer) enrich(ctx context.Context, cs []*candidate, label string, captureHQ bool) {
+	var live []*candidate
+	pending, hits := 0, 0
+	for _, c := range cs {
+		if c.Sector != "Otro" && (!captureHQ || c.hqKnown) {
+			continue
+		}
+		pending++
+		if e, ok := d.cache.get(c.Symbol); ok {
+			c.Sector = e.Sector
+			if captureHQ && e.Country != "" {
+				country := e.Country
+				c.HQCountry = &country
+			}
+			c.hqKnown = true
+			hits++
+			continue
+		}
+		live = append(live, c)
+	}
+	if pending == 0 {
 		return
 	}
-	d.info("[%s] enriqueciendo sector/sede de %d tickers vía quoteSummary…", label, len(pending))
-	otro := 0
-	for i, c := range pending {
-		sector := "Otro"
-		for attempt := range 2 {
-			qs, err := d.src.QuoteSummary(ctx, c.Symbol, []string{"assetProfile"})
-			if err == nil {
-				ap, _ := qs["assetProfile"].(map[string]any)
-				info := yahoo.FlattenInfo(map[string]any{"assetProfile": ap})
-				sector = firstStr(info, "sector", "industry", "Otro")
-				if captureHQ {
-					if s, _ := info["country"].(string); s != "" {
-						c.HQCountry = &s
-					}
+	d.info("[%s] sector/sede de %d tickers: %d desde la caché, %d vía quoteSummary…", label, pending, hits, len(live))
+	if len(live) == 0 {
+		return
+	}
+
+	var mu sync.Mutex
+	done, otro := 0, 0
+	work := make(chan *candidate)
+	var wg sync.WaitGroup
+	for range max(1, min(d.workers, len(live))) {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for c := range work {
+				sector, country, ok := d.profile(ctx, label, c.Symbol)
+				c.Sector = sector
+				if captureHQ && country != "" {
+					c.HQCountry = &country
 				}
-				break
+				c.hqKnown = true // si fallaron las 2 llamadas queda sin sede (se conserva)
+				if ok && sector != "Otro" {
+					d.cache.put(c.Symbol, sector, country)
+				}
+				mu.Lock()
+				done++
+				if sector == "Otro" {
+					otro++
+				}
+				d.info("[%s] [sector] (%d/%d) %s: %s", label, done, len(live), c.Symbol, sector)
+				mu.Unlock()
 			}
-			d.warn("[%s] [sector] %s: intento %d/2 falló: %v", label, c.Symbol, attempt+1, err)
-			if ctx.Err() != nil || (attempt == 0 && !sleepCtx(ctx, 2*time.Second)) {
-				break
-			}
+		}()
+	}
+feed:
+	for _, c := range live {
+		select {
+		case work <- c:
+		case <-ctx.Done():
+			break feed
 		}
-		c.Sector = sector
-		c.hqKnown = true // si fallaron las 2 llamadas queda sin sede (se conserva)
-		if sector == "Otro" {
-			otro++
-		}
-		d.info("[%s] [sector] (%d/%d) %s: %s", label, i+1, len(pending), c.Symbol, sector)
-		if !sleepCtx(ctx, discSectorPause) {
-			return
-		}
+	}
+	close(work)
+	wg.Wait()
+	if ctx.Err() != nil {
+		return
 	}
 	if otro > 0 {
 		if float64(otro)/float64(len(cs)) > 0.3 {
@@ -345,9 +398,29 @@ func (d *discoverer) us(ctx context.Context) []*candidate {
 	return excludeForeignHQ(top, d.warn)
 }
 
+// DiscoverOpts son los ajustes opcionales del descubrimiento.
+type DiscoverOpts struct {
+	Cache   *SectorCache // sector y sede ya conocidos (nil = consultar todo)
+	Workers int          // consultas de quoteSummary en paralelo (0 = discWorkers)
+}
+
 // DiscoverUniverse arma el universo dinámico (Asia + mega-cap de EEUU). Falla si el screener devuelve muy pocas.
 func DiscoverUniverse(ctx context.Context, src Screener, info, warn func(string, ...any)) (*Universe, error) {
-	d := &discoverer{src: src, info: info, warn: warn}
+	return DiscoverUniverseOpts(ctx, src, DiscoverOpts{}, info, warn)
+}
+
+// DiscoverUniverseOpts es DiscoverUniverse con caché de sectores y paralelismo configurables.
+func DiscoverUniverseOpts(ctx context.Context, src Screener, o DiscoverOpts, info, warn func(string, ...any)) (*Universe, error) {
+	workers := o.Workers
+	if workers <= 0 {
+		workers = discWorkers
+	}
+	d := &discoverer{src: src, info: info, warn: warn, cache: o.Cache, workers: workers}
+	defer func() { // lo consultado se guarda aunque el descubrimiento falle después
+		if err := o.Cache.Save(); err != nil {
+			warn("no se pudo guardar la caché de sectores: %v", err)
+		}
+	}()
 	info("Descubriendo universo asiático (China, Hong Kong, Japón, Corea, Taiwán, India)…")
 	asia := d.asia(ctx)
 	info("Universo asiático descubierto: %d empresas (objetivo %d)", len(asia), discAsiaTopN)

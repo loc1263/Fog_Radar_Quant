@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -104,9 +105,10 @@ func TestSnapshotAgeDays(t *testing.T) {
 
 // fakeYahoo cumple yahoo.Source y Screener sin red: 12 empresas por región de Asia y 12 mega-cap de EEUU.
 type fakeYahoo struct {
-	screenErr error
-	screens   int
-	profiles  int
+	screenErr  error
+	screens    int
+	profiles   atomic.Int64 // QuoteSummary corre en paralelo
+	profileErr error        // si no es nil, todo quoteSummary falla
 }
 
 func (f *fakeYahoo) Chart(context.Context, string, gohoo.ChartParams) (*gohoo.ChartResult, error) {
@@ -147,7 +149,10 @@ func (f *fakeYahoo) Screen(_ context.Context, p yahoo.ScreenParams) (yahoo.Quote
 }
 
 func (f *fakeYahoo) QuoteSummary(_ context.Context, ticker string, _ []string) (map[string]any, error) {
-	f.profiles++
+	f.profiles.Add(1)
+	if f.profileErr != nil {
+		return nil, f.profileErr
+	}
 	country := "United States"
 	if ticker == "US10" || ticker == "US11" { // ADR de empresa extranjera
 		country = "Taiwan"
@@ -158,8 +163,6 @@ func (f *fakeYahoo) QuoteSummary(_ context.Context, ticker string, _ []string) (
 func quiet(string, ...any) {}
 
 func TestDiscoverUniverse(t *testing.T) {
-	discSectorPause = 0
-	defer func() { discSectorPause = time.Second }()
 	f := &fakeYahoo{}
 	u, err := DiscoverUniverse(context.Background(), f, quiet, quiet)
 	if err != nil {
@@ -205,8 +208,6 @@ func writeSnapshot(t *testing.T, dir string, edadDias int, now time.Time) string
 }
 
 func TestResolveUniverseEdad(t *testing.T) {
-	discSectorPause = 0
-	defer func() { discSectorPause = time.Second }()
 	now := time.Date(2026, 10, 9, 12, 0, 0, 0, time.UTC)
 
 	t.Run("reciente: se reutiliza sin screener", func(t *testing.T) {

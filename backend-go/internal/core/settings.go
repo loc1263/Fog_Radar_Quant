@@ -41,6 +41,10 @@ type Settings struct {
 	YahooBackoffBaseS  float64
 	YahooBackoffMaxS   float64
 	YahooRedReintentos int // reintentos de red transitorios
+	// Espaciado adaptivo: parte en YahooIntervaloRapidoS y, ante un 429, se ensancha (nunca menos que
+	// YahooMinIntervaloS) y vuelve a bajar solo.
+	YahooAdaptativo       bool
+	YahooIntervaloRapidoS float64
 	// Corridas batch (internal/jobs).
 	PipelinePausaS          float64 // pausa entre un pipeline y el siguiente de una secuencia
 	PipelineReintentos      int     // reintentos de un pipeline que falla en una corrida programada
@@ -128,6 +132,15 @@ func loadSettings(lookup func(string) (string, bool), files []string) (*Settings
 	s.YahooBackoffMaxS = num("YAHOO_BACKOFF_MAX_S", 60, 0, 3600)
 	s.YahooRedReintentos = int(num("YAHOO_REINTENTOS_RED", 2, 0, 10))
 	s.YahooConcurrencia = int(num("YAHOO_CONCURRENCIA", 4, 1, 32))
+	s.YahooAdaptativo = true
+	if v := get("YAHOO_ADAPTATIVO", ""); v != "" {
+		b, err := strconv.ParseBool(v)
+		if err != nil {
+			return nil, fmt.Errorf("YAHOO_ADAPTATIVO inválido: %q", v)
+		}
+		s.YahooAdaptativo = b
+	}
+	s.YahooIntervaloRapidoS = num("YAHOO_INTERVALO_RAPIDO_S", 0.2, 0.01, 3600)
 	s.PipelinePausaS = num("PIPELINE_PAUSA_S", 60, 0, 86400)
 	s.PipelineReintentos = int(num("PIPELINE_REINTENTOS", 1, 0, 20))
 	s.PipelineEsperaReintento = num("PIPELINE_ESPERA_REINTENTO_S", 600, 0, 86400)

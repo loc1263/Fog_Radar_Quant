@@ -7,7 +7,7 @@ hay dos descargando a la vez.
 | Programa | Cuándo (America/Santiago) | Secuencia |
 |---|---|---|
 | `semanal` | lunes 06:00 | ETFs (~10 min) |
-| `diario` | lunes a viernes 18:00 | Chile → EEUU → Tendencia (~10 min, 60 s de pausa entre cada uno) |
+| `diario` | lunes a viernes 18:00 | Chile → EEUU → Tendencia (~10 min; 60 s de pausa entre módulos solo si el anterior falló o recibió 429) |
 
 La programación vive en `backend-go/internal/core/schedule.go` (una sola fuente
 de verdad): el archivo `crontab` de esta carpeta se genera desde ahí

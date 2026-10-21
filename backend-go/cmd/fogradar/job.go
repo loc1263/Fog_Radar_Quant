@@ -34,6 +34,7 @@ type jobArgs struct {
 	programa  string
 	solo      string
 	offline   bool
+	noCache   bool
 	trigger   string
 	pausa     *float64
 	reintento *int
@@ -75,6 +76,8 @@ func parseJobArgs(args []string) (*jobArgs, error) {
 			a.todos = true
 		case "--offline":
 			a.offline = true
+		case "--no-cache":
+			a.noCache = true
 		case "--list":
 			a.list = true
 		case "--crontab":
@@ -161,7 +164,29 @@ func parseJobArgs(args []string) (*jobArgs, error) {
 	if a.todos && a.programa != "" {
 		return nil, errors.New("--todos y --programa son excluyentes")
 	}
+	if a.offline && a.noCache {
+		return nil, errors.New("--offline y --no-cache son excluyentes: uno reutiliza lo descargado y el otro lo vuelve a pedir")
+	}
 	return a, nil
+}
+
+// aplicarSinCache agrega a cada módulo las opciones que le hacen ignorar sus cachés (--no-cache), sin pisar
+// las que el usuario haya puesto a mano.
+func aplicarSinCache(opciones map[string]map[string]any, mods []string) {
+	for _, m := range mods {
+		extra, ok := jobs.OpcionesSinCache[m]
+		if !ok {
+			continue
+		}
+		merged := map[string]any{}
+		for k, v := range extra {
+			merged[k] = v
+		}
+		for k, v := range opciones[m] {
+			merged[k] = v
+		}
+		opciones[m] = merged
+	}
 }
 
 func programaPorClave(k string) (core.Programa, bool) {
@@ -256,6 +281,9 @@ func runJob(args []string, stdout, stderr io.Writer) int {
 		fmt.Fprintln(stderr, "Las banderas de módulo (p. ej. --skip-fetch) van con un solo módulo; usa --offline.")
 		return exitUso
 	}
+	if a.noCache {
+		aplicarSinCache(opciones, mods)
+	}
 	omitir := map[string]string{}
 	if a.offline {
 		for _, m := range mods {
@@ -277,7 +305,7 @@ func runJob(args []string, stdout, stderr io.Writer) int {
 	log, closeLog := newLogger(s, stderr, "job")
 	defer closeLog()
 	log.Info("job: arranque", "args", strings.Join(args, " "), "trigger", a.trigger, "modulos", strings.Join(mods, ","),
-		"offline", a.offline, "data_dir", s.DataDir, "yahoo_concurrencia", s.YahooConcurrencia)
+		"offline", a.offline, "no_cache", a.noCache, "data_dir", s.DataDir, "yahoo_concurrencia", s.YahooConcurrencia)
 	tr := yahoo.NewTraffic(yahoo.PolicyFromSettings(s))
 	tr.SetLogger(func(f string, args ...any) { log.Warn(fmt.Sprintf(f, args...)) })
 	env := &jobs.Env{S: s, Traffic: tr, Yahoo: yahoo.NewClient(tr), Log: log}
