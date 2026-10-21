@@ -17,8 +17,8 @@ jobs:
       run:
         working-directory: backend-go
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-go@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with:
           go-version-file: backend-go/go.mod
           cache-dependency-path: backend-go/go.sum
@@ -26,7 +26,7 @@ jobs:
         run: test -z "$(gofmt -l cmd internal)"
       - name: Vet
         run: go vet ./cmd/... ./internal/...
-      - uses: golangci/golangci-lint-action@v8
+      - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14
           working-directory: backend-go
@@ -41,8 +41,8 @@ jobs:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
