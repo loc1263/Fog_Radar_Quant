@@ -26,6 +26,9 @@ type Resultado struct {
 	Estado   string
 	Intentos int
 	Mensaje  string
+	// Detalle es el mensaje del módulo sin el resumen de tráfico; Stats, el tráfico a Yahoo de su último intento.
+	Detalle  string
+	Stats    yahoo.Stats
 	Duracion time.Duration
 	Inicio   time.Time
 	Fin      time.Time
@@ -169,8 +172,10 @@ func correrModulo(ctx context.Context, env *Env, reg *core.JobRegistry, modulo, 
 		r.Intentos = intento
 		env.Log.Info("inicio", "modulo", modulo, "intento", fmt.Sprintf("%d/%d", intento, maxRein+1), "opciones", opts)
 		env.Traffic.ResetStats()
+		var detalle string
 		rec, err := reg.Track(modulo, trigger, func(rec *core.JobRecord) error {
 			msg, err := p.Run(ctx, env, opts)
+			detalle = msg
 			if msg != "" {
 				rec.Message = &msg
 			}
@@ -186,6 +191,7 @@ func correrModulo(ctx context.Context, env *Env, reg *core.JobRegistry, modulo, 
 			}
 			return err
 		})
+		r.Detalle, r.Stats = detalle, env.Traffic.Stats()
 		if err != nil {
 			r.Mensaje = err.Error()
 			env.Log.Error("falló", "modulo", modulo, "intento", intento, "duracion_s", time.Since(t0).Round(100*time.Millisecond).Seconds(), "error", r.Mensaje)
@@ -240,34 +246,4 @@ func alertar(env *Env, fallidos []Resultado, trigger string, custom func(string)
 		return
 	}
 	resp.Body.Close()
-}
-
-// Resumen formatea el cierre de una secuencia: una línea por módulo con su tiempo (HH:MM:SS), el tiempo total
-// de la corrida y los avisos (WARN/ERROR) de cada módulo, con el ticker cuando el aviso es de uno.
-func Resumen(res []Resultado) string {
-	iconos := map[string]string{EstadoOK: "OK", EstadoError: "ERROR", EstadoOmitido: "omitido"}
-	lineas := make([]string, 0, len(res)+2)
-	var ini, fin time.Time
-	for _, r := range res {
-		lineas = append(lineas, fmt.Sprintf("  %-10s %-8s %s  %s", r.Modulo, iconos[r.Estado], HMS(r.Duracion), r.Mensaje))
-		if r.Inicio.IsZero() {
-			continue
-		}
-		if ini.IsZero() || r.Inicio.Before(ini) {
-			ini = r.Inicio
-		}
-		if r.Fin.After(fin) {
-			fin = r.Fin
-		}
-	}
-	out := strings.Join(lineas, "\n")
-	if !ini.IsZero() {
-		out += fmt.Sprintf("\n  Tiempo total: %s  (%s → %s)", HMS(fin.Sub(ini)), ini.Format("15:04:05"), fin.Format("15:04:05"))
-	}
-	if av := formatAvisos(res); av != "" {
-		out += "\n\nAvisos de la corrida (WARN/ERROR):" + strings.TrimRight(av, "\n")
-	} else {
-		out += "\n\nSin avisos."
-	}
-	return out
 }

@@ -37,7 +37,7 @@ func TestConAvisosYResumen(t *testing.T) {
 		{Modulo: "etf", Estado: EstadoOK, Duracion: 19 * time.Minute, Inicio: t0.Add(time.Minute), Fin: t0.Add(20 * time.Minute)},
 		{Modulo: "us_stocks", Estado: EstadoOmitido},
 	})
-	for _, want := range []string{"00:00:43", "00:19:00", "Tiempo total: 00:20:00", "cl_stocks — 2 avisos", "ABC", "· algo general"} {
+	for _, want := range []string{"00:00:43", "00:19:00", "Tiempo total: 00:20:00", "cl_stocks (2)", "ABC", "· algo general"} {
 		if !strings.Contains(out, want) {
 			t.Errorf("falta %q en:\n%s", want, out)
 		}

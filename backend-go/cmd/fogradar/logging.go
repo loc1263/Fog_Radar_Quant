@@ -16,7 +16,7 @@ const (
 	logMaxBytes = 20 << 20 // al superarlo, el log anterior pasa a fogradar.log.1
 )
 
-// newLogger arma el logger del proceso: consola (nivel LOG_LEVEL) + el log único
+// newLogger arma el logger del proceso: consola (nivel LOG_LEVEL; legible en los jobs, ver console.go) + el log único
 // data/_jobs/logs/fogradar.log (siempre ≥ INFO, con proc y pid), compartido por la API y los jobs.
 // Si el archivo no se puede abrir, sigue solo con la consola. close cierra el archivo.
 func newLogger(s *core.Settings, console io.Writer, proc string) (log *slog.Logger, close func()) {
@@ -24,7 +24,10 @@ func newLogger(s *core.Settings, console io.Writer, proc string) (log *slog.Logg
 	if lvl.UnmarshalText([]byte(s.LogLevel)) != nil {
 		lvl = slog.LevelInfo
 	}
-	con := slog.NewTextHandler(console, &slog.HandlerOptions{Level: lvl})
+	var con slog.Handler = slog.NewTextHandler(console, &slog.HandlerOptions{Level: lvl})
+	if proc == "job" { // los jobs imprimen para una persona; la API sigue con el formato estructurado
+		con = newConsoleHandler(console, lvl)
+	}
 	f, err := abrirLogUnico(s)
 	if err != nil {
 		l := slog.New(con)
