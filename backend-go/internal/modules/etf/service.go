@@ -154,18 +154,12 @@ func sortedByFecha(f *quant.Frame) *quant.Frame {
 
 // Resumen es el resumen de la corrida vigente + parámetros del modelo.
 func Resumen(s *core.Settings) (*EtfResumen, *core.APIError) {
-	unlock, e := BloqueoDatos(s, 0)
-	if e != nil {
-		return nil, e
-	}
 	csv := CSVActual(CurrentDir(s))
 	if csv == "" {
-		unlock()
 		return nil, core.NoData(SinCorrida)
 	}
 	hist, e := Leer(s, HistorialFile)
 	generado := GeneradoEn(s, Top15File)
-	unlock()
 	if e != nil {
 		return nil, e
 	}
@@ -183,12 +177,7 @@ func Resumen(s *core.Settings) (*EtfResumen, *core.APIError) {
 
 // Tabla sirve un CSV de la corrida vigente como tabla.
 func Tabla(s *core.Settings, nombre, detalle string) (*EtfTabla, *core.APIError) {
-	unlock, e := BloqueoDatos(s, 0)
-	if e != nil {
-		return nil, e
-	}
 	df, e := LeerRequerido(s, nombre, detalle)
-	unlock()
 	if e != nil {
 		return nil, e
 	}
@@ -198,12 +187,7 @@ func Tabla(s *core.Settings, nombre, detalle string) (*EtfTabla, *core.APIError)
 
 // Top15Vanguard: el ranking principal filtrado a Proveedor == «Vanguard» antes de cortar al Top N.
 func Top15Vanguard(s *core.Settings) (*EtfTabla, *core.APIError) {
-	unlock, e := BloqueoDatos(s, 0)
-	if e != nil {
-		return nil, e
-	}
 	df, e := LeerRequerido(s, RankingFile, "")
-	unlock()
 	if e != nil {
 		return nil, e
 	}
@@ -220,12 +204,7 @@ func Top15Vanguard(s *core.Settings) (*EtfTabla, *core.APIError) {
 
 // Diversificacion del Top 15 por categoría.
 func Diversificacion(s *core.Settings) (*EtfDiversificacion, *core.APIError) {
-	unlock, e := BloqueoDatos(s, 0)
-	if e != nil {
-		return nil, e
-	}
 	top15, e := LeerRequerido(s, Top15File, "")
-	unlock()
 	if e != nil {
 		return nil, e
 	}
@@ -253,12 +232,8 @@ func rotFilas(rs []RotFila) []EtfRotacionFila {
 	return out
 }
 
-// RotacionVsAnterior: rotación del Top 15 vs. la corrida archivada anterior.
+// RotacionVsAnterior: rotación del Top 15 vs. la corrida anterior.
 func RotacionVsAnterior(s *core.Settings) (*EtfRotacion, *core.APIError) {
-	unlock, e := BloqueoDatos(s, 0)
-	if e != nil {
-		return nil, e
-	}
 	top15, e1 := LeerRequerido(s, Top15File, "")
 	ranking, e2 := LeerRequerido(s, RankingFile, "")
 	excl, e3 := LeerRequerido(s, ExcluidosFile, "")
@@ -266,10 +241,11 @@ func RotacionVsAnterior(s *core.Settings) (*EtfRotacion, *core.APIError) {
 	var err error
 	var previo string
 	if e1 == nil && e2 == nil && e3 == nil {
-		rot, err = GenerarDatosRotacion(CurrentDir(s), HistDir(s), top15, excl, ranking)
-		previo = EncontrarArchivoPrevio(HistDir(s), Top15File)
+		actual := CurrentDir(s)
+		prev := CorridasAnteriores(s, actual)
+		rot, err = GenerarDatosRotacion(actual, prev, top15, excl, ranking)
+		previo = ArchivoPrevio(prev, Top15File)
 	}
-	unlock()
 	for _, x := range []*core.APIError{e1, e2, e3} {
 		if x != nil {
 			return nil, x
@@ -284,19 +260,16 @@ func RotacionVsAnterior(s *core.Settings) (*EtfRotacion, *core.APIError) {
 	}
 	out := &EtfRotacion{Disponible: true, Fecha: fecha, Mantienen: rotFilas(rot.Mantienen), Nuevos: rotFilas(rot.Nuevos), Salidas: rotFilas(rot.Salidas)}
 	if previo != "" {
-		out.FechaPrevia = fechaStr(FechaDe(filepath.Base(previo)))
+		if df, err := quant.ReadCSVFile(previo); err == nil {
+			out.FechaPrevia = fechaTabla(df)
+		}
 	}
 	return out, nil
 }
 
 // Categorias: ranking por categoría.
 func Categorias(s *core.Settings) (*EtfCategorias, *core.APIError) {
-	unlock, e := BloqueoDatos(s, 0)
-	if e != nil {
-		return nil, e
-	}
 	df, e := LeerRequerido(s, CategoriasFile, "El análisis de Categoría no se corrió en esta corrida.")
-	unlock()
 	if e != nil {
 		return nil, e
 	}
@@ -326,16 +299,11 @@ func Categorias(s *core.Settings) (*EtfCategorias, *core.APIError) {
 
 // Top15Cap: Top 15 Cap. (momentum factor tipo VFMO).
 func Top15Cap(s *core.Settings) (*EtfCap, *core.APIError) {
-	unlock, e := BloqueoDatos(s, 0)
-	if e != nil {
-		return nil, e
-	}
 	pf, e := LeerRequerido(s, CapPortfolio, "El análisis Top 15 Cap. no se corrió en esta corrida.")
 	var buckets *quant.Frame
 	if e == nil {
 		buckets, e = Leer(s, CapBuckets)
 	}
-	unlock()
 	if e != nil {
 		return nil, e
 	}

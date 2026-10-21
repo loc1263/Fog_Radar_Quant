@@ -30,15 +30,13 @@ var CategoriasExcluirMomentum = []string{
 
 var momentumRequired = []string{Col5D, Col1M, Col6M, Col1Y, ColSharpe, ColTreynor, ColBeta}
 
-// perf6mHistorico lee el etf_perf_data_*.csv MÁS ANTIGUO de hist y devuelve Ticker → Performance 6M
-// (primer registro de cada ticker); nil si no hay corridas archivadas.
-func perf6mHistorico(histDir string) (map[string]float64, error) {
-	files, _ := filepath.Glob(filepath.Join(histDir, PatronPerf))
-	if len(files) == 0 {
+// perf6mHistorico lee el etf_perf_data de la primera corrida (cache/etf_perf_baseline.csv) y devuelve
+// Ticker → Performance 6M (primer registro de cada ticker); nil si todavía no hay ancla.
+func perf6mHistorico(baseline string) (map[string]float64, error) {
+	if !fileOK(baseline) {
 		return nil, nil
 	}
-	sort.Strings(files)
-	df, err := quant.ReadCSVFile(files[0])
+	df, err := quant.ReadCSVFile(baseline)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +61,7 @@ type MomentumResult struct {
 
 // RunMomentum calcula el score de momentum (55 % momentum ponderado, 25 % calidad, 20 % consistencia) y
 // escribe etf_momentum_ranking_completo.csv y etf_momentum_top15_score_comp.csv junto al CSV de entrada.
-func RunMomentum(csvPath, histDir string) (*MomentumResult, error) {
+func RunMomentum(csvPath, baseline string) (*MomentumResult, error) {
 	df, err := quant.ReadCSVFile(csvPath)
 	if err != nil {
 		return nil, err
@@ -111,7 +109,7 @@ func RunMomentum(csvPath, histDir string) (*MomentumResult, error) {
 	qNorm := quant.MinMax0100(qRaw)
 	u.SetFloats("Q_norm", qNorm)
 
-	old, err := perf6mHistorico(histDir)
+	old, err := perf6mHistorico(baseline)
 	if err != nil {
 		return nil, err
 	}
@@ -550,7 +548,7 @@ type Analisis struct {
 }
 
 // CorrerAnalisis corre los 4 análisis y escribe los outputs en la misma carpeta que el CSV.
-func CorrerAnalisis(dataDir, histDir string, warn func(format string, args ...any)) (*Analisis, error) {
+func CorrerAnalisis(dataDir, baseline string, warn func(format string, args ...any)) (*Analisis, error) {
 	csv := CSVActual(dataDir)
 	if csv == "" {
 		return nil, fmt.Errorf("no hay ningún %s en %s", PatronPerf, dataDir)
@@ -566,7 +564,7 @@ func CorrerAnalisis(dataDir, histDir string, warn func(format string, args ...an
 			a.Avisos = append(a.Avisos, nombre)
 		}
 	}
-	try("momentum", func() error { _, err := RunMomentum(csv, histDir); return err })
+	try("momentum", func() error { _, err := RunMomentum(csv, baseline); return err })
 	try("categorías", func() error { _, err := RunCategoria(filepath.Join(dataDir, RankingFile)); return err })
 	try("top 15 cap.", func() error { _, err := RunCap(csv); return err })
 	return a, nil

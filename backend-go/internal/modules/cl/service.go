@@ -154,8 +154,6 @@ func ModeloActual() ModeloInfo {
 	return m
 }
 
-func baseName(p string) string { return filepath.Base(p) }
-
 func fnum(c *quant.Column, i int) *float64 {
 	if c == nil {
 		return nil
@@ -194,7 +192,7 @@ func Ranking(s *core.Settings) (*RankingResponse, *core.APIError) {
 	col := df.Col
 	text := func(name string) *quant.Column { return df.Col(name) }
 
-	out := &RankingResponse{GeneradoDesde: baseName(l.Path), Modelo: ModeloActual(), Filas: make([]RankingRow, 0, df.N)}
+	out := &RankingResponse{GeneradoDesde: desde(l.Path), Modelo: ModeloActual(), Filas: make([]RankingRow, 0, df.N)}
 	if l.GeneradoEn != nil {
 		out.GeneradoEn = &core.Fecha{Time: *l.GeneradoEn}
 	}
@@ -247,7 +245,7 @@ func Indicadores(s *core.Settings) (*IndicadoresResponse, *core.APIError) {
 			presentes = append(presentes, c)
 		}
 	}
-	out := &IndicadoresResponse{GeneradoDesde: baseName(l.Path), Grupos: []string{},
+	out := &IndicadoresResponse{GeneradoDesde: desde(l.Path), Grupos: []string{},
 		Columnas: make([]ColumnaInfo, 0, len(presentes)), Filas: make([]IndicadorRow, 0, df.N)}
 	if l.GeneradoEn != nil {
 		out.GeneradoEn = &core.Fecha{Time: *l.GeneradoEn}

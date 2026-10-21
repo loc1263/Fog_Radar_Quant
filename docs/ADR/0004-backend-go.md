@@ -12,7 +12,6 @@ mismo OpenAPI, mismo envelope de error, mismos archivos en `data/` y mismo esque
 
 ## Consecuencias
 - Binario estático (~25 MB, imagen distroless); pipelines rápidos (Chile ≈ 40 s, EEUU ≈ 4 min, ETF ≈ 7–13 min).
-- Locks entre procesos (`.pipelines.lock`, `current/.datos.lock`, `<archivo>.jsonl.lock`) y migraciones de `history.db`
-  (nunca se edita una publicada).
+- Locks entre procesos (`_sistema/locks/pipelines.lock`, `<archivo>.jsonl.lock`).
 - Gestor y calidad: `go`, `gofmt`, `go vet`, `golangci-lint`, `go test`; CLI `fogradar job`.
 - Los tipos del frontend se generan desde el OpenAPI del propio backend (`npm run gen:api`).

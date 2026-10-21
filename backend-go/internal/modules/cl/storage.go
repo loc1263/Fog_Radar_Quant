@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"regexp"
-	"sort"
 	"strings"
 	"time"
 
@@ -17,16 +15,14 @@ import (
 	"fogradar/internal/quant"
 )
 
-// Archivos de datos:
+// Archivos de cada corrida (data/cl_stocks/runs/<id>/):
 //
-//	indicadores_acciones_<YYYYMMDD_HHMMSS>.csv (+ .xlsx): salida del extractor
-//	ranking_acciones_<YYYYMMDD_HHMMSS>.csv     (+ .xlsx): salida del scoring
+//	indicadores.csv (+ .xlsx): salida del extractor
+//	ranking.csv     (+ .xlsx): salida del scoring
 const (
-	PatronIndicadores = "indicadores_acciones_*.csv"
-	PatronRanking     = "ranking_acciones_*.csv"
+	ArchivoIndicadores = "indicadores"
+	ArchivoRanking     = "ranking"
 )
-
-var tsRe = regexp.MustCompile(`_(\d{8}_\d{6})\.csv$`)
 
 // ColumnasRequeridasRanking son las que debe traer un ranking para servirse.
 var ColumnasRequeridasRanking = func() []string {
@@ -45,53 +41,27 @@ type Loaded struct {
 	GeneradoEn *time.Time
 }
 
-// DataDir es data/cl_stocks.
-func DataDir(s *core.Settings) string { return s.ModuleDataDir(key) }
-
-// LatestFile devuelve el archivo más reciente (por nombre, que lleva el timestamp) que calza con el patrón.
-func LatestFile(dir, pattern string) string {
-	all := ListFiles(dir, pattern)
-	if len(all) == 0 {
-		return ""
-	}
-	return all[0]
-}
-
-// ListFiles lista los archivos que calzan, del más reciente al más antiguo (por nombre).
-func ListFiles(dir, pattern string) []string {
-	m, err := filepath.Glob(filepath.Join(dir, pattern))
-	if err != nil {
-		return nil
-	}
-	var files []string
-	for _, p := range m {
-		if st, err := os.Stat(p); err == nil && !st.IsDir() {
-			files = append(files, p)
+// LatestFile devuelve el CSV `nombre` de la corrida terminada más reciente que lo tenga ("" si no hay).
+func LatestFile(s *core.Settings, nombre string) string {
+	for _, run := range core.ListRuns(s, key) {
+		if p := filepath.Join(run, nombre+".csv"); fileExists(p) {
+			return p
 		}
 	}
-	sort.Slice(files, func(i, j int) bool { return filepath.Base(files[i]) > filepath.Base(files[j]) })
-	return files
+	return ""
 }
 
-// TimestampDe es la fecha/hora codificada en el nombre del archivo (hora local de loc).
-func TimestampDe(path string, loc *time.Location) *time.Time {
-	m := tsRe.FindStringSubmatch(filepath.Base(path))
-	if m == nil {
-		return nil
-	}
-	t, err := time.ParseInLocation("20060102_150405", m[1], loc)
-	if err != nil {
-		return nil
-	}
-	return &t
-}
+func fileExists(p string) bool { st, err := os.Stat(p); return err == nil && !st.IsDir() }
+
+// desde identifica un archivo cargado: «<corrida>/<archivo>».
+func desde(path string) string { return filepath.Base(filepath.Dir(path)) + "/" + filepath.Base(path) }
 
 func invalidData(detail string) *core.APIError {
 	return core.Err(http.StatusServiceUnavailable, "invalid_data", detail)
 }
 
-func cargar(s *core.Settings, patron string, requeridas []string, que string) (*Loaded, *core.APIError) {
-	path := LatestFile(DataDir(s), patron)
+func cargar(s *core.Settings, nombre string, requeridas []string, que string) (*Loaded, *core.APIError) {
+	path := LatestFile(s, nombre)
 	if path == "" {
 		return nil, core.NoData(fmt.Sprintf("Todavía no hay %s del IPSA. Ejecuta el pipeline: fogradar job cl_stocks", que))
 	}
@@ -108,17 +78,17 @@ func cargar(s *core.Settings, patron string, requeridas []string, que string) (*
 	if len(falt) > 0 {
 		return nil, invalidData(fmt.Sprintf("%s no tiene las columnas: %s", filepath.Base(path), strings.Join(falt, ", ")))
 	}
-	return &Loaded{path, df, TimestampDe(path, s.Loc)}, nil
+	return &Loaded{path, df, core.RunTime(filepath.Dir(path), s.Loc)}, nil
 }
 
 // CargarRanking lee el último ranking.
 func CargarRanking(s *core.Settings) (*Loaded, *core.APIError) {
-	return cargar(s, PatronRanking, ColumnasRequeridasRanking, "un ranking")
+	return cargar(s, ArchivoRanking, ColumnasRequeridasRanking, "un ranking")
 }
 
 // CargarIndicadores lee el último CSV de indicadores.
 func CargarIndicadores(s *core.Settings) (*Loaded, *core.APIError) {
-	return cargar(s, PatronIndicadores, ColumnasIdentidad, "indicadores")
+	return cargar(s, ArchivoIndicadores, ColumnasIdentidad, "indicadores")
 }
 
 func escribirAtomico(destino string, write func(*os.File) error) error {
@@ -139,13 +109,12 @@ func escribirAtomico(destino string, write func(*os.File) error) error {
 	return os.Rename(tmp, destino)
 }
 
-// Guardar escribe <prefijo>_<timestamp>.xlsx y .csv (el CSV al final: es el que lee la API) y
-// devuelve la ruta del CSV.
-func Guardar(df *quant.Frame, dir, prefijo, timestamp string) (string, error) {
+// Guardar escribe <dir>/<nombre>.xlsx y .csv (el CSV al final: es el que lee la API) y devuelve la ruta del CSV.
+func Guardar(df *quant.Frame, dir, nombre string) (string, error) {
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return "", err
 	}
-	base := filepath.Join(dir, prefijo+"_"+timestamp)
+	base := filepath.Join(dir, nombre)
 	if err := escribirAtomico(base+".xlsx", func(f *os.File) error { return writeXLSX(df, f) }); err != nil {
 		return "", err
 	}

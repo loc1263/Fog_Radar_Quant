@@ -46,9 +46,9 @@ Hace falta conservar `data/` porque los pipelines dependen de lo anterior (la ro
 | B. `actions/cache` | Simple, sin commits | Se evicta tras 7 días sin uso y no es inspeccionable; un fallo de caché rompe la rotación |
 | C. Artifacts | Fácil de bajar | Caducan (90 días) y no se restauran solos entre corridas |
 
-**Retención (decidida, 2026-10-21): 7 días.** Los jobs borran solos lo más antiguo al terminar cada módulo (`internal/retencion`, `RETENCION_DIAS=7`), así que la rama `datos` se mantiene pequeña sin pasos extra en el workflow. Siempre se conserva lo más reciente de cada familia de archivos y, en ETF, el `etf_perf_data_*` más antiguo de `hist/` (ancla del puntaje de consistencia del momentum).
+**Retención (decidida, 2026-10-21): 7 días.** Los jobs borran solos las corridas más antiguas al terminar cada módulo (`internal/retencion`, `RETENCION_DIAS=7`), así que la rama `datos` se mantiene pequeña sin pasos extra en el workflow. Siempre se conserva la corrida más reciente y `cache/` (incluida el ancla de consistencia de ETF). La estructura de `data/` es la del [ADR 0006](ADR/0006-estructura-estandar-de-data.md).
 
-**Recomendación: A.** Subir solo lo necesario: `data/etf/{current,hist}`, `data/us_stocks/runs` (últimas N corridas), `data/tendencia/{output,processed,raw,macro,universe,sector_cache.json}` y `data/cl_stocks` (últimos CSV); excluir `data/_jobs/logs` y `data/etf/screener` antiguos (>30 días).
+**Recomendación: A.** Subir `data/<modulo>/runs` (los últimos 7 días) y `data/<modulo>/cache`; excluir `data/_sistema`.
 
 ## 5. Disparadores y frecuencia
 

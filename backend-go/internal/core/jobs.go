@@ -210,10 +210,10 @@ var ErrOcupado = errors.New("Ya hay una corrida de pipelines en curso (lock data
 // LockPipelines toma el lock global entre procesos (data/_jobs/.pipelines.lock), esperando hasta wait.
 // Se libera solo si el proceso muere. Devuelve el unlock.
 func LockPipelines(s *Settings, wait time.Duration) (func(), error) {
-	if err := os.MkdirAll(s.JobsDir(), 0o755); err != nil {
+	if err := os.MkdirAll(s.LocksDir(), 0o755); err != nil {
 		return nil, err
 	}
-	lock := flock.New(filepath.Join(s.JobsDir(), ".pipelines.lock"))
+	lock := flock.New(filepath.Join(s.LocksDir(), "pipelines.lock"))
 	ok, err := lock.TryLock() // un intento inmediato aunque wait sea 0
 	if err != nil {
 		return nil, err

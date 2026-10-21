@@ -112,9 +112,9 @@ func ForecastTable(prices *Prices, top []string, u *Universe, p Params) *quant.F
 }
 
 // RegimeNotes arma las notas de régimen de mercado (VIX del caché de precios y macro_data_*.csv).
-func RegimeNotes(moduleDir string, warn func(string, ...any)) []string {
+func RegimeNotes(cacheDir string, warn func(string, ...any)) []string {
 	var notes []string
-	if bars, err := readCloseCSV(filepath.Join(moduleDir, "raw", "prices", "_VIX.csv")); err == nil && len(bars) > 0 {
+	if bars, err := readCloseCSV(filepath.Join(cacheDir, "prices", "_VIX.csv")); err == nil && len(bars) > 0 {
 		vix := bars[len(bars)-1]
 		switch {
 		case vix >= 25:
@@ -125,7 +125,7 @@ func RegimeNotes(moduleDir string, warn func(string, ...any)) []string {
 			notes = append(notes, fmt.Sprintf("VIX en %.1f: volatilidad en rango normal.", vix))
 		}
 	}
-	if mf := LatestMacroFile(moduleDir); mf != "" {
+	if mf := LatestMacroFile(cacheDir); mf != "" {
 		df, err := quant.ReadCSVFile(mf)
 		if err != nil {
 			warn("No se pudo leer macro_data csv: %v", err)
@@ -172,11 +172,9 @@ func readCloseCSV(path string) ([]float64, error) {
 	return dropNaN(c.Floats()), nil
 }
 
-// LatestMacroFile devuelve el macro_data_<fecha>.csv más reciente (data/tendencia/macro y, por compatibilidad, la raíz).
-func LatestMacroFile(moduleDir string) string {
-	files, _ := filepath.Glob(filepath.Join(moduleDir, "macro", "macro_data_*.csv"))
-	more, _ := filepath.Glob(filepath.Join(moduleDir, "macro_data_*.csv"))
-	files = append(files, more...)
+// LatestMacroFile devuelve el macro_data_<fecha>.csv más reciente de cache/macro.
+func LatestMacroFile(cacheDir string) string {
+	files, _ := filepath.Glob(filepath.Join(cacheDir, "macro", "macro_data_*.csv"))
 	if len(files) == 0 {
 		return ""
 	}
@@ -186,7 +184,7 @@ func LatestMacroFile(moduleDir string) string {
 
 // RunForecast escribe trend_forecast_6m<key>.csv de cada análisis cuya selección existe, y market_regime_notes.txt.
 // Devuelve las notas.
-func RunForecast(prices *Prices, runDir, moduleDir string, u *Universe, p Params, warn func(string, ...any)) ([]string, error) {
+func RunForecast(prices *Prices, runDir, cacheDir string, u *Universe, p Params, warn func(string, ...any)) ([]string, error) {
 	for _, spec := range Analyses(u, p) {
 		b, err := os.ReadFile(filepath.Join(runDir, "portfolio_performance"+spec.Key+".json"))
 		if err != nil {
@@ -207,6 +205,6 @@ func RunForecast(prices *Prices, runDir, moduleDir string, u *Universe, p Params
 		}
 		warn("Proyección a 6 meses (%s) generada para %s acciones.", spec.Label, strconv.Itoa(f.N))
 	}
-	notes := RegimeNotes(moduleDir, warn)
+	notes := RegimeNotes(cacheDir, warn)
 	return notes, os.WriteFile(filepath.Join(runDir, "market_regime_notes.txt"), []byte(strings.Join(notes, "\n")), 0o644)
 }

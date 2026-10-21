@@ -41,7 +41,7 @@ func newLogger(s *core.Settings, console io.Writer, proc string) (log *slog.Logg
 }
 
 func abrirLogUnico(s *core.Settings) (*os.File, error) {
-	dir := filepath.Join(s.JobsDir(), "logs")
+	dir := s.LogsDir()
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return nil, err
 	}

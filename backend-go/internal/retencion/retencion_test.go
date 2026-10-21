@@ -9,96 +9,77 @@ import (
 	"fogradar/internal/core"
 )
 
-func tocar(t *testing.T, base string, rutas ...string) {
+func nuevaCorrida(t *testing.T, s *core.Settings, m core.ModuleKey, cuando time.Time, terminada bool) string {
 	t.Helper()
-	for _, r := range rutas {
-		p := filepath.Join(base, filepath.FromSlash(r))
-		if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
-			t.Fatal(err)
-		}
-		if err := os.WriteFile(p, []byte("x"), 0o644); err != nil {
+	dir, err := core.NewRun(s, m, cuando)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "datos.csv"), []byte("x"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if terminada {
+		if err := core.FinishRun(dir, m, cuando, cuando); err != nil {
 			t.Fatal(err)
 		}
 	}
+	return dir
 }
 
-func existe(base, r string) bool {
-	_, err := os.Stat(filepath.Join(base, filepath.FromSlash(r)))
-	return err == nil
-}
+func existe(p string) bool { _, err := os.Stat(p); return err == nil }
 
-func settings(t *testing.T) *core.Settings {
-	t.Helper()
-	return &core.Settings{DataDir: t.TempDir(), Loc: time.UTC}
-}
-
-func TestPodaConservaVentanaYLoMasReciente(t *testing.T) {
-	s := settings(t)
-	d := s.DataDir
+func TestPodaCorridasViejasYConservaLaVigente(t *testing.T) {
+	s := &core.Settings{DataDir: t.TempDir(), Loc: time.UTC}
 	ahora := time.Date(2026, 10, 21, 18, 0, 0, 0, time.UTC)
-	tocar(t, d,
-		// Chile: la última de cada familia se conserva aunque sea vieja
-		"cl_stocks/indicadores_acciones_20260901_100000.csv", "cl_stocks/indicadores_acciones_20261015_100000.csv", "cl_stocks/indicadores_acciones_20261021_100000.csv",
-		"cl_stocks/ranking_acciones_20260801_100000.csv",
-		// EEUU: carpetas con id ISO
-		"us_stocks/runs/2026-09-18T18-40-04Z/result.json", "us_stocks/runs/2026-10-16T18-40-04Z/result.json", "us_stocks/runs/2026-10-21T18-40-04Z/result.json",
-		// Tendencia
-		"tendencia/output/20260921_01/dashboard_data.json", "tendencia/output/20261015_01/dashboard_data.json", "tendencia/output/20261021_02/dashboard_data.json",
-		"tendencia/macro/macro_data_20260811.csv", "tendencia/macro/macro_data_20261020.csv", "tendencia/macro/fomc_latest_statement.txt",
-		"tendencia/universe/universe_20260811.json", "tendencia/universe/universe_20261017.json", "tendencia/universe/_debug_raw_quote_asia.json",
-		// ETF
-		"etf/hist/etf_top15_recomendados_20261001.csv", "etf/hist/etf_top15_recomendados_20261020.csv",
-		"etf/hist/etf_perf_data_20260710.csv", "etf/hist/etf_perf_data_20260801.csv", "etf/hist/etf_perf_data_20261020.csv",
-		"etf/screener/etf_choice_20260901_100000.csv", "etf/screener/etf_choice_20261021_100000.csv", "etf/screener/info_cache.json",
-		"etf/screener/data_old/List_All_ETF_valid_20260717_222944.csv",
-		"etf/current/etf_top15_recomendados.csv",
-	)
+	const m = core.ModuleKey("etf")
+
+	vieja := nuevaCorrida(t, s, m, ahora.AddDate(0, 0, -30), true)
+	limite := nuevaCorrida(t, s, m, ahora.AddDate(0, 0, -6), true) // dentro de los 7 días
+	fuera := nuevaCorrida(t, s, m, ahora.AddDate(0, 0, -7), true)  // el 8.º día hacia atrás: se borra
+	vigente := nuevaCorrida(t, s, m, ahora, true)
+	incompletaVieja := nuevaCorrida(t, s, m, ahora.AddDate(0, 0, -2), false)
+	enCurso := nuevaCorrida(t, s, m, ahora.Add(-time.Hour), false) // corriendo ahora: no se toca
+	cache := filepath.Join(s.CacheDir(m), "info_cache.json")
+	if err := os.MkdirAll(filepath.Dir(cache), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(cache, []byte("{}"), 0o644); err != nil {
+		t.Fatal(err)
+	}
 
 	r, err := Podar(s, 7, ahora, false)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(r.Eliminados) == 0 || r.Bytes == 0 {
-		t.Fatalf("no eliminó nada: %+v", r)
+	if len(r.Eliminados) != 3 || r.Bytes == 0 {
+		t.Fatalf("eliminó %d: %+v", len(r.Eliminados), r.Eliminados)
 	}
-	quedan := []string{
-		"cl_stocks/indicadores_acciones_20261015_100000.csv", "cl_stocks/indicadores_acciones_20261021_100000.csv", "cl_stocks/ranking_acciones_20260801_100000.csv",
-		"us_stocks/runs/2026-10-16T18-40-04Z/result.json", "us_stocks/runs/2026-10-21T18-40-04Z/result.json",
-		"tendencia/output/20261015_01/dashboard_data.json", "tendencia/output/20261021_02/dashboard_data.json",
-		"tendencia/macro/macro_data_20261020.csv", "tendencia/macro/fomc_latest_statement.txt",
-		"tendencia/universe/universe_20261017.json", "tendencia/universe/_debug_raw_quote_asia.json",
-		"etf/hist/etf_top15_recomendados_20261020.csv",
-		"etf/hist/etf_perf_data_20260710.csv", "etf/hist/etf_perf_data_20261020.csv", // el más antiguo es el ancla de la consistencia
-		"etf/screener/etf_choice_20261021_100000.csv", "etf/screener/info_cache.json", "etf/current/etf_top15_recomendados.csv",
-	}
-	for _, q := range quedan {
-		if !existe(d, q) {
-			t.Errorf("se borró %s y debía quedar", q)
+	for _, d := range []string{vieja, fuera, incompletaVieja} {
+		if existe(d) {
+			t.Errorf("%s debía borrarse", filepath.Base(d))
 		}
 	}
-	borrados := []string{
-		"cl_stocks/indicadores_acciones_20260901_100000.csv",
-		"us_stocks/runs/2026-09-18T18-40-04Z",
-		"tendencia/output/20260921_01", "tendencia/macro/macro_data_20260811.csv", "tendencia/universe/universe_20260811.json",
-		"etf/hist/etf_top15_recomendados_20261001.csv", "etf/hist/etf_perf_data_20260801.csv",
-		"etf/screener/etf_choice_20260901_100000.csv", "etf/screener/data_old",
-	}
-	for _, b := range borrados {
-		if existe(d, b) {
-			t.Errorf("%s debía borrarse", b)
+	for _, d := range []string{limite, vigente, enCurso, cache} {
+		if !existe(d) {
+			t.Errorf("%s debía quedar", filepath.Base(d))
 		}
 	}
 }
 
-func TestSimularNoBorraYDiasCeroDesactiva(t *testing.T) {
-	s := settings(t)
-	tocar(t, s.DataDir, "tendencia/output/20260101_01/a.json", "tendencia/output/20261021_01/a.json")
+func TestSiTodoEsViejoQuedaLaUltimaYSimularDiasCero(t *testing.T) {
+	s := &core.Settings{DataDir: t.TempDir(), Loc: time.UTC}
 	ahora := time.Date(2026, 10, 21, 18, 0, 0, 0, time.UTC)
-	r, err := Podar(s, 7, ahora, true)
-	if err != nil || len(r.Eliminados) != 1 || !existe(s.DataDir, "tendencia/output/20260101_01/a.json") {
-		t.Fatalf("simulación: %+v %v", r, err)
+	const m = core.ModuleKey("tendencia")
+	a := nuevaCorrida(t, s, m, ahora.AddDate(0, 0, -40), true)
+	b := nuevaCorrida(t, s, m, ahora.AddDate(0, 0, -30), true)
+
+	if r, _ := Podar(s, 7, ahora, true); len(r.Eliminados) != 1 || !existe(a) {
+		t.Fatalf("simulación: %+v", r)
 	}
-	if r, _ := Podar(s, 0, ahora, false); len(r.Eliminados) != 0 || !existe(s.DataDir, "tendencia/output/20260101_01/a.json") {
-		t.Fatalf("dias=0 debe desactivar: %+v", r)
+	if r, _ := Podar(s, 0, ahora, false); len(r.Eliminados) != 0 || !existe(a) {
+		t.Fatalf("dias=0 desactiva: %+v", r)
+	}
+	if _, err := Podar(s, 7, ahora, false); err != nil || existe(a) || !existe(b) {
+		t.Fatal("queda siempre la corrida más reciente, aunque sea vieja")
 	}
 }

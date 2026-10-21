@@ -40,7 +40,7 @@ internal/{yahoo,fx,quant,jobs,transversal}  cliente Yahoo común, FX, biblioteca
 
 ```bash
 go run ./cmd/fogradar job --list
-go run ./cmd/fogradar job tendencia --skip-fetch --skip-discovery   # offline, sobre raw/ ya descargado
+go run ./cmd/fogradar job tendencia --skip-fetch --skip-discovery   # offline, sobre las series ya descargadas (cache/)
 go run ./cmd/fogradar job --todos --offline
 go run ./cmd/fogradar job --todos --no-cache     # ignora todas las cachés y pide todo de nuevo a Yahoo
 ```
@@ -48,5 +48,5 @@ Códigos de salida: 0 ok, 1 falla, 2 uso, 3 ocupado (otro pipeline tiene el lock
 una copia de los datos (recomendado al probar). La consola muestra una línea por hito (con la hora), un encabezado `>>> módulo` por
 cada módulo y el avance de los recorridos largos como una barra que se actualiza cada 10 % (en vez de una línea por ticker). Al
 terminar, imprime un resumen con una tabla (tiempo HH:MM:SS, requests a Yahoo, respuestas 429 y espaciado de cada módulo), el
-resultado de cada uno y los avisos. El detalle completo queda siempre en `data/_jobs/logs/fogradar.log`; con `LOG_LEVEL=DEBUG` la
+resultado de cada uno y los avisos. El detalle completo queda siempre en `data/_sistema/logs/fogradar.log`; con `LOG_LEVEL=DEBUG` la
 consola también lo muestra todo.

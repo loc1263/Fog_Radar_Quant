@@ -43,7 +43,7 @@ módulo: **docs/METODOLOGIAS.md** (actualizarla si cambia la lógica).
 ## Backend
 - Los pipelines (descarga Yahoo, scoring, Markowitz) son **batch por CLI**
   (`fogradar job <modulo>`); nunca se ejecutan dentro de un request.
-- Datos en `data/<modulo>/` (fuera de git). Rutas y secretos vía `internal/core/settings.go`
+- Datos en `data/` (fuera de git) con estructura estándar (ADR 0006): `data/<modulo>/runs/<YYYYMMDD_HHMMSS>/` (una carpeta por corrida; `run.json` la marca terminada), `data/<modulo>/cache/` y `data/_sistema/{jobs,logs,locks}`. Un pipeline crea su carpeta con `core.NewRun`, escribe ahí y termina con `core.FinishRun`; los lectores usan `core.LatestRun`. Rutas y secretos vía `internal/core/settings.go`
   (variables de entorno + `backend-go/.env`).
 - Calidad: `gofmt`, `go vet`, `golangci-lint`, `go test -race`. Toda lógica nueva lleva tests.
 - **Yahoo Finance:** todo pasa por el cliente común de `internal/yahoo` (espaciado
@@ -53,8 +53,8 @@ módulo: **docs/METODOLOGIAS.md** (actualizarla si cambia la lógica).
 - La API (`fogradar api`) es de solo lectura y de uso local (`/docs`, `gen:api`, `export`): sin
   autenticación, rate limit ni CORS. Toda la salida del sitio pasa por `fogradar export`.
 - Las secuencias de pipelines toman el lock global (`core.LockPipelines`): nunca hay dos a la vez.
-- **Retención:** los jobs conservan solo 7 días de datos en `data/` (`internal/retencion`, `RETENCION_DIAS`); se borra por la fecha del nombre y nunca la entrada más reciente de cada familia. Excepción: el `etf_perf_data_*` más antiguo de `etf/hist` (ancla de la consistencia del momentum de ETF).
-- Cada corrida deja su detalle en `data/_jobs/logs/fogradar.log` y un resumen (tiempo HH:MM:SS y avisos).
+- **Retención:** los jobs conservan 7 días de corridas (`internal/retencion`, `RETENCION_DIAS`): borran carpetas de corrida enteras, nunca la más reciente, y no tocan `cache/` (ahí vive el ancla de consistencia de ETF).
+- Cada corrida deja su detalle en `data/_sistema/logs/fogradar.log` y un resumen (tiempo HH:MM:SS y avisos).
 
 ## Convenciones de módulos (ADR 0002)
 - Backend: `internal/modules/<modulo>/` con scoring/scanner, extractor, storage, schemas, service, router y pipeline.

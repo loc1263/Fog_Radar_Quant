@@ -28,17 +28,15 @@ type Rotacion struct {
 	Mantienen, Nuevos, Salidas []RotFila
 }
 
-// EncontrarArchivoPrevio devuelve el archivo archivado más reciente que calce con baseName, ordenando por
-// (fecha, secuencia) del propio nombre (no por mtime del filesystem).
-func EncontrarArchivoPrevio(histDir, baseName string) string {
-	ext := filepath.Ext(baseName)
-	raiz := baseName[:len(baseName)-len(ext)]
-	c, _ := filepath.Glob(filepath.Join(histDir, raiz+"*"+ext))
-	if len(c) == 0 {
-		return ""
+// ArchivoPrevio devuelve el archivo `nombre` de la corrida anterior más reciente que lo tenga ("" si ninguna).
+// prev son las carpetas de las corridas anteriores, la más reciente primero.
+func ArchivoPrevio(prev []string, nombre string) string {
+	for _, d := range prev {
+		if p := filepath.Join(d, nombre); fileOK(p) {
+			return p
+		}
 	}
-	sortByFechaSeq(c)
-	return c[len(c)-1]
+	return ""
 }
 
 type runTop struct {
@@ -46,9 +44,13 @@ type runTop struct {
 	tickers map[string]bool
 }
 
-func listarRunsTop15(dataDir, histDir string) []runTop {
-	rutas, _ := filepath.Glob(filepath.Join(histDir, "etf_top15_recomendados*.csv"))
-	sortByFechaSeq(rutas)
+func listarRunsTop15(dataDir string, prev []string) []runTop {
+	var rutas []string
+	for i := len(prev) - 1; i >= 0; i-- { // de la más antigua a la más reciente
+		if v := filepath.Join(prev[i], Top15File); fileOK(v) {
+			rutas = append(rutas, v)
+		}
+	}
 	if v := filepath.Join(dataDir, Top15File); fileOK(v) {
 		rutas = append(rutas, v)
 	}
@@ -168,11 +170,12 @@ func sortedKeys(m map[string]bool) []string {
 }
 
 // GenerarDatosRotacion devuelve las tablas mantienen/nuevos/salidas, o nil si no hay corrida anterior completa
-// archivada en histDir para comparar. top15/excl/ranking son los CSV de la corrida vigente.
-func GenerarDatosRotacion(dataDir, histDir string, top15, excl, ranking *quant.Frame) (*Rotacion, error) {
-	prevTop15P := EncontrarArchivoPrevio(histDir, Top15File)
-	prevRankP := EncontrarArchivoPrevio(histDir, RankingFile)
-	prevExclP := EncontrarArchivoPrevio(histDir, ExcluidosFile)
+// anterior para comparar (prev: carpetas de las corridas anteriores, la más reciente primero). top15/excl/ranking son
+// los CSV de la corrida vigente (dataDir).
+func GenerarDatosRotacion(dataDir string, prev []string, top15, excl, ranking *quant.Frame) (*Rotacion, error) {
+	prevTop15P := ArchivoPrevio(prev, Top15File)
+	prevRankP := ArchivoPrevio(prev, RankingFile)
+	prevExclP := ArchivoPrevio(prev, ExcluidosFile)
 	if prevTop15P == "" || prevRankP == "" || prevExclP == "" {
 		return nil, nil
 	}
@@ -199,7 +202,7 @@ func GenerarDatosRotacion(dataDir, histDir string, top15, excl, ranking *quant.F
 	for i := 0; i < top15.N; i++ {
 		actualLista = append(actualLista, top15.Col("Ticker").Cell(i))
 	}
-	racha := calcularRacha(listarRunsTop15(dataDir, histDir), actualLista)
+	racha := calcularRacha(listarRunsTop15(dataDir, prev), actualLista)
 
 	out := &Rotacion{}
 	for _, t := range sortedKeys(tActual) {

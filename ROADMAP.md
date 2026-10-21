@@ -21,8 +21,8 @@ Fog_Radar_Quant/
 │   ├── cmd/fogradar/               # main, CLI de jobs, log único
 │   └── internal/{api,core,modules/{cl,us,etf,tend},yahoo,fx,quant,jobs,transversal}
 ├── data/                           # fuera del código, ignorado por git
-│   ├── etf/{current,hist,screener}/   us_stocks/runs/   cl_stocks/   tendencia/{output,universe,...}
-│   └── _jobs/                      # registro de corridas (jsonl) y log único (logs/fogradar.log)
+│   ├── <modulo>/{runs/<id>/,cache/}   # cl_stocks · us_stocks · etf · tendencia (ADR 0006)
+│   └── _sistema/{jobs,logs,locks}/   # registro de corridas (jsonl), log único (logs/fogradar.log) y candados
 ├── frontend/                       # SvelteKit + TS + Tailwind v4 · adapter-static (SPA)
 ├── docs/                           # DESIGN_SYSTEM · METODOLOGIAS · BACKLOG · ADR/
 ├── iniciar.bat → iniciar.py · correr_pipelines.bat
@@ -45,7 +45,7 @@ Fog_Radar_Quant/
 | Gráficos | **LayerChart 2.5** | Librería nativa de Svelte, estilable con tokens `brand-*`. |
 | Tablas | `DataTable` genérico propio (orden, filtro, CSV) | Casi todas las pestañas son tablas. |
 | Pipelines | **Batch fuera del proceso web** (`fogradar job`). Producción: cron en el servidor backend; la API solo lee | Evita bloqueos de Yahoo en requests web. |
-| Estado de corridas | Registro en `data/_jobs/<modulo>.jsonl` + `/api/jobs` + log único `fogradar.log` | El hub muestra "al día / atrasado". |
+| Estado de corridas | Registro en `data/_sistema/jobs/<modulo>.jsonl` + log único `data/_sistema/logs/fogradar.log` | El hub muestra "al día / atrasado". |
 | Historial | Retirado (2026-10-21): sin vistas ni `history.db` (ver ADR 0005) | El sitio estático no lo necesita. |
 | Calidad | `gofmt`, `go vet`, `golangci-lint`, `go test -race` (back); `svelte-check` + ESLint + Prettier + Vitest + Playwright (front); CI en GitHub | |
 

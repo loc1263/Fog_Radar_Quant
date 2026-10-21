@@ -6,9 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"regexp"
 	"sort"
-	"strconv"
 	"strings"
 	"time"
 
@@ -182,7 +180,7 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 	s := env.S
 	warn := func(f string, a ...any) { env.Log.Warn(fmt.Sprintf(f, a...)) }
 	info := func(f string, a ...any) { env.Log.Info(fmt.Sprintf(f, a...)) }
-	moduleDir := ModuleDir(s)
+	moduleDir := s.CacheDir(key) // cachés y series descargadas; lo de cada corrida va en su carpeta de runs/
 	now := time.Now().In(s.Loc)
 
 	p := DefaultParams()
@@ -217,10 +215,16 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 		return "", errors.New("Configuración de Tendencia no factible: " + strings.Join(problemas, " "))
 	}
 
-	runDir, err := NewRunDir(s, now)
+	runDir, err := core.NewRun(s, key, now)
 	if err != nil {
 		return "", err
 	}
+	terminada := false
+	defer func() { // una corrida que falla no deja su carpeta a medias
+		if !terminada {
+			_ = os.RemoveAll(runDir)
+		}
+	}()
 	info("Carpeta de esta corrida: %s", runDir)
 
 	if !flag(opts, "skip_fetch") {
@@ -232,7 +236,7 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 		if !ok {
 			return "", errors.New("el cliente de Yahoo no admite descargas de histórico")
 		}
-		_, failed := client.DownloadMany(ctx, all, filepath.Join(moduleDir, "raw", "prices"), ho, force, s.YahooConcurrencia, nil)
+		_, failed := client.DownloadMany(ctx, all, filepath.Join(moduleDir, "prices"), ho, force, s.YahooConcurrencia, nil)
 		if ctx.Err() != nil {
 			return "", ctx.Err()
 		}
@@ -251,7 +255,7 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 		}
 		sort.Strings(fxTickers)
 		info("Pares FX a descargar: %s", strings.Join(fxTickers, ", "))
-		_, failedFX := client.DownloadMany(ctx, fxTickers, filepath.Join(moduleDir, "raw", "fx"), ho, force, s.YahooConcurrencia, nil)
+		_, failedFX := client.DownloadMany(ctx, fxTickers, filepath.Join(moduleDir, "fx"), ho, force, s.YahooConcurrencia, nil)
 		if len(failedFX) > 0 {
 			warn("Pares FX que fallaron: %s. Sin estos pares, los tickers en esa moneda se excluirán del dataset.", strings.Join(failedFX, ", "))
 		}
@@ -268,7 +272,7 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 		}
 		warn(f, a...)
 	}
-	prices, rf, err := BuildDataset(moduleDir, u, p, avisar)
+	prices, rf, err := BuildDataset(moduleDir, filepath.Join(runDir, "processed"), u, p, avisar)
 	if err != nil {
 		return "", err
 	}
@@ -299,6 +303,10 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 		warn("No se pudo registrar run_manifest.json: %v", err)
 	}
 
+	if err := core.FinishRun(runDir, key, now, time.Now()); err != nil {
+		return "", err
+	}
+	terminada = true
 	partes = append([]string{"corrida " + filepath.Base(runDir)}, partes...)
 	for _, a := range asList(payload.Get("analyses")) {
 		an := a.(OM)
@@ -348,30 +356,9 @@ func writeManifest(runDir string, now time.Time, p Params, u *Universe, override
 	return os.Rename(tmp, path)
 }
 
-var runDateRe = regexp.MustCompile(`^(\d{4})(\d{2})(\d{2})_(\d{2})$`)
-
 func asList(v any) []any { l, _ := v.([]any); return l }
 
 func perfMetric(perf OM, group, key string) any {
 	g, _ := perf.Get(group).(OM)
 	return g.Get(key)
-}
-
-// NewRunDir crea output/YYYYMMDD_NN con la siguiente secuencia de hoy y su run_manifest.json.
-func NewRunDir(s *core.Settings, now time.Time) (string, error) {
-	today := now.In(s.Loc).Format("20060102")
-	last := 0
-	ents, _ := os.ReadDir(OutputDir(s))
-	for _, e := range ents {
-		if m := runDateRe.FindStringSubmatch(e.Name()); e.IsDir() && m != nil && m[1]+m[2]+m[3] == today {
-			n, _ := strconv.Atoi(m[4])
-			last = max(last, n)
-		}
-	}
-	dir := filepath.Join(OutputDir(s), fmt.Sprintf("%s_%02d", today, last+1))
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		return "", err
-	}
-	manifest := OM{{"created_at", now.In(s.Loc).Format("2006-01-02T15:04:05.000000")}}
-	return dir, os.WriteFile(filepath.Join(dir, "run_manifest.json"), OrderedJSON(manifest), 0o644)
 }

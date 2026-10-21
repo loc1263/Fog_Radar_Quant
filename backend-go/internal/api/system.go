@@ -59,7 +59,7 @@ func (h *Host) moduleStatus(m modules.Info) ModuleStatus {
 		SourceProject:  m.SourceProject,
 		Migrated:       m.Migrated,
 		MigrationPhase: m.MigrationPhase,
-		DataAvailable:  hasData(h.S.ModuleDataDir(m.Key)),
+		DataAvailable:  core.LatestRun(h.S, m.Key) != "",
 		LatestJob:      OptJob{h.Jobs.Latest(string(m.Key))},
 		LastSuccess:    OptJob{h.Jobs.LastSuccess(string(m.Key))},
 	}

@@ -56,9 +56,6 @@ func (s *Settings) IsProd() bool { return s.Env == "prod" }
 // ModuleDataDir es data/<modulo>.
 func (s *Settings) ModuleDataDir(m ModuleKey) string { return filepath.Join(s.DataDir, string(m)) }
 
-// JobsDir es data/_jobs.
-func (s *Settings) JobsDir() string { return filepath.Join(s.DataDir, "_jobs") }
-
 // LoadSettings lee variables de entorno y, como respaldo, el archivo .env
 // (ENV_FILE, o ./.env, o backend-go/.env). Una variable de entorno gana al .env.
 func LoadSettings() (*Settings, error) {

@@ -4,11 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 	"time"
 
+	"fogradar/internal/core"
 	"fogradar/internal/jobs"
 	"fogradar/internal/quant"
 )
@@ -30,8 +32,17 @@ func init() {
 // Nunca se ejecuta dentro de un request web. Devuelve un resumen para el registro de jobs.
 func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error) {
 	s := env.S
-	dir := DataDir(s)
-	timestamp := time.Now().In(s.Loc).Format("20060102_150405")
+	inicio := time.Now()
+	dir, err := core.NewRun(s, key, inicio)
+	if err != nil {
+		return "", err
+	}
+	terminada := false
+	defer func() { // una corrida que falla no deja su carpeta a medias
+		if !terminada {
+			_ = os.RemoveAll(dir)
+		}
+	}()
 	var resumen []string
 
 	var indicadores *quant.Frame
@@ -41,9 +52,11 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 			return "", e
 		}
 		indicadores = fuente.DF
-		// El ranking conserva el timestamp de sus datos: re-puntuar no los hace «más nuevos».
-		timestamp = strings.TrimSuffix(strings.TrimPrefix(filepath.Base(fuente.Path), "indicadores_acciones_"), ".csv")
-		resumen = append(resumen, "solo scoring de "+filepath.Base(fuente.Path))
+		// La corrida nueva lleva su propia copia de los indicadores: así no depende de la corrida de origen.
+		if _, err := Guardar(indicadores, dir, ArchivoIndicadores); err != nil {
+			return "", err
+		}
+		resumen = append(resumen, "solo scoring de los indicadores de "+filepath.Base(filepath.Dir(fuente.Path)))
 	} else {
 		tickers, err := CargarTickers()
 		if err != nil {
@@ -57,7 +70,7 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 		if indicadores.N == 0 {
 			return "", errors.New("Yahoo Finance no devolvió datos para ningún ticker.")
 		}
-		ruta, err := Guardar(indicadores, dir, "indicadores_acciones", timestamp)
+		ruta, err := Guardar(indicadores, dir, ArchivoIndicadores)
 		if err != nil {
 			return "", err
 		}
@@ -72,11 +85,11 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 	if err != nil {
 		return "", err
 	}
-	ruta, err := Guardar(ranking, dir, "ranking_acciones", timestamp)
+	ruta, err := Guardar(ranking, dir, ArchivoRanking)
 	if err != nil {
 		return "", err
 	}
-	env.Log.Info("ranking", "archivo", filepath.Base(ruta))
+	env.Log.Info("ranking", "archivo", filepath.Base(dir)+"/"+filepath.Base(ruta))
 
 	sym := ranking.Col("Símbolo")
 	var top []string
@@ -93,5 +106,9 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 	for _, g := range ids {
 		env.Log.Warn("grupo financiero duplicado (riesgo de doble conteo)", "grupo", g, "simbolos", strings.Join(grupos[g], ", "))
 	}
+	if err := core.FinishRun(dir, key, inicio, time.Now()); err != nil {
+		return "", err
+	}
+	terminada = true
 	return strings.Join(resumen, " · "), nil
 }

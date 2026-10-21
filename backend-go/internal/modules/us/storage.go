@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"sort"
 
 	"fogradar/internal/core"
 )
@@ -15,32 +14,11 @@ const key = core.ModuleKey("us_stocks")
 // NoRuns es el mensaje cuando todavía no hay corridas.
 const NoRuns = "Todavía no hay corridas del screener EEUU. Ejecuta: fogradar job us_stocks"
 
-// RunsDir es data/us_stocks/runs.
-func RunsDir(s *core.Settings) string { return filepath.Join(s.ModuleDataDir(key), "runs") }
-
-// ListRuns lista las carpetas de corridas, la más reciente primero (el nombre es un timestamp UTC).
-func ListRuns(s *core.Settings) []string {
-	ents, err := os.ReadDir(RunsDir(s))
-	if err != nil {
-		return nil
-	}
-	var out []string
-	for _, e := range ents {
-		if e.IsDir() && e.Name()[0] != '.' {
-			out = append(out, filepath.Join(RunsDir(s), e.Name()))
-		}
-	}
-	sort.Slice(out, func(i, j int) bool { return filepath.Base(out[i]) > filepath.Base(out[j]) })
-	return out
-}
-
-// LatestFinishedRun es la corrida más reciente que ya escribió result.json (una corrida en curso crea su
-// carpeta antes de terminar: se ignora y se sirve la última terminada).
+// LatestFinishedRun es la corrida terminada más reciente (una corrida en curso o fallida no tiene run.json:
+// se ignora y se sirve la última terminada).
 func LatestFinishedRun(s *core.Settings) (string, *core.APIError) {
-	for _, d := range ListRuns(s) {
-		if st, err := os.Stat(filepath.Join(d, "result.json")); err == nil && !st.IsDir() {
-			return d, nil
-		}
+	if d := core.LatestRun(s, key); d != "" {
+		return d, nil
 	}
 	return "", core.NoData(NoRuns)
 }

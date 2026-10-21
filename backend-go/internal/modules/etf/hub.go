@@ -15,13 +15,8 @@ func (hubProvider) ResumenHub(s *core.Settings) (*transversal.ResumenModulo, err
 	if e != nil {
 		return nil, e
 	}
-	unlock, e := BloqueoDatos(s, 0)
-	if e != nil {
-		return nil, e
-	}
 	generado := GeneradoEn(s, Top15File)
 	ranking, e := Leer(s, RankingFile)
-	unlock()
 	if e != nil {
 		return nil, e
 	}

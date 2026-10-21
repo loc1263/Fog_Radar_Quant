@@ -333,6 +333,7 @@ type ScreenerResult struct {
 // ScreenerOpts configura la corrida.
 type ScreenerOpts struct {
 	OutputDir    string
+	CacheDir     string // info_cache.json (por defecto, OutputDir)
 	ListaCSV     []byte // por defecto la lista embebida
 	Concurrencia int
 	Log          *slog.Logger
@@ -368,7 +369,14 @@ func ProcesarETFs(ctx context.Context, src yahoo.Source, o ScreenerOpts) (*Scree
 	}
 	o.Log.Info("tickers importados", "n", len(tickers))
 	inc := &Incidencias{}
-	ic := cargarInfoCache(o.OutputDir, o.RefrescarInfo)
+	cacheDir := o.CacheDir
+	if cacheDir == "" {
+		cacheDir = o.OutputDir
+	}
+	if err := os.MkdirAll(cacheDir, 0o755); err != nil {
+		return nil, err
+	}
+	ic := cargarInfoCache(cacheDir, o.RefrescarInfo)
 
 	// El historial del índice se pide UNA vez (sin él no se puede calcular Beta/Treynor de ningún ETF).
 	o.Log.Info("precargando historial de mercado", "indice", marketIndex)

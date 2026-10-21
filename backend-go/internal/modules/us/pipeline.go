@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"path/filepath"
 	"strings"
+	"time"
 
+	"fogradar/internal/core"
 	"fogradar/internal/jobs"
 )
 
@@ -19,9 +21,12 @@ func init() {
 //
 // Nunca se ejecuta dentro de un request web.
 func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error) {
-	s := env.S
-	runDir, err := RunBatch(ctx, env, BatchOpts{OutputRoot: RunsDir(s)})
+	inicio := time.Now()
+	runDir, err := core.NewRun(env.S, key, inicio)
 	if err != nil {
+		return "", err
+	}
+	if _, err := RunBatch(ctx, env, runDir, BatchOpts{}); err != nil {
 		return "", err
 	}
 	var result RunResponse
@@ -33,7 +38,10 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 		if result.Error != nil {
 			msg = *result.Error
 		}
-		return "", fmt.Errorf("La corrida %s falló: %s", filepath.Base(runDir), msg)
+		return "", fmt.Errorf("La corrida %s falló: %s", filepath.Base(runDir), msg) // sin run.json: nadie la lee
+	}
+	if err := core.FinishRun(runDir, key, inicio, time.Now()); err != nil {
+		return "", err
 	}
 	var top []string
 	for i := 0; i < len(result.Rows) && i < 3; i++ {

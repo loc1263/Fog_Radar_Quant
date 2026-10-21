@@ -25,11 +25,13 @@ func escribirJSON(t *testing.T, dir, nombre string, v any) {
 
 func TestPortfolioPrecalculado(t *testing.T) {
 	s := &core.Settings{DataDir: t.TempDir(), Loc: time.UTC}
-	dir := filepath.Join(s.ModuleDataDir(key), "runs", "2026-10-01T00-00-00Z")
-	if err := os.MkdirAll(dir, 0o755); err != nil {
+	dir, err := core.NewRun(s, key, time.Date(2026, 10, 1, 0, 0, 0, 0, time.UTC))
+	if err != nil {
 		t.Fatal(err)
 	}
-	escribirJSON(t, dir, "result.json", map[string]any{})
+	if err := core.FinishRun(dir, key, time.Now(), time.Now()); err != nil {
+		t.Fatal(err)
+	}
 
 	tickers := []string{"AAA", "BBB", "CCC", "DDD", "EEE"}
 	rng := rand.New(rand.NewSource(1))
@@ -59,7 +61,7 @@ func TestPortfolioPrecalculado(t *testing.T) {
 	if e != nil {
 		t.Fatal(e)
 	}
-	if r.RunID != "2026-10-01T00-00-00Z" || r.NAssets != DefaultNAssets {
+	if r.RunID != "20261001_000000" || r.NAssets != DefaultNAssets {
 		t.Errorf("respuesta: %+v", r)
 	}
 	// 5 candidatos: ningún Top N (15, 30) es más chico que el universo, solo «todos».

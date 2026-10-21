@@ -33,7 +33,7 @@ import (
 //  6. fundamentales de cada candidato                   — descarga (info + trailingPegRatio)
 //  7. fundamentales + score de salud                    — puro
 //
-// Cada corrida deja result.json, candidates.json, prices.json y run.log en data/us_stocks/runs/<run_id>/.
+// Cada corrida deja result.json, candidates.json, prices.json y run.log en data/us_stocks/runs/<id>/ (run.json la marca como terminada).
 const (
 	DefaultMinMarketCap = 200_000_000_000 // 200B USD
 	DefaultPauseSeconds = 0.6             // se registra por compatibilidad; el espaciado lo hace el cliente de Yahoo
@@ -262,22 +262,17 @@ func batchMarketCaps(ctx context.Context, src yahoo.Source, universe []string, l
 // BatchOpts configura RunBatch.
 type BatchOpts struct {
 	MinMarketCap float64
-	OutputRoot   string
 }
 
-// RunBatch ejecuta una corrida completa y deja todos sus archivos en una carpeta propia bajo OutputRoot.
+// RunBatch ejecuta una corrida completa y deja todos sus archivos en runDir (la carpeta de la corrida, ya creada).
 // Si un paso falla, se corta y se persiste lo evaluado hasta ese momento con status «error».
-func RunBatch(ctx context.Context, env *jobs.Env, o BatchOpts) (string, error) {
+func RunBatch(ctx context.Context, env *jobs.Env, runDir string, o BatchOpts) (string, error) {
 	src := env.Yahoo
 	if o.MinMarketCap == 0 {
 		o.MinMarketCap = DefaultMinMarketCap
 	}
 	started := time.Now().UTC()
-	runID := started.Format("2006-01-02T15-04-05Z")
-	runDir := filepath.Join(o.OutputRoot, runID)
-	if err := os.MkdirAll(runDir, 0o755); err != nil {
-		return "", err
-	}
+	runID := filepath.Base(runDir)
 	lf, err := os.Create(filepath.Join(runDir, "run.log"))
 	if err != nil {
 		return "", err

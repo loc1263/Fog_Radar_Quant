@@ -76,8 +76,8 @@ func loadPriceCSV(path string) (fx.Series, bool) {
 func countValid(v []float64) int { return len(quant.DropNaN(v)) }
 
 // BuildPriceMatrix arma la matriz de precios en USD; devuelve también los tickers excluidos. Lanza error si no queda ninguno.
-func BuildPriceMatrix(moduleDir string, u *Universe, p Params, warn func(string, ...any)) (*Prices, []Excluido, error) {
-	rawPrices, rawFX := filepath.Join(moduleDir, "raw", "prices"), filepath.Join(moduleDir, "raw", "fx")
+func BuildPriceMatrix(cacheDir string, u *Universe, p Params, warn func(string, ...any)) (*Prices, []Excluido, error) {
+	rawPrices, rawFX := filepath.Join(cacheDir, "prices"), filepath.Join(cacheDir, "fx")
 	// Solo se avisa por monedas que el universo ACTUAL necesita.
 	needed := map[string]bool{}
 	for _, t := range u.All() {
@@ -198,8 +198,8 @@ func ffillLimit(p *Prices) [][]float64 {
 }
 
 // DetermineRiskFreeRate: macro_data (Treasury 3M) > ^IRX > 4 %.
-func DetermineRiskFreeRate(moduleDir string, warn func(string, ...any)) float64 {
-	if mf := LatestMacroFile(moduleDir); mf != "" {
+func DetermineRiskFreeRate(cacheDir string, warn func(string, ...any)) float64 {
+	if mf := LatestMacroFile(cacheDir); mf != "" {
 		if df, err := quant.ReadCSVFile(mf); err == nil {
 			ind, val := df.Col("Indicador"), df.Col("Último valor")
 			if ind != nil && val != nil {
@@ -213,7 +213,7 @@ func DetermineRiskFreeRate(moduleDir string, warn func(string, ...any)) float64 
 			warn("No se pudo leer tasa libre de riesgo de %s: %v", mf, err)
 		}
 	}
-	if s, ok := loadPriceCSV(yahoo.CachePath(filepath.Join(moduleDir, "raw", "prices"), "^IRX")); ok {
+	if s, ok := loadPriceCSV(yahoo.CachePath(filepath.Join(cacheDir, "prices"), "^IRX")); ok {
 		if v := quant.DropNaN(s.V); len(v) > 0 {
 			return v[len(v)-1] / 100.0
 		}
@@ -222,13 +222,14 @@ func DetermineRiskFreeRate(moduleDir string, warn func(string, ...any)) float64 
 	return 0.04
 }
 
-// BuildDataset escribe processed/prices_usd.csv, weekly_returns.csv, risk_free_rate.txt y excluded_tickers.txt.
-func BuildDataset(moduleDir string, u *Universe, p Params, warn func(string, ...any)) (*Prices, float64, error) {
-	prices, excluded, err := BuildPriceMatrix(moduleDir, u, p, warn)
+// BuildDataset lee las series de cacheDir y escribe en procDir (la carpeta processed/ de la corrida) prices_usd.csv,
+// weekly_returns.csv, risk_free_rate.txt y excluded_tickers.txt.
+func BuildDataset(cacheDir, procDir string, u *Universe, p Params, warn func(string, ...any)) (*Prices, float64, error) {
+	prices, excluded, err := BuildPriceMatrix(cacheDir, u, p, warn)
 	if err != nil {
 		return nil, 0, err
 	}
-	dir := filepath.Join(moduleDir, "processed")
+	dir := procDir
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return nil, 0, err
 	}
@@ -240,7 +241,7 @@ func BuildDataset(moduleDir string, u *Universe, p Params, warn func(string, ...
 	if err := writeFrameFile(filepath.Join(dir, "weekly_returns.csv"), pricesFrame(rets)); err != nil {
 		return nil, 0, err
 	}
-	rf := DetermineRiskFreeRate(moduleDir, warn)
+	rf := DetermineRiskFreeRate(cacheDir, warn)
 	if err := os.WriteFile(filepath.Join(dir, "risk_free_rate.txt"), []byte(quant.FloatRepr(rf)), 0o644); err != nil {
 		return nil, 0, err
 	}

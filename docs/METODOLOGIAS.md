@@ -34,7 +34,7 @@ se citan son relativas a `backend/src/fog_radar/`.
   Cada módulo conserva además sus propias pausas anti-bloqueo (se detallan abajo).
   - **`--no-cache`** (`fogradar job`, un módulo o `--todos`): ignora todas las cachés y vuelve a pedir
     todo a Yahoo. Equivale a `--force-refresh --force-discovery` en Tendencia (precios, FX, universo y
-    `sector_cache.json`) y a `--refrescar-info` en ETF; Chile y EEUU no tienen caché y siempre descargan.
+    `cache/sector_cache.json`) y a `--refrescar-info` en ETF; Chile y EEUU no tienen caché y siempre descargan.
     Es excluyente con `--offline`. Lo que pida el usuario a mano tiene prioridad.
   - **Pausa entre módulos** de una secuencia (`PIPELINE_PAUSA_S`, 60 s): solo se espera si el módulo
     anterior falló o recibió algún 429 (o reintento ante 429). Con tráfico limpio no se pausa: el espaciado
@@ -60,7 +60,7 @@ ROADMAP): usa el último `macro_data_*.csv` disponible, si existe.
 
 ---
 
-**Retención de datos.** Los jobs borran de `data/` lo de más de 7 días (`RETENCION_DIAS`, `fogradar prune`): por la fecha del nombre, conservando siempre lo más reciente de cada familia de archivos. La consistencia del momentum de ETF se mide contra el `etf_perf_data_*` más antiguo de `etf/hist/`; ese archivo se conserva como ancla (si no, la comparación se movería cada día).
+**Retención de datos.** Los jobs borran de `data/<modulo>/runs/` las corridas de más de 7 días (`RETENCION_DIAS`, `fogradar prune`), conservando siempre la más reciente; `cache/` no se toca. La consistencia del momentum de ETF se mide contra el `etf_perf_data` de la primera corrida, guardado como ancla en `data/etf/cache/etf_perf_baseline.csv` (si no, la comparación se movería cada día).
 
 ---
 
@@ -391,11 +391,10 @@ rango):
     puesto #n, o no estaba en el universo).
   - *Salidas*: con su destino (pasó a outliers, su categoría se excluyó, bajó al puesto #n, o
     dejó el universo).
-- **Archivado** (`storage.go`, `pipeline.go`): el análisis corre primero en una
-  carpeta de *staging*; solo si termina sin errores se archiva la corrida vigente en
-  `data/etf/hist` (sufijo `_AAAAMMDD` y contador `_2`, `_3`… si ya hay una corrida archivada
-  ese día, para no perderla) y se instala la nueva. Las salidas crudas del screener de más de
-  30 días se mueven (no se borran) a `screener/data_old/`.
+- **Corridas** (`storage.go`, `pipeline.go`): cada corrida escribe en `data/etf/runs/<id>/` (el CSV, los outputs,
+  `historial_corridas.csv` y `raw/` con las salidas crudas del screener) y recién al final crea `run.json`; hasta
+  entonces los lectores siguen viendo la corrida anterior. La rotación compara con la corrida anterior. Un
+  `--solo-analisis` crea una corrida nueva y reemplaza a la que re-analiza.
 
 ---
 
@@ -406,7 +405,7 @@ Archivos: `internal/modules/tend/{params,discovery,universe,dataset,markowitz,fo
 ### 4.1 Universo dinámico (`discovery.go`)
 
 El universo se descubre en cada corrida con el screener de Yahoo (`yf.screen`, orden por
-`intradaymarketcap`) y se guarda en `data/tendencia/universe/universe_<AAAAMMDD>.json`; si
+`intradaymarketcap`) y se guarda en `data/tendencia/cache/universe/universe_<AAAAMMDD>.json`; si
 ya hay un snapshot del día, se reutiliza. **Backend Go:** reutiliza el snapshot si tiene hasta
 3 días (`UniverseMaxAgeDays`); si es más viejo, no existe, o se pasa `--force-discovery`, lo
 redescubre. Con `--offline`/`--skip-discovery` nunca consulta Yahoo. Si el descubrimiento falla
@@ -423,7 +422,7 @@ conserva el snapshot viejo (con aviso en el log) en vez de usar la lista de resp
   (ADRs de TSMC, Samsung, Toyota…); las de sede desconocida se conservan.
 - Sector desde `quoteSummary/assetProfile` (el screener no lo trae). Las consultas corren en paralelo
   (`YAHOO_CONCURRENCIA`; el espaciado global fija la tasa) y sin pausa fija entre ellas. Sector y sede de cada
-  ticker se guardan en `data/tendencia/sector_cache.json` con vigencia de **60 días**: una corrida de
+  ticker se guardan en `data/tendencia/cache/sector_cache.json` con vigencia de **60 días**: una corrida de
   descubrimiento solo consulta a Yahoo por los tickers nuevos o vencidos (antes eran ~106 consultas
   en serie con 1 s de pausa, ~2 min). Las consultas fallidas no se guardan. Borrar el archivo fuerza
   a consultar todo de nuevo.
@@ -538,7 +537,7 @@ Los scores y rankings de corridas anteriores **no son comparables** con los nuev
 `fogradar job tendencia` acepta `--top-n`, `--top-n-us` y `--max-weight`, que
 sobrescriben `TOP_N_SELECTION`, `TOP_N_SELECTION_US` y `MAX_WEIGHT_PER_ASSET` **solo para esa
 corrida** (se validan con la regla de 4.4). Cada corrida escribe en
-`output/<AAAAMMDD>_<NN>/run_manifest.json` los parámetros efectivos (`top_n`, `top_n_us`,
+`runs/<id>/run_manifest.json` los parámetros efectivos (`top_n`, `top_n_us`,
 `max_weight_per_asset`, `l2_gamma`, `min_weeks_required`, `universe_source`) y, si hubo,
 `parametros_sobrescritos`.
 
