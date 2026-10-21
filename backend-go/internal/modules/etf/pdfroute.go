@@ -52,7 +52,7 @@ func registerPDF(h *api.Host) {
 	op := huma.Operation{OperationID: "etf_pdf", Method: http.MethodGet, Path: "/api/etf/pdf",
 		Summary: "Informe ejecutivo en PDF de la corrida vigente", Tags: []string{tag},
 		Responses: map[string]*huma.Response{"200": {Description: "PDF", Content: map[string]*huma.MediaType{"application/pdf": {}}}}}
-	api.ProtectedWith(h, op, func(context.Context, *struct{}) (*huma.StreamResponse, error) {
+	api.Public(h, op, func(context.Context, *struct{}) (*huma.StreamResponse, error) {
 		unlock, e := BloqueoDatos(h.S, 0)
 		if e != nil {
 			return nil, e
@@ -77,5 +77,5 @@ func registerPDF(h *api.Host) {
 			ctx.SetHeader("Content-Disposition", `attachment; filename="`+nombre+`"`)
 			_, _ = ctx.BodyWriter().Write(body)
 		}}, nil
-	}, h.Extra("10/minute", "etf-pdf"), h.Concurrent(2))
+	})
 }

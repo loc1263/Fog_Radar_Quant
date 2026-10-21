@@ -27,7 +27,7 @@ func Register(h *api.Host) {
 	}
 
 	// --- Corridas ---
-	api.Protected(h, op("us_latest_ranking", http.MethodGet, "/rankings/latest", "Top 15 por momentum (última corrida)"),
+	api.Public(h, op("us_latest_ranking", http.MethodGet, "/rankings/latest", "Top 15 por momentum (última corrida)"),
 		func(context.Context, *struct{}) (*struct{ Body RunResponse }, error) {
 			var r RunResponse
 			if e := readLatest(h.S, "result.json", &r); e != nil {
@@ -35,7 +35,7 @@ func Register(h *api.Host) {
 			}
 			return &struct{ Body RunResponse }{fixRows(r)}, nil
 		})
-	api.Protected(h, op("us_latest_candidates", http.MethodGet, "/rankings/latest/candidates", "Todos los candidatos evaluados (última corrida)"),
+	api.Public(h, op("us_latest_candidates", http.MethodGet, "/rankings/latest/candidates", "Todos los candidatos evaluados (última corrida)"),
 		func(context.Context, *struct{}) (*struct{ Body RunResponse }, error) {
 			var r RunResponse
 			if e := readLatest(h.S, "candidates.json", &r); e != nil {
@@ -43,7 +43,7 @@ func Register(h *api.Host) {
 			}
 			return &struct{ Body RunResponse }{fixRows(r)}, nil
 		})
-	api.Protected(h, op("us_latest_prices", http.MethodGet, "/rankings/latest/prices", "Matriz de cierres (última corrida)"),
+	api.Public(h, op("us_latest_prices", http.MethodGet, "/rankings/latest/prices", "Matriz de cierres (última corrida)"),
 		func(_ context.Context, in *struct {
 			Days    int      `query:"days" minimum:"2" maximum:"400" doc:"Solo los últimos N días."`
 			Tickers []string `query:"tickers,explode" maxItems:"150"`
@@ -60,7 +60,7 @@ func Register(h *api.Host) {
 			}
 			return &struct{ Body PriceMatrix }{PriceSubset(m, in.Days, wanted)}, nil
 		})
-	api.Protected(h, op("us_list_runs", http.MethodGet, "/rankings/runs", "Corridas disponibles (más reciente primero)"),
+	api.Public(h, op("us_list_runs", http.MethodGet, "/rankings/runs", "Corridas disponibles (más reciente primero)"),
 		func(context.Context, *struct{}) (*struct{ Body RunsList }, error) {
 			names := []string{}
 			for _, d := range ListRuns(h.S) {
@@ -70,12 +70,12 @@ func Register(h *api.Host) {
 		})
 
 	// --- Portafolio ---
-	api.Protected(h, op("us_portfolio_limits", http.MethodGet, "/portfolio/limits", "Límites del modelo de portafolio"),
+	api.Public(h, op("us_portfolio_limits", http.MethodGet, "/portfolio/limits", "Límites del modelo de portafolio"),
 		func(context.Context, *struct{}) (*struct{ Body PortfolioLimits }, error) {
 			return &struct{ Body PortfolioLimits }{PortfolioLimits{MinTickers: MinTickers, MinAssets: MinNAssets, MaxAssets: MaxNAssets,
 				DefaultAssets: DefaultNAssets, DefaultMaxWeight: DefaultMaxWeight, DefaultRiskFreeRate: DefaultRiskFree}}, nil
 		})
-	api.Protected(h, op("us_portfolio_precalc", http.MethodGet, "/portfolio/precalculado", "Portafolios precalculados con los parámetros por defecto (universo completo, Top 30, Top 15)"),
+	api.Public(h, op("us_portfolio_precalc", http.MethodGet, "/portfolio/precalculado", "Portafolios precalculados con los parámetros por defecto (universo completo, Top 30, Top 15)"),
 		func(context.Context, *struct{}) (*struct{ Body PortfolioPrecalcResponse }, error) {
 			res, e := PortfolioPrecalculado(h.S)
 			if e != nil {

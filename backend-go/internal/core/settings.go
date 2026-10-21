@@ -4,7 +4,6 @@ package core
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -17,22 +16,14 @@ import (
 // Version de la API. Se sobrescribe con -ldflags "-X fogradar/internal/core.Version=…".
 var Version = "0.1.0"
 
-// clavesDeEjemplo son valores de .env.example: nunca válidos en prod.
-var clavesDeEjemplo = map[string]bool{"cambiar-por-una-clave-larga-aleatoria": true}
-
 // Settings es la configuración del proceso.
 type Settings struct {
-	Env       string // dev | test | prod
-	AppName   string
-	LogLevel  string
-	APIKey    string // vacío = sin autenticación (solo dev/test)
-	Origins   []string
-	RateLimit string // p. ej. "300/minute"
-	// RateLimitInTests activa el rate limit con Env=test.
-	RateLimitInTests bool
-	DataDir          string
-	Timezone         string
-	Addr             string // dirección de escucha (solo Go)
+	Env      string // dev | test | prod (en prod no se sirven /docs ni /openapi)
+	AppName  string
+	LogLevel string
+	DataDir  string
+	Timezone string
+	Addr     string // dirección de escucha de `fogradar api`
 
 	// Yahoo Finance (internal/yahoo): reglas globales del proceso.
 	YahooMinIntervaloS float64 // intervalo mínimo entre inicios de request
@@ -106,8 +97,6 @@ func loadSettings(lookup func(string) (string, bool), files []string) (*Settings
 		Env:       strings.ToLower(get("ENV", "dev")),
 		AppName:   get("APP_NAME", "Fog Radar Quant API"),
 		LogLevel:  strings.ToUpper(get("LOG_LEVEL", "INFO")),
-		APIKey:    get("API_KEY", ""),
-		RateLimit: get("RATE_LIMIT_DEFAULT", "300/minute"),
 		Timezone:  get("TIMEZONE", "America/Santiago"),
 		DataDir:   get("DATA_DIR", filepath.Join("..", "data")),
 		Addr:      get("ADDR", ":8000"),
@@ -150,14 +139,6 @@ func loadSettings(lookup func(string) (string, bool), files []string) (*Settings
 	if perr != nil {
 		return nil, perr
 	}
-	s.Origins = splitCSV(get("ALLOWED_ORIGINS", "http://localhost:5173"))
-	if v := get("RATE_LIMIT_IN_TESTS", ""); v != "" {
-		b, err := strconv.ParseBool(v)
-		if err != nil {
-			return nil, fmt.Errorf("RATE_LIMIT_IN_TESTS inválido: %q", v)
-		}
-		s.RateLimitInTests = b
-	}
 	return s, s.finish()
 }
 
@@ -176,38 +157,7 @@ func (s *Settings) finish() error {
 	if abs, err := filepath.Abs(s.DataDir); err == nil {
 		s.DataDir = abs
 	}
-	if _, _, err := ParseLimit(s.RateLimit); err != nil {
-		return fmt.Errorf("RATE_LIMIT_DEFAULT: %w", err)
-	}
-	if s.Env == "prod" {
-		if len(s.APIKey) < 32 || clavesDeEjemplo[s.APIKey] || distinctRunes(s.APIKey) < 12 {
-			return errors.New("en prod API_KEY es obligatoria, de al menos 32 caracteres y aleatoria")
-		}
-		for _, o := range s.Origins {
-			if strings.Contains(o, "localhost") || strings.Contains(o, "127.0.0.1") {
-				return errors.New("en prod ALLOWED_ORIGINS no puede incluir localhost")
-			}
-		}
-	}
 	return nil
-}
-
-func distinctRunes(s string) int {
-	seen := map[rune]bool{}
-	for _, r := range s {
-		seen[r] = true
-	}
-	return len(seen)
-}
-
-func splitCSV(v string) []string {
-	var out []string
-	for _, p := range strings.Split(v, ",") {
-		if p = strings.TrimSpace(p); p != "" {
-			out = append(out, p)
-		}
-	}
-	return out
 }
 
 // parseDotenv lee un archivo KEY=VALUE (comentarios con #, comillas opcionales).

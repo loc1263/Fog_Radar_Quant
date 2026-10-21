@@ -22,7 +22,7 @@ func Register(h *api.Host) {
 	const runPat = `^\d{8}_\d{2}$`
 	const tickerPat = "^[A-Za-z0-9.\\-^=]{1,15}$"
 
-	api.Protected(h, op("td_latest", "/latest", "Última corrida completa"),
+	api.Public(h, op("td_latest", "/latest", "Última corrida completa"),
 		func(context.Context, *struct{}) (*struct{ Body TdDashboard }, error) {
 			d, e := Dashboard(h.S, "")
 			if e != nil {
@@ -30,7 +30,7 @@ func Register(h *api.Host) {
 			}
 			return &struct{ Body TdDashboard }{*d}, nil
 		})
-	api.Protected(h, op("td_run_dashboard", "/runs/{run_dir}/dashboard", "Una corrida completa"),
+	api.Public(h, op("td_run_dashboard", "/runs/{run_dir}/dashboard", "Una corrida completa"),
 		func(_ context.Context, in *struct {
 			RunDir string `path:"run_dir" pattern:"^\\d{8}_\\d{2}$" doc:"YYYYMMDD_NN"`
 		}) (*struct{ Body TdDashboard }, error) {
@@ -41,7 +41,7 @@ func Register(h *api.Host) {
 			return &struct{ Body TdDashboard }{*d}, nil
 		})
 	_ = runPat
-	api.Protected(h, op("td_run_files", "/runs/{run_dir}/files", "Archivos de una corrida"),
+	api.Public(h, op("td_run_files", "/runs/{run_dir}/files", "Archivos de una corrida"),
 		func(_ context.Context, in *struct {
 			RunDir string `path:"run_dir" pattern:"^\\d{8}_\\d{2}$" doc:"YYYYMMDD_NN"`
 		}) (*struct{ Body []TdArchivo }, error) {
@@ -56,7 +56,7 @@ func Register(h *api.Host) {
 	fop := op("td_run_file", "/runs/{run_dir}/files/{nombre}", "Descarga un archivo de una corrida (PDF, CSV, JSON, TXT)")
 	fop.Responses = map[string]*huma.Response{"200": {Description: "OK", Content: map[string]*huma.MediaType{
 		"application/pdf": {}, "text/csv": {}}}}
-	api.Protected(h, fop, func(_ context.Context, in *struct {
+	api.Public(h, fop, func(_ context.Context, in *struct {
 		RunDir string `path:"run_dir" pattern:"^\\d{8}_\\d{2}$" doc:"YYYYMMDD_NN"`
 		Nombre string `path:"nombre"`
 	}) (*huma.StreamResponse, error) {
@@ -93,7 +93,7 @@ func Register(h *api.Host) {
 		}}, nil
 	})
 
-	api.Protected(h, op("td_excluidos", "/excluidos", "Tickers excluidos en el último armado del dataset (con motivo)"),
+	api.Public(h, op("td_excluidos", "/excluidos", "Tickers excluidos en el último armado del dataset (con motivo)"),
 		func(context.Context, *struct{}) (*struct{ Body []TdExcluido }, error) {
 			return &struct{ Body []TdExcluido }{Excluidos(h.S)}, nil
 		})

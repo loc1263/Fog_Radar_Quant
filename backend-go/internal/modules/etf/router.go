@@ -20,7 +20,7 @@ func Register(h *api.Host) {
 		return huma.Operation{OperationID: id, Method: method, Path: "/api/etf" + path, Summary: summary, Tags: []string{tag}}
 	}
 	tabla := func(id, path, summary, nombre, detalle string) {
-		api.Protected(h, op(id, http.MethodGet, path, summary), func(context.Context, *struct{}) (*struct{ Body EtfTabla }, error) {
+		api.Public(h, op(id, http.MethodGet, path, summary), func(context.Context, *struct{}) (*struct{ Body EtfTabla }, error) {
 			t, e := Tabla(h.S, nombre, detalle)
 			if e != nil {
 				return nil, e
@@ -31,7 +31,7 @@ func Register(h *api.Host) {
 
 	registerPDF(h)
 
-	api.Protected(h, op("etf_resumen", http.MethodGet, "/resumen", "Resumen de la corrida vigente + parámetros del modelo"),
+	api.Public(h, op("etf_resumen", http.MethodGet, "/resumen", "Resumen de la corrida vigente + parámetros del modelo"),
 		func(context.Context, *struct{}) (*struct{ Body EtfResumen }, error) {
 			r, e := Resumen(h.S)
 			if e != nil {
@@ -41,7 +41,7 @@ func Register(h *api.Host) {
 		})
 	tabla("etf_top15", "/top15", "Top 15 recomendados (ranking principal)", Top15File, "")
 	tabla("etf_top15_simple", "/top15-simple", "Top 15 por rendimiento y Beta (20 % c/u)", Top15SimpleFile, "")
-	api.Protected(h, op("etf_top15_vanguard", http.MethodGet, "/top15-vanguard", "Top 15 del ranking principal, solo Vanguard"),
+	api.Public(h, op("etf_top15_vanguard", http.MethodGet, "/top15-vanguard", "Top 15 del ranking principal, solo Vanguard"),
 		func(context.Context, *struct{}) (*struct{ Body EtfTabla }, error) {
 			t, e := Top15Vanguard(h.S)
 			if e != nil {
@@ -51,7 +51,7 @@ func Register(h *api.Host) {
 		})
 	tabla("etf_ranking_completo", "/ranking-completo", "Universo depurado completo", RankingFile, "")
 	tabla("etf_excluidos", "/excluidos", "Excluidos por distorsión (|z MAD| > umbral)", ExcluidosFile, "")
-	api.Protected(h, op("etf_diversificacion", http.MethodGet, "/diversificacion", "Categorías dentro del Top 15"),
+	api.Public(h, op("etf_diversificacion", http.MethodGet, "/diversificacion", "Categorías dentro del Top 15"),
 		func(context.Context, *struct{}) (*struct{ Body EtfDiversificacion }, error) {
 			r, e := Diversificacion(h.S)
 			if e != nil {
@@ -59,7 +59,7 @@ func Register(h *api.Host) {
 			}
 			return &struct{ Body EtfDiversificacion }{*r}, nil
 		})
-	api.Protected(h, op("etf_rotacion", http.MethodGet, "/rotacion", "Rotación del Top 15 vs. la corrida anterior"),
+	api.Public(h, op("etf_rotacion", http.MethodGet, "/rotacion", "Rotación del Top 15 vs. la corrida anterior"),
 		func(context.Context, *struct{}) (*struct{ Body EtfRotacion }, error) {
 			r, e := RotacionVsAnterior(h.S)
 			if e != nil {
@@ -68,7 +68,7 @@ func Register(h *api.Host) {
 			return &struct{ Body EtfRotacion }{*r}, nil
 		})
 	tabla("etf_momentum_top15", "/momentum/top15", "Top 15 Momentum / crecimiento", MomentumTop15, "El análisis de Momentum no se corrió en esta corrida.")
-	api.Protected(h, op("etf_categorias_ranking", http.MethodGet, "/categorias/ranking", "Ranking por categoría"),
+	api.Public(h, op("etf_categorias_ranking", http.MethodGet, "/categorias/ranking", "Ranking por categoría"),
 		func(context.Context, *struct{}) (*struct{ Body EtfCategorias }, error) {
 			r, e := Categorias(h.S)
 			if e != nil {
@@ -76,7 +76,7 @@ func Register(h *api.Host) {
 			}
 			return &struct{ Body EtfCategorias }{*r}, nil
 		})
-	api.Protected(h, op("etf_russell3000", http.MethodGet, "/russell3000", "Top 15 Cap. (momentum factor tipo VFMO)"),
+	api.Public(h, op("etf_russell3000", http.MethodGet, "/russell3000", "Top 15 Cap. (momentum factor tipo VFMO)"),
 		func(context.Context, *struct{}) (*struct{ Body EtfCap }, error) {
 			r, e := Top15Cap(h.S)
 			if e != nil {

@@ -28,7 +28,7 @@ type unoOut struct {
 
 func hostDePrueba(t *testing.T) *api.Host {
 	t.Helper()
-	s := &core.Settings{Env: "test", DataDir: t.TempDir(), Loc: time.UTC, RateLimit: "1000/minute"}
+	s := &core.Settings{Env: "test", DataDir: t.TempDir(), Loc: time.UTC}
 	h := api.New(s, slog.New(slog.DiscardHandler))
 	op := func(id, path string) huma.Operation {
 		return huma.Operation{OperationID: id, Method: http.MethodGet, Path: path}
@@ -116,7 +116,7 @@ func TestArchivosDeTendencia(t *testing.T) {
 	out := t.TempDir()
 	m := &exportManifest{}
 	latest := []byte(`{"run_dir":"20261021_01","archivos":[{"nombre":"top15.csv"},{"nombre":"falta.csv"}]}`)
-	archivosDeTendencia(mux, "", out, latest, m)
+	archivosDeTendencia(mux, out, latest, m)
 
 	b, err := os.ReadFile(filepath.Join(out, "api", "tendencia", "archivos", "20261021_01", "top15.csv"))
 	if err != nil || string(b) != "a,b\n1,2\n" {
@@ -125,7 +125,7 @@ func TestArchivosDeTendencia(t *testing.T) {
 	if len(m.Archivos) != 2 || m.Archivos[1].Estado != http.StatusNotFound {
 		t.Errorf("manifest: %+v", m.Archivos)
 	}
-	archivosDeTendencia(mux, "", out, []byte(`no es json`), m) // sin latest no hace nada
+	archivosDeTendencia(mux, out, []byte(`no es json`), m) // sin latest no hace nada
 	if len(m.Archivos) != 2 {
 		t.Errorf("latest inválido no debía pedir archivos: %+v", m.Archivos)
 	}

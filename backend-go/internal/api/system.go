@@ -74,7 +74,7 @@ func registerSystem(h *Host) {
 			Status: "ok", App: h.S.AppName, Version: core.Version, Env: h.S.Env}}, nil
 	})
 
-	Protected(h, huma.Operation{
+	Public(h, huma.Operation{
 		OperationID: "system_status", Method: http.MethodGet, Path: "/api/status",
 		Summary: "Estado de los 4 módulos", Tags: []string{"Sistema"},
 	}, func(context.Context, *struct{}) (*struct{ Body SystemStatus }, error) {
@@ -86,7 +86,7 @@ func registerSystem(h *Host) {
 		return &struct{ Body SystemStatus }{out}, nil
 	})
 
-	Protected(h, huma.Operation{
+	Public(h, huma.Operation{
 		OperationID: "jobs_latest", Method: http.MethodGet, Path: "/api/jobs",
 		Summary: "Último job de cada módulo", Tags: []string{"Sistema"},
 	}, func(context.Context, *struct{}) (*struct{ Body map[string]OptJob }, error) {
@@ -97,7 +97,7 @@ func registerSystem(h *Host) {
 		return &struct{ Body map[string]OptJob }{out}, nil
 	})
 
-	Protected(h, huma.Operation{
+	Public(h, huma.Operation{
 		OperationID: "jobs_programas", Method: http.MethodGet, Path: "/api/jobs/programas",
 		Summary: "Programación de las corridas batch", Tags: []string{"Sistema"},
 	}, func(context.Context, *struct{}) (*struct{ Body []ProgramaInfo }, error) {
@@ -112,7 +112,7 @@ func registerSystem(h *Host) {
 		return &struct{ Body []ProgramaInfo }{out}, nil
 	})
 
-	Protected(h, huma.Operation{
+	Public(h, huma.Operation{
 		OperationID: "jobs_history", Method: http.MethodGet, Path: "/api/jobs/{module}",
 		Summary: "Historial de jobs de un módulo", Tags: []string{"Sistema"},
 	}, func(_ context.Context, in *struct {
@@ -127,7 +127,7 @@ func registerSystem(h *Host) {
 
 	// GET /api/<prefijo>/status de cada módulo.
 	for _, m := range modules.All {
-		Protected(h, huma.Operation{
+		Public(h, huma.Operation{
 			OperationID: string(m.Key) + "_status", Method: http.MethodGet, Path: "/api" + m.Prefix + "/status",
 			Summary: "Estado del módulo " + m.Title, Tags: []string{modTag(m.Key)},
 		}, func(context.Context, *struct{}) (*struct{ Body ModuleStatus }, error) {

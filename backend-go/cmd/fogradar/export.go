@@ -19,7 +19,7 @@ import (
 )
 
 // Instantánea estática de la API (sitio en GitHub Pages): llama en proceso a cada GET sin parámetros
-// obligatorios y guarda la respuesta en <out>/<ruta>.json (los PDF, en .pdf). Sin red ni rate limit.
+// obligatorios y guarda la respuesta en <out>/<ruta>.json (los PDF, en .pdf). Sin red.
 
 // expansion pide, además, un GET por cada valor de `campo` de la respuesta de `origen`.
 type expansion struct {
@@ -120,7 +120,6 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 	pedir := func(ruta string) { pedirComo(ruta, ruta, nil) }
 	pedirComo = func(ruta, archivo string, filtro func([]byte) []byte) {
 		req := httptest.NewRequest(http.MethodGet, ruta, nil)
-		req.Header.Set(core.APIKeyHeader, h.S.APIKey)
 		rec := httptest.NewRecorder()
 		handler.ServeHTTP(rec, req)
 		e := exportEntrada{Ruta: ruta, Estado: rec.Code}
@@ -164,7 +163,7 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 	}
 
 	if moduloIncluido("/api/tendencia/", a.modulos) {
-		archivosDeTendencia(handler, h.S.APIKey, a.out, cuerpos["/api/tendencia/latest"], m)
+		archivosDeTendencia(handler, a.out, cuerpos["/api/tendencia/latest"], m)
 	}
 
 	if err := os.MkdirAll(a.out, 0o755); err != nil {
@@ -176,7 +175,7 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 
 // archivosDeTendencia guarda los archivos (PDF, CSV…) de la última corrida de Tendencia tal cual, en
 // <out>/api/tendencia/archivos/<run_dir>/<nombre>, para los enlaces de «Descargar».
-func archivosDeTendencia(handler http.Handler, apiKey, out string, latest []byte, m *exportManifest) {
+func archivosDeTendencia(handler http.Handler, out string, latest []byte, m *exportManifest) {
 	var l struct {
 		RunDir   string `json:"run_dir"`
 		Archivos []struct {
@@ -189,7 +188,6 @@ func archivosDeTendencia(handler http.Handler, apiKey, out string, latest []byte
 	for _, f := range l.Archivos {
 		ruta := "/api/tendencia/runs/" + l.RunDir + "/files/" + f.Nombre
 		req := httptest.NewRequest(http.MethodGet, ruta, nil)
-		req.Header.Set(core.APIKeyHeader, apiKey)
 		rec := httptest.NewRecorder()
 		handler.ServeHTTP(rec, req)
 		e := exportEntrada{Ruta: ruta, Estado: rec.Code}
@@ -229,8 +227,6 @@ func runExport(args []string, stdout, stderr io.Writer) int {
 		fmt.Fprintln(stderr, "fogradar export:", err)
 		return exitUso
 	}
-	// Llamadas en proceso: el límite por IP no aplica. Se lee al registrar las rutas, así que va antes de newHost.
-	_ = os.Setenv("RATE_LIMIT_DEFAULT", "1000000/minute")
 	h, err := newHost()
 	if err != nil {
 		fmt.Fprintln(stderr, "fogradar export:", err)

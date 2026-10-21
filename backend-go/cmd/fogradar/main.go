@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 	"time"
 
@@ -94,9 +93,6 @@ func serve() error {
 	if err := os.MkdirAll(s.DataDir, 0o755); err != nil {
 		return err
 	}
-	if s.APIKey == "" {
-		h.Log.Warn("API_KEY no configurada: la API acepta requests sin autenticación (solo dev/test).")
-	}
 	srv := &http.Server{
 		Addr:              s.Addr,
 		Handler:           h.Handler(),
@@ -105,7 +101,7 @@ func serve() error {
 		IdleTimeout:       120 * time.Second,
 	}
 	h.Log.Info("arrancando", "app", s.AppName, "version", core.Version, "env", s.Env,
-		"data", s.DataDir, "addr", s.Addr, "origins", strings.Join(s.Origins, ","))
+		"data", s.DataDir, "addr", s.Addr)
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()

@@ -165,7 +165,7 @@ func hubModulo(s *core.Settings, info modules.Info, jobs *core.JobRegistry, ahor
 
 // Register agrega /api/hub.
 func Register(h *api.Host) {
-	api.Protected(h, huma.Operation{
+	api.Public(h, huma.Operation{
 		OperationID: "get_hub", Method: http.MethodGet, Path: "/api/hub",
 		Summary: "Estado, frescura y top 3 de cada módulo", Tags: []string{"Transversal"},
 	}, func(context.Context, *struct{}) (*struct{ Body HubResponse }, error) {

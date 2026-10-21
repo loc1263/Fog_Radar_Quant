@@ -10,7 +10,7 @@ import (
 type APIError struct {
 	Status int    `json:"-"`
 	Detail string `json:"detail" doc:"Mensaje legible"`
-	Code   string `json:"code" doc:"Código estable (no_data, busy, rate_limited…)"`
+	Code   string `json:"code" doc:"Código estable (no_data, busy, not_found…)"`
 }
 
 func (e *APIError) Error() string  { return e.Detail }

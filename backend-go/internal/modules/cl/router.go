@@ -17,7 +17,7 @@ const (
 
 // Register agrega los endpoints de Chile: /ranking e /indicadores.
 func Register(h *api.Host) {
-	api.Protected(h, huma.Operation{
+	api.Public(h, huma.Operation{
 		OperationID: "cl_ranking", Method: http.MethodGet, Path: "/api/cl/ranking",
 		Summary: "Último ranking multi-factor del IPSA", Tags: []string{tag},
 	}, func(context.Context, *struct{}) (*struct{ Body RankingResponse }, error) {
@@ -28,7 +28,7 @@ func Register(h *api.Host) {
 		return &struct{ Body RankingResponse }{*out}, nil
 	})
 
-	api.Protected(h, huma.Operation{
+	api.Public(h, huma.Operation{
 		OperationID: "cl_indicadores", Method: http.MethodGet, Path: "/api/cl/indicadores",
 		Summary: "Indicadores financieros crudos (antes del scoring)", Tags: []string{tag},
 	}, func(context.Context, *struct{}) (*struct{ Body IndicadoresResponse }, error) {
