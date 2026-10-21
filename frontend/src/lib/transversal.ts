@@ -35,7 +35,7 @@ export function fmtEdad(horas: number | null | undefined): string {
  * si el módulo no tiene una vista para ese instrumento.
  */
 export function destinoResultado(r: Pick<ResultadoBusqueda, 'modulo' | 'ticker'>): {
-	path: '/chile' | '/eeuu/candidatos' | '/etf/universo' | '/tendencia/historial';
+	path: '/chile' | '/eeuu/candidatos' | '/etf/universo' | '/tendencia/portafolio';
 	query: string;
 } | null {
 	const q = encodeURIComponent(r.ticker);
@@ -47,7 +47,7 @@ export function destinoResultado(r: Pick<ResultadoBusqueda, 'modulo' | 'ticker'>
 		case 'etf':
 			return { path: '/etf/universo', query: `?q=${q}` };
 		case 'tendencia':
-			return { path: '/tendencia/historial', query: `?ticker=${q}` };
+			return { path: '/tendencia/portafolio', query: '' };
 		default:
 			return null;
 	}

@@ -24,8 +24,7 @@ export const MODULES: ModuleNav[] = [
 		description: 'Ranking multi-factor de acciones del IPSA.',
 		sections: [
 			{ label: 'Ranking', href: '/chile' },
-			{ label: 'Indicadores', href: '/chile/indicadores' },
-			{ label: 'Historial', href: '/chile/historial' }
+			{ label: 'Indicadores', href: '/chile/indicadores' }
 		]
 	},
 	{
@@ -38,8 +37,7 @@ export const MODULES: ModuleNav[] = [
 			{ label: 'Candidatos', href: '/eeuu/candidatos' },
 			{ label: 'Evaluación', href: '/eeuu/evaluacion' },
 			{ label: 'Rendimiento', href: '/eeuu/rendimiento' },
-			{ label: 'Portafolio', href: '/eeuu/portafolio' },
-			{ label: 'Historial', href: '/eeuu/historial' }
+			{ label: 'Portafolio', href: '/eeuu/portafolio' }
 		]
 	},
 	{
@@ -59,8 +57,6 @@ export const MODULES: ModuleNav[] = [
 			{ label: 'Top 15 Vanguard', href: '/etf/top15-vanguard' },
 			{ label: 'Top 15 Momentum', href: '/etf/momentum' },
 			{ label: 'Top 15 Cap.', href: '/etf/top15-cap' },
-			{ label: 'Historial', href: '/etf/historial' },
-			{ label: 'Evolución', href: '/etf/evolucion' },
 			{ label: 'Descargar', href: '/etf/descargar' }
 		]
 	},
@@ -76,8 +72,7 @@ export const MODULES: ModuleNav[] = [
 			{ label: 'Sectores', href: '/tendencia/sectores' },
 			{ label: 'Momentum', href: '/tendencia/momentum' },
 			{ label: 'Limitaciones', href: '/tendencia/limitaciones' },
-			{ label: 'Descargar', href: '/tendencia/descargar' },
-			{ label: 'Historial', href: '/tendencia/historial' }
+			{ label: 'Descargar', href: '/tendencia/descargar' }
 		],
 		keepParams: ['analisis']
 	}

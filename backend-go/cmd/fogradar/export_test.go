@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -33,10 +34,10 @@ func hostDePrueba(t *testing.T) *api.Host {
 	op := func(id, path string) huma.Operation {
 		return huma.Operation{OperationID: id, Method: http.MethodGet, Path: path}
 	}
-	api.Public(h, op("a", "/api/etf/history/top"), func(context.Context, *vacio) (*listaOut, error) {
+	api.Public(h, op("a", "/api/etf/lista"), func(context.Context, *vacio) (*listaOut, error) {
 		return &listaOut{Body: []map[string]string{{"ticker": "SPY"}, {"ticker": "QQQ"}, {"ticker": "SPY"}}}, nil
 	})
-	api.Public(h, op("b", "/api/etf/history/ticker/{ticker}"), func(_ context.Context, in *struct {
+	api.Public(h, op("b", "/api/etf/uno/{ticker}"), func(_ context.Context, in *struct {
 		Ticker string `path:"ticker"`
 	}) (*unoOut, error) {
 		return &unoOut{Body: map[string]string{"ticker": in.Ticker}}, nil
@@ -48,13 +49,15 @@ func hostDePrueba(t *testing.T) *api.Host {
 }
 
 func TestExportarEscribeJSONYExpande(t *testing.T) {
+	defer func(orig []expansion) { expansiones = orig }(expansiones)
+	expansiones = []expansion{{"/api/etf/lista", "", "ticker", "/api/etf/uno/{ticker}", "ticker"}}
 	h := hostDePrueba(t)
 	out := t.TempDir()
 	m, err := exportar(h, &exportArgs{out: out}, time.Now())
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, r := range []string{"api/etf/history/top.json", "api/etf/history/ticker/SPY.json", "api/etf/history/ticker/QQQ.json", "manifest.json"} {
+	for _, r := range []string{"api/etf/lista.json", "api/etf/uno/SPY.json", "api/etf/uno/QQQ.json", "manifest.json"} {
 		if _, err := os.Stat(filepath.Join(out, filepath.FromSlash(r))); err != nil {
 			t.Errorf("falta %s: %v", r, err)
 		}
@@ -70,25 +73,9 @@ func TestExportarEscribeJSONYExpande(t *testing.T) {
 		t.Errorf("manifest: %v", estados)
 	}
 	var body map[string]string
-	b, _ := os.ReadFile(filepath.Join(out, "api", "etf", "history", "ticker", "SPY.json"))
+	b, _ := os.ReadFile(filepath.Join(out, "api", "etf", "uno", "SPY.json"))
 	if json.Unmarshal(b, &body) != nil || body["ticker"] != "SPY" {
 		t.Errorf("contenido: %s", b)
-	}
-}
-
-func TestSinFuera(t *testing.T) {
-	in := `{"desde":"a","hasta":"b","filas":[{"ticker":"X","estado":"nuevo"},{"ticker":"Y","estado":"fuera"}]}`
-	var d struct {
-		Desde string `json:"desde"`
-		Filas []struct {
-			Ticker string `json:"ticker"`
-		} `json:"filas"`
-	}
-	if err := json.Unmarshal(sinFuera([]byte(in)), &d); err != nil {
-		t.Fatal(err)
-	}
-	if d.Desde != "a" || len(d.Filas) != 1 || d.Filas[0].Ticker != "X" {
-		t.Errorf("%+v", d)
 	}
 }
 
@@ -121,36 +108,13 @@ func TestFilasDe(t *testing.T) {
 	}
 }
 
-func TestDiffsDeCorridas(t *testing.T) {
-	defer func(orig []paresDeDiff) { diffsDeCorridas = orig }(diffsDeCorridas)
-	s := &core.Settings{Env: "test", DataDir: t.TempDir(), Loc: time.UTC, RateLimit: "1000/minute"}
-	h := api.New(s, slog.New(slog.DiscardHandler))
-	api.Public(h, huma.Operation{OperationID: "r", Method: http.MethodGet, Path: "/api/zz/runs"},
-		func(context.Context, *vacio) (*listaOut, error) {
-			return &listaOut{Body: []map[string]string{{"k": "1"}, {"k": "2"}, {"k": "3"}}}, nil
-		})
-	api.Public(h, huma.Operation{OperationID: "d", Method: http.MethodGet, Path: "/api/zz/diff"},
-		func(_ context.Context, in *struct {
-			Desde string `query:"desde"`
-			Hasta string `query:"hasta"`
-		}) (*unoOut, error) {
-			return &unoOut{Body: map[string]string{"desde": in.Desde, "hasta": in.Hasta}}, nil
-		})
-	for todos, esperados := range map[bool]int{false: 2, true: 3} {
-		diffsDeCorridas = []paresDeDiff{{"/api/zz/runs", "k", "/api/zz/diff", todos}}
-		out := t.TempDir()
-		m, err := exportar(h, &exportArgs{out: out, modulos: []string{"zz"}}, time.Now())
-		if err != nil {
-			t.Fatal(err)
-		}
-		n := 0
-		for _, e := range m.Archivos {
-			if len(e.Ruta) > 13 && e.Ruta[:13] == "/api/zz/diff?" {
-				n++
-			}
-		}
-		if n != esperados {
-			t.Errorf("todos=%v: %d diffs, esperaba %d", todos, n, esperados)
+func TestExportarOmiteHistory(t *testing.T) {
+	h := hostDePrueba(t)
+	api.Public(h, huma.Operation{OperationID: "hh", Method: http.MethodGet, Path: "/api/etf/history/runs"},
+		func(context.Context, *vacio) (*listaOut, error) { return &listaOut{Body: []map[string]string{}}, nil })
+	for _, r := range rutasExportables(h, nil) {
+		if strings.Contains(r, "/history/") {
+			t.Errorf("no debía exportar %s", r)
 		}
 	}
 }

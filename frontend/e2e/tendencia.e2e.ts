@@ -39,14 +39,6 @@ test('momentum mensual y semanal', async ({ page }) => {
 	).toHaveCount(10);
 });
 
-test('historial desde history.db', async ({ page }) => {
-	await page.goto('/tendencia/historial');
-	await expect(page.getByText('Corridas en el período')).toBeVisible();
-	await expect(
-		page.getByRole('table', { name: 'Todas las corridas' }).locator('tbody tr')
-	).not.toHaveCount(0);
-});
-
 test('descarga de archivos de la corrida por el BFF', async ({ request }) => {
 	const res = await request.get('/tendencia/descargar-archivo/20260926_01/top15_seleccion.csv');
 	expect(res.status()).toBe(200);

@@ -60,11 +60,3 @@ test('Portafolio precalculado: pestañas por universo, selección y pesos', asyn
 		'page'
 	);
 });
-
-test('historial desde history.db', async ({ page }) => {
-	await page.goto('/eeuu/historial');
-	await expect(page.getByText('Corridas guardadas').first()).toBeVisible();
-	await expect(
-		page.getByRole('table', { name: 'Permanencia en el top' }).locator('tbody tr')
-	).not.toHaveCount(0);
-});

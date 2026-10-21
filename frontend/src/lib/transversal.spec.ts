@@ -27,9 +27,10 @@ describe('transversal', () => {
 			path: '/chile',
 			query: '?q=SQM-B.SN'
 		});
-		expect(destinoResultado({ modulo: 'tendencia', ticker: '000660.KS' })?.query).toBe(
-			'?ticker=000660.KS'
-		);
+		expect(destinoResultado({ modulo: 'tendencia', ticker: '000660.KS' })).toEqual({
+			path: '/tendencia/portafolio',
+			query: ''
+		});
 		expect(destinoResultado({ modulo: 'etf', ticker: 'A&B' })?.query).toBe('?q=A%26B');
 		expect(destinoResultado({ modulo: 'otro', ticker: 'X' })).toBeNull();
 	});

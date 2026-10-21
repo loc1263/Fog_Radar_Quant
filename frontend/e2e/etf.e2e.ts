@@ -51,11 +51,3 @@ test('descarga del PDF por el BFF', async ({ request }) => {
 	expect(res.headers()['content-type']).toBe('application/pdf');
 	expect((await res.body()).subarray(0, 4).toString()).toBe('%PDF');
 });
-
-test('evolución desde history.db: rotación entre dos corridas', async ({ page }) => {
-	await page.goto('/etf/evolucion');
-	await expect(
-		page.getByRole('table', { name: 'Comparación de corridas' }).locator('tbody tr')
-	).not.toHaveCount(0);
-	await expect(page.getByText('Entraron al top 15')).toBeVisible();
-});

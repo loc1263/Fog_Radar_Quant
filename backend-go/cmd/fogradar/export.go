@@ -23,35 +23,14 @@ import (
 
 // expansion pide, además, un GET por cada valor de `campo` de la respuesta de `origen`.
 type expansion struct {
-	origen string // ruta ya exportada, p. ej. /api/etf/history/top
+	origen string // ruta ya exportada, p. ej. /api/cl/ranking
 	lista  string // clave del objeto que contiene el arreglo ("" si la respuesta es el arreglo)
 	campo  string // campo de cada elemento, p. ej. ticker
-	plan   string // ruta con un parámetro, p. ej. /api/etf/history/ticker/{ticker}
+	plan   string // ruta con un parámetro, p. ej. /api/cl/history/ticker/{ticker}
 	param  string // nombre del parámetro de `plan`
 }
 
-var expansiones = []expansion{
-	{"/api/etf/history/top", "", "ticker", "/api/etf/history/ticker/{ticker}", "ticker"},
-	{"/api/cl/ranking", "filas", "simbolo", "/api/cl/history/ticker/{ticker}", "ticker"},
-	{"/api/us/history/top", "", "ticker", "/api/us/history/ticker/{ticker}", "ticker"},
-}
-
-// paresDeDiff exporta diffs entre corridas (query desde, hasta) como <diff>/<desde>__<hasta>.json.
-// Con todos=false solo cada corrida contra la anterior (universos grandes: N² pares no caben en un
-// sitio estático); con todos=true, cada par desde<hasta. Se descartan las filas «fuera» (fuera del
-// top en ambas corridas): son todo el universo y no aportan al diff.
-type paresDeDiff struct {
-	runs  string // ruta ya exportada con la clave de cada corrida, en orden cronológico
-	clave string // campo de la corrida, p. ej. run_key
-	diff  string // ruta de diff
-	todos bool
-}
-
-var diffsDeCorridas = []paresDeDiff{
-	{"/api/etf/history/runs", "run_key", "/api/etf/history/diff", false},
-	{"/api/cl/history/runs", "ts", "/api/cl/history/diff", true},
-	{"/api/us/history/runs", "run_id", "/api/us/history/diff", true},
-}
+var expansiones = []expansion{}
 
 // consultasFijas: rutas que el sitio estático pide siempre con la misma query (el archivo no la lleva).
 var consultasFijas = map[string]string{
@@ -96,7 +75,8 @@ func parseExportArgs(args []string) (*exportArgs, error) {
 func rutasExportables(h *api.Host, modulos []string) []string {
 	var rutas []string
 	for path, item := range h.API.OpenAPI().Paths {
-		if item.Get == nil || !strings.HasPrefix(path, "/api/") || path == "/api/health" {
+		// /history/*: el sitio estático no tiene vistas de historial (history.db solo se sirve con la API).
+		if item.Get == nil || !strings.HasPrefix(path, "/api/") || path == "/api/health" || strings.Contains(path, "/history/") {
 			continue
 		}
 		requerido := false
@@ -184,29 +164,6 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 		}
 	}
 
-	for _, p := range diffsDeCorridas {
-		if !moduloIncluido(p.diff, a.modulos) {
-			continue
-		}
-		var runs []map[string]any
-		if json.Unmarshal(cuerpos[p.runs], &runs) != nil {
-			continue
-		}
-		for j := 1; j < len(runs); j++ {
-			hasta, _ := runs[j][p.clave].(string)
-			desde := 0
-			if !p.todos {
-				desde = j - 1
-			}
-			for i := desde; i < j; i++ {
-				d, _ := runs[i][p.clave].(string)
-				if d != "" && hasta != "" {
-					pedirComo(p.diff+"?desde="+d+"&hasta="+hasta, p.diff+"/"+d+"__"+hasta, sinFuera)
-				}
-			}
-		}
-	}
-
 	if err := os.MkdirAll(a.out, 0o755); err != nil {
 		return nil, err
 	}
@@ -224,28 +181,6 @@ func filasDe(body []byte, lista string) []map[string]any {
 	var obj map[string][]map[string]any
 	_ = json.Unmarshal(body, &obj)
 	return obj[lista]
-}
-
-// sinFuera quita de un diff las filas con estado «fuera».
-func sinFuera(body []byte) []byte {
-	var d map[string]any
-	if json.Unmarshal(body, &d) != nil {
-		return body
-	}
-	filas, _ := d["filas"].([]any)
-	utiles := make([]any, 0, len(filas))
-	for _, f := range filas {
-		if m, ok := f.(map[string]any); ok && m["estado"] == "fuera" {
-			continue
-		}
-		utiles = append(utiles, f)
-	}
-	d["filas"] = utiles
-	out, err := json.Marshal(d)
-	if err != nil {
-		return body
-	}
-	return out
 }
 
 func escribir(path string, b []byte) error {

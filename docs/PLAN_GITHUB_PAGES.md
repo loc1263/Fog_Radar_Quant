@@ -84,7 +84,7 @@ Cada fase termina con una decisión explícita; si un criterio crítico falla, s
 - **SPA pura con JSON estático** (no prerender con BFF): `fogradar export` genera `frontend/static/data/` y las páginas usan `+page.ts` con `$lib/datos`.
 - Implementado: `fogradar export`, `adapter-static` (`STATIC_BUILD=1`, `BASE_PATH`) y las 12 vistas de ETF, las 3 de Chile, el hub, el buscador (índice JSON, `GET /api/buscar/indice`) y las 6 de EEUU. Pendiente: Tendencia, la página Estado y Actions.
 - EEUU en la versión estática: sin evaluación en vivo de un ticker ni optimizador a pedido; el portafolio es el **precalculado** del batch (`GET /api/us/portfolio/precalculado`: todos los candidatos, Top 30 y Top 15 con los parámetros por defecto). Las sparklines usan `prices` de los últimos 60 días (el export fija `days=60`).
-- Limitaciones de ETF en la versión estática: la rotación histórica compara cada corrida con la anterior (no pares arbitrarios). Chile exporta todos los pares de corridas (25 corridas → 300 diffs de ~6 KB); si el historial crece mucho, pasar a calcular el diff en el cliente o limitar a consecutivos.
+- **Sin historial (2026-10-21):** se eliminaron las vistas de historial de todos los módulos (Chile, EEUU, ETF —Historial y Evolución— y Tendencia). La API `/history/*` y `history.db` siguen en el backend (ADR 0003), pero el export no las incluye.
 
 ## Decisiones abiertas y alternativas
 

@@ -52,15 +52,3 @@ export function datos<P extends RutaGet>(
 ): Promise<Loaded<Respuesta<P>>> {
 	return leer(fetch, rutaConcreta(ruta, params));
 }
-
-type RutaDiff = '/api/etf/history/diff' | '/api/cl/history/diff' | '/api/us/history/diff';
-
-/** Diff entre dos corridas: `fogradar export` guarda un archivo por par (ver `diffsDeCorridas`). */
-export function datosDiff<P extends RutaDiff>(
-	fetch: typeof globalThis.fetch,
-	ruta: P,
-	desde: string,
-	hasta: string
-): Promise<Loaded<Respuesta<P>>> {
-	return leer(fetch, `${ruta}/${encodeURIComponent(desde)}__${encodeURIComponent(hasta)}`);
-}

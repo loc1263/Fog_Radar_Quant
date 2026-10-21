@@ -110,7 +110,7 @@ cd ../frontend && STATIC_BUILD=1 BASE_PATH=/Fog_Radar_Quant npm run build     # 
 ```
 
 - `fogradar export` llama a la API en proceso y guarda cada GET en `static/data/<ruta>.json` (carpeta fuera de git), más un `manifest.json`.
-  Deja también el PDF de ETF, la trayectoria por ticker y el diff entre corridas (ETF: cada una contra la anterior; Chile: todos los pares).
+  Deja también el PDF de ETF y los precios de las sparklines de EEUU. Las rutas `/history/*` no se exportan: el sitio estático no tiene vistas de historial.
 - En Git Bash de Windows, `BASE_PATH=/x` se convierte en una ruta de disco: antepón `MSYS_NO_PATHCONV=1`.
 - El buscador global corre en el navegador sobre `api/buscar/indice.json` (~200 KB); el hub muestra la frescura calculada al exportar, no al abrir la página.
 - `404.html` hace de fallback SPA (lo que GitHub Pages sirve para rutas desconocidas).

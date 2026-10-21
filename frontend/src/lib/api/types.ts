@@ -24,11 +24,6 @@ export type BusquedaResponse = Schemas['BusquedaResponse'];
 export type ResultadoBusqueda = Schemas['ResultadoBusqueda'];
 export type EntradaIndice = Schemas['EntradaIndice'];
 
-// --- Historial común (history.db de cada módulo) ---
-export type HistDiff = Schemas['HistDiff'];
-export type HistDiffFila = Schemas['HistDiffFila'];
-export type HistEstado = HistDiffFila['estado'];
-
 /** Resultado de `tryCall` (lib/server/safe.ts): datos o error mostrable. */
 export type Loaded<T> =
 	{ ok: true; data: T } | { ok: false; message: string; code: string; status?: number };
@@ -42,9 +37,6 @@ export type ClIndicadoresResponse = Schemas['IndicadoresResponse'];
 export type ClIndicadorRow = Schemas['IndicadorRow'];
 export type ClColumnaInfo = Schemas['ColumnaInfo'];
 export type ClUnidad = ClColumnaInfo['unidad'];
-export type ClHistCorrida = Schemas['ClHistCorrida'];
-export type ClHistTickerPunto = Schemas['ClHistTickerPunto'];
-export type ClHistIndicadorPunto = Schemas['ClHistIndicadorPunto'];
 
 // --- Módulo EEUU ---
 export type UsRunResponse = Schemas['RunResponse'];
@@ -58,9 +50,6 @@ export type UsPortfolioResult = Schemas['PortfolioResult'];
 export type UsPortfolioPick = Schemas['PortfolioPick'];
 export type UsPortfolioLimits = Schemas['PortfolioLimits'];
 export type UsPortfolioPrecalc = Schemas['PortfolioPrecalcResponse'];
-export type UsHistCorrida = Schemas['UsHistCorrida'];
-export type UsHistTickerPunto = Schemas['UsHistTickerPunto'];
-export type UsHistPermanencia = Schemas['UsHistPermanencia'];
 
 // --- Módulo ETF ---
 export type EtfFila = Schemas['EtfFila'];
@@ -68,7 +57,6 @@ export type EtfTabla = Schemas['EtfTabla'];
 export type EtfResumen = Schemas['EtfResumen'];
 export type EtfModelo = Schemas['EtfModelo'];
 export type EtfPeso = Schemas['EtfPeso'];
-export type EtfHistorialFila = Schemas['EtfHistorialFila'];
 export type EtfRotacion = Schemas['EtfRotacion'];
 export type EtfRotacionFila = Schemas['EtfRotacionFila'];
 export type EtfDiversificacion = Schemas['EtfDiversificacion'];
@@ -77,10 +65,6 @@ export type EtfCategoriaFila = Schemas['EtfCategoriaFila'];
 export type EtfCap = Schemas['EtfCap'];
 export type EtfCapFila = Schemas['EtfCapFila'];
 export type EtfCapBucket = Schemas['EtfCapBucket'];
-export type EtfHistCorrida = Schemas['EtfHistCorrida'];
-export type EtfHistTickerPunto = Schemas['EtfHistTickerPunto'];
-export type EtfHistCategoria = Schemas['EtfHistCategoria'];
-export type EtfHistPermanencia = Schemas['EtfHistPermanencia'];
 
 // --- Módulo Tendencia ---
 export type TdDashboard = Schemas['TdDashboard'];
