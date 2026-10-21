@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { LineChart } from '$lib/charts';
 	import { ErrorState, KpiCard, KpiGrid, Notice, Section } from '$lib/components/shared';
 	import { fmtNumber } from '$lib/format';
 	import { CorridaInfo } from '$lib/modules/etf';
-	import { fmtFechaCorrida } from '$lib/modules/etf/format';
+	import { fmtFechaCorrida, fmtRend } from '$lib/modules/etf/format';
 
 	let { data } = $props();
 
@@ -11,21 +10,27 @@
 	const r = $derived(resumen?.resumen ?? null);
 	const top5 = $derived(data.top15.ok ? data.top15.data.filas.slice(0, 5) : []);
 
-	const PERIODOS = [
-		{ key: 'perf_5d', label: '5D' },
-		{ key: 'perf_1m', label: '1M' },
-		{ key: 'perf_6m', label: '6M' },
-		{ key: 'perf_1y', label: '1Y' }
-	] as const;
-
-	// Una fila por ventana, una serie por ETF del Top 5 (TendenciaChart del original).
-	const tendencia = $derived(
-		PERIODOS.map(({ key, label }) => ({
-			periodo: label,
-			...Object.fromEntries(top5.map((f) => [f.ticker, f[key] ?? null]))
-		}))
+	// Un indicador por sección del menú (null = esa sección no tiene datos).
+	const rot = $derived(
+		data.rotacion.ok && data.rotacion.data.disponible ? data.rotacion.data : null
 	);
-	const series = $derived(top5.map((f) => ({ key: f.ticker, label: f.ticker })));
+	const div = $derived(
+		data.diversificacion.ok
+			? [...data.diversificacion.data.filas].sort((a, b) => b.conteo - a.conteo)
+			: []
+	);
+	const cats = $derived(data.categorias.ok ? data.categorias.data.filas : []);
+	const mejorCategoria = $derived(
+		cats.length
+			? cats.reduce((m, c) =>
+					(c.score_promedio ?? -Infinity) > (m.score_promedio ?? -Infinity) ? c : m
+				)
+			: null
+	);
+	const simple = $derived(data.simple.ok ? data.simple.data.filas[0] : null);
+	const vanguard = $derived(data.vanguard.ok ? data.vanguard.data.filas : []);
+	const momentum = $derived(data.momentum.ok ? data.momentum.data.filas[0] : null);
+	const cap = $derived(data.cap.ok ? data.cap.data : null);
 </script>
 
 <Section title="Resumen de la corrida">
@@ -50,27 +55,75 @@
 			<KpiCard
 				label="Universo depurado"
 				value={fmtNumber(r?.universo_depurado, 0)}
-				hint="{fmtNumber(r?.n_outliers, 0)} excluidos por distorsión"
+				hint="ranking completo"
+			/>
+			<KpiCard
+				label="Excluidos por distorsión"
+				value={fmtNumber(r?.n_outliers, 0)}
+				hint="|z-score MAD| &gt; {fmtNumber(resumen.modelo.z_threshold, 0)}"
+				tone="red"
 			/>
 			<KpiCard label="Sharpe promedio" value={fmtNumber(r?.sharpe_promedio, 3)} tone="blue" />
 			<KpiCard label="Beta promedio" value={fmtNumber(r?.beta_promedio, 3)} />
+			{#if rot}
+				<KpiCard
+					label="Rotación del Top 15"
+					value="{rot.nuevos.length} entran · {rot.salidas.length} salen"
+					hint="vs. corrida del {fmtFechaCorrida(rot.fecha_previa)}"
+					tone="accent"
+				/>
+			{/if}
+			{#if div.length}
+				<KpiCard
+					label="Diversificación del Top 15"
+					value="{div.length} categorías"
+					hint="más presente: {div[0].categoria} ({fmtNumber(div[0].pct, 0)} %)"
+				/>
+			{/if}
+			{#if mejorCategoria}
+				<KpiCard
+					label="Categorías analizadas"
+					value={fmtNumber(cats.length, 0)}
+					hint="mejor score: {mejorCategoria.categoria} ({fmtNumber(
+						mejorCategoria.score_promedio,
+						1
+					)})"
+					tone="blue"
+				/>
+			{/if}
+			{#if simple}
+				<KpiCard
+					label="Top 15 Perf. + Beta"
+					value={simple.ticker}
+					hint="1 año: {fmtRend(simple.perf_1y)}"
+				/>
+			{/if}
+			{#if vanguard.length}
+				<KpiCard
+					label="Top 15 Vanguard"
+					value={vanguard[0].ticker}
+					hint="1 año: {fmtRend(vanguard[0].perf_1y)}"
+				/>
+			{/if}
+			{#if momentum}
+				<KpiCard
+					label="Líder de Momentum"
+					value={momentum.ticker}
+					hint="1 mes: {fmtRend(momentum.perf_1m)}"
+					tone="green"
+				/>
+			{/if}
+			{#if cap}
+				<KpiCard
+					label="Benchmark Russell 3000 (1A)"
+					value={fmtRend(cap.benchmark_retorno_1y)}
+					hint="{cap.benchmark_ticker} · {cap.buckets.length} tramos de capitalización"
+					signedValue={cap.benchmark_retorno_1y}
+				/>
+			{/if}
 		</KpiGrid>
 	{/if}
 </Section>
-
-{#if resumen && top5.length > 0}
-	<Section title="Tendencia del Top 5 por ventana de rendimiento">
-		<LineChart
-			data={tendencia}
-			x="periodo"
-			categorical
-			{series}
-			height={280}
-			zeroBaseline
-			yFormat={(v) => `${fmtNumber(v, 0)} %`}
-		/>
-	</Section>
-{/if}
 
 {#if resumen}
 	{@const m = resumen.modelo}
