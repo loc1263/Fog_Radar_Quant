@@ -97,9 +97,6 @@ func Register(module string, p Pipeline) { pipelines[module] = p }
 // Get devuelve el pipeline de un módulo.
 func Get(module string) (Pipeline, bool) { p, ok := pipelines[module]; return p, ok }
 
-// Backfill es la opción común de todos los módulos: reconstruye history.db desde los archivos.
-var Backfill = Option{Flag: "--backfill", Help: "Solo carga en history.db las corridas ya guardadas en disco."}
-
 // OrdenTodos: los diarios primero y ETF (el más largo, ~30 min) al final.
 var OrdenTodos = []string{"cl_stocks", "us_stocks", "tendencia", "etf"}
 

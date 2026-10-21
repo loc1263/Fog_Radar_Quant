@@ -7,9 +7,15 @@ import (
 	"github.com/danielgtaylor/huma/v2"
 
 	"fogradar/internal/api"
+	"fogradar/internal/core"
 )
 
-// Register agrega los endpoints de Chile: /ranking, /indicadores y /history/*.
+const (
+	key = core.ModuleKey("cl_stocks")
+	tag = "Chile (IPSA)"
+)
+
+// Register agrega los endpoints de Chile: /ranking e /indicadores.
 func Register(h *api.Host) {
 	api.Protected(h, huma.Operation{
 		OperationID: "cl_ranking", Method: http.MethodGet, Path: "/api/cl/ranking",
@@ -32,6 +38,4 @@ func Register(h *api.Host) {
 		}
 		return &struct{ Body IndicadoresResponse }{*out}, nil
 	})
-
-	registerHistory(h)
 }

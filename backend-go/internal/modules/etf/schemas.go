@@ -165,11 +165,6 @@ type EtfHistorialFila struct {
 	Top1Score        opt     `json:"top1_score" nullable:"true"`
 }
 
-// EtfHistorial es la respuesta de /historial.
-type EtfHistorial struct {
-	Filas []EtfHistorialFila `json:"filas" doc:"De la corrida más antigua a la más reciente."`
-}
-
 // EtfPeso es un peso del modelo.
 type EtfPeso struct {
 	Clave    string  `json:"clave"`
@@ -203,68 +198,4 @@ type EtfResumen struct {
 	TieneCorridaAnterior bool                       `json:"tiene_corrida_anterior"`
 	Resumen              core.Opt[EtfHistorialFila] `json:"resumen"`
 	Modelo               EtfModelo                  `json:"modelo"`
-}
-
-// --- Historial (history.db) ---
-
-// EtfHistCorrida es una corrida guardada.
-type EtfHistCorrida struct {
-	RunKey           string      `json:"run_key" doc:"<yyyymmdd> o <yyyymmdd>_<n> (mismo sufijo que hist/)."`
-	Fecha            string      `json:"fecha" format:"date"`
-	Secuencia        int64       `json:"secuencia"`
-	RunAt            *core.Fecha `json:"run_at" nullable:"true"`
-	UniversoBruto    *int64      `json:"universo_bruto" nullable:"true"`
-	UniversoDepurado int64       `json:"universo_depurado"`
-	NOutliers        *int64      `json:"n_outliers" nullable:"true"`
-	SharpePromedio   opt         `json:"sharpe_promedio" nullable:"true"`
-	BetaPromedio     opt         `json:"beta_promedio" nullable:"true"`
-	Top1Ticker       *string     `json:"top1_ticker" nullable:"true"`
-	Top1Score        opt         `json:"top1_score" nullable:"true"`
-}
-
-// EtfHistTickerPunto es un ETF en una corrida.
-type EtfHistTickerPunto struct {
-	RunKey           string  `json:"run_key"`
-	Fecha            string  `json:"fecha" format:"date"`
-	UniversoDepurado int64   `json:"universo_depurado"`
-	Nombre           *string `json:"nombre" nullable:"true"`
-	Category         *string `json:"category" nullable:"true"`
-	Rank             *int64  `json:"rank" nullable:"true" doc:"Puesto en el ranking principal (None = no estaba)."`
-	EnTop15          bool    `json:"en_top15"`
-	Score            opt     `json:"score" nullable:"true"`
-	ScoreSimple      opt     `json:"score_simple" nullable:"true"`
-	Precio           opt     `json:"precio" nullable:"true"`
-	Sharpe           opt     `json:"sharpe" nullable:"true"`
-	Treynor          opt     `json:"treynor" nullable:"true"`
-	Beta             opt     `json:"beta" nullable:"true"`
-	Perf1m           opt     `json:"perf_1m" nullable:"true"`
-	Perf6m           opt     `json:"perf_6m" nullable:"true"`
-	Perf1y           opt     `json:"perf_1y" nullable:"true"`
-	MomentumRank     *int64  `json:"momentum_rank" nullable:"true"`
-	MomentumScore    opt     `json:"momentum_score" nullable:"true"`
-	ExcluidoVentana  *string `json:"excluido_ventana" nullable:"true" doc:"Si fue excluido por outlier en esa corrida."`
-	ExcluidoZ        opt     `json:"excluido_z" nullable:"true"`
-}
-
-// EtfHistCategoria es una categoría en una corrida.
-type EtfHistCategoria struct {
-	RunKey         string `json:"run_key"`
-	Fecha          string `json:"fecha" format:"date"`
-	Category       string `json:"category"`
-	N              *int64 `json:"n" nullable:"true"`
-	ScorePromedio  opt    `json:"score_promedio" nullable:"true"`
-	SharpePromedio opt    `json:"sharpe_promedio" nullable:"true"`
-	Perf1yPromedio opt    `json:"perf_1y_promedio" nullable:"true"`
-	EnTop15        int64  `json:"en_top15"`
-}
-
-// EtfHistPermanencia es la permanencia de un ETF en el Top 15.
-type EtfHistPermanencia struct {
-	Ticker      string  `json:"ticker"`
-	Nombre      *string `json:"nombre" nullable:"true"`
-	VecesEnTop  int64   `json:"veces_en_top"`
-	Corridas    int64   `json:"corridas"`
-	RachaActual int64   `json:"racha_actual"`
-	RankUltima  *int64  `json:"rank_ultima" nullable:"true"`
-	ScoreUltima opt     `json:"score_ultima" nullable:"true"`
 }

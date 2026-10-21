@@ -274,3 +274,13 @@ func Indicadores(s *core.Settings) (*IndicadoresResponse, *core.APIError) {
 	}
 	return out, nil
 }
+
+// PilarScores es el z-score promedio de cada pilar (null si no hay métricas en ese pilar).
+type PilarScores struct {
+	Valor           *float64 `json:"valor" nullable:"true"`
+	Calidad         *float64 `json:"calidad" nullable:"true"`
+	Crecimiento     *float64 `json:"crecimiento" nullable:"true"`
+	SaludFinanciera *float64 `json:"salud_financiera" nullable:"true"`
+	Dividendo       *float64 `json:"dividendo" nullable:"true"`
+	Momentum        *float64 `json:"momentum" nullable:"true"`
+}

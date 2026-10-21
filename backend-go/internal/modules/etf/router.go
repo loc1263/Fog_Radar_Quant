@@ -3,12 +3,10 @@ package etf
 import (
 	"context"
 	"net/http"
-	"strings"
 
 	"github.com/danielgtaylor/huma/v2"
 
 	"fogradar/internal/api"
-	"fogradar/internal/core"
 )
 
 const tag = "ETFs"
@@ -85,62 +83,5 @@ func Register(h *api.Host) {
 				return nil, e
 			}
 			return &struct{ Body EtfCap }{*r}, nil
-		})
-	api.Protected(h, op("etf_historial", http.MethodGet, "/historial", "Historial de corridas"),
-		func(context.Context, *struct{}) (*struct{ Body EtfHistorial }, error) {
-			r, e := HistorialCorridas(h.S)
-			if e != nil {
-				return nil, e
-			}
-			return &struct{ Body EtfHistorial }{*r}, nil
-		})
-
-	// --- Historial (history.db): no toman el lock de current ---
-	api.Protected(h, op("etf_history_runs", http.MethodGet, "/history/runs", "Corridas guardadas en el historial"),
-		func(context.Context, *struct{}) (*struct{ Body []EtfHistCorrida }, error) {
-			r, e := Corridas(h.S)
-			if e != nil {
-				return nil, e
-			}
-			return &struct{ Body []EtfHistCorrida }{r}, nil
-		})
-	api.Protected(h, op("etf_history_ticker", http.MethodGet, "/history/ticker/{ticker}", "Score, puesto y métricas de un ETF en cada corrida"),
-		func(_ context.Context, in *struct {
-			Ticker string `path:"ticker" pattern:"^[A-Za-z0-9.\\-]{1,12}$"`
-		}) (*struct{ Body []EtfHistTickerPunto }, error) {
-			r, e := HistoriaTicker(h.S, strings.ToUpper(in.Ticker))
-			if e != nil {
-				return nil, e
-			}
-			return &struct{ Body []EtfHistTickerPunto }{r}, nil
-		})
-	api.Protected(h, op("etf_history_diff", http.MethodGet, "/history/diff", "Rotación del Top 15 entre dos corridas"),
-		func(_ context.Context, in *struct {
-			Desde string `query:"desde" pattern:"^\\d{8}(_\\d+)?$" doc:"yyyymmdd[_n]"`
-			Hasta string `query:"hasta" pattern:"^\\d{8}(_\\d+)?$" doc:"yyyymmdd[_n]"`
-		}) (*struct{ Body core.HistDiff }, error) {
-			r, e := Diff(h.S, in.Desde, in.Hasta)
-			if e != nil {
-				return nil, e
-			}
-			return &struct{ Body core.HistDiff }{*r}, nil
-		})
-	api.Protected(h, op("etf_history_top", http.MethodGet, "/history/top", "Permanencia en el Top 15 (últimas N)"),
-		func(_ context.Context, in *struct {
-			Ultimas int `query:"ultimas" default:"12" minimum:"2" maximum:"260"`
-		}) (*struct{ Body []EtfHistPermanencia }, error) {
-			r, e := PermanenciaTop(h.S, in.Ultimas)
-			if e != nil {
-				return nil, e
-			}
-			return &struct{ Body []EtfHistPermanencia }{r}, nil
-		})
-	api.Protected(h, op("etf_history_categorias", http.MethodGet, "/history/categorias", "Score promedio y presencia en el Top 15 por categoría, en el tiempo"),
-		func(context.Context, *struct{}) (*struct{ Body []EtfHistCategoria }, error) {
-			r, e := HistoriaCategorias(h.S)
-			if e != nil {
-				return nil, e
-			}
-			return &struct{ Body []EtfHistCategoria }{r}, nil
 		})
 }

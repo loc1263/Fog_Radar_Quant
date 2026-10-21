@@ -6,10 +6,13 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
+	"fogradar/internal/core"
 	"fogradar/internal/jobs"
 	"fogradar/internal/yahoo"
 )
@@ -24,7 +27,6 @@ func init() {
 			{Flag: "--static-universe", Help: "Usa la lista fija de respaldo en vez del screener."},
 			{Flag: "--skip-discovery", Help: "Reutiliza el último snapshot de universo (sin screener)."},
 			{Flag: "--macro", Help: "Descarga antes los datos macro de FRED (requiere FRED_API_KEY)."},
-			jobs.Backfill,
 			{Flag: "--top-n", Help: "Acciones a seleccionar en Asia + EEUU (por defecto 15).", Kind: jobs.Int, Min: 2, Max: 60},
 			{Flag: "--top-n-us", Help: "Acciones a seleccionar en el análisis solo EEUU (por defecto 15).", Kind: jobs.Int, Min: 2, Max: 60},
 			{Flag: "--max-weight", Help: "Tope de peso por activo, fracción en (0, 1] (por defecto 0.15).", Kind: jobs.Float, Min: 0.01, Max: 1.0},
@@ -174,7 +176,6 @@ func fetchOptions(opts map[string]any) yahoo.HistoryOptions {
 // Run es el pipeline batch de Tendencia.
 //
 //	fogradar job tendencia [--skip-fetch] [--force-refresh] [--static-universe] [--macro] [--top-n N] [--max-weight W]
-//	fogradar job tendencia --backfill
 //
 // Nunca se ejecuta dentro de un request web. Devuelve un resumen para el registro de jobs.
 func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error) {
@@ -197,11 +198,6 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 	if v, ok := opts["max_weight"].(float64); ok {
 		p.MaxWeight = v
 		overrides = append(overrides, KV{"MAX_WEIGHT_PER_ASSET", v})
-	}
-
-	if flag(opts, "backfill") {
-		u := LoadUniverse(moduleDir, now)
-		return Backfill(s, u, p, warn)
 	}
 
 	var partes []string
@@ -305,10 +301,6 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 	if err := writeManifest(runDir, now, p, u, overrides); err != nil {
 		warn("No se pudo registrar run_manifest.json: %v", err)
 	}
-	// El índice histórico es derivado: si falla se avisa, pero la corrida no falla (se reconstruye con --backfill).
-	if err := StoreRun(s, payload, runDir); err != nil {
-		warn("la corrida no se guardó en history.db; se recupera con: fogradar job tendencia --backfill (%v)", err)
-	}
 
 	partes = append([]string{"corrida " + filepath.Base(runDir)}, partes...)
 	for _, a := range asList(payload.Get("analyses")) {
@@ -357,4 +349,32 @@ func writeManifest(runDir string, now time.Time, p Params, u *Universe, override
 		return err
 	}
 	return os.Rename(tmp, path)
+}
+
+var runDateRe = regexp.MustCompile(`^(\d{4})(\d{2})(\d{2})_(\d{2})$`)
+
+func asList(v any) []any { l, _ := v.([]any); return l }
+
+func perfMetric(perf OM, group, key string) any {
+	g, _ := perf.Get(group).(OM)
+	return g.Get(key)
+}
+
+// NewRunDir crea output/YYYYMMDD_NN con la siguiente secuencia de hoy y su run_manifest.json.
+func NewRunDir(s *core.Settings, now time.Time) (string, error) {
+	today := now.In(s.Loc).Format("20060102")
+	last := 0
+	ents, _ := os.ReadDir(OutputDir(s))
+	for _, e := range ents {
+		if m := runDateRe.FindStringSubmatch(e.Name()); e.IsDir() && m != nil && m[1]+m[2]+m[3] == today {
+			n, _ := strconv.Atoi(m[4])
+			last = max(last, n)
+		}
+	}
+	dir := filepath.Join(OutputDir(s), fmt.Sprintf("%s_%02d", today, last+1))
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		return "", err
+	}
+	manifest := OM{{"created_at", now.In(s.Loc).Format("2006-01-02T15:04:05.000000")}}
+	return dir, os.WriteFile(filepath.Join(dir, "run_manifest.json"), OrderedJSON(manifest), 0o644)
 }

@@ -26,7 +26,7 @@ type expansion struct {
 	origen string // ruta ya exportada, p. ej. /api/cl/ranking
 	lista  string // clave del objeto que contiene el arreglo ("" si la respuesta es el arreglo)
 	campo  string // campo de cada elemento, p. ej. ticker
-	plan   string // ruta con un parámetro, p. ej. /api/cl/history/ticker/{ticker}
+	plan   string // ruta con un parámetro, p. ej. /api/cl/ticker/{ticker}
 	param  string // nombre del parámetro de `plan`
 }
 
@@ -75,7 +75,7 @@ func parseExportArgs(args []string) (*exportArgs, error) {
 func rutasExportables(h *api.Host, modulos []string) []string {
 	var rutas []string
 	for path, item := range h.API.OpenAPI().Paths {
-		if item.Get == nil || !strings.HasPrefix(path, "/api/") || sinVista[path] || strings.Contains(path, "/history/") {
+		if item.Get == nil || !strings.HasPrefix(path, "/api/") {
 			continue
 		}
 		requerido := false
@@ -90,9 +90,6 @@ func rutasExportables(h *api.Host, modulos []string) []string {
 	sort.Strings(rutas)
 	return rutas
 }
-
-// sinVista: endpoints sobre history.db fuera de /history/ (el sitio estático no tiene vistas de historial).
-var sinVista = map[string]bool{"/api/tendencia/runs": true, "/api/tendencia/analyses": true}
 
 // transversales se exportan siempre: reúnen a todos los módulos (portada).
 var transversales = map[string]bool{"/api/hub": true}

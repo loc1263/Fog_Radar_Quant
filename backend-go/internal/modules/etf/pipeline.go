@@ -20,7 +20,6 @@ func init() {
 		Options: []jobs.Option{
 			{Flag: "--solo-analisis", Help: "Re-analiza el CSV vigente sin descargar de Yahoo."},
 			{Flag: "--refrescar-info", Help: "Ignora la caché de info de ETFs (nombre, AUM, categoría…) y la pide de nuevo a Yahoo."},
-			jobs.Backfill,
 		},
 	})
 }
@@ -102,10 +101,6 @@ func analizarEInstalar(env *jobs.Env, origenCSV string, archivar bool) (string, 
 		return "", err
 	}
 	env.Log.Info("instalados en current/", "archivos", strings.Join(instalados, ", "))
-	// El índice histórico es derivado: si falla se avisa, pero la corrida no falla (se reconstruye con --backfill).
-	if _, err := GuardarVigente(s); err != nil {
-		env.Log.Warn("la corrida no se guardó en history.db; se recupera con: fogradar job etf --backfill", "error", err)
-	}
 	var top3 []string
 	for i := 0; i < res.Top15.N && i < 3; i++ {
 		top3 = append(top3, res.Top15.Col("Ticker").Cell(i))
@@ -126,16 +121,12 @@ func analizarEInstalar(env *jobs.Env, origenCSV string, archivar bool) (string, 
 //
 //	fogradar job etf                  # screener Yahoo + análisis
 //	fogradar job etf --solo-analisis  # re-analiza el CSV vigente (segundos)
-//	fogradar job etf --backfill       # solo reconstruye history.db
 //
 // 1) screener → data/etf/screener/etf_perf_data_<ts>.csv; 2) análisis en una carpeta de staging (current/ no se toca
 // todavía); 3) solo si el análisis terminó sin errores: archiva la corrida vigente e instala la nueva (bajo el lock que
-// respetan los GET); 4) guarda la corrida en history.db; 5) mueve a screener/data_old/ las salidas crudas de más de 30 días.
+// respetan los GET); 4) mueve a screener/data_old/ las salidas crudas de más de 30 días.
 func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error) {
 	s := env.S
-	if b, _ := opts["backfill"].(bool); b {
-		return Backfill(s, func(f string, a ...any) { env.Log.Warn(fmt.Sprintf(f, a...)) })
-	}
 	if b, _ := opts["solo_analisis"].(bool); b {
 		unlock, e := BloqueoDatos(s, 60*time.Second)
 		if e != nil {

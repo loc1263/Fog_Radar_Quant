@@ -1,5 +1,5 @@
 // Package core reúne lo transversal del servicio: configuración, errores, auth,
-// límites, registro de jobs y acceso a history.db.
+// límites y registro de jobs.
 package core
 
 import (

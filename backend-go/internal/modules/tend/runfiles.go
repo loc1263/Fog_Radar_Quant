@@ -16,7 +16,6 @@ import (
 // Archivos del módulo que lee la API (data/tendencia):
 //
 //	output/<YYYYMMDD>_<NN>/  una carpeta por corrida (dashboard_data.json, CSV/JSON de Markowitz, tendencia y momentum, PDF)
-//	history.db               base SQLite con todas las corridas (vista Historial)
 const (
 	key = core.ModuleKey("tendencia")
 	// RunDirPattern es el nombre válido de una carpeta de corrida.
@@ -39,9 +38,6 @@ func ModuleDir(s *core.Settings) string { return s.ModuleDataDir(key) }
 
 // OutputDir es data/tendencia/output.
 func OutputDir(s *core.Settings) string { return filepath.Join(ModuleDir(s), "output") }
-
-// HistoryDB es data/tendencia/history.db.
-func HistoryDB(s *core.Settings) string { return filepath.Join(ModuleDir(s), core.HistDBName) }
 
 func isFile(p string) bool { st, err := os.Stat(p); return err == nil && !st.IsDir() }
 

@@ -370,25 +370,3 @@ func Top15Cap(s *core.Settings) (*EtfCap, *core.APIError) {
 	}
 	return out, nil
 }
-
-// HistorialCorridas sirve historial_corridas.csv (de la más antigua a la más reciente).
-func HistorialCorridas(s *core.Settings) (*EtfHistorial, *core.APIError) {
-	unlock, e := BloqueoDatos(s, 0)
-	if e != nil {
-		return nil, e
-	}
-	df, e := Leer(s, HistorialFile)
-	unlock()
-	if e != nil {
-		return nil, e
-	}
-	out := &EtfHistorial{Filas: []EtfHistorialFila{}}
-	if df == nil || df.N == 0 {
-		return out, nil
-	}
-	sorted := sortedByFecha(df)
-	for i := 0; i < sorted.N; i++ {
-		out.Filas = append(out.Filas, historialFila(sorted, i))
-	}
-	return out, nil
-}

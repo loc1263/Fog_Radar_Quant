@@ -20,7 +20,7 @@ const tag = "Acciones EEUU"
 
 var tickerRe = regexp.MustCompile(TickerPattern)
 
-// Register agrega los endpoints de /api/us: corridas, historial y portafolio precalculado.
+// Register agrega los endpoints de /api/us: corridas y portafolio precalculado.
 func Register(h *api.Host) {
 	op := func(id, method, path, summary string) huma.Operation {
 		return huma.Operation{OperationID: id, Method: method, Path: "/api/us" + path, Summary: summary, Tags: []string{tag}}
@@ -68,51 +68,6 @@ func Register(h *api.Host) {
 			}
 			return &struct{ Body RunsList }{RunsList{Runs: names}}, nil
 		})
-
-	// --- Historial ---
-	const runIDPattern = `^\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}Z$`
-	_ = runIDPattern
-	api.Protected(h, op("us_history_runs", http.MethodGet, "/history/runs", "Corridas guardadas en el historial"),
-		func(context.Context, *struct{}) (*struct{ Body []UsHistCorrida }, error) {
-			out, e := Corridas(h.S)
-			if e != nil {
-				return nil, e
-			}
-			return &struct{ Body []UsHistCorrida }{out}, nil
-		})
-	api.Protected(h, op("us_history_ticker", http.MethodGet, "/history/ticker/{ticker}", "Score, momentum y posición de un ticker en cada corrida"),
-		func(_ context.Context, in *struct {
-			Ticker string `path:"ticker" pattern:"^[A-Za-z0-9.\\-^=]{1,15}$"`
-		}) (*struct{ Body []UsHistTickerPunto }, error) {
-			out, e := HistoriaTicker(h.S, strings.ToUpper(strings.TrimSpace(in.Ticker)))
-			if e != nil {
-				return nil, e
-			}
-			return &struct{ Body []UsHistTickerPunto }{out}, nil
-		})
-	api.Protected(h, op("us_history_diff", http.MethodGet, "/history/diff", "Qué entró y salió del top entre dos corridas"),
-		func(_ context.Context, in *struct {
-			Desde string `query:"desde" pattern:"^\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}Z$"`
-			Hasta string `query:"hasta" pattern:"^\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}Z$"`
-		}) (*struct{ Body core.HistDiff }, error) {
-			out, e := Diff(h.S, in.Desde, in.Hasta)
-			if e != nil {
-				return nil, e
-			}
-			return &struct{ Body core.HistDiff }{*out}, nil
-		})
-	api.Protected(h, op("us_history_top", http.MethodGet, "/history/top", "Permanencia en el top (últimas N corridas)"),
-		func(_ context.Context, in *struct {
-			Ultimas int `query:"ultimas" default:"20" minimum:"2" maximum:"260"`
-		}) (*struct{ Body []UsHistPermanencia }, error) {
-			out, e := PermanenciaTop(h.S, in.Ultimas)
-			if e != nil {
-				return nil, e
-			}
-			return &struct{ Body []UsHistPermanencia }{out}, nil
-		})
-
-	// --- Evaluación en vivo: única llamada a Yahoo dentro de un request (caché de 5 min, rate limit y concurrencia) ---
 
 	// --- Portafolio ---
 	api.Protected(h, op("us_portfolio_limits", http.MethodGet, "/portfolio/limits", "Límites del modelo de portafolio"),

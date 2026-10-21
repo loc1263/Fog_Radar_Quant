@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 	"time"
 
@@ -105,17 +104,6 @@ func TestFilasDe(t *testing.T) {
 	}
 	if got := filasDe([]byte(`{"filas":[{"a":"1"},{"a":"2"}]}`), "filas"); len(got) != 2 {
 		t.Errorf("clave filas: %v", got)
-	}
-}
-
-func TestExportarOmiteHistory(t *testing.T) {
-	h := hostDePrueba(t)
-	api.Public(h, huma.Operation{OperationID: "hh", Method: http.MethodGet, Path: "/api/etf/history/runs"},
-		func(context.Context, *vacio) (*listaOut, error) { return &listaOut{Body: []map[string]string{}}, nil })
-	for _, r := range rutasExportables(h, nil) {
-		if strings.Contains(r, "/history/") {
-			t.Errorf("no debía exportar %s", r)
-		}
 	}
 }
 

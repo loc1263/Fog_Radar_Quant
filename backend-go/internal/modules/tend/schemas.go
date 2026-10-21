@@ -1,6 +1,6 @@
 // Package tend es el módulo Tendencia Asia + EEUU (/api/tendencia): descubrimiento del universo por capitalización,
 // precios y FX en USD, selección de portafolio (Markowitz con tope y L2), proyección a 6 meses (GBM), momentum mensual y
-// semanal, informe PDF e historial. Los nombres de campo son los de dashboard_data.json y history.db del original.
+// semanal e informe PDF. Los nombres de campo son los de dashboard_data.json del original.
 package tend
 
 import "fogradar/internal/core"
@@ -172,94 +172,4 @@ type TdDashboard struct {
 	Archivos          []TdArchivo            `json:"archivos" doc:"Archivos descargables de la corrida (PDF, CSV…), ver /runs/{run_dir}/files."`
 	Parametros        core.Opt[TdParametros] `json:"parametros"`
 	Excluidos         []TdExcluido           `json:"excluidos" doc:"Tickers excluidos en el último armado del dataset (TD-DATA-1 / TD-OPS-2)."`
-}
-
-// --- Historial (history.db) ---
-
-// TdAnalisisDisponible es un análisis visto en el historial.
-type TdAnalisisDisponible struct {
-	AnalysisKey string `json:"analysis_key"`
-	Label       string `json:"label"`
-}
-
-// TdRunPerformance es el desempeño de una corrida.
-type TdRunPerformance struct {
-	RunDir                     string     `json:"run_dir"`
-	RunDate                    string     `json:"run_date" format:"date"`
-	GeneratedAt                core.Fecha `json:"generated_at"`
-	UniverseSource             *string    `json:"universe_source" nullable:"true"`
-	AnalysisKey                string     `json:"analysis_key"`
-	Label                      string     `json:"label"`
-	UniverseSize               *int64     `json:"universe_size" nullable:"true"`
-	NSelected                  *int64     `json:"n_selected" nullable:"true"`
-	RetornoUniversoAnual       opt        `json:"retorno_universo_anual" nullable:"true"`
-	VolatilidadUniversoAnual   opt        `json:"volatilidad_universo_anual" nullable:"true"`
-	SharpeUniverso             opt        `json:"sharpe_universo" nullable:"true"`
-	RetornoPortafolioAnual     opt        `json:"retorno_portafolio_anual" nullable:"true"`
-	VolatilidadPortafolioAnual opt        `json:"volatilidad_portafolio_anual" nullable:"true"`
-	SharpePortafolio           opt        `json:"sharpe_portafolio" nullable:"true"`
-	TasaLibreRiesgoAnual       opt        `json:"tasa_libre_riesgo_anual" nullable:"true"`
-}
-
-// TdTickerNombre es un ticker seleccionado alguna vez.
-type TdTickerNombre struct {
-	Ticker string  `json:"ticker"`
-	Nombre *string `json:"nombre" nullable:"true"`
-}
-
-// TdTickerHistoria es la trayectoria de un ticker.
-type TdTickerHistoria struct {
-	RunDate               string  `json:"run_date" format:"date"`
-	RunDir                string  `json:"run_dir"`
-	PesoFinal             opt     `json:"peso_final" nullable:"true"`
-	PrecioActualUsd       opt     `json:"precio_actual_usd" nullable:"true"`
-	SenalTecnica          *string `json:"senal_tecnica" nullable:"true"`
-	Momentum26sPct        opt     `json:"momentum_26s_pct" nullable:"true"`
-	RetornoEsperado6mPct  opt     `json:"retorno_esperado_6m_pct" nullable:"true"`
-	PrecioProyectado6mUsd opt     `json:"precio_proyectado_6m_usd" nullable:"true"`
-	PrecioMin90pct6mUsd   opt     `json:"precio_min_90pct_6m_usd" nullable:"true"`
-	PrecioMax90pct6mUsd   opt     `json:"precio_max_90pct_6m_usd" nullable:"true"`
-}
-
-// TdUniversoHistoria es la posición de un ticker en el universo completo.
-type TdUniversoHistoria struct {
-	RunDate              string `json:"run_date" format:"date"`
-	RunDir               string `json:"run_dir"`
-	UniverseRank         int64  `json:"universe_rank"`
-	UniverseSize         *int64 `json:"universe_size" nullable:"true"`
-	PesoMarkowitz        opt    `json:"peso_markowitz" nullable:"true"`
-	RetornoEsperadoAnual opt    `json:"retorno_esperado_anual" nullable:"true"`
-	Seleccionado         bool   `json:"seleccionado"`
-}
-
-// TdSectorHistoria es el peso de un sector en el tiempo.
-type TdSectorHistoria struct {
-	RunDate       string  `json:"run_date" format:"date"`
-	RunDir        string  `json:"run_dir"`
-	Sector        *string `json:"sector" nullable:"true"`
-	PesoTotal     opt     `json:"peso_total" nullable:"true"`
-	NAcciones     *int64  `json:"n_acciones" nullable:"true"`
-	Retorno6mProm opt     `json:"retorno_6m_prom" nullable:"true"`
-}
-
-// TdMomentumLider es un líder de momentum de una corrida.
-type TdMomentumLider struct {
-	RunDate          string  `json:"run_date" format:"date"`
-	RunDir           string  `json:"run_dir"`
-	Ticker           *string `json:"ticker" nullable:"true"`
-	MomentumRank     *int64  `json:"momentum_rank" nullable:"true"`
-	MomentumScorePct opt     `json:"momentum_score_pct" nullable:"true"`
-}
-
-// TdRunDetalle es una corrida reconstruida desde history.db.
-type TdRunDetalle struct {
-	_                 struct{}         `json:"-" additionalProperties:"true"`
-	ID                int64            `json:"id"`
-	RunDir            string           `json:"run_dir"`
-	RunDate           string           `json:"run_date" format:"date"`
-	GeneratedAt       core.Fecha       `json:"generated_at"`
-	UniverseSource    *string          `json:"universe_source" nullable:"true"`
-	MarketRegimeNotes []string         `json:"market_regime_notes"`
-	StoredAt          *string          `json:"stored_at" nullable:"true"`
-	Analyses          []map[string]any `json:"analyses"`
 }

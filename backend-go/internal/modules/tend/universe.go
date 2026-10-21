@@ -3,7 +3,6 @@ package tend
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -130,18 +129,6 @@ func LatestUniverseFile(dir string, hoy time.Time) string {
 		return todays[len(todays)-1]
 	}
 	return files[len(files)-1]
-}
-
-// LoadUniverse carga el snapshot más reciente de data/tendencia/universe; si no hay (o está dañado) usa la lista fija de respaldo.
-func LoadUniverse(moduleDir string, hoy time.Time) *Universe {
-	if p := LatestUniverseFile(filepath.Join(moduleDir, "universe"), hoy); p != "" {
-		if b, err := os.ReadFile(p); err == nil {
-			if u, err := ParseUniverse(b); err == nil {
-				return u
-			}
-		}
-	}
-	return FallbackUniverse()
 }
 
 // Prices es la matriz de precios semanales en USD: una columna por ticker, filas por fecha.

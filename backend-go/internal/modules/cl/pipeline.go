@@ -18,23 +18,18 @@ func init() {
 		Run: Run,
 		Options: []jobs.Option{
 			{Flag: "--solo-scoring", Help: "Re-puntúa el último CSV de indicadores sin descargar de Yahoo."},
-			jobs.Backfill,
 		},
 	})
 }
 
-// Run es el pipeline batch de Chile: extractor (Yahoo) → scoring → CSV/XLSX → history.db.
+// Run es el pipeline batch de Chile: extractor (Yahoo) → scoring → CSV/XLSX.
 //
 //	fogradar job cl_stocks                 # completo
 //	fogradar job cl_stocks --solo-scoring  # re-puntúa el último CSV de indicadores
-//	fogradar job cl_stocks --backfill      # solo reconstruye history.db
 //
 // Nunca se ejecuta dentro de un request web. Devuelve un resumen para el registro de jobs.
 func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error) {
 	s := env.S
-	if b, _ := opts["backfill"].(bool); b {
-		return Backfill(s, func(f string, a ...any) { env.Log.Warn(fmt.Sprintf(f, a...)) })
-	}
 	dir := DataDir(s)
 	timestamp := time.Now().In(s.Loc).Format("20060102_150405")
 	var resumen []string
@@ -82,10 +77,6 @@ func Run(ctx context.Context, env *jobs.Env, opts map[string]any) (string, error
 		return "", err
 	}
 	env.Log.Info("ranking", "archivo", filepath.Base(ruta))
-	// El índice histórico es derivado: si falla se avisa, pero la corrida no falla (se reconstruye con --backfill).
-	if err := GuardarCorrida(s, ruta); err != nil {
-		env.Log.Warn("la corrida no se guardó en history.db; se recupera con: fogradar job cl_stocks --backfill", "error", err)
-	}
 
 	sym := ranking.Col("Símbolo")
 	var top []string
