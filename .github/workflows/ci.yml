@@ -33,8 +33,6 @@ jobs:
           args: ./cmd/... ./internal/...
       - name: Tests (con detector de carreras)
         run: go test -race ./cmd/... ./internal/...
-      - name: Build de la imagen
-        run: docker build -t fogradar-api .
 
   frontend:
     name: Frontend (autofix + check + lint + tests)

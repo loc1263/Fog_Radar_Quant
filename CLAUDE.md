@@ -42,26 +42,19 @@ módulo: **docs/METODOLOGIAS.md** (actualizarla si cambia la lógica).
 
 ## Backend
 - Los pipelines (descarga Yahoo, scoring, Markowitz) son **batch por CLI**
-  (`fogradar job <modulo>`); nunca se ejecutan dentro de un request,
-  salvo la evaluación en vivo de un solo ticker (módulo EEUU).
+  (`fogradar job <modulo>`); nunca se ejecutan dentro de un request.
 - Datos en `data/<modulo>/` (fuera de git). Rutas y secretos vía `internal/core/settings.go`
   (variables de entorno + `backend-go/.env`).
 - Calidad: `gofmt`, `go vet`, `golangci-lint`, `go test -race`. Toda lógica nueva lleva tests.
-- **Historial (`history.db`, ADR 0003):** cada módulo indexa sus corridas en
-  `data/<modulo>/history.db` vía `internal/core/histdb.go` (`modules/<modulo>/history*.go`). Es un índice
-  derivado: los archivos siguen siendo la fuente de verdad; se escribe al final del pipeline
-  sin hacer fallar la corrida y se reconstruye con `--backfill`. Cambios de esquema = migración
-  nueva al final de la lista (nunca editar una publicada). Endpoints `/history/*` en solo lectura.
 - PDFs: estilo común en `internal/pdf` (paleta, Carlito incluida, tablas, encabezado/pie).
   Textos ≥ 10 pt, encabezados de tabla claros (nunca fondos oscuros), números a la derecha.
 - **Yahoo Finance:** todo pasa por el cliente común de `internal/yahoo` (espaciado
-  global, reintento ante 429). Históricos con caché: `Client.History`. Dentro de un
-  request web, usar el modo interactivo (sin backoff largo).
+  global, reintento ante 429). Históricos con caché: `Client.History`.
 - **FX:** `internal/fx` (spot `Rates`, series `ToUSD`, cualquier moneda ISO 4217 y
   subunidades GBp/ZAc/ILA). No agregar tablas de monedas por módulo.
-- Endpoints costosos: rate limit por IP **y** límite de concurrencia (`Concurrent`, 503 `busy`).
-  Cualquier escritura de datos de un módulo desde la API toma el lock global de pipelines
-  (`core.LockPipelines`).
+- La API (`fogradar api`) es de solo lectura y de uso local (`/docs`, `gen:api`, `export`): sin
+  autenticación, rate limit ni CORS. Toda la salida del sitio pasa por `fogradar export`.
+- Las secuencias de pipelines toman el lock global (`core.LockPipelines`): nunca hay dos a la vez.
 - Cada corrida deja su detalle en `data/_jobs/logs/fogradar.log` y un resumen (tiempo HH:MM:SS y avisos).
 
 ## Convenciones de módulos (ADR 0002)

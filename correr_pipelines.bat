@@ -1,6 +1,6 @@
 @echo off
 REM Corre todos los pipelines en secuencia (Chile, EEUU, Tendencia, ETF) con el backend Go.
-REM Otras opciones: correr_pipelines.bat --offline   |   --programa diario   |   etf
+REM Otras opciones: correr_pipelines.bat --offline   |   --no-cache   |   etf
 REM (los argumentos se pasan tal cual a "fogradar job"; sin argumentos corre --todos)
 cd /d "%~dp0backend-go"
 if not exist bin\fogradar.exe (

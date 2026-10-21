@@ -37,12 +37,8 @@ type Settings struct {
 	YahooAdaptativo       bool
 	YahooIntervaloRapidoS float64
 	// Corridas batch (internal/jobs).
-	PipelinePausaS          float64 // pausa entre un pipeline y el siguiente de una secuencia
-	PipelineReintentos      int     // reintentos de un pipeline que falla en una corrida programada
-	PipelineEsperaReintento float64 // espera entre intentos
-	PipelineLockEsperaS     float64 // cuánto espera una corrida programada si otra secuencia tiene el lock
-	AlertWebhookURL         string  // Slack/Discord/Teams: aviso cuando un pipeline falla
-	FredAPIKey              string
+	PipelinePausaS float64 // pausa entre un pipeline y el siguiente de una secuencia
+	FredAPIKey     string
 
 	// YahooConcurrencia es cuántos requests pueden estar en vuelo a la vez (inicios siempre espaciados).
 	YahooConcurrencia int
@@ -94,12 +90,12 @@ func loadSettings(lookup func(string) (string, bool), files []string) (*Settings
 	}
 
 	s := &Settings{
-		Env:       strings.ToLower(get("ENV", "dev")),
-		AppName:   get("APP_NAME", "Fog Radar Quant API"),
-		LogLevel:  strings.ToUpper(get("LOG_LEVEL", "INFO")),
-		Timezone:  get("TIMEZONE", "America/Santiago"),
-		DataDir:   get("DATA_DIR", filepath.Join("..", "data")),
-		Addr:      get("ADDR", ":8000"),
+		Env:      strings.ToLower(get("ENV", "dev")),
+		AppName:  get("APP_NAME", "Fog Radar Quant API"),
+		LogLevel: strings.ToUpper(get("LOG_LEVEL", "INFO")),
+		Timezone: get("TIMEZONE", "America/Santiago"),
+		DataDir:  get("DATA_DIR", filepath.Join("..", "data")),
+		Addr:     get("ADDR", ":8000"),
 	}
 	var perr error
 	num := func(key string, def float64, min, max float64) float64 {
@@ -131,10 +127,6 @@ func loadSettings(lookup func(string) (string, bool), files []string) (*Settings
 	}
 	s.YahooIntervaloRapidoS = num("YAHOO_INTERVALO_RAPIDO_S", 0.2, 0.01, 3600)
 	s.PipelinePausaS = num("PIPELINE_PAUSA_S", 60, 0, 86400)
-	s.PipelineReintentos = int(num("PIPELINE_REINTENTOS", 1, 0, 20))
-	s.PipelineEsperaReintento = num("PIPELINE_ESPERA_REINTENTO_S", 600, 0, 86400)
-	s.PipelineLockEsperaS = num("PIPELINE_LOCK_ESPERA_S", 6*3600, 0, 7*86400)
-	s.AlertWebhookURL = get("ALERT_WEBHOOK_URL", "")
 	s.FredAPIKey = get("FRED_API_KEY", "")
 	if perr != nil {
 		return nil, perr

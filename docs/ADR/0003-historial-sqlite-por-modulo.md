@@ -1,7 +1,7 @@
 # ADR 0003 — Historial SQLite por módulo (`history.db`)
 
 - **Fecha:** 2026-10-04
-- **Estado:** aceptada (implementa la Épica B1 del BACKLOG; análisis previo en `INFORME_SQLITE.md`)
+- **Estado:** retirada el 2026-10-21 (se eliminaron las vistas, los endpoints y `history.db`; ver ADR 0005). Se conserva como registro histórico. Aceptada originalmente (Épica B1 del BACKLOG; análisis previo en `INFORME_SQLITE.md`).
 
 ## Contexto
 

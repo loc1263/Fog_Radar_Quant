@@ -24,7 +24,6 @@ Fog_Radar_Quant/
 │   ├── etf/{current,hist,screener}/   us_stocks/runs/   cl_stocks/   tendencia/{output,universe,...}
 │   └── _jobs/                      # registro de corridas (jsonl) y log único (logs/fogradar.log)
 ├── frontend/                       # SvelteKit + TS + Tailwind v4 · adapter-static (SPA)
-├── deploy/                         # backend (cron), caddy
 ├── docs/                           # DESIGN_SYSTEM · METODOLOGIAS · BACKLOG · ADR/
 ├── iniciar.bat → iniciar.py · correr_pipelines.bat
 └── .github/workflows/ci.yml
@@ -41,13 +40,13 @@ Fog_Radar_Quant/
 | Seguridad del backend | Header `X-API-Key` + allowlist de IP del servidor frontend + HTTPS | Protege los endpoints costosos (consumen Yahoo/CPU). |
 | Configuración | Front: `BASE_PATH` (subruta de Pages) · Back: `API_KEY`, `ALLOWED_ORIGINS`, `DATA_DIR`… | Mismo código en dev y producción. |
 | Dev | `iniciar.bat`: exporta los datos y levanta `vite dev` (:5173); `--api` agrega `fogradar api` (:8000) | El sitio no depende de la API en ejecución. |
-| Deploy | Docker por servidor + **Caddy** (HTTPS automático) | Despliegues independientes. |
+| Publicación | GitHub Pages (sitio estático) con un workflow de Actions | Sin servidores propios (ADR 0005). |
 | UI | **Tailwind v4** + **shadcn-svelte** + tokens del *Dashboard ejecutivo* (`docs/DESIGN_SYSTEM.md`) | Continuidad visual. |
 | Gráficos | **LayerChart 2.5** | Librería nativa de Svelte, estilable con tokens `brand-*`. |
 | Tablas | `DataTable` genérico propio (orden, filtro, CSV) | Casi todas las pestañas son tablas. |
 | Pipelines | **Batch fuera del proceso web** (`fogradar job`). Producción: cron en el servidor backend; la API solo lee | Evita bloqueos de Yahoo en requests web. |
 | Estado de corridas | Registro en `data/_jobs/<modulo>.jsonl` + `/api/jobs` + log único `fogradar.log` | El hub muestra "al día / atrasado". |
-| Historial | `data/<modulo>/history.db` (SQLite) por módulo, índice derivado de los archivos (ADR 0003) | Consultas históricas sin tocar los archivos. |
+| Historial | Retirado (2026-10-21): sin vistas ni `history.db` (ver ADR 0003 y 0005) | El sitio estático no lo necesita. |
 | Calidad | `gofmt`, `go vet`, `golangci-lint`, `go test -race` (back); `svelte-check` + ESLint + Prettier + Vitest + Playwright (front); CI en GitHub | |
 
 ### 2.3 Mapa de rutas del sitio
@@ -83,7 +82,7 @@ Layout global: header con logo *Fog Radar Quant*, menú principal de 4 módulos,
 
 ## 3. Estado
 
-| Módulo | Backend | Frontend | Pipeline | Historial |
+| Módulo | Backend | Frontend | Pipeline | Historial | Retirado (2026-10-21): sin vistas ni `history.db` (ver ADR 0003 y 0005) | El sitio estático no lo necesita. |
 |---|---|---|---|---|
 | Chile (IPSA) | ✅ | ✅ | ✅ `fogradar job cl_stocks` (~40 s) | ✅ |
 | EEUU | ✅ | ✅ | ✅ `fogradar job us_stocks` (~4 min) | ✅ |
@@ -91,8 +90,8 @@ Layout global: header con logo *Fog Radar Quant*, menú principal de 4 módulos,
 | Tendencia | ✅ | ✅ | ✅ `fogradar job tendencia` (universo redescubierto si el snapshot tiene > 3 días) | ✅ |
 | Hub, buscador, estado | ✅ | ✅ | — | — |
 
-Programación de producción: ETFs los **lunes 06:00**; Chile → EEUU → Tendencia de **lunes a viernes 18:00**, en
-secuencia (`deploy/backend/`). En desarrollo: `correr_pipelines.bat` o `fogradar job --todos`.
+Cadencia esperada (`internal/core/schedule.go`): ETFs los **lunes 06:00**; Chile → EEUU → Tendencia de **lunes a viernes 18:00**, en
+secuencia. En desarrollo: `correr_pipelines.bat` o `fogradar job --todos`.
 
 ## 4. Pendiente
 
@@ -108,11 +107,8 @@ secuencia (`deploy/backend/`). En desarrollo: `correr_pipelines.bat` o `fogradar
 - [ ] Después (con backtest): TD-MODEL-4…9 y US-DATA-08 (`docs/BACKLOG.md`).
 
 **Producción** — ⏸ en pausa hasta tener el desarrollo depurado
-- [ ] **Servidor backend**: Docker (`backend-go/Dockerfile`) + volumen persistente para `data/` + cron de pipelines + Caddy con HTTPS; firewall que solo acepte el puerto 443 desde la IP del servidor frontend (y SSH).
 - [ ] **Sitio estático**: publicar en GitHub Pages con un workflow de Actions que corra los jobs, `fogradar export` y `npm run build` (`docs/PLAN_GITHUB_PAGES.md`).
-- [ ] Dominios/DNS, rotación de la API key, respaldo diario de `data/` (incluye `history.db`).
-- [ ] Autenticación de usuarios en el frontend si el sitio no será público.
-- [ ] CI/CD: GitHub Actions construye y publica imágenes separadas y despliega cada servidor de forma independiente.
+- [ ] Dominios/DNS, respaldo diario de `data/`.
 - [ ] Monitoreo básico: `/api/health` + uptime check; mensajes de error genéricos en prod (SEC-PROD-2).
 - [ ] **TD-MACRO-1**: agregar `--macro` a Tendencia en la corrida diaria (requiere `FRED_API_KEY` en el servidor).
 - [ ] Probar las descargas de Yahoo desde el servidor productivo (las IPs de datacenter se bloquean más seguido).

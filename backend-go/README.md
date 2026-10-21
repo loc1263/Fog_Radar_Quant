@@ -22,19 +22,17 @@ go test -race ./...                # tests
 golangci-lint run ./cmd/... ./internal/...
 ```
 
-Configuración: variables de entorno o `backend-go/.env` (ver `.env.example`): `ENV`, `API_KEY`, `ALLOWED_ORIGINS`,
-`DATA_DIR`, `TIMEZONE`, `RATE_LIMIT_DEFAULT`, `LOG_LEVEL`, `APP_NAME`, `ADDR` (por defecto `:8000`), `ENV_FILE`, `YAHOO_*`,
+Configuración: variables de entorno o `backend-go/.env` (ver `.env.example`): `ENV`,
+`DATA_DIR`, `TIMEZONE`, `LOG_LEVEL`, `APP_NAME`, `ADDR` (por defecto `:8000`), `ENV_FILE`, `YAHOO_*`,
 `PIPELINE_*`. Una variable de entorno gana al `.env`. `DATA_DIR` relativo se resuelve desde el directorio actual
 (por defecto `../data`). Reglas de prod: `API_KEY` ≥ 32 caracteres y aleatoria, sin `localhost` en `ALLOWED_ORIGINS`.
-
-Docker (contexto `backend-go/`): `docker build -t fogradar-api backend-go` → imagen distroless con un binario estático (~25 MB).
 
 ## Estructura
 
 ```
-cmd/fogradar/            main (api | openapi | job: --todos, --list, --crontab, --offline, --no-cache, --backfill…)
-internal/api/            servidor huma+chi: errores {detail, code}, CORS, rate limit, API key
-internal/core/           settings, errores, ratelimit (+Gate = límite de concurrencia), jobs, histdb, schedule, fechas
+cmd/fogradar/            main (api | openapi | export | job: --todos, --list, --offline, --no-cache…)
+internal/api/            servidor huma+chi (solo lectura, uso local): errores {detail, code}
+internal/core/           settings, errores, jobs, schedule (cadencia de actualización), fechas
 internal/modules/        registro de módulos; un paquete por módulo (cl, us, etf, tend)
 internal/{yahoo,fx,quant,jobs,transversal}  cliente Yahoo común, FX, biblioteca numérica, runner de pipelines y hub
 ```
@@ -46,7 +44,6 @@ go run ./cmd/fogradar job --list
 go run ./cmd/fogradar job tendencia --skip-fetch --skip-discovery   # offline, sobre raw/ ya descargado
 go run ./cmd/fogradar job --todos --offline
 go run ./cmd/fogradar job --todos --no-cache     # ignora todas las cachés y pide todo de nuevo a Yahoo
-go run ./cmd/fogradar job --crontab
 ```
 Códigos de salida: 0 ok, 1 falla, 2 uso, 3 ocupado (otro pipeline tiene el lock global). Usa `DATA_DIR=/ruta` para correr sobre
 una copia de los datos (recomendado al probar). La consola muestra una línea por hito (con la hora), un encabezado `>>> módulo` por

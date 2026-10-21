@@ -59,9 +59,9 @@ func TestPausaTrasUnModuloQueFalla(t *testing.T) {
 	reg("p2", func(context.Context, map[string]any) (string, error) { return "ok", nil })
 	reg("p3", func(context.Context, map[string]any) (string, error) { return "ok", nil })
 	var dormido []time.Duration
-	pausa, cero := 7*time.Second, 0
+	pausa := 7 * time.Second
 	_, err := CorrerSecuencia(context.Background(), env, []string{"p1", "p2", "p3"},
-		SecuenciaOpts{Pausa: &pausa, Reintentos: &cero, Sleep: func(d time.Duration) { dormido = append(dormido, d) }, Alert: func(string) {}})
+		SecuenciaOpts{Pausa: &pausa, Sleep: func(d time.Duration) { dormido = append(dormido, d) }})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -95,49 +95,21 @@ func TestNecesitaPausa(t *testing.T) {
 	}
 }
 
-func TestFallaYSigueConElSiguienteYAlerta(t *testing.T) {
+func TestFallaYSigueConElSiguiente(t *testing.T) {
 	env := testEnv(t)
 	reg("b1", func(context.Context, map[string]any) (string, error) { return "", errors.New("boom") })
 	reg("b2", func(context.Context, map[string]any) (string, error) { return "ok", nil })
-	var alerta string
-	cero := 0
 	res, err := CorrerSecuencia(context.Background(), env, []string{"b1", "b2"},
-		SecuenciaOpts{Reintentos: &cero, Pausa: new(time.Duration), Sleep: func(time.Duration) {}, Alert: func(s string) { alerta = s }, Trigger: "cron"})
+		SecuenciaOpts{Pausa: new(time.Duration), Sleep: func(time.Duration) {}})
 	if err != nil {
 		t.Fatal(err)
 	}
 	if res[0].Estado != EstadoError || res[1].Estado != EstadoOK {
 		t.Fatalf("%+v", res)
 	}
-	if !strings.Contains(alerta, "b1 (boom)") || !strings.Contains(alerta, "(cron)") {
-		t.Fatalf("alerta: %q", alerta)
-	}
 	rec := core.NewJobRegistry(env.S.JobsDir()).Latest("b1")
-	if rec.Status != "error" || rec.Message == nil || *rec.Message != "boom" || rec.Trigger != "cron" {
+	if rec.Status != "error" || rec.Message == nil || *rec.Message != "boom" {
 		t.Fatalf("%+v", rec)
-	}
-}
-
-func TestReintentaConEspera(t *testing.T) {
-	env := testEnv(t)
-	n := 0
-	reg("c1", func(context.Context, map[string]any) (string, error) {
-		n++
-		if n < 3 {
-			return "", errors.New("transitorio")
-		}
-		return "al tercero", nil
-	})
-	var esperas []time.Duration
-	dos, espera := 2, 10*time.Minute
-	res, _ := CorrerSecuencia(context.Background(), env, []string{"c1"},
-		SecuenciaOpts{Reintentos: &dos, EsperaRein: &espera, Sleep: func(d time.Duration) { esperas = append(esperas, d) }})
-	if res[0].Estado != EstadoOK || res[0].Intentos != 3 || len(esperas) != 2 || esperas[0] != espera {
-		t.Fatalf("%+v %v", res[0], esperas)
-	}
-	h := core.NewJobRegistry(env.S.JobsDir()).History("c1", 10)
-	if len(h) != 3 || h[0].Status != "success" || h[1].Status != "error" {
-		t.Fatalf("cada intento queda en el registro: %+v", h)
 	}
 }
 
@@ -178,8 +150,7 @@ func TestNoCorreSiElModuloYaEstaEnCurso(t *testing.T) {
 	if err := r.Append(core.JobRecord{ID: "x", Module: "f1", Status: "running", Trigger: "cli", StartedAt: core.Fecha{Time: time.Now().UTC()}}); err != nil {
 		t.Fatal(err)
 	}
-	cero := 0
-	res, _ := CorrerSecuencia(context.Background(), env, []string{"f1"}, SecuenciaOpts{Reintentos: &cero})
+	res, _ := CorrerSecuencia(context.Background(), env, []string{"f1"}, SecuenciaOpts{})
 	if res[0].Estado != EstadoError || !strings.Contains(res[0].Mensaje, "en curso") {
 		t.Fatalf("%+v", res[0])
 	}
@@ -187,8 +158,7 @@ func TestNoCorreSiElModuloYaEstaEnCurso(t *testing.T) {
 
 func TestSinPipelinePortado(t *testing.T) {
 	env := testEnv(t)
-	cero := 0
-	res, _ := CorrerSecuencia(context.Background(), env, []string{"no_existe"}, SecuenciaOpts{Reintentos: &cero})
+	res, _ := CorrerSecuencia(context.Background(), env, []string{"no_existe"}, SecuenciaOpts{})
 	if res[0].Estado != EstadoError {
 		t.Fatalf("%+v", res[0])
 	}

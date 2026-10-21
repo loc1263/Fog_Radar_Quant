@@ -21,8 +21,6 @@ se citan son relativas a `backend/src/fog_radar/`.
     entre hilos y aplicado a cada request HTTP (reintentos y obtención de cookie + crumb incluidos);
   - ante HTTP 429 (o un "too many requests" en el cuerpo), hasta **3 reintentos** con backoff
     `min(5 · 2^intento, 60) + U(0, 1)` s, al menos el `Retry-After`; hasta 2 reintentos por errores de red;
-  - dentro de un request web (`yahoo.Interactive()`) un 429 se devuelve de inmediato, sin
-    backoff;
   - estas reglas se instalan dentro de gohoo (`WithLimiter`, `WithRequestHook`, `RetryPolicy.RateLimit`),
     así que los contadores del resumen de cada corrida cuentan cada request HTTP real;
   - **espaciado adaptivo** (`YAHOO_ADAPTATIVO`, por defecto activo; `internal/yahoo/adaptive.go`): el intervalo
@@ -50,8 +48,8 @@ se citan son relativas a `backend/src/fog_radar/`.
 
 ## Calendario de actualización
 
-Definido en `internal/core/schedule.go` (única fuente de verdad; el crontab de producción se genera
-desde ahí). Horas de `America/Santiago`.
+Definido en `internal/core/schedule.go` (única fuente de verdad de la cadencia esperada: el hub la usa
+para decidir si los datos están al día). Horas de `America/Santiago`.
 
 | Programa | Módulos (en secuencia, nunca en paralelo) | Cuándo |
 |---|---|---|

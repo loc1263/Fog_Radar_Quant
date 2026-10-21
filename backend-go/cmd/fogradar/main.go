@@ -3,7 +3,7 @@
 //	fogradar api        # sirve la API HTTP (Fase 1)
 //	fogradar openapi    # imprime el OpenAPI generado
 //	fogradar export     # instantánea JSON de la API para el sitio estático (--out, --modulo)
-//	fogradar job ...    # pipelines batch: un módulo, --todos o --programa (ver `fogradar job --list`)
+//	fogradar job ...    # pipelines batch: un módulo o --todos (ver `fogradar job --list`)
 //
 
 package main

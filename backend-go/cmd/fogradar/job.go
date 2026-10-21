@@ -29,25 +29,19 @@ const (
 
 // jobArgs es el resultado de parsear la línea de comandos de `fogradar job`.
 type jobArgs struct {
-	module    string
-	todos     bool
-	programa  string
-	solo      string
-	offline   bool
-	noCache   bool
-	trigger   string
-	pausa     *float64
-	reintento *int
-	esperar   *float64
-	list      bool
-	crontab   bool
-	backend   string
-	marcadas  map[string]any // opciones propias de módulo, por Dest()
-	flagOf    map[string]jobs.Option
+	module   string
+	todos    bool
+	solo     string
+	offline  bool
+	noCache  bool
+	pausa    *float64
+	list     bool
+	marcadas map[string]any // opciones propias de módulo, por Dest()
+	flagOf   map[string]jobs.Option
 }
 
 func parseJobArgs(args []string) (*jobArgs, error) {
-	a := &jobArgs{trigger: "cli", backend: "/opt/fog-radar/backend-go", marcadas: map[string]any{}, flagOf: map[string]jobs.Option{}}
+	a := &jobArgs{marcadas: map[string]any{}, flagOf: map[string]jobs.Option{}}
 	for _, m := range modules.All {
 		if p, ok := jobs.Get(string(m.Key)); ok {
 			for _, o := range p.Options {
@@ -80,24 +74,13 @@ func parseJobArgs(args []string) (*jobArgs, error) {
 			a.noCache = true
 		case "--list":
 			a.list = true
-		case "--crontab":
-			a.crontab = true
-		case "--programa", "--solo", "--trigger", "--backend-dir":
+		case "--solo":
 			v, err := get()
 			if err != nil {
 				return nil, err
 			}
-			switch flag {
-			case "--programa":
-				a.programa = v
-			case "--solo":
-				a.solo = v
-			case "--trigger":
-				a.trigger = v
-			default:
-				a.backend = v
-			}
-		case "--pausa", "--esperar":
+			a.solo = v
+		case "--pausa":
 			v, err := get()
 			if err != nil {
 				return nil, err
@@ -106,21 +89,7 @@ func parseJobArgs(args []string) (*jobArgs, error) {
 			if err != nil || f < 0 {
 				return nil, fmt.Errorf("%s: '%s' no es un número válido", flag, v)
 			}
-			if flag == "--pausa" {
-				a.pausa = &f
-			} else {
-				a.esperar = &f
-			}
-		case "--reintentos":
-			v, err := get()
-			if err != nil {
-				return nil, err
-			}
-			n, err := strconv.Atoi(v)
-			if err != nil || n < 0 {
-				return nil, fmt.Errorf("--reintentos: '%s' no es un entero válido", v)
-			}
-			a.reintento = &n
+			a.pausa = &f
 		default:
 			if strings.HasPrefix(flag, "--") {
 				o, ok := a.flagOf[flag]
@@ -148,21 +117,10 @@ func parseJobArgs(args []string) (*jobArgs, error) {
 			a.module = arg
 		}
 	}
-	if a.trigger != "cli" && a.trigger != "cron" && a.trigger != "api" {
-		return nil, fmt.Errorf("--trigger: '%s' inválido (cli | cron | api)", a.trigger)
-	}
 	if a.module != "" {
 		if _, ok := modules.ByKey(a.module); !ok {
 			return nil, fmt.Errorf("módulo desconocido: %s", a.module)
 		}
-	}
-	if a.programa != "" {
-		if _, ok := programaPorClave(a.programa); !ok {
-			return nil, fmt.Errorf("--programa: '%s' desconocido", a.programa)
-		}
-	}
-	if a.todos && a.programa != "" {
-		return nil, errors.New("--todos y --programa son excluyentes")
 	}
 	if a.offline && a.noCache {
 		return nil, errors.New("--offline y --no-cache son excluyentes: uno reutiliza lo descargado y el otro lo vuelve a pedir")
@@ -189,15 +147,6 @@ func aplicarSinCache(opciones map[string]map[string]any, mods []string) {
 	}
 }
 
-func programaPorClave(k string) (core.Programa, bool) {
-	for _, p := range core.Programas {
-		if p.Key == k {
-			return p, true
-		}
-	}
-	return core.Programa{}, false
-}
-
 // runJob implementa `fogradar job …` y devuelve el código de salida.
 func runJob(args []string, stdout, stderr io.Writer) int {
 	a, err := parseJobArgs(args)
@@ -205,16 +154,12 @@ func runJob(args []string, stdout, stderr io.Writer) int {
 		fmt.Fprintln(stderr, "fogradar job:", err)
 		return exitUso
 	}
-	if a.crontab {
-		fmt.Fprint(stdout, Crontab(a.backend, "/var/log/fog-radar"))
-		return exitOK
-	}
 	s, err := core.LoadSettings()
 	if err != nil {
 		fmt.Fprintln(stderr, "fogradar job:", err)
 		return exitUso
 	}
-	if a.list || (a.module == "" && !a.todos && a.programa == "") {
+	if a.list || (a.module == "" && !a.todos) {
 		listar(s, stdout)
 		return exitOK
 	}
@@ -223,14 +168,11 @@ func runJob(args []string, stdout, stderr io.Writer) int {
 	var mods []string
 	switch {
 	case a.module != "":
-		if a.todos || a.programa != "" || a.solo != "" {
-			fmt.Fprintln(stderr, "Indica un módulo o --todos/--programa, no ambos.")
+		if a.todos || a.solo != "" {
+			fmt.Fprintln(stderr, "Indica un módulo o --todos, no ambos.")
 			return exitUso
 		}
 		mods = []string{a.module}
-	case a.programa != "":
-		p, _ := programaPorClave(a.programa)
-		mods = append(mods, p.Modulos...)
 	default:
 		mods = append(mods, jobs.OrdenTodos...)
 		if a.solo != "" {
@@ -304,7 +246,7 @@ func runJob(args []string, stdout, stderr io.Writer) int {
 
 	log, closeLog := newLogger(s, stderr, "job")
 	defer closeLog()
-	log.Info("job: arranque", "args", strings.Join(args, " "), "trigger", a.trigger, "modulos", strings.Join(mods, ","),
+	log.Info("job: arranque", "args", strings.Join(args, " "), "modulos", strings.Join(mods, ","),
 		"offline", a.offline, "no_cache", a.noCache, "data_dir", s.DataDir, "yahoo_concurrencia", s.YahooConcurrencia)
 	tr := yahoo.NewTraffic(yahoo.PolicyFromSettings(s))
 	tr.SetLogger(func(f string, args ...any) { log.Warn(fmt.Sprintf(f, args...)) })
@@ -313,24 +255,10 @@ func runJob(args []string, stdout, stderr io.Writer) int {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
-	cron := a.trigger == "cron"
-	so := jobs.SecuenciaOpts{Trigger: a.trigger, Opciones: opciones, Omitir: omitir}
+	so := jobs.SecuenciaOpts{Opciones: opciones, Omitir: omitir}
 	if a.pausa != nil {
 		d := time.Duration(*a.pausa * float64(time.Second))
 		so.Pausa = &d
-	}
-	switch {
-	case a.reintento != nil:
-		so.Reintentos = a.reintento
-	case !cron:
-		zero := 0
-		so.Reintentos = &zero
-	}
-	switch {
-	case a.esperar != nil:
-		so.EsperarLock = time.Duration(*a.esperar * float64(time.Second))
-	case cron:
-		so.EsperarLock = time.Duration(s.PipelineLockEsperaS * float64(time.Second))
 	}
 
 	res, err := jobs.CorrerSecuencia(ctx, env, mods, so)
@@ -359,25 +287,4 @@ func listar(s *core.Settings, w io.Writer) {
 		}
 		fmt.Fprintf(w, "%-10s %-28s %s\n", m.Key, m.Title, estado)
 	}
-	ahora := time.Now().In(s.Loc)
-	fmt.Fprintln(w, "\nProgramación (producción):")
-	for _, p := range core.Programas {
-		fmt.Fprintf(w, "  %-8s %-32s %-36s próxima: %s\n", p.Key, p.Descripcion(), strings.Join(p.Modulos, " → "),
-			p.Proxima(ahora).Format("2006-01-02 15:04"))
-	}
-}
-
-// Crontab es el contenido del crontab del servidor backend.
-func Crontab(backendDir, logDir string) string {
-	var b strings.Builder
-	b.WriteString("# Fog Radar Quant — corridas batch (generado con: fogradar job --crontab)\n")
-	b.WriteString("# Horas de America/Santiago. CRON_TZ lo respeta cronie; con cron de Debian/Ubuntu\n")
-	b.WriteString("# la zona del servidor debe ser America/Santiago (timedatectl set-timezone America/Santiago).\n")
-	b.WriteString("CRON_TZ=America/Santiago\nSHELL=/bin/bash\nPATH=/usr/local/bin:/usr/bin:/bin\n\n")
-	for _, p := range core.Programas {
-		fmt.Fprintf(&b, "# %s: %s (%s)\n", p.Titulo, p.Descripcion(), strings.Join(p.Modulos, " → "))
-		fmt.Fprintf(&b, "%s cd %s && ./fogradar job --programa %s --trigger cron >> %s/pipelines-%s.log 2>&1\n",
-			p.Cron(), backendDir, p.Key, logDir, p.Key)
-	}
-	return b.String()
 }

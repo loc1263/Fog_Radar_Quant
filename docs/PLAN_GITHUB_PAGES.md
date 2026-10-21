@@ -95,11 +95,11 @@ Cada fase termina con una decisión explícita; si un criterio crítico falla, s
 - [ ] ¿Repo público o privado? Define si Pages es gratis y qué datos quedan visibles.
 - [ ] ¿Qué funciones se aceptan perder: evaluación en vivo, PDFs bajo demanda, escrituras?
 - [ ] ¿Con qué frecuencia se actualiza: diaria, semanal o manual?
-- [ ] ¿Se mantiene el sitio con servidor (Docker + Caddy) en paralelo, o la versión estática lo reemplaza?
+- [x] ¿Se mantiene el sitio con servidor? No: se eliminaron el BFF, el despliegue con Docker/Caddy/cron y las protecciones de la API (2026-10-21).
 - [ ] ¿Qué módulo se usa como piloto? Se sugiere ETF (a confirmar).
 
 **Si la vía estática se descarta**
 
-- Desplegar el front Node y el backend Go como contenedores en un servicio (Fly.io, Render, Railway o un VPS), como ya plantea el despliegue con Docker + Caddy.
+- Desplegar el front Node y el backend Go como contenedores en un servicio (Fly.io, Render, Railway o un VPS); habría que recuperar el BFF, el Dockerfile y las protecciones de la API desde el historial de git.
 - Front estático en Pages o Cloudflare Pages, con el backend Go en un servidor aparte. Exige exponer la API al navegador, así que la API key quedaría visible.
 - Mantener Actions solo para CI y los jobs programados, y publicar los resultados en otro destino.

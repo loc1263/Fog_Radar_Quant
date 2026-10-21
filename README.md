@@ -6,7 +6,6 @@ y tendencia/Markowitz Asia + EEUU. Repositorio privado.
 - `backend-go/` — API y pipelines en Go (huma + chi, sqlite sin CGO); ver `backend-go/README.md`
 - `frontend/`   — SvelteKit + TypeScript + Tailwind v4 + LayerChart (ver `frontend/README.md`)
 - `docs/`       — sistema de diseño, backlog, [metodologías](docs/METODOLOGIAS.md)
-- `deploy/`     — Docker/Caddy/cron para los 2 servidores productivos
 
 Plan y estado: [ROADMAP.md](ROADMAP.md) · Convenciones: [CLAUDE.md](CLAUDE.md)
 
@@ -62,21 +61,21 @@ Módulos: `cl_stocks`, `us_stocks`, `etf`, `tendencia`.
 
 ```bash
 # desde backend-go/ (con binario: ./bin/fogradar.exe ...; sin compilar: go run ./cmd/fogradar ...)
-fogradar job --list                       # módulos y programas disponibles
+fogradar job --list                       # módulos disponibles
 fogradar job cl_stocks                    # un módulo
 fogradar job etf --solo-analisis          # opciones propias de cada módulo
 fogradar job --todos                      # todos en secuencia (Chile, EEUU, Tendencia, ETF)
-fogradar job --programa diario            # el grupo diario (Chile, EEUU y Tendencia); también: semanal (ETFs)
+fogradar job --todos --solo cl_stocks,etf  # solo algunos módulos de la secuencia
 fogradar job --todos --offline            # reutiliza lo ya descargado, sin pedir a Yahoo
 fogradar job --todos --no-cache           # ignora cachés y vuelve a pedir todo
 ```
 
 - En Windows, doble clic en `correr_pipelines.bat` equivale a `job --todos`; compila el binario si falta y acepta los mismos argumentos (`correr_pipelines.bat etf`).
-- Opciones por módulo: `etf [--solo-analisis] [--refrescar-info]` · `tendencia [--skip-fetch] [--skip-discovery] [--macro] [--backfill] [--force-discovery] [--top-n N] [--max-weight X]`.
-- `--offline` y `--no-cache` son excluyentes. Otras opciones: `--pausa`, `--reintentos`, `--esperar`, `--crontab` (imprime el crontab de producción).
+- Opciones por módulo: `etf [--solo-analisis] [--refrescar-info]` · `tendencia [--skip-fetch] [--skip-discovery] [--macro] [--force-discovery] [--top-n N] [--max-weight X]`.
+- `--offline` y `--no-cache` son excluyentes. Otras opciones: `--solo mod1,mod2` (con `--todos`) y `--pausa SEGUNDOS` (espera entre módulos si el anterior falló o recibió 429).
 - Solo corre un pipeline a la vez (lock global). Códigos de salida: 0 ok, 1 falla, 2 uso, 3 ocupado.
 - Al terminar imprime una tabla resumen (tiempo HH:MM:SS, requests a Yahoo, 429) y los avisos. Detalle completo en `data/_jobs/logs/fogradar.log`.
-- Para probar sobre una copia de los datos: `DATA_DIR=/ruta fogradar job ...`. En producción los corre el cron (`deploy/backend/README.md`).
+- Para probar sobre una copia de los datos: `DATA_DIR=/ruta fogradar job ...`.
 
 ## Frontend
 
