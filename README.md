@@ -3,6 +3,8 @@
 Sitio unificado de análisis cuantitativo: ETFs, acciones EEUU, acciones Chile (IPSA)
 y tendencia/Markowitz Asia + EEUU.
 
+**Sitio publicado:** https://loc1263.github.io/Fog_Radar_Quant/ (se actualiza solo todos los días a las 18:00, hora de Santiago)
+
 - `backend-go/` — API y pipelines en Go (huma + chi, sqlite sin CGO); ver `backend-go/README.md`
 - `frontend/`   — SvelteKit + TypeScript + Tailwind v4 + LayerChart (ver `frontend/README.md`)
 - `docs/`       — sistema de diseño, backlog, [metodologías](docs/METODOLOGIAS.md)
