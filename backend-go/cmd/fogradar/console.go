@@ -24,6 +24,7 @@ type consoleHandler struct {
 	w       io.Writer
 	level   slog.Level
 	verbose bool
+	color   bool // salida a una terminal: colores ANSI (ver color.go)
 	st      *consoleState
 	attrs   []slog.Attr
 }
@@ -43,7 +44,7 @@ type avanceBarra struct {
 const tardanzaFinal = 2 * time.Second
 
 func newConsoleHandler(w io.Writer, lvl slog.Level) *consoleHandler {
-	return &consoleHandler{w: w, level: lvl, verbose: lvl <= slog.LevelDebug, st: &consoleState{avances: map[string]*avanceBarra{}}}
+	return &consoleHandler{w: w, level: lvl, verbose: lvl <= slog.LevelDebug, color: colorActivo(w), st: &consoleState{avances: map[string]*avanceBarra{}}}
 }
 
 func (h *consoleHandler) Enabled(_ context.Context, l slog.Level) bool { return l >= h.level }
@@ -122,14 +123,41 @@ func (h *consoleHandler) escribir(r slog.Record, texto string, blanco bool) erro
 	if blanco {
 		_, _ = fmt.Fprintln(h.w)
 	}
-	prefijo := fmt.Sprintf("%s  %s  ", r.Time.Format("15:04:05"), tag)
+	hora := r.Time.Format("15:04:05")
+	prefijo := fmt.Sprintf("%s  %s  ", hora, tag)
+	colores := map[string]string{"ERROR": ansiBoldRed, "AVISO": ansiBoldYel, "INFO ": ansiCyan, "DEBUG": ansiDim}
+	cabeza := pintar(h.color, ansiDim, hora) + "  " + pintar(h.color, colores[tag], tag) + "  "
 	if r.Level >= slog.LevelWarn {
 		// Un aviso largo (p. ej. una lista de 30 tickers) se reparte en varias líneas sangradas bajo el texto.
-		_, err := fmt.Fprint(h.w, jobs.EnvolverAviso(prefijo, texto))
-		return err
+		codigo := ansiYellow
+		if r.Level >= slog.LevelError {
+			codigo = ansiRed
+		}
+		lineas := strings.Split(strings.TrimRight(jobs.EnvolverAviso(prefijo, texto), "\n"), "\n")
+		for i, l := range lineas {
+			if i == 0 {
+				_, _ = fmt.Fprintln(h.w, cabeza+pintar(h.color, codigo, strings.TrimPrefix(l, prefijo)))
+			} else {
+				_, _ = fmt.Fprintln(h.w, pintar(h.color, codigo, l))
+			}
+		}
+		return nil
 	}
-	_, err := fmt.Fprintf(h.w, "%s%s\n", prefijo, texto)
+	_, err := fmt.Fprintf(h.w, "%s%s\n", cabeza, h.decorar(texto))
 	return err
+}
+
+// decorar colorea el texto de una línea INFO: encabezado de módulo, «OK», barras de avance y claves.
+func (h *consoleHandler) decorar(texto string) string {
+	switch {
+	case !h.color:
+		return texto
+	case strings.HasPrefix(texto, ">>> "):
+		return pintar(true, ansiBoldMag, texto)
+	case strings.HasPrefix(texto, "OK "):
+		return pintar(true, ansiBoldGrn, "OK") + decorarInfo(strings.TrimPrefix(texto, "OK"), true)
+	}
+	return decorarInfo(texto, true)
 }
 
 // enSilencio: registros por ticker que solo valen para el log de archivo.

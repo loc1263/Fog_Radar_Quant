@@ -75,6 +75,7 @@ fogradar job --todos --no-cache           # ignora cachés y vuelve a pedir todo
 - `--offline` y `--no-cache` son excluyentes. Otras opciones: `--solo mod1,mod2` (con `--todos`) y `--pausa SEGUNDOS` (espera entre módulos si el anterior falló o recibió 429).
 - Al terminar cada módulo, los jobs borran de `data/` lo de más de 7 días (`RETENCION_DIAS`; siempre queda lo más reciente de cada familia de archivos). A pedido: `fogradar prune [--dias N] [--dry-run]`.
 - Solo corre un pipeline a la vez (lock global). Códigos de salida: 0 ok, 1 falla, 2 uso, 3 ocupado.
+- La consola usa colores cuando la salida es una terminal (`NO_COLOR=1` los desactiva, `FORCE_COLOR=1` los fuerza).
 - Al terminar imprime una tabla resumen (tiempo HH:MM:SS, requests a Yahoo, 429) y los avisos. Detalle completo en `data/_jobs/logs/fogradar.log`.
 - Para probar sobre una copia de los datos: `DATA_DIR=/ruta fogradar job ...`.
 

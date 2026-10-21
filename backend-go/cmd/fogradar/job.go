@@ -270,7 +270,7 @@ func runJob(args []string, stdout, stderr io.Writer) int {
 		fmt.Fprintln(stderr, "fogradar job:", err)
 		return exitFalla
 	}
-	fmt.Fprintln(stdout, "\n"+jobs.Resumen(res))
+	fmt.Fprintln(stdout, "\n"+colorearResumen(jobs.Resumen(res), colorActivo(stdout)))
 	for _, r := range res {
 		if r.Estado == jobs.EstadoError {
 			return exitFalla

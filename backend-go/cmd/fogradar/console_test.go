@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
@@ -182,5 +183,48 @@ func TestConsolaPartePorLineaLosAvisosLargos(t *testing.T) {
 	}
 	if !strings.Contains(strings.Join(ls, " "), "BHP (Australia)") {
 		t.Error("no debe perderse texto")
+	}
+}
+
+func TestColorSoloEnTerminalYConCodigosAnsi(t *testing.T) {
+	// En un buffer (no es una terminal) la salida es texto plano.
+	l, buf := logConsola(slog.LevelInfo)
+	l.Warn("aviso corto")
+	if strings.Contains(buf.String(), "\033[") {
+		t.Fatalf("sin terminal no debe haber colores: %q", buf.String())
+	}
+	// Con color forzado, cada nivel y la barra de avance llevan su código.
+	var out bytes.Buffer
+	h := newConsoleHandler(&out, slog.LevelInfo)
+	h.color = true
+	lg := slog.New(h)
+	lg.Warn("cuidado")
+	lg.Error("falló")
+	lg.Info("OK", "modulo", "etf")
+	lg.Info("inicio", "modulo", "etf")
+	s := out.String()
+	for _, want := range []string{ansiBoldYel + "AVISO", ansiBoldRed + "ERROR", ansiBoldGrn + "OK", ansiBoldMag + ">>> etf", ansiDim + "modulo="} {
+		if !strings.Contains(s, want) {
+			t.Errorf("falta %q en:\n%s", want, s)
+		}
+	}
+	if got := decorarInfo("etf                [##########----------]  50%  5/10", true); !strings.Contains(got, ansiGreen+"##########") || !strings.Contains(got, ansiBold+" 50%") && !strings.Contains(got, ansiBold+"50%") {
+		t.Errorf("barra sin colorear: %q", got)
+	}
+}
+
+func TestColorearResumen(t *testing.T) {
+	res := "Resumen de la corrida\n  Módulo  Estado   Tiempo\n  etf     OK       00:03:14\n  cl      ERROR    00:00:01\n  us      omitido  -\n  Tiempo total: 00:03:15\n\nResultados\n  etf  corrida 1\n  cl   ERROR: boom\n\nSin avisos."
+	if got := colorearResumen(res, false); got != res {
+		t.Fatal("sin color no debe cambiar nada")
+	}
+	got := colorearResumen(res, true)
+	for _, want := range []string{ansiBoldGrn + "OK", ansiBoldRed + "ERROR", ansiYellow + "omitido", ansiBoldMag + "Resultados", ansiGreen + "Sin avisos.", ansiRed + "ERROR: boom"} {
+		if !strings.Contains(got, want) {
+			t.Errorf("falta %q en:\n%s", want, got)
+		}
+	}
+	if strip := regexp.MustCompile(`\x1b\[[0-9;]*m`).ReplaceAllString(got, ""); strip != res {
+		t.Errorf("al quitar los colores debe quedar el texto original:\n%s", strip)
 	}
 }
