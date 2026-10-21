@@ -60,6 +60,10 @@ ROADMAP): usa el último `macro_data_*.csv` disponible, si existe.
 
 ---
 
+**Retención de datos.** Los jobs borran de `data/` lo de más de 7 días (`RETENCION_DIAS`, `fogradar prune`): por la fecha del nombre, conservando siempre lo más reciente de cada familia de archivos. La consistencia del momentum de ETF se mide contra el `etf_perf_data_*` más antiguo de `etf/hist/`; ese archivo se conserva como ancla (si no, la comparación se movería cada día).
+
+---
+
 ## 1. Acciones Chile (IPSA)
 
 Archivos: `internal/modules/cl/{extractor,scoring,pipeline}.go`, `internal/fx/fx.go`.

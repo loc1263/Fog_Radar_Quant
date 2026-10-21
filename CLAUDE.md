@@ -53,6 +53,7 @@ módulo: **docs/METODOLOGIAS.md** (actualizarla si cambia la lógica).
 - La API (`fogradar api`) es de solo lectura y de uso local (`/docs`, `gen:api`, `export`): sin
   autenticación, rate limit ni CORS. Toda la salida del sitio pasa por `fogradar export`.
 - Las secuencias de pipelines toman el lock global (`core.LockPipelines`): nunca hay dos a la vez.
+- **Retención:** los jobs conservan solo 7 días de datos en `data/` (`internal/retencion`, `RETENCION_DIAS`); se borra por la fecha del nombre y nunca la entrada más reciente de cada familia. Excepción: el `etf_perf_data_*` más antiguo de `etf/hist` (ancla de la consistencia del momentum de ETF).
 - Cada corrida deja su detalle en `data/_jobs/logs/fogradar.log` y un resumen (tiempo HH:MM:SS y avisos).
 
 ## Convenciones de módulos (ADR 0002)

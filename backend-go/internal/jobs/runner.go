@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"fogradar/internal/core"
+	"fogradar/internal/retencion"
 	"fogradar/internal/yahoo"
 )
 
@@ -91,6 +92,9 @@ func CorrerSecuencia(ctx context.Context, env *Env, modulos []string, o Secuenci
 		r.Inicio, r.Fin = t0, time.Now()
 		r.Duracion = r.Fin.Sub(t0).Round(100 * time.Millisecond)
 		r.Avisos = tomarAvisos()
+		if r.Estado == EstadoOK {
+			podar(env, m)
+		}
 		res = append(res, r)
 		pendientes--
 		if pendientes > 0 && pausa > 0 && ctx.Err() == nil {
@@ -173,4 +177,20 @@ func correrModulo(ctx context.Context, env *Env, reg *core.JobRegistry, modulo s
 	}
 	env.Log.Info("OK", "modulo", modulo, "duracion_s", time.Since(t0).Round(100*time.Millisecond).Seconds(), "mensaje", r.Mensaje)
 	return r
+}
+
+// podar borra de data/<modulo> lo que supera la retención (RETENCION_DIAS). Un fallo solo se avisa.
+func podar(env *Env, modulo string) {
+	if env.S.RetencionDias <= 0 {
+		return
+	}
+	res, err := retencion.PodarModulo(env.S, modulo, env.S.RetencionDias, time.Now(), false)
+	if err != nil {
+		env.Log.Warn("no se pudo aplicar la retención de datos", "modulo", modulo, "error", err)
+		return
+	}
+	if len(res.Eliminados) > 0 {
+		env.Log.Info("retención: datos antiguos eliminados", "modulo", modulo, "dias", env.S.RetencionDias,
+			"archivos", len(res.Eliminados), "mb", res.Bytes/(1<<20))
+	}
 }

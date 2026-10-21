@@ -2,6 +2,7 @@
 //
 //	fogradar api        # sirve la API HTTP (Fase 1)
 //	fogradar openapi    # imprime el OpenAPI generado
+//	fogradar prune      # borra de data/ lo que supera RETENCION_DIAS (--dias N, --dry-run)
 //	fogradar export     # instantánea JSON de la API para el sitio estático (--out, --modulo)
 //	fogradar job ...    # pipelines batch: un módulo o --todos (ver `fogradar job --list`)
 //
@@ -41,7 +42,7 @@ func main() {
 	}
 }
 
-var errUso = errors.New("uso: fogradar [api|openapi|export|job]")
+var errUso = errors.New("uso: fogradar [api|openapi|export|prune|job]")
 
 func newHost() (*api.Host, error) {
 	s, err := core.LoadSettings()
@@ -64,6 +65,9 @@ func run(cmd string) error {
 		return serve()
 	case "job":
 		os.Exit(runJob(os.Args[2:], os.Stdout, os.Stderr))
+		return nil
+	case "prune":
+		os.Exit(runPrune(os.Args[2:], os.Stdout, os.Stderr))
 		return nil
 	case "export":
 		os.Exit(runExport(os.Args[2:], os.Stdout, os.Stderr))
