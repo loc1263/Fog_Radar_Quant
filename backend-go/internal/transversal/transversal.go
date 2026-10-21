@@ -94,6 +94,20 @@ type BusquedaResponse struct {
 	Resultados []ResultadoBusqueda `json:"resultados"`
 }
 
+// EntradaIndice es una entrada del índice completo, con su módulo y el orden del módulo en el sitio.
+type EntradaIndice struct {
+	EntradaBusqueda
+	Modulo       string `json:"modulo"`
+	TituloModulo string `json:"titulo_modulo"`
+	Orden        int    `json:"orden" doc:"Posición del módulo en el sitio (desempata los resultados)."`
+}
+
+// IndiceResponse es el índice de búsqueda completo: el sitio estático busca con él en el navegador.
+type IndiceResponse struct {
+	GeneradoEn core.Fecha      `json:"generado_en"`
+	Entradas   []EntradaIndice `json:"entradas"`
+}
+
 // Provider es lo que cada módulo expone al hub y al buscador.
 type Provider interface {
 	ResumenHub(s *core.Settings) (*ResumenModulo, error)
@@ -309,13 +323,32 @@ func Buscar(s *core.Settings, consulta string, limite int) BusquedaResponse {
 	return out
 }
 
-// Register agrega /api/hub y /api/buscar.
+// IndiceCompleto reúne el índice de búsqueda de todos los módulos.
+func IndiceCompleto(s *core.Settings, ahora time.Time) IndiceResponse {
+	out := IndiceResponse{GeneradoEn: core.Fecha{Time: ahora}, Entradas: []EntradaIndice{}}
+	for ord, info := range modules.All {
+		for _, e := range indice(s, string(info.Key)) {
+			out.Entradas = append(out.Entradas, EntradaIndice{
+				EntradaBusqueda: e, Modulo: string(info.Key), TituloModulo: info.Title, Orden: ord})
+		}
+	}
+	return out
+}
+
+// Register agrega /api/hub, /api/buscar y /api/buscar/indice.
 func Register(h *api.Host) {
 	api.Protected(h, huma.Operation{
 		OperationID: "get_hub", Method: http.MethodGet, Path: "/api/hub",
 		Summary: "Estado, frescura y top 3 de cada módulo", Tags: []string{"Transversal"},
 	}, func(context.Context, *struct{}) (*struct{ Body HubResponse }, error) {
 		return &struct{ Body HubResponse }{Hub(h.S, h.Jobs, time.Now().In(h.S.Loc))}, nil
+	})
+
+	api.Protected(h, huma.Operation{
+		OperationID: "get_buscar_indice", Method: http.MethodGet, Path: "/api/buscar/indice",
+		Summary: "Índice de búsqueda completo (para buscar en el cliente, sitio estático)", Tags: []string{"Transversal"},
+	}, func(context.Context, *struct{}) (*struct{ Body IndiceResponse }, error) {
+		return &struct{ Body IndiceResponse }{IndiceCompleto(h.S, time.Now().In(h.S.Loc))}, nil
 	})
 
 	op := huma.Operation{

@@ -21,6 +21,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/buscar/indice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Índice de búsqueda completo (para buscar en el cliente, sitio estático) */
+        get: operations["get_buscar_indice"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/cl/history/diff": {
         parameters: {
             query?: never;
@@ -1120,6 +1137,31 @@ export interface components {
             /** @enum {string} */
             unidad: "texto" | "numero" | "monto" | "multiplo" | "pct" | "pct_pts" | "cantidad" | "fecha";
         };
+        EntradaIndice: {
+            /** @description Dónde aparece (p. ej. "Top 15", "Portafolio Asia + EEUU"). */
+            contexto: string | null;
+            metrica: string;
+            modulo: string;
+            nombre: string | null;
+            /**
+             * Format: int64
+             * @description Posición del módulo en el sitio (desempata los resultados).
+             */
+            orden: number;
+            /**
+             * Format: int64
+             * @description Posición en el ranking del módulo (1 = mejor), si aplica.
+             */
+            posicion: number | null;
+            ticker: string;
+            titulo_modulo: string;
+            /** Format: int64 */
+            total: number | null;
+            /** @enum {string} */
+            unidad: "fraccion" | "numero";
+            /** Format: double */
+            valor: number | null;
+        };
         ErrorResponse: {
             /** @description Código estable (no_data, busy, rate_limited…) */
             code: string;
@@ -1755,6 +1797,11 @@ export interface components {
             /** Format: date-time */
             generado_en: string | null;
             grupos: string[];
+        };
+        IndiceResponse: {
+            entradas: components["schemas"]["EntradaIndice"][];
+            /** Format: date-time */
+            generado_en: string;
         };
         JobRecord: {
             /** Format: double */
@@ -2559,6 +2606,44 @@ export interface operations {
             };
             /** @description Unprocessable Entity */
             422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    get_buscar_indice: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["IndiceResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };

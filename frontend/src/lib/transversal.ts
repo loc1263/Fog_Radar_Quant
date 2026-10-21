@@ -1,5 +1,11 @@
 /** Lógica del hub y del buscador global (sin Svelte: se testea con Vitest). */
-import type { Frescura, ResultadoBusqueda, Unidad } from '$lib/api/types';
+import type {
+	BusquedaResponse,
+	EntradaIndice,
+	Frescura,
+	ResultadoBusqueda,
+	Unidad
+} from '$lib/api/types';
 import { fmtNumber, fmtPct } from '$lib/format';
 
 type Signal = 'positive' | 'negative' | 'mixed' | 'neutral';
@@ -56,4 +62,49 @@ export function fmtPosicion(posicion: number | null | undefined, total: number |
 /** Consulta normalizada del buscador (la API acepta 1 a 40 caracteres). */
 export function limpiarConsulta(q: string | null | undefined): string {
 	return (q ?? '').trim().slice(0, 40);
+}
+
+/** Quita tildes, pasa a minúsculas y colapsa espacios (igual que `normalizar` del backend). */
+function normalizar(t: string): string {
+	return t
+		.normalize('NFKD')
+		.replace(/\s+/g, ' ')
+		.replace(/[^ -~]/g, '') // solo ASCII imprimible: sin tildes ni otros símbolos
+		.toLowerCase()
+		.trim();
+}
+
+/** «VAPORES.SN» → «vapores»; «^VIX» → «vix». */
+function baseTicker(t: string): string {
+	return normalizar(t.split('.')[0].replace(/^\^+/, ''));
+}
+
+/**
+ * Buscador global en el navegador sobre el índice exportado (`/api/buscar/indice`). Misma regla que
+ * `transversal.Buscar` del backend: ticker exacto o sin sufijo de bolsa, luego prefijo, luego nombre
+ * (desde 3 letras); dentro de cada grupo, por módulo y posición en su ranking.
+ */
+export function buscarEnIndice(
+	entradas: readonly EntradaIndice[],
+	consulta: string,
+	limite = 50
+): BusquedaResponse {
+	const q = normalizar(consulta);
+	const items: { key: [number, number, number]; r: ResultadoBusqueda }[] = [];
+	if (q) {
+		for (const e of entradas) {
+			const t = normalizar(e.ticker);
+			let grupo: number;
+			if (t === q || baseTicker(e.ticker) === q) grupo = 0;
+			else if (t.startsWith(q)) grupo = 1;
+			else if (q.length >= 3 && e.nombre && normalizar(e.nombre).includes(q)) grupo = 2;
+			else continue;
+			items.push({
+				key: [grupo, e.orden, e.posicion ?? 1_000_000],
+				r: { ...e, exacto: grupo === 0 }
+			});
+		}
+	}
+	items.sort((a, b) => a.key[0] - b.key[0] || a.key[1] - b.key[1] || a.key[2] - b.key[2]);
+	return { consulta, resultados: items.slice(0, limite).map((i) => i.r) };
 }

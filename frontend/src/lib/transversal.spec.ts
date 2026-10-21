@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { destinoResultado, fmtEdad, fmtPosicion, fmtValor, limpiarConsulta } from './transversal';
+import {
+	buscarEnIndice,
+	destinoResultado,
+	fmtEdad,
+	fmtPosicion,
+	fmtValor,
+	limpiarConsulta
+} from './transversal';
 
 describe('transversal', () => {
 	it('formatea el valor según la unidad', () => {
@@ -33,5 +40,50 @@ describe('transversal', () => {
 		expect(fmtPosicion(null, 5)).toBe('—');
 		expect(limpiarConsulta('  mu  ')).toBe('mu');
 		expect(limpiarConsulta('x'.repeat(50))).toHaveLength(40);
+	});
+});
+
+describe('buscarEnIndice', () => {
+	const e = (
+		ticker: string,
+		nombre: string | null,
+		modulo: string,
+		orden: number,
+		posicion: number | null
+	) => ({
+		ticker,
+		nombre,
+		modulo,
+		orden,
+		posicion,
+		titulo_modulo: modulo,
+		total: null,
+		valor: null,
+		metrica: 'Score',
+		unidad: 'numero' as const,
+		contexto: null
+	});
+	const indice = [
+		e('VAPORES.SN', 'Compañía Sud Americana de Vapores', 'cl_stocks', 0, 5),
+		e('VAP', 'Vanguard Aperture', 'etf', 3, 2),
+		e('SPY', 'SPDR S&P 500', 'etf', 3, 1),
+		e('SPYG', 'SPDR Growth', 'etf', 3, 9)
+	];
+
+	it('ticker exacto o sin sufijo de bolsa va primero, luego prefijo, luego nombre', () => {
+		const r = buscarEnIndice(indice, 'vapores');
+		expect(r.resultados.map((x) => x.ticker)).toEqual(['VAPORES.SN']);
+		expect(r.resultados[0].exacto).toBe(true);
+		const s = buscarEnIndice(indice, 'spy').resultados;
+		expect(s.map((x) => x.ticker)).toEqual(['SPY', 'SPYG']);
+		expect(s.map((x) => x.exacto)).toEqual([true, false]);
+	});
+	it('busca por nombre sin tildes desde 3 letras y respeta el límite', () => {
+		expect(buscarEnIndice(indice, 'compania').resultados).toHaveLength(1);
+		expect(buscarEnIndice(indice, 'co').resultados).toHaveLength(0);
+		expect(buscarEnIndice(indice, 'sp', 1).resultados).toHaveLength(1);
+	});
+	it('consulta vacía no devuelve nada', () => {
+		expect(buscarEnIndice(indice, '  ').resultados).toEqual([]);
 	});
 });

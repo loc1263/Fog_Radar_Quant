@@ -97,9 +97,9 @@ npm run autofix && npm run check && npm run lint && npm test   # validaciones pr
 npm run gen:api                # regenera los tipos TS desde el OpenAPI del backend (backend arriba)
 ```
 
-## Sitio estático (en migración: ETF y Chile listos)
+## Sitio estático (en migración: hub, buscador, ETF y Chile listos)
 
-Objetivo: publicar el sitio como SPA en GitHub Pages ([plan](docs/PLAN_GITHUB_PAGES.md)). Las vistas de **ETF y Chile** ya leen JSON
+Objetivo: publicar el sitio como SPA en GitHub Pages ([plan](docs/PLAN_GITHUB_PAGES.md)). El **hub, el buscador, ETF y Chile** ya leen JSON
 estático en vez de llamar al backend; EEUU y Tendencia siguen con el backend (BFF) hasta migrarlas.
 
 ```bash
@@ -112,6 +112,7 @@ cd ../frontend && STATIC_BUILD=1 BASE_PATH=/Fog_Radar_Quant npm run build     # 
 - `fogradar export` llama a la API en proceso y guarda cada GET en `static/data/<ruta>.json` (carpeta fuera de git), más un `manifest.json`.
   Deja también el PDF de ETF, la trayectoria por ticker y el diff entre corridas (ETF: cada una contra la anterior; Chile: todos los pares).
 - En Git Bash de Windows, `BASE_PATH=/x` se convierte en una ruta de disco: antepón `MSYS_NO_PATHCONV=1`.
+- El buscador global corre en el navegador sobre `api/buscar/indice.json` (~200 KB); el hub muestra la frescura calculada al exportar, no al abrir la página.
 - `404.html` hace de fallback SPA (lo que GitHub Pages sirve para rutas desconocidas).
 
 ## Sitio

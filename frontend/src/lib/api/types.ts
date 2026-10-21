@@ -22,6 +22,7 @@ export type Frescura = HubModulo['frescura'];
 export type Unidad = HubModulo['unidad'];
 export type BusquedaResponse = Schemas['BusquedaResponse'];
 export type ResultadoBusqueda = Schemas['ResultadoBusqueda'];
+export type EntradaIndice = Schemas['EntradaIndice'];
 
 // --- Historial común (history.db de cada módulo) ---
 export type HistDiff = Schemas['HistDiff'];

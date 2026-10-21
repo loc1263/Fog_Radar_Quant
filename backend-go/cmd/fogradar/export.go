@@ -104,8 +104,11 @@ func rutasExportables(h *api.Host, modulos []string) []string {
 	return rutas
 }
 
+// transversales se exportan siempre: reúnen a todos los módulos (portada y buscador).
+var transversales = map[string]bool{"/api/hub": true, "/api/buscar/indice": true}
+
 func moduloIncluido(path string, modulos []string) bool {
-	if len(modulos) == 0 {
+	if len(modulos) == 0 || transversales[path] {
 		return true
 	}
 	for _, m := range modulos {
