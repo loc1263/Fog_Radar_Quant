@@ -6,10 +6,7 @@ package pdf
 import (
 	"bytes"
 	"embed"
-	"fmt"
 	"math"
-	"strconv"
-	"strings"
 
 	"github.com/go-pdf/fpdf"
 )
@@ -74,47 +71,6 @@ type Cell struct {
 	Right bool
 }
 
-// New crea el documento con título (izquierda del encabezado) y texto derecho.
-func New(titulo, derecha, metaTitulo string) (*Doc, error) {
-	f := fpdf.New("L", "pt", "Letter", "")
-	for estilo, archivo := range map[string]string{"": "Carlito-Regular.ttf", "B": "Carlito-Bold.ttf", "I": "Carlito-Italic.ttf"} {
-		b, err := fonts.ReadFile("fonts/" + archivo)
-		if err != nil {
-			return nil, err
-		}
-		f.AddUTF8FontFromBytes(fam, estilo, b)
-	}
-	f.SetMargins(margenL, margenTop, margenR)
-	f.SetAutoPageBreak(false, margenBot)
-	f.SetCellMargin(0)
-	f.SetTitle(metaTitulo, true)
-	f.SetAuthor("Fog Radar Quant", true)
-	f.AliasNbPages("{nb}")
-	f.SetHeaderFunc(func() {
-		f.SetFillColor(AmbarPale[0], AmbarPale[1], AmbarPale[2])
-		f.Rect(0, 0, pageW, 58, "F")
-		f.SetTextColor(Navy[0], Navy[1], Navy[2])
-		f.SetFont(fam, "B", 22)
-		f.Text(margenL, 34, titulo)
-		f.SetFont(fam, "", 11)
-		f.SetTextColor(0, 0, 0)
-		f.Text(pageW-margenR-f.GetStringWidth(derecha), 34, derecha)
-		f.SetY(margenTop)
-	})
-	f.SetFooterFunc(func() {
-		f.SetDrawColor(Borde[0], Borde[1], Borde[2])
-		f.SetLineWidth(0.75)
-		f.Line(margenL, pageH-32, pageW-margenR, pageH-32)
-		f.SetFont(fam, "", 10)
-		f.SetTextColor(0, 0, 0)
-		f.Text(margenL, pageH-18, Disclaimer)
-		pag := fmt.Sprintf("Página %d de {nb}", f.PageNo())
-		f.Text(pageW-margenR-f.GetStringWidth(pag), pageH-18, pag)
-	})
-	f.AddPage()
-	return &Doc{f: f, W: pageW, H: pageH, ML: margenL, MR: margenR, MT: margenTop, MB: margenBot, FW: FrameW, PadX: cellPadX, PadY: cellPadY}, nil
-}
-
 // PageBreak fuerza una página nueva.
 func (d *Doc) PageBreak() { d.f.AddPage() }
 
@@ -141,15 +97,6 @@ func (d *Doc) paragraph(texto string, estilo string, size, leading float64, c RG
 	}
 	d.f.SetY(d.f.GetY() + despues)
 }
-
-// Seccion es un título de sección (ámbar, negrita 11 pt).
-func (d *Doc) Seccion(t string) { d.paragraph(t, "B", 11, 14, Ambar, 4, 6) }
-
-// Nota es un párrafo de 11 pt negro.
-func (d *Doc) Nota(t string) { d.paragraph(t, "", 11, 14, Negro, 0, 0) }
-
-// Badge es un subtítulo en negrita de color (verde/azul/rojo).
-func (d *Doc) Badge(t string, c RGB) { d.paragraph(t, "B", 11, 14, c, 6, 4) }
 
 // Bytes cierra el documento y devuelve el PDF.
 func (d *Doc) Bytes() ([]byte, error) {
@@ -281,80 +228,3 @@ func (d *Doc) Tabla(headers []string, aligns []string, fracs []float64, filas []
 
 // Vacio es el guion largo de los valores faltantes.
 const Vacio = "—"
-
-// Num formatea con separador de miles y dec decimales; v nil → «—».
-func Num(v *float64, dec int) string {
-	if v == nil || math.IsNaN(*v) {
-		return Vacio
-	}
-	return group(strconv.FormatFloat(*v, 'f', dec, 64))
-}
-
-func group(s string) string {
-	neg := strings.HasPrefix(s, "-")
-	s = strings.TrimPrefix(s, "-")
-	ent, frac, _ := strings.Cut(s, ".")
-	var b strings.Builder
-	for i, r := range ent {
-		if i > 0 && (len(ent)-i)%3 == 0 {
-			b.WriteByte(',')
-		}
-		b.WriteRune(r)
-	}
-	out := b.String()
-	if frac != "" {
-		out += "." + frac
-	}
-	if neg {
-		out = "-" + out
-	}
-	return out
-}
-
-// Pct formatea un porcentaje ya expresado en puntos (12.3 → «+12.30%»).
-func Pct(v *float64, dec int) string {
-	if v == nil || math.IsNaN(*v) {
-		return Vacio
-	}
-	signo := ""
-	if *v > 0 {
-		signo = "+"
-	}
-	return signo + Num(v, dec) + "%"
-}
-
-// FechaYYYYMMDD: «20260924» → «24/09/2026» (otros formatos se devuelven tal cual).
-func FechaYYYYMMDD(s string) string {
-	s, _, _ = strings.Cut(s, ".")
-	if len(s) == 8 {
-		if _, err := strconv.Atoi(s); err == nil {
-			return s[6:8] + "/" + s[4:6] + "/" + s[0:4]
-		}
-	}
-	if s == "" {
-		return Vacio
-	}
-	return s
-}
-
-// Signo es una celda numérica verde/roja según el signo (solo para datos clave: deltas, z-scores).
-func Signo(v *float64, dec int) Cell {
-	if v == nil || math.IsNaN(*v) {
-		return Cell{Text: Vacio}
-	}
-	c := Negro
-	switch {
-	case *v > 0:
-		c = Verde
-	case *v < 0:
-		c = Rojo
-	}
-	signo := ""
-	if *v > 0 {
-		signo = "+"
-	}
-	return Cell{Text: signo + Num(v, dec), Bold: true, Color: c}
-}
-
-// Acento es una celda destacada en ámbar (score principal de cada tabla).
-func Acento(texto string) Cell { return Cell{Text: texto, Bold: true, Color: Ambar} }

@@ -43,10 +43,3 @@ test('rotación y categorías', async ({ page }) => {
 	await page.getByRole('button', { name: /Ver los 7 ETFs de Commodities Broad Basket/ }).click();
 	await expect(page.getByText('7 ETFs en la categoría')).toBeVisible();
 });
-
-test('descarga del PDF exportado', async ({ request }) => {
-	const res = await request.get('/data/api/etf/pdf.pdf');
-	expect(res.status()).toBe(200);
-	expect(res.headers()['content-type']).toBe('application/pdf');
-	expect((await res.body()).subarray(0, 4).toString()).toBe('%PDF');
-});

@@ -19,7 +19,7 @@ import (
 )
 
 // Instantánea estática de la API (sitio en GitHub Pages): llama en proceso a cada GET sin parámetros
-// obligatorios y guarda la respuesta en <out>/<ruta>.json (los PDF, en .pdf). Sin red.
+// obligatorios y guarda la respuesta en <out>/<ruta>.json. Sin red.
 
 // expansion pide, además, un GET por cada valor de `campo` de la respuesta de `origen`.
 type expansion struct {
@@ -124,15 +124,14 @@ func exportar(h *api.Host, a *exportArgs, now time.Time) (*exportManifest, error
 		handler.ServeHTTP(rec, req)
 		e := exportEntrada{Ruta: ruta, Estado: rec.Code}
 		tipo := rec.Header().Get("Content-Type")
-		ext := map[bool]string{true: ".json", false: ".pdf"}[strings.Contains(tipo, "json")]
-		if rec.Code == http.StatusOK && (ext == ".json" || strings.Contains(tipo, "pdf")) {
+		if rec.Code == http.StatusOK && strings.Contains(tipo, "json") {
 			body := rec.Body.Bytes()
 			if filtro != nil {
 				body = filtro(body)
 			}
 			cuerpos[archivo] = body
 			e.Bytes = len(body)
-			if err := escribir(archivoDe(a.out, archivo, ext), body); err != nil {
+			if err := escribir(archivoDe(a.out, archivo, ".json"), body); err != nil {
 				e.Estado = http.StatusInternalServerError
 			}
 		}

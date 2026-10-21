@@ -56,8 +56,7 @@ export const MODULES: ModuleNav[] = [
 			{ label: 'Top 15 Perf. + Beta', href: '/etf/top15-simple' },
 			{ label: 'Top 15 Vanguard', href: '/etf/top15-vanguard' },
 			{ label: 'Top 15 Momentum', href: '/etf/momentum' },
-			{ label: 'Top 15 Cap.', href: '/etf/top15-cap' },
-			{ label: 'Descargar', href: '/etf/descargar' }
+			{ label: 'Top 15 Cap.', href: '/etf/top15-cap' }
 		]
 	},
 	{

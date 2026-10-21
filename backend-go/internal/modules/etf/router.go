@@ -13,8 +13,6 @@ const tag = "ETFs"
 
 // Register agrega los endpoints de /api/etf. El GET /api/status del proyecto original es GET /api/etf/resumen. Todas las lecturas toman el lock de data/etf/current (503 «busy» si
 // el pipeline lo tiene más de 15 s).
-//
-// GET /pdf (informe ejecutivo) se genera con internal/pdf (Carlito) y se cachea por la firma de los CSV.
 func Register(h *api.Host) {
 	op := func(id, method, path, summary string) huma.Operation {
 		return huma.Operation{OperationID: id, Method: method, Path: "/api/etf" + path, Summary: summary, Tags: []string{tag}}
@@ -29,7 +27,6 @@ func Register(h *api.Host) {
 		})
 	}
 
-	registerPDF(h)
 
 	api.Public(h, op("etf_resumen", http.MethodGet, "/resumen", "Resumen de la corrida vigente + parámetros del modelo"),
 		func(context.Context, *struct{}) (*struct{ Body EtfResumen }, error) {

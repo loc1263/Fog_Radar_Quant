@@ -106,7 +106,7 @@ cd ../frontend && BASE_PATH=/Fog_Radar_Quant npm run build     # salida en front
 ```
 
 - `fogradar export` llama a la API en proceso y guarda cada GET en `static/data/<ruta>.json` (carpeta fuera de git), más un `manifest.json`.
-  Deja también el PDF de ETF, los archivos de la última corrida de Tendencia y los precios de las sparklines de EEUU. `--modulo etf,cl` limita qué módulos se exportan. Las rutas `/history/*` no se exportan: el sitio estático no tiene vistas de historial.
+  Deja también los archivos de la última corrida de Tendencia y los precios de las sparklines de EEUU. `--modulo etf,cl` limita qué módulos se exportan. Las rutas `/history/*` no se exportan: el sitio estático no tiene vistas de historial.
 - En Git Bash de Windows, `BASE_PATH=/x` se convierte en una ruta de disco: antepón `MSYS_NO_PATHCONV=1`.
 - El hub muestra la frescura calculada al exportar, no al abrir la página.
 - `404.html` hace de fallback SPA (lo que GitHub Pages sirve para rutas desconocidas).
