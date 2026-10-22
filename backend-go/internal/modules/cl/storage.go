@@ -9,16 +9,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/xuri/excelize/v2"
-
 	"fogradar/internal/core"
 	"fogradar/internal/quant"
 )
 
 // Archivos de cada corrida (data/cl_stocks/runs/<id>/):
 //
-//	indicadores.csv (+ .xlsx): salida del extractor
-//	ranking.csv     (+ .xlsx): salida del scoring
+//	indicadores.csv: salida del extractor
+//	ranking.csv:     salida del scoring
 const (
 	ArchivoIndicadores = "indicadores"
 	ArchivoRanking     = "ranking"
@@ -109,15 +107,12 @@ func escribirAtomico(destino string, write func(*os.File) error) error {
 	return os.Rename(tmp, destino)
 }
 
-// Guardar escribe <dir>/<nombre>.xlsx y .csv (el CSV al final: es el que lee la API) y devuelve la ruta del CSV.
+// Guardar escribe <dir>/<nombre>.csv (el que lee la API) y devuelve su ruta.
 func Guardar(df *quant.Frame, dir, nombre string) (string, error) {
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return "", err
 	}
 	base := filepath.Join(dir, nombre)
-	if err := escribirAtomico(base+".xlsx", func(f *os.File) error { return writeXLSX(df, f) }); err != nil {
-		return "", err
-	}
 	err := escribirAtomico(base+".csv", func(f *os.File) error {
 		w := bufio.NewWriter(f)
 		if err := df.WriteCSV(w); err != nil {
@@ -126,29 +121,4 @@ func Guardar(df *quant.Frame, dir, nombre string) (string, error) {
 		return w.Flush()
 	})
 	return base + ".csv", err
-}
-
-func writeXLSX(df *quant.Frame, f *os.File) error {
-	x := excelize.NewFile()
-	defer func() { _ = x.Close() }()
-	const sheet = "Sheet1"
-	for j, c := range df.Cols {
-		cell, _ := excelize.CoordinatesToCellName(j+1, 1)
-		if err := x.SetCellValue(sheet, cell, c.Name); err != nil {
-			return err
-		}
-	}
-	for i := 0; i < df.N; i++ {
-		for j, c := range df.Cols {
-			v := c.Value(i)
-			if v == nil {
-				continue
-			}
-			cell, _ := excelize.CoordinatesToCellName(j+1, i+2)
-			if err := x.SetCellValue(sheet, cell, v); err != nil {
-				return err
-			}
-		}
-	}
-	return x.Write(f)
 }

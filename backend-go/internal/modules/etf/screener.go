@@ -16,14 +16,13 @@ import (
 	"time"
 
 	"github.com/loc1263/gohoo"
-	"github.com/xuri/excelize/v2"
 
 	"fogradar/internal/quant"
 	"fogradar/internal/yahoo"
 )
 
 // Screener de ETFs: descarga desde Yahoo precio, AUM, rendimientos por
-// período y métricas de riesgo de cada ticker de List_All_ETF.csv y escribe etf_perf_data_<timestamp>.csv (+ xlsx,
+// período y métricas de riesgo de cada ticker de List_All_ETF.csv y escribe etf_perf_data_<timestamp>.csv (+
 // etf_choice_*, List_All_ETF_valid_* e incidencias_*).
 //
 // Diferencias con el original (solo de eficiencia, no de lógica):
@@ -713,22 +712,6 @@ func writeCSVBOM(path string, df *quant.Frame, sep byte) error {
 	return f.Close()
 }
 
-func writeXLSXFrame(path string, df *quant.Frame) error {
-	x := excelize.NewFile()
-	defer func() { _ = x.Close() }()
-	for j, c := range df.Cols {
-		cell, _ := excelize.CoordinatesToCellName(j+1, 1)
-		_ = x.SetCellValue("Sheet1", cell, c.Name)
-		for i := 0; i < df.N; i++ {
-			if v := c.Value(i); v != nil {
-				cell, _ := excelize.CoordinatesToCellName(j+1, i+2)
-				_ = x.SetCellValue("Sheet1", cell, v)
-			}
-		}
-	}
-	return x.SaveAs(path)
-}
-
 func withFecha(df *quant.Frame, now time.Time) *quant.Frame {
 	out := df.Copy()
 	fechas := make([]string, out.N)
@@ -739,14 +722,13 @@ func withFecha(df *quant.Frame, now time.Time) *quant.Frame {
 	return out
 }
 
-// guardarPerfData escribe etf_perf_data_<ts>.csv (+ xlsx) y etf_choice_<ts>.csv (+ xlsx); devuelve la ruta del CSV.
+// guardarPerfData escribe etf_perf_data_<ts>.csv y etf_choice_<ts>.csv; devuelve la ruta del CSV.
 func guardarPerfData(df *quant.Frame, ts, dir string, now func() time.Time) (string, error) {
 	full := withFecha(df, now())
 	csvPath := filepath.Join(dir, "etf_perf_data_"+ts+".csv")
 	if err := writeCSVBOM(csvPath, full, ','); err != nil {
 		return "", err
 	}
-	_ = writeXLSXFrame(filepath.Join(dir, "etf_perf_data_"+ts+".xlsx"), full) // el xlsx es opcional (como en el original)
 	return csvPath, guardarEtfChoice(csvPath, ts, dir, now)
 }
 

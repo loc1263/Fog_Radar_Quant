@@ -24,7 +24,7 @@ func init() {
 	})
 }
 
-// Run es el pipeline batch de Chile: extractor (Yahoo) → scoring → CSV/XLSX.
+// Run es el pipeline batch de Chile: extractor (Yahoo) → scoring → CSV.
 //
 //	fogradar job cl_stocks                 # completo
 //	fogradar job cl_stocks --solo-scoring  # re-puntúa el último CSV de indicadores
