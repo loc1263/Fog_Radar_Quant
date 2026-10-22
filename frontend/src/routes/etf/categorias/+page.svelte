@@ -67,7 +67,7 @@
 		<CorridaInfo fecha={c.fecha}
 			>{c.filas.length} categorías con al menos {c.min_n_categoria} ETFs</CorridaInfo
 		>
-		<Notice>
+		<Notice size="compact">
 			<p>
 				Rankea categorías completas (no ETFs individuales) dentro del universo ya depurado de
 				distorsiones, por Sharpe Ratio promedio. El Treynor va por mediana (es inestable con Beta
@@ -96,9 +96,9 @@
 				{#if column.key === 'n'}
 					<TickersCategoria tickers={row.tickers} categoria={row.categoria} />
 				{:else if column.key === 'score_promedio'}
-					<span class="font-bold text-brand-accent">{text}</span>
+					<span class="font-num text-brand-accent">{text}</span>
 				{:else if column.key === 'categoria'}
-					<span class="font-bold">{text}</span>
+					<span class="font-num">{text}</span>
 				{:else}
 					{text}
 				{/if}

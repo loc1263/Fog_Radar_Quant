@@ -1,6 +1,6 @@
 <!--
   Composición de un portafolio (§5.6): barras relativas al peso máximo, orden
-  descendente. Con `tickers` se muestran todos (incluso 0 %); si no, se ocultan
+  descendente y numeradas. Con `tickers` se muestran todos (incluso 0 %); si no, se ocultan
   los pesos despreciables.
 -->
 <script lang="ts">
@@ -22,9 +22,10 @@
 	<p class="text-sm text-brand-muted">El portafolio no asignó peso a ningún ticker.</p>
 {:else}
 	<ul class="space-y-1.5" aria-label="Composición del portafolio">
-		{#each rows as [ticker, weight] (ticker)}
+		{#each rows as [ticker, weight], i (ticker)}
 			<li class="flex items-center gap-2 text-sm">
-				<span class="w-16 shrink-0 font-bold">{ticker}</span>
+				<span class="w-6 shrink-0 text-right text-brand-muted tabular-nums">{i + 1}</span>
+				<span class="w-16 shrink-0 font-num">{ticker}</span>
 				<div class="flex-1"><WeightBar value={weight} {max} label={fmtShare(weight)} /></div>
 			</li>
 		{/each}

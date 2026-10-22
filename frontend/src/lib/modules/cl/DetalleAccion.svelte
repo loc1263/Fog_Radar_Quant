@@ -65,7 +65,7 @@
 				{#each grupo.datos as [label, unidad, valor] (label)}
 					<div class="flex justify-between gap-3 text-sm">
 						<dt class="text-brand-muted">{label}</dt>
-						<dd class="font-bold tabular-nums">{fmtValor(unidad, valor)}</dd>
+						<dd class="font-num tabular-nums">{fmtValor(unidad, valor)}</dd>
 					</div>
 				{/each}
 			</dl>

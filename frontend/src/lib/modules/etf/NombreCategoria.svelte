@@ -4,6 +4,6 @@
 </script>
 
 <div class="min-w-[12rem]">
-	<div class="font-bold">{nombre ?? '—'}</div>
+	<div class="font-num">{nombre ?? '—'}</div>
 	{#if categoria}<div class="text-xs text-brand-label">{categoria}</div>{/if}
 </div>

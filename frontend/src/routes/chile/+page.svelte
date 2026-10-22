@@ -59,6 +59,7 @@
 				value={lider?.simbolo ?? '—'}
 				tone="accent"
 				hint={lider ? `Score ${fmtNumber(lider.score_compuesto)}` : undefined}
+				href="/chile/ranking"
 			/>
 			<KpiCard
 				label="Cobertura promedio de datos"
@@ -82,6 +83,7 @@
 					value={mejorRoe.simbolo}
 					hint={fmtPct(mejorRoe.valor, { digits: 1 })}
 					tone="green"
+					href="/chile/indicadores"
 				/>
 			{/if}
 			{#if mejorMargen}
@@ -90,6 +92,7 @@
 					value={mejorMargen.simbolo}
 					hint={fmtPct(mejorMargen.valor, { digits: 1 })}
 					tone="green"
+					href="/chile/indicadores"
 				/>
 			{/if}
 			{#if mejorDividendo}
@@ -98,6 +101,7 @@
 					value={mejorDividendo.simbolo}
 					hint={fmtPct(mejorDividendo.valor, { digits: 1, isPercent: true })}
 					tone="blue"
+					href="/chile/indicadores"
 				/>
 			{/if}
 			{#if menorPe}
@@ -106,6 +110,7 @@
 					value={menorPe.simbolo}
 					hint="{fmtNumber(menorPe.valor, 1)}x"
 					tone="accent"
+					href="/chile/indicadores"
 				/>
 			{/if}
 		</KpiGrid>

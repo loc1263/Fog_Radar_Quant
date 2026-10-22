@@ -63,12 +63,11 @@
 			benchmark del Alpha: <b>{cap.benchmark_ticker ?? '—'}</b> ({fmtRend(cap.benchmark_retorno_1y)} en
 			1 año)
 		</CorridaInfo>
-		<Notice>
+		<Notice size="compact">
 			<p>
-				Estrategia tipo Vanguard U.S. Momentum Factor (VFMO) aplicada sobre ETFs de renta variable
-				de EE.UU.: los 5 ETFs de mayor score de momentum de cada bucket de capitalización (Large /
-				Mid / Small), 15 en total, ponderados en proporción al score. El score promedia,
-				normalizados, el retorno 1Y, el 6M y un Alpha CAPM aproximado.
+				Estilo Vanguard U.S. Momentum Factor (VFMO) sobre ETFs de renta variable de EE.UU.: los 5 de
+				mayor score de cada bucket (Large / Mid / Small), 15 en total, ponderados por score. Score =
+				promedio normalizado de retorno 1Y, 6M y Alpha CAPM aproximado.
 			</p>
 		</Notice>
 
@@ -77,12 +76,12 @@
 				{#each cap.buckets as b (b.cap_bucket)}
 					<div class="min-w-[160px] flex-1 rounded border border-brand-border bg-brand-card p-4">
 						<div class="text-[12.5px] text-brand-label">{b.cap_bucket}</div>
-						<div class="mt-1.5 text-xl font-bold tabular-nums">
+						<div class="mt-1.5 text-xl font-num tabular-nums">
 							{b.n_seleccionados} de {b.n_universo} ETFs
 						</div>
 						<div class="mt-1 text-sm text-brand-label">
 							AUM representado (informativo):
-							<span class="font-bold text-brand-text tabular-nums"
+							<span class="font-num text-brand-text tabular-nums"
 								>{fmtNumber(b.pct_aum_cubierto, 1)} %</span
 							>
 						</div>

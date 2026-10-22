@@ -64,7 +64,7 @@
 			<ErrorState message={data.rotacion.message} code={data.rotacion.code} />
 		{/if}
 	{:else if !rot.disponible}
-		<Notice title="Sin corrida anterior para comparar">
+		<Notice size="compact" title="Sin corrida anterior para comparar">
 			<p>
 				Todavía no hay una corrida archivada. Esta sección se completa automáticamente con la
 				próxima corrida del pipeline.

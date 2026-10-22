@@ -12,12 +12,10 @@
 
 {#if a}
 	<Section title="Top acciones por momentum mensual{sufijoAnalisis(a)}">
-		<p>
-			Ranking independiente de la selección de Markowitz: evalúa el universo '{a.label}' ({a.universe_size}
-			acciones) por fuerza y persistencia de la tendencia mensual (retorno acumulado a 1, 2, 4, 6, 8,
-			10 y 12 meses, ponderado por la proporción de meses positivos del último año). Puede incluir acciones
-			que el modelo de covarianza descartó por volatilidad o correlación alta, pero que muestran el mejor
-			impulso de corto plazo.
+		<p class="text-xs text-brand-muted">
+			Ranking independiente de Markowitz sobre el universo '{a.label}' ({a.universe_size} acciones): retorno
+			acumulado a 1, 2, 4, 6, 8, 10 y 12 meses, ponderado por la proporción de meses positivos del último
+			año. Puede incluir acciones que Markowitz descartó por volatilidad o correlación.
 		</p>
 		{#if a.momentum.length > 0}
 			<MomentumTabla
@@ -33,10 +31,9 @@
 	</Section>
 
 	<Section title="Top acciones por momentum semanal{sufijoAnalisis(a)}">
-		<p>
-			Misma lógica que el ranking mensual, pero sobre velas semanales (5 días hábiles): retorno
-			acumulado a 1, 2, 3 y 4 semanas, ponderado por la proporción de semanas positivas de las
-			últimas 4. Capta el impulso de muy corto plazo que el ranking mensual suaviza.
+		<p class="text-xs text-brand-muted">
+			Igual lógica, sobre velas semanales: retorno acumulado a 1, 2, 3 y 4 semanas, ponderado por la
+			proporción de semanas positivas de las últimas 4. Capta el impulso de muy corto plazo.
 		</p>
 		{#if a.momentum_semanal.length > 0}
 			<MomentumTabla
@@ -54,11 +51,10 @@
 	</Section>
 
 	<Section title="Mejor rendimiento de los últimos ~4 meses{sufijoAnalisis(a)}">
-		<p>
-			Las acciones del universo '{a.label}' con mayor retorno puro en las últimas
-			{d?.parametros?.retorno_semanas ?? ''} semanas (unos 4 meses, sobre velas semanales). Es un ranking
-			solo por rentabilidad reciente: no usa el score ni la consistencia, así que muestra a las que despegaron
-			hace poco aunque su tendencia de 12 meses sea modesta. No es una medida ajustada por riesgo.
+		<p class="text-xs text-brand-muted">
+			Acciones del universo '{a.label}' con mayor retorno puro en las últimas
+			{d?.parametros?.retorno_semanas ?? ''} semanas (~4 meses, velas semanales). Solo rentabilidad reciente:
+			sin score ni consistencia, ni ajuste por riesgo.
 		</p>
 		{#if a.retorno_reciente.length > 0}
 			<RetornoTabla

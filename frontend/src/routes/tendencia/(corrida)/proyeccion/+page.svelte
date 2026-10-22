@@ -42,15 +42,13 @@
 
 {#if a}
 	<Section title="Proyección de tendencia a 6 meses{sufijoAnalisis(a)}">
-		<p>
-			Proyección estadística tipo movimiento geométrico browniano (GBM), a partir del retorno y la
-			volatilidad histórica anualizada de cada acción. El precio central es el escenario más
-			probable; el rango corresponde a una banda de confianza aproximada del 90 %.
-			<strong>No es una predicción garantizada</strong>: es un rango de escenarios estadísticos
-			basado en el comportamiento de los últimos 5 años. Las señales técnicas son solo informativas
-			(no intervienen en la proyección ni en los pesos): la Señal 6m cruza las medias móviles de {p?.ma_corta ??
-				10} y {p?.ma_larga ?? 40} semanas; la Señal 3m, las de {p?.ma_corta_3m ?? 4} y {p?.ma_larga_3m ??
-				13} semanas, y reacciona antes a cambios de tendencia.
+		<p class="text-xs text-brand-muted">
+			Proyección GBM (movimiento geométrico browniano) con el retorno y la volatilidad anualizados
+			de cada acción: el precio central es el escenario más probable y el rango, una banda de
+			confianza aprox. del 90 %. <strong>No es una predicción garantizada</strong>; se basa en los
+			últimos 5 años. Las señales técnicas son solo informativas (no afectan proyección ni pesos):
+			la Señal 6m cruza medias móviles de {p?.ma_corta ?? 10} y {p?.ma_larga ?? 40} semanas; la Señal
+			3m, de {p?.ma_corta_3m ?? 4} y {p?.ma_larga_3m ?? 13}, y reacciona antes.
 		</p>
 		<DataTable
 			rows={a.holdings}

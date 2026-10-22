@@ -52,7 +52,7 @@
 </script>
 
 <Section title="Rendimiento por plazo">
-	<p class="max-w-3xl text-sm text-brand-muted">
+	<p class="text-xs text-brand-muted">
 		Retorno de cada candidato a 1 día, 5 días, 3 y 6 meses, 1 año y en lo que va del año.
 		"Creciente" = cada plazo rinde más que el anterior (1D &lt; 5D &lt; 3M &lt; 6M &lt; 1A).
 	</p>
@@ -89,7 +89,7 @@
 					<span class="inline-flex items-center gap-1">
 						<UsTicker ticker={row.ticker} />
 						{#if row.creciente}
-							<span class="font-bold text-brand-green" title="Rendimiento creciente">↗</span>
+							<span class="font-num text-brand-green" title="Rendimiento creciente">↗</span>
 						{/if}
 					</span>
 				{:else if column.key === 'tendencia'}

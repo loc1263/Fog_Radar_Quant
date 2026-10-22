@@ -24,8 +24,8 @@
 	{/if}
 {:else}
 	<div class="mt-6 flex flex-wrap items-center justify-between gap-3">
-		<p class="text-sm text-brand-muted">
-			Generado el <span class="font-bold text-brand-text">{fmtDate(d.generated_at, true)}</span> ·
+		<p class="text-xs text-brand-muted">
+			Generado el <span class="font-num text-brand-text">{fmtDate(d.generated_at, true)}</span> ·
 			corrida {d.run_dir}
 		</p>
 		{#if conSelector}<AnalisisSelector analyses={d.analyses} actual={analisis} />{/if}

@@ -33,11 +33,10 @@
 		{#if !data.tabla.ok}<ErrorState message={data.tabla.message} code={data.tabla.code} />{/if}
 	{:else}
 		<CorridaInfo fecha={t.fecha}>{filas.length} ETFs excluidos</CorridaInfo>
-		<Notice>
+		<Notice size="compact">
 			<p>
-				ETFs con al menos un rendimiento (5D, 1M, 6M o 1Y) a más de 6 desviaciones robustas (z-score
-				MAD) de la mediana del universo. La exclusión responde a una distorsión estadística frente a
-				un universo diversificado y no implica necesariamente mala calidad del fondo.
+				ETFs con algún rendimiento (5D, 1M, 6M o 1Y) a más de 6 desviaciones robustas (z-score MAD)
+				de la mediana. Es una distorsión estadística; no implica mala calidad del fondo.
 			</p>
 		</Notice>
 		<EtfTable

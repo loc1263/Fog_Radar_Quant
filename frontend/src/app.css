@@ -5,10 +5,13 @@
  */
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import '@fontsource-variable/inter';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+	--font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
 	--color-brand-bg: #ffffff;
 	--color-brand-text: #000000;
 	--color-brand-muted: #3f4a5a;
@@ -22,6 +25,7 @@
 	--color-brand-border: #d8dce3;
 	--color-brand-card: #f7f8fa;
 	--color-brand-amber-bg: #fdfaf0;
+	--color-brand-header: #fdfaf0;
 	--color-brand-blue-bg: #f2f6fd;
 	--color-brand-green-solid: #1a7a55;
 	--color-brand-red-solid: #b83232;
@@ -49,7 +53,7 @@ html {
 html.dark {
 	color-scheme: dark;
 	--color-brand-bg: #0f141b;
-	--color-brand-text: #e6e9ee;
+	--color-brand-text: #dde2e9;
 	--color-brand-muted: #a9b3c1;
 	--color-brand-label: #a9c3ec;
 	--color-brand-accent: #e3b341;
@@ -59,6 +63,7 @@ html.dark {
 	--color-brand-border: #2c3643;
 	--color-brand-card: #18202a;
 	--color-brand-amber-bg: #1c1810;
+	--color-brand-header: #14233a;
 	--color-brand-blue-bg: #121b28;
 	--color-brand-strong: #25406b;
 	--color-brand-neutral: #5b6472;
@@ -120,6 +125,18 @@ html.dark {
 	}
 	body {
 		@apply bg-brand-bg text-brand-text antialiased;
+	}
+	/* Texto claro sobre fondo oscuro se ve más grueso: Inter es variable, se baja un poco el peso base. */
+	html.dark body {
+		font-weight: 380;
+	}
+}
+
+/* Énfasis en tablas y cifras destacadas (tickers, nombres, números, señales): negrita en claro, más fina en oscuro, donde el texto claro y los colores brillantes abultan el trazo. */
+@utility font-num {
+	font-weight: 700;
+	html.dark & {
+		font-weight: 350;
 	}
 }
 

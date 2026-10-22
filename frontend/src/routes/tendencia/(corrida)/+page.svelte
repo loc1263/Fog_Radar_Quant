@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
+	import { keptQuery } from '$lib/nav';
 	import { KpiCard, KpiGrid, Notice, Section } from '$lib/components/shared';
 	import { fmtNumber } from '$lib/format';
 	import { elegirAnalisis, pct, sufijoAnalisis } from '$lib/modules/td/format';
@@ -10,6 +11,7 @@
 	const d = $derived(data.latest.ok ? data.latest.data : null);
 	const a = $derived(d ? elegirAnalisis(d, page.url.searchParams.get('analisis')) : null);
 	// El contexto de mercado es macro: solo se muestra en el análisis principal.
+	const q = $derived(keptQuery(page.url, ['analisis']));
 	const notas = $derived(a?.key === '' ? (d?.market_regime_notes ?? []) : []);
 	// TD-DATA-1: aviso visible cuando se excluyen tickers por falta de tipo de cambio.
 	const sinFx = $derived((d?.excluidos ?? []).filter((e) => e.motivo.startsWith('falta FX')));
@@ -63,6 +65,8 @@
 					value={mayorPeso.ticker}
 					hint="{pct(mayorPeso.peso_final)} · {a.n_selected} acciones"
 					tone="accent"
+					href="/tendencia/portafolio"
+					search={q}
 				/>
 			{/if}
 			{#if a.holdings.length}
@@ -73,6 +77,8 @@
 						? undefined
 						: `retorno esperado 6m: ${fmtNumber(retorno6m, 1)} %`}
 					tone="green"
+					href="/tendencia/proyeccion"
+					search={q}
 				/>
 			{/if}
 			{#if sectorTop}
@@ -81,6 +87,8 @@
 					value={sectorTop.sector}
 					hint="{pct(sectorTop.peso_total)} · {a.sectors.length} sectores"
 					tone="blue"
+					href="/tendencia/sectores"
+					search={q}
 				/>
 			{/if}
 			{#if liderMensual}
@@ -88,6 +96,8 @@
 					label="Momentum mensual: líder"
 					value={liderMensual.ticker}
 					hint="score {fmtNumber(liderMensual.momentum_score_pct, 1)} %"
+					href="/tendencia/momentum"
+					search={q}
 				/>
 			{/if}
 			{#if liderSemanal}
@@ -95,6 +105,8 @@
 					label="Momentum semanal: líder"
 					value={liderSemanal.ticker}
 					hint="score {fmtNumber(liderSemanal.momentum_score_pct, 1)} %"
+					href="/tendencia/momentum"
+					search={q}
 				/>
 			{/if}
 			{#if masSube}
@@ -110,15 +122,17 @@
 				value={fmtNumber(d.excluidos.length, 0)}
 				hint={sinFx.length ? `${sinFx.length} por falta de tipo de cambio` : undefined}
 				tone={d.excluidos.length ? 'red' : 'text'}
+				href="/tendencia/limitaciones"
+				search={q}
 			/>
 		</KpiGrid>
-		<p>
-			El modelo de Markowitz/covarianza, aplicado sobre el universo '{a.label}' ({a.universe_size}
-			acciones, universo {d.universe_source ?? '—'}) con 5 años de historial semanal de precios en
-			USD, seleccionó las {a.n_selected} acciones que maximizan el Sharpe Ratio del portafolio.
+		<p class="text-xs text-brand-muted">
+			Markowitz sobre el universo '{a.label}' ({a.universe_size} acciones, {d.universe_source ??
+				'—'}), con 5 años de precios semanales en USD: seleccionó las {a.n_selected} acciones que maximizan
+			el Sharpe del portafolio.
 		</p>
 		{#if sinFx.length > 0}
-			<Notice kind="warning" title="Tickers excluidos por moneda">
+			<Notice size="compact" kind="warning" title="Tickers excluidos por moneda">
 				<p>
 					{sinFx.map((e) => `${e.ticker} (${e.nombre})`).join(', ')}: no hay tipo de cambio para
 					convertirlos a USD, así que no participan del análisis. Detalle en
@@ -127,7 +141,7 @@
 			</Notice>
 		{/if}
 		{#if notas.length > 0}
-			<Notice title="Contexto de mercado">
+			<Notice size="compact" title="Contexto de mercado">
 				{#each notas as nota, i (i)}<p>{nota}</p>{/each}
 			</Notice>
 		{/if}

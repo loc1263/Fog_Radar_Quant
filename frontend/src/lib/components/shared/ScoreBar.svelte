@@ -16,7 +16,7 @@
 		<div class="h-2.5 w-20 overflow-hidden rounded bg-brand-border" aria-hidden="true">
 			<div class={cn('h-full', fill)} style:width="{pct}%"></div>
 		</div>
-		<span class="w-8 text-right font-bold tabular-nums">{Math.round(pct)}</span>
+		<span class="w-8 text-right font-num tabular-nums">{Math.round(pct)}</span>
 	</div>
 {:else}
 	<span class="text-brand-muted">—</span>

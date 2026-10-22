@@ -22,7 +22,7 @@
 <div class="relative inline-block text-left">
 	<button
 		type="button"
-		class="cursor-pointer font-bold tabular-nums underline decoration-brand-label decoration-dotted underline-offset-4"
+		class="cursor-pointer font-num tabular-nums underline decoration-brand-label decoration-dotted underline-offset-4"
 		aria-expanded={abierto}
 		aria-label="Ver los {tickers.length} ETFs de {categoria}"
 		onclick={() => (abierto = !abierto)}>{tickers.length}</button
@@ -36,7 +36,7 @@
 				<button
 					type="button"
 					onclick={copiar}
-					class="rounded border border-brand-border px-2 py-0.5 font-bold text-brand-label hover:bg-brand-card"
+					class="rounded border border-brand-border px-2 py-0.5 font-num text-brand-label hover:bg-brand-card"
 					>{copiado ? 'Copiado' : 'Copiar'}</button
 				>
 			</div>

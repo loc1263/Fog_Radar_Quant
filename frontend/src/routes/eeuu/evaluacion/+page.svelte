@@ -56,7 +56,7 @@
 </script>
 
 <Section title="Evaluación de salud">
-	<p class="max-w-3xl text-sm text-brand-muted">
+	<p class="text-xs text-brand-muted">
 		Score 0-100 a partir de los datos fundamentales y técnicos de cada candidato (valoración 25 %,
 		rentabilidad 25 %, salud financiera 20 %, retorno al accionista 10 %, técnico 20 %). Cada
 		categoría promedia sus métricas disponibles.
@@ -88,7 +88,7 @@
 				{/if}
 			{/snippet}
 		</DataTable>
-		<Notice kind="neutral">
+		<Notice size="compact" kind="neutral">
 			<p>
 				Heurística de reglas simples (múltiplos razonables, rentabilidad positiva, poca deuda, buena
 				liquidez, RSI/MACD/tendencia sanos) para comparar rápido entre candidatos. No es

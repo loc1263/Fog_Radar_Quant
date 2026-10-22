@@ -49,7 +49,7 @@
 		{:else if column.key === 'rango52'}
 			<Rango52 precio={row.precio} max={row.max_52s} min={row.min_52s} />
 		{:else if column.key === scoreKey}
-			<span class="font-bold text-brand-accent">{text}</span>
+			<span class="font-num text-brand-accent">{text}</span>
 		{:else if extra}
 			{@render extra({ column, row, value, text })}
 		{:else}

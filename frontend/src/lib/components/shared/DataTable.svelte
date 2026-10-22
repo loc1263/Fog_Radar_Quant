@@ -132,7 +132,7 @@
 			<thead>
 				<tr>
 					{#if expandable}
-						<th scope="col" class="w-8 bg-brand-strong px-1 py-2"
+						<th scope="col" class="w-8 bg-brand-strong px-1 py-1"
 							><span class="sr-only">Detalle</span></th
 						>
 					{/if}
@@ -142,7 +142,7 @@
 							aria-sort={ariaSort(column)}
 							title={column.title}
 							class={cn(
-								'bg-brand-strong px-2 py-2 font-bold text-white xl:px-3 xl:whitespace-nowrap',
+								'bg-brand-strong px-2 py-1 font-num text-white xl:px-3 xl:whitespace-nowrap',
 								column.numeric ? 'text-right' : 'text-left'
 							)}
 						>
@@ -153,7 +153,7 @@
 									type="button"
 									onclick={() => toggle(column)}
 									class={cn(
-										'inline-flex items-center gap-1 font-bold',
+										'inline-flex items-center gap-1 font-num',
 										column.numeric && 'flex-row-reverse'
 									)}
 								>
@@ -175,7 +175,7 @@
 						)}
 					>
 						{#if expandable}
-							<td class="px-1 py-2 text-center">
+							<td class="px-1 py-1 text-center">
 								<button
 									type="button"
 									onclick={() => toggleDetail(row)}
@@ -189,7 +189,7 @@
 						{#each columns as column (column.key)}
 							<td
 								class={cn(
-									'px-2 py-2 xl:px-3',
+									'px-2 py-1 xl:px-3',
 									column.numeric && 'text-right whitespace-nowrap tabular-nums',
 									column.wrap && 'min-w-[8rem]',
 									column.signed && signedClass(row[column.key])

@@ -49,6 +49,7 @@
 				label="Top 5 del Top {resumen.modelo.top_n}"
 				value={top5.length ? top5.map((f) => f.ticker).join(' · ') : (r?.top1_ticker ?? '—')}
 				tone="accent"
+				href="/etf/top15"
 			/>
 			<KpiCard label="Fecha de la corrida" value={fmtFechaCorrida(resumen.fecha)} />
 			<KpiCard label="Universo ETF bruto" value={fmtNumber(r?.universo_bruto, 0)} />
@@ -56,12 +57,14 @@
 				label="Universo depurado"
 				value={fmtNumber(r?.universo_depurado, 0)}
 				hint="ranking completo"
+				href="/etf/universo"
 			/>
 			<KpiCard
 				label="Excluidos por distorsión"
 				value={fmtNumber(r?.n_outliers, 0)}
 				hint="|z-score MAD| &gt; {fmtNumber(resumen.modelo.z_threshold, 0)}"
 				tone="red"
+				href="/etf/excluidos"
 			/>
 			<KpiCard label="Sharpe promedio" value={fmtNumber(r?.sharpe_promedio, 3)} tone="blue" />
 			<KpiCard label="Beta promedio" value={fmtNumber(r?.beta_promedio, 3)} />
@@ -71,6 +74,7 @@
 					value="{rot.nuevos.length} entran · {rot.salidas.length} salen"
 					hint="vs. corrida del {fmtFechaCorrida(rot.fecha_previa)}"
 					tone="accent"
+					href="/etf/rotacion"
 				/>
 			{/if}
 			{#if div.length}
@@ -78,6 +82,7 @@
 					label="Diversificación del Top 15"
 					value="{div.length} categorías"
 					hint="más presente: {div[0].categoria} ({fmtNumber(div[0].pct, 0)} %)"
+					href="/etf/diversificacion"
 				/>
 			{/if}
 			{#if mejorCategoria}
@@ -89,6 +94,7 @@
 						1
 					)})"
 					tone="blue"
+					href="/etf/categorias"
 				/>
 			{/if}
 			{#if simple}
@@ -96,6 +102,7 @@
 					label="Top 15 Perf. + Beta"
 					value={simple.ticker}
 					hint="1 año: {fmtRend(simple.perf_1y)}"
+					href="/etf/top15-simple"
 				/>
 			{/if}
 			{#if vanguard.length}
@@ -103,6 +110,7 @@
 					label="Top 15 Vanguard"
 					value={vanguard[0].ticker}
 					hint="1 año: {fmtRend(vanguard[0].perf_1y)}"
+					href="/etf/top15-vanguard"
 				/>
 			{/if}
 			{#if momentum}
@@ -111,6 +119,7 @@
 					value={momentum.ticker}
 					hint="1 mes: {fmtRend(momentum.perf_1m)}"
 					tone="green"
+					href="/etf/momentum"
 				/>
 			{/if}
 			{#if cap}
@@ -119,6 +128,7 @@
 					value={fmtRend(cap.benchmark_retorno_1y)}
 					hint="{cap.benchmark_ticker} · {cap.buckets.length} tramos de capitalización"
 					signedValue={cap.benchmark_retorno_1y}
+					href="/etf/top15-cap"
 				/>
 			{/if}
 		</KpiGrid>
@@ -128,7 +138,7 @@
 {#if resumen}
 	{@const m = resumen.modelo}
 	<Section title="Metodología">
-		<Notice kind="neutral">
+		<Notice size="compact" kind="neutral">
 			<p>
 				<b>Universo:</b> solo ETFs con datos completos, volumen ≥ {fmtNumber(m.liq_vol_min, 0)} y AUM
 				≥ US$ {fmtNumber(m.liq_aum_min / 1e6, 0)} M. Se excluyen las categorías {m.categorias_excluidas.join(

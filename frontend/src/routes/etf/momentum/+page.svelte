@@ -32,12 +32,11 @@
 		{/if}
 	{:else}
 		<CorridaInfo fecha={t.fecha} />
-		<Notice>
+		<Notice size="compact">
 			<p>
-				Análisis complementario al ranking principal: en vez de minimizar riesgo y descartar
-				distorsiones, busca momentum de rendimiento. Score = 55 % momentum ponderado (5D 10 % · 1M
-				20 % · 6M 30 % · 1Y 40 %) + 25 % calidad (Sharpe/Treynor) + 20 % consistencia del 6M frente
-				a la corrida archivada más antigua.
+				Complemento al ranking principal, orientado a momentum. Score = 55 % momentum ponderado (5D
+				10 % · 1M 20 % · 6M 30 % · 1Y 40 %) + 25 % calidad (Sharpe/Treynor) + 20 % consistencia del
+				6M frente a la corrida archivada más antigua.
 			</p>
 		</Notice>
 		<EtfTable

@@ -43,7 +43,7 @@
 
 <Section title="Top {run?.top_n ?? 15} por momentum 12-1">
 	<div class="flex flex-wrap items-end justify-between gap-4">
-		<p class="max-w-3xl text-sm text-brand-muted">
+		<p class="text-xs text-brand-muted">
 			Ranking cuantitativo por momentum 12-1 (Jegadeesh &amp; Titman) de acciones de EEUU con
 			capitalización sobre el umbral. Datos de la corrida batch más reciente; esta página no
 			descarga nada.
@@ -75,7 +75,7 @@
 				{/if}
 			{/snippet}
 		</DataTable>
-		<Notice kind="neutral">
+		<Notice size="compact" kind="neutral">
 			<p>
 				Momentum 12-1: retorno entre hace 12 meses y hace 1 mes (excluye el último mes para evitar
 				la reversión de corto plazo). No es una recomendación de inversión.

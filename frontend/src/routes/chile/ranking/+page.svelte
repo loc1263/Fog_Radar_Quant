@@ -147,17 +147,16 @@
 	</Section>
 
 	<Section title="Metodología">
-		<Notice kind="neutral">
+		<Notice size="compact" kind="neutral">
 			<p>
 				Cada métrica se recorta a los percentiles {fmtPct(ranking.modelo.winsor[0], { digits: 0 })}
-				y {fmtPct(ranking.modelo.winsor[1], { digits: 0 })} del universo y se transforma en z-score; los
-				múltiplos y la deuda se invierten para que "mayor" siempre sea "mejor". El score de cada pilar
-				es el promedio de sus z-scores disponibles y el Score Compuesto, el promedio ponderado de los
-				pilares con dato.
+				y {fmtPct(ranking.modelo.winsor[1], { digits: 0 })} y pasa a z-score (múltiplos y deuda se invierten:
+				"mayor" = "mejor"). Score por pilar = promedio de sus z-scores; Score Compuesto = promedio ponderado
+				de los pilares con dato.
 			</p>
 			<p>
-				Los scores son relativos a las acciones analizadas, no una nota absoluta de calidad. Es una
-				herramienta de apoyo, no una recomendación de inversión.
+				Scores relativos a las acciones analizadas, no una nota absoluta. Herramienta de apoyo, no
+				recomendación de inversión.
 			</p>
 		</Notice>
 	</Section>

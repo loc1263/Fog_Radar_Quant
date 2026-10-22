@@ -35,7 +35,7 @@ spec sea verificable pantalla por pantalla.
 | Token | Uso | Claro | Oscuro |
 |---|---|---|---|
 | `brand-bg` | Fondo de página, nav, inputs, filas impares | `#FFFFFF` | `#0F141B` |
-| `brand-text` | Texto principal | `#000000` | `#E6E9EE` |
+| `brand-text` | Texto principal | `#000000` | `#DDE2E9` |
 | `brand-muted` | Texto secundario (ayudas, estados vacíos) | `#3F4A5A` | `#A9B3C1` |
 | `brand-label` | Etiquetas, links del menú, subtítulos | `#1B3A6B` | `#A9C3EC` |
 | `brand-strong` | Relleno de encabezado de tabla / ítem activo (texto blanco encima) | `#1B3A6B` | `#25406B` |
@@ -45,7 +45,8 @@ spec sea verificable pantalla por pantalla.
 | `brand-blue` | Barras de progreso, dato informativo | `#1B5EA5` | `#6AA8EE` |
 | `brand-border` | Todos los bordes y divisores | `#D8DCE3` | `#2C3643` |
 | `brand-card` | Fondo de tarjetas, filas pares, hover | `#F7F8FA` | `#18202A` |
-| `brand-amber-bg` | Fondo del encabezado, cajas de advertencia | `#FDFAF0` | `#1C1810` |
+| `brand-header` | Fondo del encabezado del sitio | `#FDFAF0` | `#14233A` |
+| `brand-amber-bg` | Cajas de advertencia | `#FDFAF0` | `#1C1810` |
 | `brand-blue-bg` | Cajas informativas (notas) | `#F2F6FD` | `#121B28` |
 | `brand-neutral` | Badge "sin datos" | `#6B7280` | `#5B6472` |
 | `brand-green-solid` | Badge positivo (texto blanco) | `#1A7A55` | *igual* |
@@ -107,7 +108,7 @@ html { color-scheme: light; }
 html.dark {
   color-scheme: dark;
   --color-brand-bg: #0F141B;
-  --color-brand-text: #E6E9EE;
+  --color-brand-text: #DDE2E9;
   --color-brand-muted: #A9B3C1;
   --color-brand-label: #A9C3EC;
   --color-brand-accent: #E3B341;
@@ -137,14 +138,14 @@ referencia `var(--color-brand-…)` en tu CSS.
 
 ## 3. Tipografía
 
-- **Familia:** la sans del sistema (stack por defecto de Tailwind:
-  `ui-sans-serif, system-ui, sans-serif, …`). No se carga ninguna fuente web.
+- **Familia:** Inter (variable), autoalojada con `@fontsource-variable/inter` (sin CDN),
+  con la sans del sistema como respaldo (`--font-sans` en `app.css`).
 - **Números:** en tablas y columnas numéricas se usa `tabular-nums` para que los
   dígitos queden alineados.
 
 | Elemento | Tamaño | Peso | Color |
 |---|---|---|---|
-| Título de la página (h1) | 24 px (`text-2xl`) | bold | `brand-text` |
+| Título de la página (h1) | 20 px (`text-xl`) | bold | `brand-text` |
 | Subtítulo del encabezado | 14 px (`text-sm`) | normal | `brand-label` |
 | Título de sección | 12 px (`text-xs`), MAYÚSCULAS, `tracking-wide` | bold | `brand-accent` |
 | Texto de cuerpo | 16 px | normal | `brand-text` |
@@ -161,9 +162,8 @@ referencia `var(--color-brand-…)` en tu CSS.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│ HEADER  bg brand-amber-bg · borde inferior · px-28 py-20      │
-│  Título h1                                   [☾ Oscuro]       │
-│  Subtítulo (fecha / contexto)                                 │
+│ HEADER  bg brand-header · borde inferior · px-28 py-8       │
+│  Título h1 · subtítulo (misma línea)         [☾ Oscuro]       │
 ├──────────────────────────────────────────────────────────────┤
 │ NAV (sticky top-0)  bg brand-bg · borde inferior · px-28 py-8 │
 │  Resumen [Portafolio] Tendencia … Limitaciones │ Historial    │
@@ -197,11 +197,11 @@ referencia `var(--color-brand-…)` en tu CSS.
 ### 5.1 Encabezado
 
 ```html
-<header class="border-b border-brand-border bg-brand-amber-bg px-7 py-5">
-  <div class="flex flex-wrap items-start justify-between gap-3">
-    <div>
-      <h1 class="text-2xl font-bold">Título del dashboard</h1>
-      <div class="mt-1 text-sm text-brand-label">Generado el … · corrida …</div>
+<header class="border-b border-brand-border bg-brand-header px-7 py-2">
+  <div class="flex flex-wrap items-center justify-between gap-x-3">
+    <div class="flex flex-wrap items-baseline gap-x-3">
+      <h1 class="text-xl font-bold">Título del dashboard</h1>
+      <div class="text-sm text-brand-label">Generado el … · corrida …</div>
     </div>
     <!-- botón de tema (5.10) -->
   </div>

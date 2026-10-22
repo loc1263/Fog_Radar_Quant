@@ -92,5 +92,5 @@ export function fmtDuration(seconds: number | null | undefined): string {
 /** Clase de color para valores con signo (§5.5): verde ≥ 0, rojo < 0. */
 export function signedClass(v: unknown): string {
 	if (!isNum(v)) return '';
-	return v >= 0 ? 'font-bold text-brand-green' : 'font-bold text-brand-red';
+	return v >= 0 ? 'font-num text-brand-green' : 'font-num text-brand-red';
 }

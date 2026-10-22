@@ -69,7 +69,7 @@
 							data-sveltekit-noscroll
 							aria-current={p.n === n ? 'true' : undefined}
 							class={cn(
-								'px-3 py-1.5 font-bold',
+								'px-3 py-1.5 font-num',
 								p.n === n
 									? 'bg-brand-strong text-white'
 									: 'bg-brand-bg text-brand-label hover:bg-brand-card'
@@ -77,17 +77,16 @@
 						>
 					{/each}
 				</div>
-				<p class="text-sm text-brand-muted">
+				<p class="text-xs text-brand-muted">
 					Retorno anual esp. <b class="text-brand-text">{pct(p.retorno)}</b> · Volatilidad
 					<b class="text-brand-text">{pct(p.volatilidad)}</b> · Sharpe
 					<b class="text-brand-text">{fmtNumber(p.sharpe, 2)}</b>
 				</p>
 			</div>
 			{#if !p.completo}
-				<p class="text-sm text-brand-muted">
-					Las {p.n} acciones con mayor peso en la optimización del universo, con el modelo de Markowitz
-					(máx. Sharpe) corrido de nuevo solo sobre ellas: el 100 % se reparte entre estas
-					{p.n}.
+				<p class="text-xs text-brand-muted">
+					Las {p.n} acciones de mayor peso del universo, con Markowitz (máx. Sharpe) corrido de nuevo
+					solo sobre ellas: el 100 % se reparte entre las {p.n}.
 				</p>
 			{/if}
 		{/if}

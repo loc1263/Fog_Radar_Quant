@@ -26,7 +26,7 @@
 		{#if !data.tabla.ok}<ErrorState message={data.tabla.message} code={data.tabla.code} />{/if}
 	{:else}
 		<CorridaInfo fecha={t.fecha}>{filas.length} ETFs</CorridaInfo>
-		<Notice>
+		<Notice size="compact">
 			<p>
 				Universo depurado completo (sin recortar al Top 15), ordenado por Score. Uso principal:
 				buscar un ticker que no llegó al Top 15 y ver dónde quedó rankeado (columna #).

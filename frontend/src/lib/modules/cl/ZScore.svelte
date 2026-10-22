@@ -22,7 +22,7 @@
 
 <span
 	class={cn(
-		'inline-flex min-w-14 justify-center rounded-full px-2 py-0.5 text-xs font-bold tabular-nums',
+		'inline-flex min-w-14 justify-center rounded-full px-2 py-0.5 text-xs font-num tabular-nums',
 		tone
 	)}
 	title={valid ? undefined : 'Sin métricas disponibles en este pilar'}

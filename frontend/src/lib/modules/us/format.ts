@@ -47,9 +47,9 @@ export function scoreSignal(v: number | null | undefined): ScoreSignal {
 }
 
 const SCORE_CLASS: Record<ScoreSignal, string> = {
-	positive: 'font-bold text-brand-green',
-	mixed: 'font-bold text-brand-accent',
-	negative: 'font-bold text-brand-red',
+	positive: 'font-num text-brand-green',
+	mixed: 'font-num text-brand-accent',
+	negative: 'font-num text-brand-red',
 	neutral: 'text-brand-muted'
 };
 

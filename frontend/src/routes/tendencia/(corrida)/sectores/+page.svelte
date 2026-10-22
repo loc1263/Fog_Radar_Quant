@@ -64,7 +64,7 @@
 					{#each separarTickers(row.tickers) as t, i (t)}{#if i},
 						{/if}<TickerLink ticker={t} />{/each}
 				{:else if column.key === 'sector'}
-					<span class="font-bold">{text}</span>
+					<span class="font-num">{text}</span>
 				{:else}
 					{text}
 				{/if}

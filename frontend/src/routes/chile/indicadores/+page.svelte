@@ -73,7 +73,7 @@
 	{/if}
 {:else}
 	<Section title="Indicadores financieros">
-		<p class="text-sm text-brand-muted">
+		<p class="text-xs text-brand-muted">
 			Datos crudos de Yahoo Finance antes del scoring ({ind.filas.length} acciones, {ind.columnas
 				.length} indicadores) · {fmtDate(ind.generado_en, true)} · {ind.generado_desde}
 		</p>
@@ -107,12 +107,11 @@
 				{/if}
 			{/snippet}
 		</DataTable>
-		<Notice kind="info" title="Cómo leer los datos">
+		<Notice size="compact" kind="info" title="Cómo leer los datos">
 			<p>
-				Los montos están en la moneda de cotización (CLP). Cuando Yahoo reporta los estados
-				financieros en otra moneda (p. ej. USD), se convierten con la tasa del grupo Identificación
-				y los múltiplos EV/EBITDA, EV/Ventas, Precio/Ventas y Precio/Libro se recalculan con esos
-				montos.
+				Montos en la moneda de cotización (CLP). Si Yahoo reporta en otra moneda (p. ej. USD), se
+				convierten con la tasa del grupo Identificación y los múltiplos EV/EBITDA, EV/Ventas,
+				Precio/Ventas y Precio/Libro se recalculan.
 			</p>
 		</Notice>
 	</Section>

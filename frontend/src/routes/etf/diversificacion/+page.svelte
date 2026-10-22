@@ -31,7 +31,7 @@
 	{:else}
 		<CorridaInfo fecha={d.fecha} />
 		{#if top}
-			<Notice>
+			<Notice size="compact">
 				<p>
 					La categoría más representada en el Top 15 es <b>{top.categoria}</b> con {fmtNumber(
 						top.pct,

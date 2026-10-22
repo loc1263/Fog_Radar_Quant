@@ -41,7 +41,7 @@
 		{#if !data.tabla.ok}<ErrorState message={data.tabla.message} code={data.tabla.code} />{/if}
 	{:else}
 		<CorridaInfo fecha={t.fecha} />
-		<Notice>
+		<Notice size="compact">
 			<p>
 				Top 15 ETFs de Vanguard únicamente, ordenados por Score (mismo ranking principal que la
 				sección "Top 15"). Clic en un encabezado para reordenar.

@@ -26,7 +26,7 @@
 				style:left="{r.pos}%"
 			></div>
 		</div>
-		<span class={cn('text-xs leading-tight font-bold', TONO[r.tono])}>{r.etiqueta}</span>
+		<span class={cn('text-xs leading-tight font-num', TONO[r.tono])}>{r.etiqueta}</span>
 		<span class="sr-only">{r.title}</span>
 	</div>
 {:else}

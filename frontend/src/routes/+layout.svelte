@@ -19,7 +19,7 @@
 			: 'Análisis cuantitativo de ETFs y acciones de Chile, EEUU y Asia.'
 	);
 
-	const LINK = 'rounded px-2.5 py-1 text-sm font-bold';
+	const LINK = 'rounded px-2.5 py-1 text-sm font-num';
 	const IDLE = 'text-brand-label hover:bg-brand-card hover:text-brand-accent';
 	const ACTIVE = 'bg-brand-strong text-white';
 </script>
@@ -29,13 +29,13 @@
 </svelte:head>
 
 <div class="flex min-h-screen flex-col">
-	<header class="border-b border-brand-border bg-brand-amber-bg px-7 py-5">
-		<div class="flex flex-wrap items-start justify-between gap-3">
-			<div>
-				<h1 class="text-2xl font-bold">
+	<header class="border-b border-brand-border bg-brand-header px-7 py-2">
+		<div class="flex flex-wrap items-center justify-between gap-x-3">
+			<div class="flex flex-wrap items-baseline gap-x-3">
+				<h1 class="text-xl font-bold">
 					<a href={resolve('/')} class="hover:text-brand-accent">Fog Radar Quant</a>
 				</h1>
-				<div class="mt-1 text-sm text-brand-label">{subtitle}</div>
+				<div class="text-sm text-brand-label">{subtitle}</div>
 			</div>
 			<ThemeToggle />
 		</div>
@@ -76,7 +76,7 @@
 						href="{resolve(ruta(section.href))}{keptQuery(page.url, current.keepParams)}"
 						aria-current={active ? 'page' : undefined}
 						class={cn(
-							'rounded border px-2.5 py-0.5 text-xs font-bold',
+							'rounded border px-2.5 py-0.5 text-xs font-num',
 							active
 								? 'border-brand-strong bg-brand-strong text-white'
 								: 'border-brand-border bg-brand-bg text-brand-label hover:bg-brand-card'

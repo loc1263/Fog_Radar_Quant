@@ -27,7 +27,7 @@
 		{#if !data.tabla.ok}<ErrorState message={data.tabla.message} code={data.tabla.code} />{/if}
 	{:else}
 		<CorridaInfo fecha={t.fecha} />
-		<Notice>
+		<Notice size="compact">
 			<p>
 				Ranking considerando únicamente el rendimiento por período (5D, 1M, 6M, 1Y) y el Beta (menor
 				|Beta| = mejor), 20 % cada uno, sobre el mismo universo depurado del ranking principal.

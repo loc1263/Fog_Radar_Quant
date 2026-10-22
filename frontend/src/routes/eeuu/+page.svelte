@@ -46,6 +46,7 @@
 				value={run.rows[0]?.ticker ?? '—'}
 				hint={run.rows[0] ? fmtRet(run.rows[0].momentum_12_1) : undefined}
 				tone="accent"
+				href="/eeuu/top15"
 			/>
 			{#if mejorScore}
 				<KpiCard
@@ -53,6 +54,7 @@
 					value={mejorScore.ticker}
 					hint="score {fmtScore(mejorScore.score.overall)} · promedio {fmtScore(scorePromedio)}"
 					tone="green"
+					href="/eeuu/evaluacion"
 				/>
 			{/if}
 			{#if cand.length}
@@ -61,6 +63,7 @@
 					value="{crecientes} de {cand.length}"
 					hint="rendimientos crecientes por plazo"
 					tone="blue"
+					href="/eeuu/rendimiento"
 				/>
 			{/if}
 			{#if portafolio}
@@ -72,6 +75,7 @@
 						1
 					)}"
 					tone="accent"
+					href="/eeuu/portafolio"
 				/>
 			{/if}
 		</KpiGrid>

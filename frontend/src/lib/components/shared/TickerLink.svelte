@@ -11,7 +11,7 @@
 	href="https://stockanalysis.com{path}"
 	target="_blank"
 	rel="noopener noreferrer"
-	class="font-bold whitespace-nowrap text-brand-label hover:text-brand-accent hover:underline"
+	class="font-num whitespace-nowrap text-brand-label hover:text-brand-accent hover:underline"
 	title="Ver {ticker} en StockAnalysis"
 >
 	{ticker}

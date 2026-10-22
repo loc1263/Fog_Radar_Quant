@@ -40,7 +40,7 @@
 </script>
 
 <Section title="Todos los candidatos">
-	<p class="max-w-3xl text-sm text-brand-muted">
+	<p class="text-xs text-brand-muted">
 		Todos los tickers de S&amp;P 500 ∪ Nasdaq-100 que superaron el umbral de market cap en la última
 		corrida (no solo el top 15). El CSV incluye todos los datos de cada ticker.
 	</p>

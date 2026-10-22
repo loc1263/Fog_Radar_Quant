@@ -39,7 +39,7 @@
 				{#each modulo.top as item, i (item.ticker)}
 					<li class="flex items-baseline justify-between gap-2">
 						<span class="min-w-0 truncate">
-							<span class="font-bold">{i + 1}. {item.ticker}</span>
+							<span class="font-num">{i + 1}. {item.ticker}</span>
 							{#if item.nombre}<span class="text-brand-label"> · {item.nombre}</span>{/if}
 						</span>
 						<span class="whitespace-nowrap tabular-nums">{fmtValor(item.valor, modulo.unidad)}</span

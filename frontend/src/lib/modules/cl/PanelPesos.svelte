@@ -47,7 +47,7 @@
 					oninput={(e) => onchange(pilar.key, Number(e.currentTarget.value))}
 					class="w-full cursor-pointer accent-brand-accent"
 				/>
-				<div class="text-right text-xs font-bold text-brand-accent tabular-nums">
+				<div class="text-right text-xs font-num text-brand-accent tabular-nums">
 					{fmtNumber(share[pilar.key], 1)} % del score
 				</div>
 			</div>
