@@ -4,7 +4,8 @@ name: Actualizar datos
 # la rama `datos` y dispara la publicación del sitio. Ver docs/PLAN_WORKFLOW_ACTIONS.md.
 #
 # El cron de GitHub va en UTC: 18:00 de Santiago son las 21:00 UTC con horario de verano (UTC-3) y las 22:00 UTC en
-# invierno (UTC-4). Se programan las dos horas y el primer paso deja correr solo la que cae a las 18:00 locales.
+# invierno (UTC-4). Se programan las dos horas y el primer paso deja correr la primera que llegue después de las 18:00 locales y omite el resto del día
+# (GitHub puede retrasar el cron varias horas).
 on:
   schedule:
     - cron: "0 21 * * *"
@@ -34,12 +35,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
-      - name: ¿Es la hora de la corrida?
+      - name: ¿Toca correr?
         id: hora
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          # GitHub retrasa los cron horas: no se exige la hora exacta. En las ejecuciones programadas se corre si ya
+          # pasaron las 18:00 de Santiago y la rama datos aún no tiene una corrida de hoy.
           local_hour="$(TZ=America/Santiago date +%H)"
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "$local_hour" != "18" ]; then
-            echo "Son las $local_hour h en Santiago: esta no es la ejecución de las 18:00, se omite."
+          hoy="$(TZ=America/Santiago date +%F)"
+          ultima="$(gh api "repos/${{ github.repository }}/commits/datos" --jq .commit.committer.date 2>/dev/null || true)"
+          ultima_dia=""
+          if [ -n "$ultima" ]; then ultima_dia="$(TZ=America/Santiago date -d "$ultima" +%F)"; fi
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "correr=true" >> "$GITHUB_OUTPUT"
+          elif [ "$((10#$local_hour))" -lt 18 ]; then
+            echo "Son las $local_hour h en Santiago: aún no es la hora de la corrida (18:00), se omite."
+            echo "correr=false" >> "$GITHUB_OUTPUT"
+          elif [ "$ultima_dia" = "$hoy" ]; then
+            echo "La rama datos ya tiene una corrida de hoy ($hoy), se omite."
             echo "correr=false" >> "$GITHUB_OUTPUT"
           else
             echo "correr=true" >> "$GITHUB_OUTPUT"
