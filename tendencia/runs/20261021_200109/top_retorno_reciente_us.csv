@@ -1,0 +1,9 @@
+rank,ticker,nombre,pais,sector,precio_actual_usd,retorno_pct
+1,PLTR,Palantir Technologies Inc.,EEUU,Technology,201.72,78.62
+2,MSFT,Microsoft Corporation,EEUU,Technology,532.95,43.16
+3,CRWD,"CrowdStrike Holdings, Inc.",EEUU,Technology,239.34,36.55
+4,TMO,Thermo Fisher Scientific Inc.,EEUU,Healthcare,694.02,35.38
+5,CVX,Chevron Corporation,EEUU,Energy,226.78,33.73
+6,XOM,ExxonMobil Holdings Corporation,EEUU,Energy,178.09,31.28
+7,META,"Meta Platforms, Inc.",EEUU,Communication Services,697.52,26.86
+8,MA,Mastercard Incorporated,EEUU,Financial Services,622.62,25.17

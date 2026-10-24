@@ -1,0 +1,16 @@
+ticker,nombre,pais,sector,precio_actual_usd,senal_tecnica,ma_10s,ma_40s,senal_tecnica_3m,ma_4s,ma_13s,momentum_26s_pct,retorno_esperado_anual_pct,volatilidad_anual_pct,precio_proyectado_6m_usd,precio_min_90pct_6m_usd,precio_max_90pct_6m_usd,retorno_esperado_6m_pct
+MU,"Micron Technology, Inc.",EEUU,Technology,913.67,Lateral / mixta,988.47,747.47,Lateral / mixta,974.02,965.89,84.0,68.85,56.31,1187.23,616.68,2285.65,29.94
+NVDA,NVIDIA Corporation,EEUU,Technology,221.97,Lateral / mixta,222.68,203.71,Lateral / mixta,224.83,221.23,6.82,57.61,48.02,278.66,159.41,487.15,25.54
+DELL,Dell Technologies Inc.,EEUU,Technology,485.88,Lateral / mixta,520.03,333.61,Lateral / mixta,520.99,503.72,125.53,55.69,55.38,606.26,318.35,1154.55,24.78
+PLTR,Palantir Technologies Inc.,EEUU,Technology,201.72,Alcista,186.06,151.98,Alcista,196.39,179.21,40.97,52.29,69.19,248.93,111.31,556.69,23.4
+ANET,"Arista Networks, Inc.",EEUU,Technology,184.33,Lateral / mixta,196.87,164.95,Lateral / mixta,196.35,195.12,4.19,49.6,49.23,225.46,127.16,399.74,22.31
+AVGO,Broadcom Inc.,EEUU,Technology,337.8,Bajista,354.75,366.35,Bajista,345.81,365.79,-19.82,48.02,45.02,410.98,243.44,693.84,21.66
+LLY,Eli Lilly and Company,EEUU,Healthcare,1270.75,Alcista,1188.14,1086.58,Alcista,1212.48,1184.06,44.21,40.22,33.66,1504.74,1017.29,2225.75,18.41
+GE,GE Aerospace,EEUU,Industrials,295.88,Bajista,321.71,322.56,Bajista,306.75,331.84,4.25,35.99,31.97,345.04,237.88,500.47,16.61
+XOM,ExxonMobil Holdings Corporation,EEUU,Energy,178.09,Alcista,166.14,152.73,Alcista,172.5,163.62,21.19,27.33,27.83,200.95,145.39,277.75,12.84
+ABBV,AbbVie Inc.,EEUU,Healthcare,284.8,Alcista,265.9,233.64,Alcista,276.55,261.61,45.23,25.42,24.85,318.95,238.88,425.85,11.99
+PM,Philip Morris International Inc.,EEUU,Consumer Defensive,197.46,Alcista,191.45,179.15,Lateral / mixta,197.83,190.8,22.29,20.64,23.52,216.89,164.98,285.12,9.84
+WMT,Walmart Inc.,EEUU,Consumer Defensive,117.8,Lateral / mixta,108.8,117.97,Alcista,113.06,109.66,-8.94,20.37,23.32,129.24,98.54,169.51,9.71
+CVX,Chevron Corporation,EEUU,Energy,226.78,Alcista,211.42,190.83,Alcista,217.61,207.12,24.64,19.61,26.54,248.02,182.14,337.73,9.37
+AMGN,Amgen Inc.,EEUU,Healthcare,438.34,Alcista,417.53,371.32,Alcista,422.18,413.82,28.93,19.52,25.38,479.22,356.7,643.83,9.33
+KO,The Coca-Cola Company,EEUU,Consumer Defensive,92.68,Alcista,89.13,81.44,Alcista,90.07,88.63,22.45,14.47,16.76,99.16,81.59,120.5,6.99

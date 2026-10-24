@@ -1,0 +1,124 @@
+time=2026-10-23T23:50:38.159Z level=INFO msg="Paso 1/7: obteniendo universo de acciones de EEUU..."
+time=2026-10-23T23:50:38.465Z level=INFO msg=Universo tickers=503
+time=2026-10-23T23:50:38.465Z level=INFO msg="Paso 2/7: descargando market cap" tickers=503
+time=2026-10-23T23:50:40.177Z level=INFO msg="market caps en lote" n=503/503
+time=2026-10-23T23:50:40.177Z level=INFO msg="Paso 3/7: evaluando market cap contra el umbral" tickers=503
+time=2026-10-23T23:50:40.177Z level=INFO msg="tickers que pasan el filtro de market cap" n=56/503
+time=2026-10-23T23:50:40.177Z level=INFO msg="Paso 4/7: descargando histórico de precios" candidatos=56
+time=2026-10-23T23:50:58.566Z level=INFO msg="Paso 5/7: calculando momentum, performance e indicadores técnicos" candidatos=56
+time=2026-10-23T23:50:58.567Z level=INFO msg="candidatos con histórico suficiente para calcular momentum" n=56/56
+time=2026-10-23T23:50:58.567Z level=INFO msg="Paso 6/7: descargando fundamentales" candidatos=56
+time=2026-10-23T23:51:00.099Z level=INFO msg="fundamentales OK" n=1/56 ticker=MU
+time=2026-10-23T23:51:00.413Z level=INFO msg="fundamentales OK" n=2/56 ticker=DELL
+time=2026-10-23T23:51:00.691Z level=INFO msg="fundamentales OK" n=3/56 ticker=INTC
+time=2026-10-23T23:51:01.023Z level=INFO msg="fundamentales OK" n=4/56 ticker=MRVL
+time=2026-10-23T23:51:02.697Z level=INFO msg="fundamentales OK" n=5/56 ticker=AMD
+time=2026-10-23T23:51:02.903Z level=INFO msg="fundamentales OK" n=6/56 ticker=LRCX
+time=2026-10-23T23:51:03.182Z level=INFO msg="fundamentales OK" n=7/56 ticker=AMAT
+time=2026-10-23T23:51:03.514Z level=INFO msg="fundamentales OK" n=8/56 ticker=CRWD
+time=2026-10-23T23:51:05.268Z level=INFO msg="fundamentales OK" n=9/56 ticker=PANW
+time=2026-10-23T23:51:05.695Z level=INFO msg="fundamentales OK" n=10/56 ticker=MRK
+time=2026-10-23T23:51:06.026Z level=INFO msg="fundamentales OK" n=11/56 ticker=TXN
+time=2026-10-23T23:51:06.388Z level=INFO msg="fundamentales OK" n=12/56 ticker=GEV
+time=2026-10-23T23:51:07.935Z level=INFO msg="fundamentales OK" n=13/56 ticker=CAT
+time=2026-10-23T23:51:08.350Z level=INFO msg="fundamentales OK" n=14/56 ticker=CSCO
+time=2026-10-23T23:51:08.663Z level=INFO msg="fundamentales OK" n=15/56 ticker=XOM
+time=2026-10-23T23:51:09.006Z level=INFO msg="fundamentales OK" n=16/56 ticker=JNJ
+time=2026-10-23T23:51:10.343Z level=INFO msg="fundamentales OK" n=17/56 ticker=AMGN
+time=2026-10-23T23:51:10.700Z level=INFO msg="fundamentales OK" n=18/56 ticker=LLY
+time=2026-10-23T23:51:11.053Z level=INFO msg="fundamentales OK" n=19/56 ticker=C
+time=2026-10-23T23:51:11.446Z level=INFO msg="fundamentales OK" n=20/56 ticker=CVX
+time=2026-10-23T23:51:12.861Z level=INFO msg="fundamentales OK" n=21/56 ticker=GOOGL
+time=2026-10-23T23:51:13.199Z level=INFO msg="fundamentales OK" n=22/56 ticker=ANET
+time=2026-10-23T23:51:13.384Z level=INFO msg="fundamentales OK" n=23/56 ticker=GOOG
+time=2026-10-23T23:51:13.736Z level=INFO msg="fundamentales OK" n=24/56 ticker=AAPL
+time=2026-10-23T23:51:15.057Z level=INFO msg="fundamentales OK" n=25/56 ticker=KO
+time=2026-10-23T23:51:15.364Z level=INFO msg="fundamentales OK" n=26/56 ticker=MS
+time=2026-10-23T23:51:15.653Z level=INFO msg="fundamentales OK" n=27/56 ticker=GS
+time=2026-10-23T23:51:15.961Z level=INFO msg="fundamentales OK" n=28/56 ticker=PM
+time=2026-10-23T23:51:17.311Z level=INFO msg="fundamentales OK" n=29/56 ticker=NVDA
+time=2026-10-23T23:51:17.625Z level=INFO msg="fundamentales OK" n=30/56 ticker=ABBV
+time=2026-10-23T23:51:17.935Z level=INFO msg="fundamentales OK" n=31/56 ticker=TMO
+time=2026-10-23T23:51:18.193Z level=INFO msg="fundamentales OK" n=32/56 ticker=JPM
+time=2026-10-23T23:51:19.799Z level=INFO msg="fundamentales OK" n=33/56 ticker=AMZN
+time=2026-10-23T23:51:20.251Z level=INFO msg="fundamentales OK" n=34/56 ticker=BAC
+time=2026-10-23T23:51:20.378Z level=INFO msg="fundamentales OK" n=35/56 ticker=RTX
+time=2026-10-23T23:51:20.684Z level=INFO msg="fundamentales OK" n=36/56 ticker=PLTR
+time=2026-10-23T23:51:22.333Z level=INFO msg="fundamentales OK" n=37/56 ticker=LIN
+time=2026-10-23T23:51:22.639Z level=INFO msg="fundamentales OK" n=38/56 ticker=UNH
+time=2026-10-23T23:51:23.019Z level=INFO msg="fundamentales OK" n=39/56 ticker=V
+time=2026-10-23T23:51:23.342Z level=INFO msg="fundamentales OK" n=40/56 ticker=GE
+time=2026-10-23T23:51:25.074Z level=INFO msg="fundamentales OK" n=41/56 ticker=WMT
+time=2026-10-23T23:51:25.455Z level=INFO msg="fundamentales OK" n=42/56 ticker=AVGO
+time=2026-10-23T23:51:25.795Z level=INFO msg="fundamentales OK" n=43/56 ticker=BRK-B
+time=2026-10-23T23:51:26.260Z level=INFO msg="fundamentales OK" n=44/56 ticker=META
+time=2026-10-23T23:51:27.778Z level=INFO msg="fundamentales OK" n=45/56 ticker=PG
+time=2026-10-23T23:51:28.207Z level=INFO msg="fundamentales OK" n=46/56 ticker=WFC
+time=2026-10-23T23:51:28.568Z level=INFO msg="fundamentales OK" n=47/56 ticker=MA
+time=2026-10-23T23:51:28.849Z level=INFO msg="fundamentales OK" n=48/56 ticker=MSFT
+time=2026-10-23T23:51:30.356Z level=INFO msg="fundamentales OK" n=49/56 ticker=COST
+time=2026-10-23T23:51:30.656Z level=INFO msg="fundamentales OK" n=50/56 ticker=CRM
+time=2026-10-23T23:51:30.983Z level=INFO msg="fundamentales OK" n=51/56 ticker=AXP
+time=2026-10-23T23:51:31.442Z level=INFO msg="fundamentales OK" n=52/56 ticker=TSLA
+time=2026-10-23T23:51:33.119Z level=INFO msg="fundamentales OK" n=53/56 ticker=IBM
+time=2026-10-23T23:51:33.532Z level=INFO msg="fundamentales OK" n=54/56 ticker=HD
+time=2026-10-23T23:51:33.857Z level=INFO msg="fundamentales OK" n=55/56 ticker=NFLX
+time=2026-10-23T23:51:34.156Z level=INFO msg="fundamentales OK" n=56/56 ticker=ORCL
+time=2026-10-23T23:51:34.156Z level=INFO msg="Paso 7/7: evaluando fundamentales y calculando score" candidatos=56
+time=2026-10-23T23:51:34.156Z level=INFO msg=evaluado ticker=MU score=77.9
+time=2026-10-23T23:51:34.156Z level=INFO msg=evaluado ticker=DELL score=59.4
+time=2026-10-23T23:51:34.156Z level=INFO msg=evaluado ticker=INTC score=48.3
+time=2026-10-23T23:51:34.156Z level=INFO msg=evaluado ticker=MRVL score=58.5
+time=2026-10-23T23:51:34.156Z level=INFO msg=evaluado ticker=AMD score=54.9
+time=2026-10-23T23:51:34.156Z level=INFO msg=evaluado ticker=LRCX score=61.4
+time=2026-10-23T23:51:34.156Z level=INFO msg=evaluado ticker=AMAT score=63.2
+time=2026-10-23T23:51:34.156Z level=INFO msg=evaluado ticker=CRWD score=40.8
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=PANW score=45.1
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=MRK score=63
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=TXN score=74.9
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=GEV score=54.5
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=CAT score=52.3
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=CSCO score=66.2
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=XOM score=71.1
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=JNJ score=68.6
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=AMGN score=68.4
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=LLY score=69
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=C score=68.6
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=CVX score=76.1
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=GOOGL score=67.3
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=ANET score=57.8
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=GOOG score=66.4
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=AAPL score=64.6
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=KO score=67.5
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=MS score=60.7
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=GS score=69.2
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=PM score=75
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=NVDA score=69.3
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=ABBV score=65.4
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=TMO score=65.1
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=JPM score=72.8
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=AMZN score=66.7
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=BAC score=68.5
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=RTX score=62.8
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=PLTR score=62.7
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=LIN score=66.3
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=UNH score=72
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=V score=69.6
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=GE score=50.7
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=WMT score=53.2
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=AVGO score=61.8
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=BRK-B score=70.9
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=META score=68.9
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=PG score=70.3
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=WFC score=71
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=MA score=65.1
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=MSFT score=69.5
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=COST score=56.7
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=CRM score=73.5
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=AXP score=66.3
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=TSLA score=43.1
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=IBM score=67.6
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=HD score=64.3
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=NFLX score=68.7
+time=2026-10-23T23:51:34.157Z level=INFO msg=evaluado ticker=ORCL score=60
+time=2026-10-23T23:51:34.159Z level=INFO msg="Corrida completa" acciones_en_ranking=15

@@ -1,0 +1,16 @@
+ticker,nombre,pais,sector,precio_actual_usd,senal_tecnica,ma_10s,ma_40s,senal_tecnica_3m,ma_4s,ma_13s,momentum_26s_pct,retorno_esperado_anual_pct,volatilidad_anual_pct,precio_proyectado_6m_usd,precio_min_90pct_6m_usd,precio_max_90pct_6m_usd,retorno_esperado_6m_pct
+012450.KS,"Hanwha Aerospace Co., Ltd.",Corea del Sur,Industrials,613.65,Bajista,732.44,801.14,Bajista,639.99,746.8,-36.26,70.39,58.12,801.02,407.43,1574.84,30.53
+MU,"Micron Technology, Inc.",EEUU,Technology,913.67,Lateral / mixta,988.47,747.47,Lateral / mixta,974.02,965.89,84.0,68.85,56.31,1187.23,616.68,2285.65,29.94
+000660.KS,SK hynix Inc.,Corea del Sur,Technology,975.51,Lateral / mixta,1203.03,1077.92,Bajista,1040.61,1188.74,11.68,64.5,52.87,1251.17,676.47,2314.13,28.26
+402340.KS,"SK Square Co., Ltd.",Corea del Sur,Technology,587.26,Lateral / mixta,740.52,669.21,Bajista,636.98,746.16,2.9,61.67,59.9,746.7,372.0,1498.84,27.15
+NVDA,NVIDIA Corporation,EEUU,Technology,221.97,Lateral / mixta,222.68,203.71,Lateral / mixta,224.83,221.23,6.82,57.61,48.02,278.66,159.41,487.15,25.54
+DELL,Dell Technologies Inc.,EEUU,Technology,485.88,Lateral / mixta,520.03,333.61,Lateral / mixta,520.99,503.72,125.53,55.69,55.38,606.26,318.35,1154.55,24.78
+ANET,"Arista Networks, Inc.",EEUU,Technology,184.33,Lateral / mixta,196.87,164.95,Lateral / mixta,196.35,195.12,4.19,49.6,49.23,225.46,127.16,399.74,22.31
+AVGO,Broadcom Inc.,EEUU,Technology,337.8,Bajista,354.75,366.35,Bajista,345.81,365.79,-19.82,48.02,45.02,410.98,243.44,693.84,21.66
+LLY,Eli Lilly and Company,EEUU,Healthcare,1270.75,Alcista,1188.14,1086.58,Alcista,1212.48,1184.06,44.21,40.22,33.66,1504.74,1017.29,2225.75,18.41
+GE,GE Aerospace,EEUU,Industrials,295.88,Bajista,321.71,322.56,Bajista,306.75,331.84,4.25,35.99,31.97,345.04,237.88,500.47,16.61
+8306.T,"Mitsubishi UFJ Financial Group, Inc.",Japón,Financial Services,21.69,Lateral / mixta,22.58,19.95,Bajista,21.81,22.52,23.37,34.63,29.19,25.17,17.92,35.35,16.03
+XOM,ExxonMobil Holdings Corporation,EEUU,Energy,178.09,Alcista,166.14,152.73,Alcista,172.5,163.62,21.19,27.33,27.83,200.95,145.39,277.75,12.84
+ABBV,AbbVie Inc.,EEUU,Healthcare,284.8,Alcista,265.9,233.64,Alcista,276.55,261.61,45.23,25.42,24.85,318.95,238.88,425.85,11.99
+PM,Philip Morris International Inc.,EEUU,Consumer Defensive,197.46,Alcista,191.45,179.15,Lateral / mixta,197.83,190.8,22.29,20.64,23.52,216.89,164.98,285.12,9.84
+CVX,Chevron Corporation,EEUU,Energy,226.78,Alcista,211.42,190.83,Alcista,217.61,207.12,24.64,19.61,26.54,248.02,182.14,337.73,9.37

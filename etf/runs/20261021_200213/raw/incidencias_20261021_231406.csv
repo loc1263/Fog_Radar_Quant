@@ -1,0 +1,10 @@
+﻿Timestamp,Tipo,Ticker,Detalle
+2026-10-21 23:04:30,INFO_INCOMPLETA,GTOS,"Yahoo no devolvio: AUM. Salvo Nombre, estos son campos que exige el filtro de completitud del ranking -- es probable que este ticker quede afuera del universo depurado en esta corrida."
+2026-10-21 23:04:42,INFO_INCOMPLETA,IROC,"Yahoo no devolvio: AUM. Salvo Nombre, estos son campos que exige el filtro de completitud del ranking -- es probable que este ticker quede afuera del universo depurado en esta corrida."
+2026-10-21 23:05:19,INFO_INCOMPLETA,GTOH,"Yahoo no devolvio: AUM. Salvo Nombre, estos son campos que exige el filtro de completitud del ranking -- es probable que este ticker quede afuera del universo depurado en esta corrida."
+2026-10-21 23:07:32,INFO_INCOMPLETA,GARP,"Yahoo no devolvio: AUM. Salvo Nombre, estos son campos que exige el filtro de completitud del ranking -- es probable que este ticker quede afuera del universo depurado en esta corrida."
+2026-10-21 23:08:38,INFO_INCOMPLETA,SHYM,"Yahoo no devolvio: AUM. Salvo Nombre, estos son campos que exige el filtro de completitud del ranking -- es probable que este ticker quede afuera del universo depurado en esta corrida."
+2026-10-21 23:09:37,INFO_INCOMPLETA,EUHY,"Yahoo no devolvio: AUM. Salvo Nombre, estos son campos que exige el filtro de completitud del ranking -- es probable que este ticker quede afuera del universo depurado en esta corrida."
+2026-10-21 23:09:40,INFO_INCOMPLETA,GBF,"Yahoo no devolvio: Performance 1M (%), Sharpe Ratio, Treynor Ratio, Beta. Salvo Nombre, estos son campos que exige el filtro de completitud del ranking -- es probable que este ticker quede afuera del universo depurado en esta corrida."
+2026-10-21 23:10:46,INFO_INCOMPLETA,WSML,"Yahoo no devolvio: AUM. Salvo Nombre, estos son campos que exige el filtro de completitud del ranking -- es probable que este ticker quede afuera del universo depurado en esta corrida."
+2026-10-21 23:12:00,INFO_INCOMPLETA,JMMF,"Yahoo no devolvio: Treynor Ratio. Salvo Nombre, estos son campos que exige el filtro de completitud del ranking -- es probable que este ticker quede afuera del universo depurado en esta corrida."
