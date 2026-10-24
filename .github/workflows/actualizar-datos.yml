@@ -1,6 +1,6 @@
 name: Actualizar datos
 
-# Corre los pipelines (Chile, EEUU, Tendencia y ETFs) todos los días a las 18:00 de Santiago, guarda el resultado en
+# Corre los pipelines (Chile, EEUU, Tendencia y ETFs) de lunes a viernes a las 18:00 de Santiago, guarda el resultado en
 # la rama `datos` y dispara la publicación del sitio. Ver docs/PLAN_WORKFLOW_ACTIONS.md.
 #
 # El cron de GitHub va en UTC: 18:00 de Santiago son las 21:00 UTC con horario de verano (UTC-3) y las 22:00 UTC en
@@ -8,8 +8,8 @@ name: Actualizar datos
 # (GitHub puede retrasar el cron varias horas).
 on:
   schedule:
-    - cron: "0 21 * * *"
-    - cron: "0 22 * * *"
+    - cron: "0 21 * * 1-5"
+    - cron: "0 22 * * 1-5"
   workflow_dispatch:
     inputs:
       sin_cache:

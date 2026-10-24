@@ -3,7 +3,7 @@
 Sitio unificado de análisis cuantitativo: ETFs, acciones EEUU, acciones Chile (IPSA)
 y tendencia/Markowitz Asia + EEUU.
 
-**Sitio publicado:** https://loc1263.github.io/Fog_Radar_Quant/ (se actualiza solo todos los días a las 18:00, hora de Santiago)
+**Sitio publicado:** https://loc1263.github.io/Fog_Radar_Quant/ (se actualiza solo de lunes a viernes a las 18:00, hora de Santiago)
 
 - `backend-go/` — API y pipelines en Go (huma + chi, sqlite sin CGO); ver `backend-go/README.md`
 - `frontend/`   — SvelteKit + TypeScript + Tailwind v4 + LayerChart (ver `frontend/README.md`)
@@ -26,7 +26,7 @@ Compila el backend si falta el binario o hay fuentes `.go` más nuevas, exporta 
 
 ## Publicación (GitHub Actions)
 
-- `actualizar-datos.yml`: todos los días a las 18:00 (Santiago) corre `fogradar job --todos`, guarda `data/` en la
+- `actualizar-datos.yml`: de lunes a viernes a las 18:00 (Santiago) corre `fogradar job --todos`, guarda `data/` en la
   rama `datos` y dispara la publicación. También se lanza a mano (con la opción de ignorar cachés).
 - `publicar.yml`: exporta los datos de la rama `datos`, construye el sitio con `BASE_PATH=/<repo>` y lo despliega en
   GitHub Pages (Settings → Pages → Source: *GitHub Actions*).

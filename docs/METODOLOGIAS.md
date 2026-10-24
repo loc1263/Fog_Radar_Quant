@@ -48,7 +48,7 @@ para decidir si los datos están al día). Horas de `America/Santiago`.
 
 | Programa | Módulos (en secuencia, nunca en paralelo) | Cuándo |
 |---|---|---|
-| `diario` | Chile → EEUU → Tendencia → ETFs | Todos los días 18:00 |
+| `diario` | Chile → EEUU → Tendencia → ETFs | Lunes a viernes 18:00 |
 
 
 ---
