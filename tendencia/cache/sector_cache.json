@@ -1,0 +1,637 @@
+{
+  "000270.KS": {
+    "sector": "Consumer Cyclical",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "000660.KS": {
+    "sector": "Technology",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "005380.KS": {
+    "sector": "Consumer Cyclical",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "005930.KS": {
+    "sector": "Technology",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "006400.KS": {
+    "sector": "Industrials",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "009150.KS": {
+    "sector": "Technology",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "012450.KS": {
+    "sector": "Industrials",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "028260.KS": {
+    "sector": "Industrials",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "032830.KS": {
+    "sector": "Financial Services",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "034020.KS": {
+    "sector": "Industrials",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "055550.KS": {
+    "sector": "Financial Services",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "068270.KS": {
+    "sector": "Healthcare",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "105560.KS": {
+    "sector": "Financial Services",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "207940.KS": {
+    "sector": "Healthcare",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "2330.TW": {
+    "sector": "Technology",
+    "country": "Taiwan",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "373220.KS": {
+    "sector": "Industrials",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "402340.KS": {
+    "sector": "Technology",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "6098.T": {
+    "sector": "Communication Services",
+    "country": "Japan",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "7203.T": {
+    "sector": "Consumer Cyclical",
+    "country": "Japan",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "8306.T": {
+    "sector": "Financial Services",
+    "country": "Japan",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "9984.T": {
+    "sector": "Communication Services",
+    "country": "Japan",
+    "at": "2026-10-21T20:01:09.441586294-03:00"
+  },
+  "AAPL": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "ABBV": {
+    "sector": "Healthcare",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "ACGBY": {
+    "sector": "Financial Services",
+    "country": "China",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "ADI": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-27T21:16:59.610347846-03:00"
+  },
+  "AMAT": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "AMD": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "AMGN": {
+    "sector": "Healthcare",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "AMZN": {
+    "sector": "Consumer Cyclical",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "ANET": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "ARM": {
+    "sector": "Technology",
+    "country": "United Kingdom",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "ASML": {
+    "sector": "Technology",
+    "country": "Netherlands",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "ASMLF": {
+    "sector": "Technology",
+    "country": "Netherlands",
+    "at": "2026-10-27T21:16:59.610347846-03:00"
+  },
+  "AVGO": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "AXP": {
+    "sector": "Financial Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "AZN": {
+    "sector": "Healthcare",
+    "country": "United Kingdom",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "BABA": {
+    "sector": "Consumer Cyclical",
+    "country": "China",
+    "at": "2026-10-21T20:01:09.441586294-03:00"
+  },
+  "BABAF": {
+    "sector": "Consumer Cyclical",
+    "country": "China",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "BAC": {
+    "sector": "Financial Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "BACHF": {
+    "sector": "Financial Services",
+    "country": "China",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "BACHY": {
+    "sector": "Financial Services",
+    "country": "China",
+    "at": "2026-10-21T20:01:09.441586294-03:00"
+  },
+  "BHP": {
+    "sector": "Basic Materials",
+    "country": "Australia",
+    "at": "2026-10-27T21:16:59.610347846-03:00"
+  },
+  "BHPLF": {
+    "sector": "Basic Materials",
+    "country": "Australia",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "BRK-A": {
+    "sector": "Financial Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "BRK-B": {
+    "sector": "Financial Services",
+    "country": "United States",
+    "at": "2026-10-27T21:16:59.610347846-03:00"
+  },
+  "C": {
+    "sector": "Financial Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "CAT": {
+    "sector": "Industrials",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "CBAUF": {
+    "sector": "Financial Services",
+    "country": "Australia",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "CGXYY": {
+    "sector": "Financial Services",
+    "country": "China",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "CICHF": {
+    "sector": "Financial Services",
+    "country": "China",
+    "at": "2026-10-21T20:01:09.441586294-03:00"
+  },
+  "CICHY": {
+    "sector": "Financial Services",
+    "country": "China",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "COST": {
+    "sector": "Consumer Defensive",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "CRM": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "CRWD": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "CSCO": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "CTATF": {
+    "sector": "Industrials",
+    "country": "China",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "CVX": {
+    "sector": "Energy",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "CYATY": {
+    "sector": "Industrials",
+    "country": "China",
+    "at": "2026-10-27T21:16:59.610347846-03:00"
+  },
+  "DELL": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "GE": {
+    "sector": "Industrials",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "GEV": {
+    "sector": "Industrials",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "GOOGL": {
+    "sector": "Communication Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "GS": {
+    "sector": "Financial Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "HD": {
+    "sector": "Consumer Cyclical",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "HSBC": {
+    "sector": "Financial Services",
+    "country": "United Kingdom",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "IBM": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "IDCBF": {
+    "sector": "Financial Services",
+    "country": "China",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "IDCBY": {
+    "sector": "Financial Services",
+    "country": "China",
+    "at": "2026-10-21T20:01:09.441586294-03:00"
+  },
+  "IDEXF": {
+    "sector": "Consumer Cyclical",
+    "country": "Spain",
+    "at": "2026-10-21T20:01:09.441586294-03:00"
+  },
+  "INTC": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "JNJ": {
+    "sector": "Healthcare",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "JPM": {
+    "sector": "Financial Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "KLAC": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-21T20:01:09.441586294-03:00"
+  },
+  "KO": {
+    "sector": "Consumer Defensive",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "LIN": {
+    "sector": "Basic Materials",
+    "country": "United Kingdom",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "LLY": {
+    "sector": "Healthcare",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "LRCX": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "LRLCF": {
+    "sector": "Consumer Defensive",
+    "country": "France",
+    "at": "2026-10-27T21:16:59.610347846-03:00"
+  },
+  "LRLCY": {
+    "sector": "Consumer Defensive",
+    "country": "France",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "LVMHF": {
+    "sector": "Consumer Cyclical",
+    "country": "France",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "LVMUY": {
+    "sector": "Consumer Cyclical",
+    "country": "France",
+    "at": "2026-10-27T21:16:59.610347846-03:00"
+  },
+  "MA": {
+    "sector": "Financial Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "MBFJF": {
+    "sector": "Financial Services",
+    "country": "Japan",
+    "at": "2026-10-27T21:16:59.610347846-03:00"
+  },
+  "META": {
+    "sector": "Communication Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "MRK": {
+    "sector": "Healthcare",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "MRVL": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "MS": {
+    "sector": "Financial Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "MSFT": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "MU": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "MUFG": {
+    "sector": "Financial Services",
+    "country": "Japan",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "NFLX": {
+    "sector": "Communication Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "NSRGF": {
+    "sector": "Consumer Defensive",
+    "country": "Switzerland",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "NVDA": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "NVS": {
+    "sector": "Healthcare",
+    "country": "Switzerland",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "ORCL": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "PANW": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "PCCYF": {
+    "sector": "Energy",
+    "country": "China",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "PG": {
+    "sector": "Consumer Defensive",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "PLTR": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "PM": {
+    "sector": "Consumer Defensive",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "QH": {
+    "sector": "Technology",
+    "country": "China",
+    "at": "2026-10-21T20:01:09.441586294-03:00"
+  },
+  "RHHBF": {
+    "sector": "Healthcare",
+    "country": "Switzerland",
+    "at": "2026-10-21T20:01:09.441586294-03:00"
+  },
+  "RHHBY": {
+    "sector": "Healthcare",
+    "country": "Switzerland",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "RTX": {
+    "sector": "Industrials",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "RY": {
+    "sector": "Financial Services",
+    "country": "Canada",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "SAP": {
+    "sector": "Technology",
+    "country": "Germany",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "SAPGF": {
+    "sector": "Technology",
+    "country": "Germany",
+    "at": "2026-10-27T21:16:59.610347846-03:00"
+  },
+  "SHEL": {
+    "sector": "Energy",
+    "country": "United Kingdom",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "SHOP": {
+    "sector": "Technology",
+    "country": "Canada",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "SIEGY": {
+    "sector": "Industrials",
+    "country": "Germany",
+    "at": "2026-10-27T21:16:59.610347846-03:00"
+  },
+  "SKHY": {
+    "sector": "Technology",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "SMAWF": {
+    "sector": "Industrials",
+    "country": "Germany",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "SPCX": {
+    "sector": "Industrials",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "SSNLF": {
+    "sector": "Technology",
+    "country": "South Korea",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "TCTZF": {
+    "sector": "Communication Services",
+    "country": "China",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "TD": {
+    "sector": "Financial Services",
+    "country": "Canada",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "TM": {
+    "sector": "Consumer Cyclical",
+    "country": "Japan",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "TMO": {
+    "sector": "Healthcare",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "TSLA": {
+    "sector": "Consumer Cyclical",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "TSM": {
+    "sector": "Technology",
+    "country": "Taiwan",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "TTE": {
+    "sector": "Energy",
+    "country": "France",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "TXN": {
+    "sector": "Technology",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "UNH": {
+    "sector": "Healthcare",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "V": {
+    "sector": "Financial Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "WFC": {
+    "sector": "Financial Services",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "WMT": {
+    "sector": "Consumer Defensive",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  },
+  "XOM": {
+    "sector": "Energy",
+    "country": "United States",
+    "at": "2026-10-23T20:51:34.165402517-03:00"
+  }
+}

@@ -1,0 +1,11 @@
+rank,ticker,nombre,pais,sector,precio_actual_usd,momentum_1m_pct,momentum_2m_pct,momentum_4m_pct,momentum_6m_pct,momentum_8m_pct,momentum_10m_pct,momentum_12m_pct,pct_meses_positivos_12m,momentum_score_pct
+1,DELL,Dell Technologies Inc.,EEUU,Technology,456.44,0.0,-18.8,4.47,8.77,167.3,297.86,245.9,58.3,79.79
+2,MU,"Micron Technology, Inc.",EEUU,Technology,877.55,0.0,-18.9,-4.7,-9.6,145.84,119.74,271.51,66.7,59.99
+3,MRVL,"Marvell Technology, Inc.",EEUU,Technology,228.51,0.0,-12.74,17.67,11.52,141.07,185.09,156.04,50.0,53.43
+4,CRWD,"CrowdStrike Holdings, Inc.",EEUU,Technology,257.57,0.0,2.16,40.53,40.94,178.77,127.69,102.35,50.0,52.76
+5,PANW,"Palo Alto Networks, Inc.",EEUU,Technology,380.55,0.0,1.55,17.53,35.1,158.84,111.21,100.15,58.3,47.99
+6,AMD,"Advanced Micro Devices, Inc.",EEUU,Technology,516.79,0.0,-18.05,-0.99,0.13,155.85,99.01,137.57,58.3,42.24
+7,INTC,Intel Corporation,EEUU,Technology,86.96,0.0,-29.3,-5.81,-24.17,101.62,92.94,114.4,41.7,25.27
+8,CVX,Chevron Corporation,EEUU,Energy,233.21,0.0,14.07,20.77,28.93,12.43,43.79,58.62,58.3,20.2
+9,ADI,"Analog Devices, Inc.",EEUU,Technology,425.35,8.77,8.07,14.73,3.37,39.15,40.43,62.31,58.3,20.0
+10,XOM,ExxonMobil Holdings Corporation,EEUU,Energy,183.21,0.0,14.09,17.49,26.94,8.57,38.46,61.22,66.7,19.85

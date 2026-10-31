@@ -1,0 +1,11 @@
+{
+  "created_at": "2026-10-28T21:38:46.639327",
+  "parametros": {
+    "top_n": 15,
+    "top_n_us": 15,
+    "max_weight_per_asset": 0.15,
+    "l2_gamma": 0.15,
+    "min_weeks_required": 200,
+    "universe_source": "dynamic_yahoo_screener"
+  }
+}

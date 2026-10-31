@@ -1,0 +1,11 @@
+rank,ticker,nombre,pais,sector,precio_actual_usd,momentum_1s_pct,momentum_2s_pct,momentum_3s_pct,momentum_4s_pct,pct_semanas_positivas_4s,momentum_score_pct
+1,IBM,International Business Machines Corporation,EEUU,Technology,253.56,9.23,11.64,13.89,12.44,75.0,10.32
+2,CVX,Chevron Corporation,EEUU,Energy,233.21,3.65,10.02,12.83,14.07,100.0,10.14
+3,207940.KS,"Samsung Biologics Co.,Ltd.",Corea del Sur,Healthcare,1107.54,0.18,13.76,21.65,9.73,75.0,9.91
+4,XOM,ExxonMobil Holdings Corporation,EEUU,Energy,183.21,2.36,8.45,11.71,14.09,100.0,9.15
+5,UNH,UnitedHealth Group Incorporated,EEUU,Healthcare,418.09,4.15,10.23,12.42,11.02,75.0,8.27
+6,HD,"The Home Depot, Inc.",EEUU,Consumer Cyclical,319.83,3.29,10.01,13.07,9.08,75.0,7.76
+7,WMT,Walmart Inc.,EEUU,Consumer Defensive,119.89,0.91,7.67,14.99,11.03,75.0,7.57
+8,V,Visa Inc.,EEUU,Financial Services,407.92,1.32,5.83,13.1,11.03,75.0,6.84
+9,MA,Mastercard Incorporated,EEUU,Financial Services,623.6,1.0,5.85,13.09,10.02,75.0,6.55
+10,PG,The Procter & Gamble Company,EEUU,Consumer Defensive,161.02,1.05,6.47,11.12,10.11,75.0,6.29

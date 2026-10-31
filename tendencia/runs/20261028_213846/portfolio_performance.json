@@ -1,0 +1,30 @@
+{
+  "universo_completo": {
+    "retorno_esperado_anual": 0.4170365052607414,
+    "volatilidad_anual": 0.16074411521791335,
+    "sharpe_ratio": 2.343578824652745
+  },
+  "portafolio_15_finales": {
+    "retorno_esperado_anual": 0.4359568854696555,
+    "volatilidad_anual": 0.16275680368172474,
+    "sharpe_ratio": 2.4308469807187625
+  },
+  "tasa_libre_riesgo_anual": 0.040320000648498534,
+  "tickers_seleccionados": [
+    "012450.KS",
+    "LLY",
+    "8306.T",
+    "XOM",
+    "000660.KS",
+    "ABBV",
+    "MU",
+    "PM",
+    "DELL",
+    "402340.KS",
+    "AVGO",
+    "ANET",
+    "NVDA",
+    "GE",
+    "CVX"
+  ]
+}

@@ -1,0 +1,11 @@
+rank,ticker,nombre,pais,sector,precio_actual_usd,momentum_1m_pct,momentum_2m_pct,momentum_4m_pct,momentum_6m_pct,momentum_8m_pct,momentum_10m_pct,momentum_12m_pct,pct_meses_positivos_12m,momentum_score_pct
+1,DELL,Dell Technologies Inc.,EEUU,Technology,456.44,-18.8,0.18,14.6,111.87,275.6,256.9,190.75,58.3,93.99
+2,MU,"Micron Technology, Inc.",EEUU,Technology,877.55,-18.9,-5.91,-22.48,76.72,105.1,208.49,301.13,75.0,80.52
+3,MRVL,"Marvell Technology, Inc.",EEUU,Technology,228.51,-12.74,5.51,-14.3,39.14,187.78,165.11,172.07,58.3,61.36
+4,CRWD,"CrowdStrike Holdings, Inc.",EEUU,Technology,257.57,2.16,17.93,46.95,129.91,165.13,114.11,95.38,50.0,61.24
+5,PANW,"Palo Alto Networks, Inc.",EEUU,Technology,380.55,1.55,2.41,25.1,113.15,155.92,101.94,75.28,58.3,53.76
+6,AMD,"Advanced Micro Devices, Inc.",EEUU,Technology,516.79,-18.05,11.0,-0.92,48.58,158.2,140.38,104.33,58.3,50.16
+7,INTC,Intel Corporation,EEUU,Technology,86.96,-29.3,-2.81,-32.23,5.35,97.14,140.22,127.17,50.0,32.74
+8,XOM,ExxonMobil Holdings Corporation,EEUU,Energy,183.21,14.09,16.91,35.05,24.67,26.05,56.9,63.38,75.0,29.63
+9,CVX,Chevron Corporation,EEUU,Energy,233.21,14.07,15.53,37.52,28.18,29.07,59.79,55.82,58.3,27.14
+10,TXN,Texas Instruments Incorporated,EEUU,Technology,284.69,2.38,10.07,0.25,3.77,30.89,63.66,72.69,66.7,21.87

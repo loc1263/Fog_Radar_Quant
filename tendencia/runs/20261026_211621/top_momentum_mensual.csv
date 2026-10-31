@@ -1,0 +1,11 @@
+rank,ticker,nombre,pais,sector,precio_actual_usd,momentum_1m_pct,momentum_2m_pct,momentum_4m_pct,momentum_6m_pct,momentum_8m_pct,momentum_10m_pct,momentum_12m_pct,pct_meses_positivos_12m,momentum_score_pct
+1,009150.KS,"Samsung Electro-Mechanics Co., Ltd.",Corea del Sur,Technology,847.65,-28.08,-18.65,-34.91,49.94,172.81,352.5,402.03,75.0,111.96
+2,DELL,Dell Technologies Inc.,EEUU,Technology,456.44,-18.8,0.18,14.6,111.87,275.6,256.9,190.75,58.3,93.99
+3,6098.T,"Recruit Holdings Co., Ltd.",Japón,Communication Services,121.55,14.98,17.06,64.65,159.56,175.19,115.68,141.6,75.0,86.09
+4,MU,"Micron Technology, Inc.",EEUU,Technology,877.55,-18.9,-5.91,-22.48,76.72,105.1,208.49,301.13,75.0,80.52
+5,MRVL,"Marvell Technology, Inc.",EEUU,Technology,228.51,-12.74,5.51,-14.3,39.14,187.78,165.11,172.07,58.3,61.36
+6,CRWD,"CrowdStrike Holdings, Inc.",EEUU,Technology,257.57,2.16,17.93,46.95,129.91,165.13,114.11,95.38,50.0,61.24
+7,PANW,"Palo Alto Networks, Inc.",EEUU,Technology,380.55,1.55,2.41,25.1,113.15,155.92,101.94,75.28,58.3,53.76
+8,AMD,"Advanced Micro Devices, Inc.",EEUU,Technology,516.79,-18.05,11.0,-0.92,48.58,158.2,140.38,104.33,58.3,50.16
+9,402340.KS,"SK Square Co., Ltd.",Corea del Sur,Technology,585.5,-32.29,-24.37,-43.72,2.59,31.2,115.56,224.22,75.0,34.15
+10,INTC,Intel Corporation,EEUU,Technology,86.96,-29.3,-2.81,-32.23,5.35,97.14,140.22,127.17,50.0,32.74

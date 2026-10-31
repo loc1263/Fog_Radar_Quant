@@ -1,0 +1,9 @@
+rank,ticker,nombre,pais,sector,precio_actual_usd,retorno_pct
+1,6098.T,"Recruit Holdings Co., Ltd.",Japón,Communication Services,121.55,60.65
+2,PLTR,Palantir Technologies Inc.,EEUU,Technology,196.75,52.17
+3,CVX,Chevron Corporation,EEUU,Energy,233.21,39.03
+4,MSFT,Microsoft Corporation,EEUU,Technology,524.51,34.57
+5,XOM,ExxonMobil Holdings Corporation,EEUU,Energy,183.21,34.51
+6,373220.KS,"LG Energy Solution, Ltd.",Corea del Sur,Industrials,289.35,32.88
+7,CRWD,"CrowdStrike Holdings, Inc.",EEUU,Technology,257.57,32.78
+8,TMO,Thermo Fisher Scientific Inc.,EEUU,Healthcare,673.82,28.83

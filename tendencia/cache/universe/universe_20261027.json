@@ -1,0 +1,466 @@
+{
+  "discovered_at": "2026-10-27T21:16:59.610347",
+  "method": "dynamic_yahoo_screener",
+  "asia_tickers": {
+    "005930.KS": [
+      "Samsung Electronics Co., Ltd.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "000660.KS": [
+      "SK hynix Inc.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "402340.KS": [
+      "SK Square Co., Ltd.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "009150.KS": [
+      "Samsung Electro-Mechanics Co., Ltd.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "373220.KS": [
+      "LG Energy Solution, Ltd.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "005380.KS": [
+      "Hyundai Motor Company",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "207940.KS": [
+      "Samsung Biologics Co.,Ltd.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "2330.TW": [
+      "Taiwan Semiconductor Manufacturing Company Limited",
+      "Taiwán",
+      "TWD"
+    ],
+    "105560.KS": [
+      "KB Financial Group Inc.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "028260.KS": [
+      "Samsung C&T Corporation",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "032830.KS": [
+      "Samsung Life Insurance Co., Ltd.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "068270.KS": [
+      "Celltrion, Inc.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "000270.KS": [
+      "Kia Corporation",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "055550.KS": [
+      "Shinhan Financial Group Co., Ltd.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "006400.KS": [
+      "Samsung SDI Co., Ltd.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "012450.KS": [
+      "Hanwha Aerospace Co., Ltd.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "8306.T": [
+      "Mitsubishi UFJ Financial Group, Inc.",
+      "Japón",
+      "JPY"
+    ],
+    "034020.KS": [
+      "Doosan Enerbility Co., Ltd.",
+      "Corea del Sur",
+      "KRW"
+    ],
+    "7203.T": [
+      "Toyota Motor Corporation",
+      "Japón",
+      "JPY"
+    ],
+    "6098.T": [
+      "Recruit Holdings Co., Ltd.",
+      "Japón",
+      "JPY"
+    ]
+  },
+  "us_tickers": {
+    "NVDA": [
+      "NVIDIA Corporation",
+      "EEUU",
+      "USD"
+    ],
+    "AAPL": [
+      "Apple Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "MSFT": [
+      "Microsoft Corporation",
+      "EEUU",
+      "USD"
+    ],
+    "GOOGL": [
+      "Alphabet Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "AMZN": [
+      "Amazon.com, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "SPCX": [
+      "Space Exploration Technologies Corp.",
+      "EEUU",
+      "USD"
+    ],
+    "AVGO": [
+      "Broadcom Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "TSLA": [
+      "Tesla, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "META": [
+      "Meta Platforms, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "BRK-B": [
+      "Berkshire Hathaway Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "LLY": [
+      "Eli Lilly and Company",
+      "EEUU",
+      "USD"
+    ],
+    "MU": [
+      "Micron Technology, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "WMT": [
+      "Walmart Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "AMD": [
+      "Advanced Micro Devices, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "JPM": [
+      "JPMorgan Chase & Co.",
+      "EEUU",
+      "USD"
+    ],
+    "V": [
+      "Visa Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "XOM": [
+      "ExxonMobil Holdings Corporation",
+      "EEUU",
+      "USD"
+    ],
+    "JNJ": [
+      "Johnson & Johnson",
+      "EEUU",
+      "USD"
+    ],
+    "MA": [
+      "Mastercard Incorporated",
+      "EEUU",
+      "USD"
+    ],
+    "ABBV": [
+      "AbbVie Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "INTC": [
+      "Intel Corporation",
+      "EEUU",
+      "USD"
+    ],
+    "PLTR": [
+      "Palantir Technologies Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "CVX": [
+      "Chevron Corporation",
+      "EEUU",
+      "USD"
+    ],
+    "COST": [
+      "Costco Wholesale Corporation",
+      "EEUU",
+      "USD"
+    ],
+    "CSCO": [
+      "Cisco Systems, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "ORCL": [
+      "Oracle Corporation",
+      "EEUU",
+      "USD"
+    ],
+    "KO": [
+      "The Coca-Cola Company",
+      "EEUU",
+      "USD"
+    ],
+    "PG": [
+      "The Procter & Gamble Company",
+      "EEUU",
+      "USD"
+    ],
+    "UNH": [
+      "UnitedHealth Group Incorporated",
+      "EEUU",
+      "USD"
+    ],
+    "BAC": [
+      "Bank of America Corporation",
+      "EEUU",
+      "USD"
+    ],
+    "MRK": [
+      "Merck & Co., Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "PANW": [
+      "Palo Alto Networks, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "CAT": [
+      "Caterpillar Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "DELL": [
+      "Dell Technologies Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "HD": [
+      "The Home Depot, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "PM": [
+      "Philip Morris International Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "AMAT": [
+      "Applied Materials, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "GE": [
+      "GE Aerospace",
+      "EEUU",
+      "USD"
+    ],
+    "LRCX": [
+      "Lam Research Corporation",
+      "EEUU",
+      "USD"
+    ],
+    "MS": [
+      "Morgan Stanley",
+      "EEUU",
+      "USD"
+    ],
+    "TXN": [
+      "Texas Instruments Incorporated",
+      "EEUU",
+      "USD"
+    ],
+    "CRWD": [
+      "CrowdStrike Holdings, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "GS": [
+      "The Goldman Sachs Group, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "RTX": [
+      "RTX Corporation",
+      "EEUU",
+      "USD"
+    ],
+    "NFLX": [
+      "Netflix, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "TMO": [
+      "Thermo Fisher Scientific Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "WFC": [
+      "Wells Fargo & Company",
+      "EEUU",
+      "USD"
+    ],
+    "AMGN": [
+      "Amgen Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "GEV": [
+      "GE Vernova Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "IBM": [
+      "International Business Machines Corporation",
+      "EEUU",
+      "USD"
+    ],
+    "ANET": [
+      "Arista Networks, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "MRVL": [
+      "Marvell Technology, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "AXP": [
+      "American Express Company",
+      "EEUU",
+      "USD"
+    ],
+    "ADI": [
+      "Analog Devices, Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "C": [
+      "Citigroup Inc.",
+      "EEUU",
+      "USD"
+    ],
+    "KLAC": [
+      "KLA Corporation",
+      "EEUU",
+      "USD"
+    ]
+  },
+  "sector_map": {
+    "005930.KS": "Technology",
+    "000660.KS": "Technology",
+    "402340.KS": "Technology",
+    "009150.KS": "Technology",
+    "373220.KS": "Industrials",
+    "005380.KS": "Consumer Cyclical",
+    "207940.KS": "Healthcare",
+    "2330.TW": "Technology",
+    "105560.KS": "Financial Services",
+    "028260.KS": "Industrials",
+    "032830.KS": "Financial Services",
+    "068270.KS": "Healthcare",
+    "000270.KS": "Consumer Cyclical",
+    "055550.KS": "Financial Services",
+    "006400.KS": "Industrials",
+    "012450.KS": "Industrials",
+    "8306.T": "Financial Services",
+    "034020.KS": "Industrials",
+    "7203.T": "Consumer Cyclical",
+    "6098.T": "Communication Services",
+    "NVDA": "Technology",
+    "AAPL": "Technology",
+    "MSFT": "Technology",
+    "GOOGL": "Communication Services",
+    "AMZN": "Consumer Cyclical",
+    "SPCX": "Industrials",
+    "AVGO": "Technology",
+    "TSLA": "Consumer Cyclical",
+    "META": "Communication Services",
+    "BRK-B": "Financial Services",
+    "LLY": "Healthcare",
+    "MU": "Technology",
+    "WMT": "Consumer Defensive",
+    "AMD": "Technology",
+    "JPM": "Financial Services",
+    "V": "Financial Services",
+    "XOM": "Energy",
+    "JNJ": "Healthcare",
+    "MA": "Financial Services",
+    "ABBV": "Healthcare",
+    "INTC": "Technology",
+    "PLTR": "Technology",
+    "CVX": "Energy",
+    "COST": "Consumer Defensive",
+    "CSCO": "Technology",
+    "ORCL": "Technology",
+    "KO": "Consumer Defensive",
+    "PG": "Consumer Defensive",
+    "UNH": "Healthcare",
+    "BAC": "Financial Services",
+    "MRK": "Healthcare",
+    "PANW": "Technology",
+    "CAT": "Industrials",
+    "DELL": "Technology",
+    "HD": "Consumer Cyclical",
+    "PM": "Consumer Defensive",
+    "AMAT": "Technology",
+    "GE": "Industrials",
+    "LRCX": "Technology",
+    "MS": "Financial Services",
+    "TXN": "Technology",
+    "CRWD": "Technology",
+    "GS": "Financial Services",
+    "RTX": "Industrials",
+    "NFLX": "Communication Services",
+    "TMO": "Healthcare",
+    "WFC": "Financial Services",
+    "AMGN": "Healthcare",
+    "GEV": "Industrials",
+    "IBM": "Technology",
+    "ANET": "Technology",
+    "MRVL": "Technology",
+    "AXP": "Financial Services",
+    "ADI": "Technology",
+    "C": "Financial Services",
+    "KLAC": "Technology"
+  }
+}
