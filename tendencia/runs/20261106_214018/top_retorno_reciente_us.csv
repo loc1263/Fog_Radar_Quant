@@ -1,0 +1,9 @@
+rank,ticker,nombre,pais,sector,precio_actual_usd,retorno_pct
+1,PLTR,Palantir Technologies Inc.,EEUU,Technology,196.75,55.18
+2,CRWD,"CrowdStrike Holdings, Inc.",EEUU,Technology,257.57,37.61
+3,MSFT,Microsoft Corporation,EEUU,Technology,524.51,36.46
+4,CVX,Chevron Corporation,EEUU,Energy,233.21,33.36
+5,XOM,ExxonMobil Holdings Corporation,EEUU,Energy,183.21,32.77
+6,GILD,"Gilead Sciences, Inc.",EEUU,Healthcare,170.33,31.93
+7,TMO,Thermo Fisher Scientific Inc.,EEUU,Healthcare,673.82,27.95
+8,DIS,The Walt Disney Company,EEUU,Communication Services,116.75,22.1

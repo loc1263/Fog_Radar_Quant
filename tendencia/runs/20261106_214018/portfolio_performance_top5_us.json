@@ -1,0 +1,13 @@
+{
+  "n_acciones": 5,
+  "retorno_esperado_anual": 0.3707525684620353,
+  "volatilidad_anual": 0.1866671966681817,
+  "sharpe_ratio": 1.7701694443984786,
+  "tickers_seleccionados": [
+    "LLY",
+    "XOM",
+    "MU",
+    "GILD",
+    "PM"
+  ]
+}

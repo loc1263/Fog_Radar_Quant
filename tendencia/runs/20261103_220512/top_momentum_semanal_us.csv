@@ -1,0 +1,11 @@
+rank,ticker,nombre,pais,sector,precio_actual_usd,momentum_1s_pct,momentum_2s_pct,momentum_3s_pct,momentum_4s_pct,pct_semanas_positivas_4s,momentum_score_pct
+1,GILD,"Gilead Sciences, Inc.",EEUU,Healthcare,170.33,-0.21,9.16,9.05,12.67,50.0,5.75
+2,IBM,International Business Machines Corporation,EEUU,Technology,253.56,0.0,0.0,9.23,11.64,50.0,3.91
+3,ADI,"Analog Devices, Inc.",EEUU,Technology,425.35,0.0,8.77,7.56,4.72,25.0,3.29
+4,UNH,UnitedHealth Group Incorporated,EEUU,Healthcare,418.09,0.0,0.0,4.15,10.23,50.0,2.7
+5,CVX,Chevron Corporation,EEUU,Energy,233.21,0.0,0.0,3.65,10.02,50.0,2.56
+6,HD,"The Home Depot, Inc.",EEUU,Consumer Cyclical,319.83,0.0,0.0,3.29,10.01,50.0,2.49
+7,XOM,ExxonMobil Holdings Corporation,EEUU,Energy,183.21,0.0,0.0,2.36,8.45,50.0,2.03
+8,LLY,Eli Lilly and Company,EEUU,Healthcare,1273.46,0.0,0.0,1.31,7.99,50.0,1.74
+9,WMT,Walmart Inc.,EEUU,Consumer Defensive,119.89,0.0,0.0,0.91,7.67,50.0,1.61
+10,PG,The Procter & Gamble Company,EEUU,Consumer Defensive,161.02,0.0,0.0,1.05,6.47,50.0,1.41
