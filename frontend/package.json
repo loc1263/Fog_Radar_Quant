@@ -23,7 +23,7 @@
 		"@lucide/svelte": "^1.59.0",
 		"@playwright/test": "^1.64.1",
 		"@sveltejs/adapter-static": "^3.0.10",
-		"@sveltejs/kit": "^2.63.0",
+		"@sveltejs/kit": "^3.0.0",
 		"@sveltejs/mcp": "^0.1.26",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
 		"@tailwindcss/vite": "^4.3.0",
