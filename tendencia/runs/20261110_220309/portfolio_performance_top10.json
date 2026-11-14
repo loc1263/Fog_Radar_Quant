@@ -1,0 +1,18 @@
+{
+  "n_acciones": 10,
+  "retorno_esperado_anual": 0.43139193863341135,
+  "volatilidad_anual": 0.16124231980996864,
+  "sharpe_ratio": 2.42536784664106,
+  "tickers_seleccionados": [
+    "012450.KS",
+    "LLY",
+    "8306.T",
+    "XOM",
+    "000660.KS",
+    "GILD",
+    "ABBV",
+    "MU",
+    "DELL",
+    "PM"
+  ]
+}

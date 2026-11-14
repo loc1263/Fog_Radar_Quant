@@ -1,0 +1,30 @@
+{
+  "universo_completo": {
+    "retorno_esperado_anual": 0.3502839431425914,
+    "volatilidad_anual": 0.17161174894626316,
+    "sharpe_ratio": 1.8061930164883524
+  },
+  "portafolio_15_finales": {
+    "retorno_esperado_anual": 0.3546239632934327,
+    "volatilidad_anual": 0.16705717258742758,
+    "sharpe_ratio": 1.881415552393876
+  },
+  "tasa_libre_riesgo_anual": 0.040320000648498534,
+  "tickers_seleccionados": [
+    "LLY",
+    "XOM",
+    "MU",
+    "GILD",
+    "PM",
+    "ABBV",
+    "NVDA",
+    "DELL",
+    "GE",
+    "AVGO",
+    "ANET",
+    "WMT",
+    "PANW",
+    "CVX",
+    "PLTR"
+  ]
+}
