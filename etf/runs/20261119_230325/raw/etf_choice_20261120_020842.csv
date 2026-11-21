@@ -1,0 +1,26 @@
+﻿Ticker;TipoInstrumento;Nombre;Precio;Volumen;AUM;Expense Ratio;Inception Date;Category;Performance 5D (%);Performance 1M (%);Performance 6M (%);Performance YTD (%);Performance 1Y (%);Performance 5Y (%);52W High;52W Low;Sharpe Ratio;Treynor Ratio;Beta;Proveedor;Fecha
+UAE;ETF;iShares MSCI UAE ETF;21.2;115400;297706368.0;0.59;1398729600.0;Focused Region;0.43;7.72;16.22;14.19;18.12;55.81;22.29;17.29;0.729;0.184;0.966;iShares;2026-11-20
+VDC;ETF;Vanguard Consumer Staples Index Fund ETF Shares;249.17;243400;9564463104.0;0.09;1075075200.0;Consumer Defensive;0.27;4.86;8.03;20.08;21.25;47.99;254.64;208.66;1.213;-6.443;-0.029;Vanguard;2026-11-20
+XLP;ETF;State Street Consumer Staples Select Sector SPDR ETF;91.18;26164500;13445566464.0;0.08;913766400.0;Consumer Defensive;0.13;3.91;8.06;19.63;21.57;43.33;93.48;76.51;1.203;-5.282;-0.036;SPDR;2026-11-20
+PEJ;ETF;Invesco Dynamic Leisure and Entertainment ETF;67.87;30700;358094464.0;0.58;1119484800.0;Consumer Cyclical;1.33;2.23;13.49;11.01;22.44;42.32;69.6;55.66;1.054;0.253;0.805;Invesco;2026-11-20
+UUP;ETF;Invesco DB US Dollar Index Bullish Fund;29.62;1675600;481364192.0;0.75;1171929600.0;Trading??Miscellaneous;0.68;2.49;6.82;9.26;7.82;32.76;29.64;26.4;1.036;-0.425;-0.136;Invesco;2026-11-20
+NEAR;ETF;iShares Short Duration Bond Active ETF;49.88;792500;5130302464.0;0.25;1380067200.0;Short-Term Bond;0.1;0.32;0.62;1.12;1.85;21.38;51.37;49.68;-0.089;-0.038;0.034;iShares;2026-11-20
+JPLD;ETF;J P Morgan Exchange-Traded Fund Trust - Limited Duration Bond ETF;51.45;735200;4057295616.0;0.24;728611200.0;Securitized Bond - Diversified;0.23;0.45;1.04;1.92;2.42;18.72;52.75;50.92;0.289;0.203;0.021;JPMorgan;2026-11-20
+JPIE;ETF;JPMorgan Income ETF;44.9;2521600;11473238016.0;0.39;1635379200.0;Multisector Bond;0.09;0.45;0.64;1.66;2.55;17.24;46.61;44.58;0.284;0.095;0.06;JPMorgan;2026-11-20
+STOT;ETF;State Street DoubleLine Short Duration Total Return Tactical ETF;46.33;47000;545208768.0;0.45;1460505600.0;Short-Term Bond;0.13;0.39;0.8;1.57;2.07;16.07;47.55;46.07;0.065;0.037;0.021;SPDR;2026-11-20
+SPSB;ETF;State Street SPDR Portfolio Short Term Corporate Bond ETF;29.61;1720200;11108336640.0;0.04;1260921600.0;Short-Term Bond;0.17;0.38;0.96;1.57;2.35;15.83;30.34;29.45;0.245;0.111;0.032;SPDR;2026-11-20
+SLQD;ETF;iShares 0-5 Year Investment Grade Corporate Bond ETF;49.52;130600;2428783616.0;0.06;1381795200.0;Short-Term Bond;0.14;0.39;0.71;1.32;2.01;14.8;50.99;49.23;0.016;0.006;0.043;iShares;2026-11-20
+IGSB;ETF;iShares 1-5 Year Investment Grade Corporate Bond ETF;51.3;3202300;23783049216.0;0.04;1167955200.0;Short-Term Bond;0.16;0.36;0.36;0.79;1.55;13.9;53.25;50.98;-0.198;-0.072;0.059;iShares;2026-11-20
+BBSB;ETF;Jpmorgan Betabuilders U.S. Treasury Bond 1-3 Year ETF;97.32;300;54993024.0;0.04;1681862400.0;Short Government;0.24;0.37;0.87;1.26;1.74;13.52;99.58;96.93;-0.184;-0.154;0.016;JPMorgan;2026-11-20
+VCSH;ETF;Vanguard Short-Term Corporate Bond Index Fund ETF Shares;77.39;6194800;52919521280.0;0.03;1258588800.0;Short-Term Bond;0.17;0.38;0.38;0.72;1.5;13.45;80.26;76.89;-0.224;-0.083;0.057;Vanguard;2026-11-20
+SPTS;ETF;State Street SPDR Portfolio Short Term Treasury ETF;28.72;1499100;7193391104.0;0.03;1322611200.0;Short Government;0.24;0.4;0.89;1.3;1.81;11.04;29.4;28.58;-0.129;-0.119;0.015;SPDR;2026-11-20
+SCHO;ETF;Schwab Short-Term U.S. Treasury ETF;23.9;6495200;15741517824.0;0.03;1280966400.0;Short Government;0.21;0.39;0.87;1.27;1.81;10.94;24.46;23.79;-0.123;-0.098;0.018;Charles Schwab;2026-11-20
+VGSH;ETF;Vanguard Short-Term Treasury Index Fund ETF Shares;57.66;3321400;41377878016.0;0.03;1258588800.0;Short Government;0.23;0.36;0.88;1.24;1.74;10.93;59.01;57.38;-0.173;-0.141;0.017;Vanguard;2026-11-20
+SHY;ETF;iShares 1-3 Year Treasury Bond ETF;81.34;4019500;27439355904.0;0.15;1027296000.0;Short Government;0.25;0.36;0.81;1.12;1.65;10.39;83.2;80.95;-0.229;-0.139;0.024;iShares;2026-11-20
+IAGG;ETF;iShares Core International Aggregate Bond ETF;49.63;1815900;12625685504.0;0.07;1447113600.0;Global Bond-USD Hedged;0.06;0.73;0.79;1.23;1.24;5.75;51.78;48.81;-0.225;-0.063;0.111;iShares;2026-11-20
+VSDB;ETF;Vanguard Short Duration Bond ETF Shares;74.7;64000;1151335296.0;0.15;1743552000.0;Short-Term Bond;0.17;0.39;0.42;0.99;1.6;5.71;77.64;74.28;-0.201;-0.071;0.053;Vanguard;2026-11-20
+SGVT;ETF;Schwab Government Money Market ETF;100.67;597400;1064625344.0;0.28;1749600000.0;Money Market-Taxable;0.07;0.3;1.74;3.02;3.49;5.33;100.82;100.37;7.461;-14.76;-0.001;Charles Schwab;2026-11-20
+GGOV;ETF;iShares Global Government Bond USD Hedged Active ETF;50.65;594900;4320534016.0;0.39;1750809600.0;Global Bond-USD Hedged;0.12;1.14;2.28;4.52;4.38;4.95;51.93;48.05;0.575;0.357;0.068;iShares;2026-11-20
+IBMO;ETF;iShares iBonds Dec 2026 Term Muni Bond ETF;25.61;106700;502874464.0;0.1;1554163200.0;Muni Target Maturity;0.02;0.18;1.2;2.04;2.35;4.74;25.81;25.492;0.334;0.444;0.008;iShares;2026-11-20
+JMMF;ETF;Jpmorgan 100% U.S. Treasury Securities Money Market ETF;100.21;30100;92134448.0;0.16;1765411200.0;Money Market-Taxable;0.01;0.22;1.81;3.11;3.26;3.26;100.68;99.793;2.206;;0.0;JPMorgan;2026-11-20
+SECU;ETF;iShares Securitized Income Active ETF;48.73;153300;843456640.0;0.41;1122595200.0;Securitized Bond - Diversified;0.29;0.61;1.07;1.34;1.34;1.34;50.87;48.2;-0.109;-0.07;0.045;iShares;2026-11-20

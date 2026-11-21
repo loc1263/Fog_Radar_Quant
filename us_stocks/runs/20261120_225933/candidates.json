@@ -1,0 +1,3141 @@
+{
+  "run_id": "20261120_225933",
+  "status": "done",
+  "error": null,
+  "started_at": "2026-11-21T01:59:33.222509Z",
+  "finished_at": "2026-11-21T02:00:25.858761Z",
+  "min_market_cap": 200000000000,
+  "pause_seconds": 0.6,
+  "universe_total": 503,
+  "candidates_total": 53,
+  "top_n": 15,
+  "rows": [
+    {
+      "ticker": "MU",
+      "market_cap": 672642433024,
+      "price": 690.4400024414062,
+      "momentum_12_1": 2.970820125123258,
+      "return_1d": -0.021027431592371304,
+      "return_5d": -0.1128984535632569,
+      "return_3m": -0.29125793634210473,
+      "return_6m": -0.09374772178534796,
+      "return_1y": 2.0595969449656053,
+      "return_ytd": 1.42088586363524,
+      "technical": {
+        "sma_50": 919.8044665527344,
+        "sma_200": 771.3009181213379,
+        "rsi_14": 35.862847722744135,
+        "macd": {
+          "macd": -61.17775533680242,
+          "signal": -57.118758136345285,
+          "histogram": -4.058997200457135
+        },
+        "volume": 35401500,
+        "average_volume": 30245773.333333332
+      },
+      "name": "Micron Technology, Inc.",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 7.998251,
+        "per_forward": 2.846877,
+        "peg_ratio": 0.16,
+        "ev_to_ebitda": 5.831,
+        "price_to_book": 4.8590927,
+        "eps_trailing": 74.33,
+        "eps_forward": 208.82883
+      },
+      "profitability": {
+        "roe": 0.8826,
+        "roa": 0.44557,
+        "net_margin": 0.63796
+      },
+      "financial_health": {
+        "debt_to_equity": 3.743,
+        "current_ratio": 3.314,
+        "free_cash_flow": 29140250624
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.00090000004
+      },
+      "score": {
+        "overall": 77.5,
+        "label": "Fuerte",
+        "categories": {
+          "valuation": 91.2,
+          "profitability": 100,
+          "financial_health": 92.1,
+          "shareholder_return": 45.9,
+          "technical": 33.5
+        }
+      }
+    },
+    {
+      "ticker": "INTC",
+      "market_cap": 272553181184,
+      "price": 55.720001220703125,
+      "momentum_12_1": 1.6115067173873268,
+      "return_1d": 0.019206202431414354,
+      "return_5d": -0.0660408755746903,
+      "return_3m": -0.3952024000669777,
+      "return_6m": -0.5297890192345728,
+      "return_1y": 0.5870122544023844,
+      "return_ytd": 0.5100270709101538,
+      "technical": {
+        "sma_50": 91.25740020751954,
+        "sma_200": 87.53869997024536,
+        "rsi_14": 31.044981254045965,
+        "macd": {
+          "macd": -10.450578008303921,
+          "signal": -10.853973905233186,
+          "histogram": 0.4033958969292648
+        },
+        "volume": 133949100,
+        "average_volume": 131519156.66666667
+      },
+      "name": "Intel Corporation",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": null,
+        "per_forward": 28.640684,
+        "peg_ratio": 0.5009,
+        "ev_to_ebitda": 14.935,
+        "price_to_book": 2.3695762,
+        "eps_trailing": -2.35,
+        "eps_forward": 1.79046
+      },
+      "profitability": {
+        "roe": -0.0962,
+        "roa": 0.01783,
+        "net_margin": -0.20089
+      },
+      "financial_health": {
+        "debt_to_equity": 38.108,
+        "current_ratio": 2.208,
+        "free_cash_flow": 806499968
+      },
+      "shareholder_return": {
+        "dividend_yield": 0
+      },
+      "score": {
+        "overall": 54.3,
+        "label": "Neutral",
+        "categories": {
+          "valuation": 86.7,
+          "profitability": 17.6,
+          "financial_health": 74.4,
+          "shareholder_return": 45,
+          "technical": 44.4
+        }
+      }
+    },
+    {
+      "ticker": "AMD",
+      "market_cap": 702393286656,
+      "price": 489.19000244140625,
+      "momentum_12_1": 1.3920374991476443,
+      "return_1d": -0.07724376782648124,
+      "return_5d": -0.0840167683824038,
+      "return_3m": 0.042027033922902524,
+      "return_6m": 0.0880802651884498,
+      "return_1y": 1.1882800078877462,
+      "return_ytd": 1.2842267186977874,
+      "technical": {
+        "sma_50": 554.9323992919922,
+        "sma_200": 428.6266500854492,
+        "rsi_14": 45.155929678184066,
+        "macd": {
+          "macd": -9.828239297318191,
+          "signal": -11.955748276395443,
+          "histogram": 2.127508979077252
+        },
+        "volume": 71660700,
+        "average_volume": 33124396.666666668
+      },
+      "name": "Advanced Micro Devices, Inc.",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 98.23843,
+        "per_forward": 24.060778,
+        "peg_ratio": 0.4376,
+        "ev_to_ebitda": 61.864,
+        "price_to_book": 10.176974,
+        "eps_trailing": 4.32,
+        "eps_forward": 17.63825
+      },
+      "profitability": {
+        "roe": 0.1196,
+        "roa": 0.05895,
+        "net_margin": 0.16769
+      },
+      "financial_health": {
+        "debt_to_equity": 13.469,
+        "current_ratio": 2.725,
+        "free_cash_flow": 7357125120
+      },
+      "shareholder_return": {
+        "dividend_yield": 0
+      },
+      "score": {
+        "overall": 62.7,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 37.4,
+          "profitability": 69.8,
+          "financial_health": 80.9,
+          "shareholder_return": 45,
+          "technical": 76.2
+        }
+      }
+    },
+    {
+      "ticker": "TXN",
+      "market_cap": 241006919680,
+      "price": 285.75,
+      "momentum_12_1": 0.7980303232712975,
+      "return_1d": -0.02284304908213497,
+      "return_5d": -0.058794485324975554,
+      "return_3m": 0.08111712998221443,
+      "return_6m": -0.03275948039101351,
+      "return_1y": 0.8586468923520096,
+      "return_ytd": 0.6829489696595956,
+      "technical": {
+        "sma_50": 285.5234094238281,
+        "sma_200": 263.8663127136231,
+        "rsi_14": 45.53474523367179,
+        "macd": {
+          "macd": 2.2976122215110877,
+          "signal": 4.407809024583768,
+          "histogram": -2.1101968030726805
+        },
+        "volume": 6063100,
+        "average_volume": 8200610
+      },
+      "name": "Texas Instruments Incorporated",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 34.20882,
+        "per_forward": 22.673466,
+        "peg_ratio": 0.8662,
+        "ev_to_ebitda": 23.034,
+        "price_to_book": 12.565508,
+        "eps_trailing": 7.71,
+        "eps_forward": 11.63254
+      },
+      "profitability": {
+        "roe": 0.39723998,
+        "roa": 0.14847,
+        "net_margin": 0.34252998
+      },
+      "financial_health": {
+        "debt_to_equity": 70.654,
+        "current_ratio": 5.595,
+        "free_cash_flow": 4778625024
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.021300001
+      },
+      "score": {
+        "overall": 73.9,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 52.6,
+          "profitability": 98.1,
+          "financial_health": 80.5,
+          "shareholder_return": 66.7,
+          "technical": 67.5
+        }
+      }
+    },
+    {
+      "ticker": "LRCX",
+      "market_cap": 228935565312,
+      "price": 203.67999267578125,
+      "momentum_12_1": 0.7786752359476294,
+      "return_1d": -0.037747463326317954,
+      "return_5d": -0.09844195145811196,
+      "return_3m": -0.34339237882193474,
+      "return_6m": -0.324907351831206,
+      "return_1y": 0.37513965550971307,
+      "return_ytd": 0.1933898344937448,
+      "technical": {
+        "sma_50": 269.5125564575195,
+        "sma_200": 283.1513247680664,
+        "rsi_14": 35.70710643726241,
+        "macd": {
+          "macd": -17.100096233426086,
+          "signal": -18.088001472434815,
+          "histogram": 0.9879052390087288
+        },
+        "volume": 12973100,
+        "average_volume": 12472256.666666666
+      },
+      "name": "Lam Research Corporation",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 27.312965,
+        "per_forward": 14.93351,
+        "peg_ratio": 0.8864,
+        "ev_to_ebitda": 22.314,
+        "price_to_book": 16.460392,
+        "eps_trailing": 6.71,
+        "eps_forward": 12.2724
+      },
+      "profitability": {
+        "roe": 0.7012,
+        "roa": 0.25010002,
+        "net_margin": 0.3234
+      },
+      "financial_health": {
+        "debt_to_equity": 26.857,
+        "current_ratio": 2.479,
+        "free_cash_flow": 4548759552
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0064999997
+      },
+      "score": {
+        "overall": 68.8,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 53.9,
+          "profitability": 100,
+          "financial_health": 83.1,
+          "shareholder_return": 51.5,
+          "technical": 42.8
+        }
+      }
+    },
+    {
+      "ticker": "CRWD",
+      "market_cap": 234931617792,
+      "price": 243.4600067138672,
+      "momentum_12_1": 0.7470176790790666,
+      "return_1d": 0.02712740145840109,
+      "return_5d": 0.07435685123397828,
+      "return_3m": 0.2790796017547368,
+      "return_6m": 0.5023063668719281,
+      "return_1y": 0.870646721255449,
+      "return_ytd": 1.0774810277488864,
+      "technical": {
+        "sma_50": 246.59079986572266,
+        "sma_200": 175.51591861724853,
+        "rsi_14": 53.44722311338492,
+        "macd": {
+          "macd": -4.349006029442734,
+          "signal": -4.85463349279068,
+          "histogram": 0.5056274633479463
+        },
+        "volume": 11597300,
+        "average_volume": 9171146.666666666
+      },
+      "name": "CrowdStrike Holdings, Inc.",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 3824.0002,
+        "per_forward": 142.40053,
+        "peg_ratio": 6.1169,
+        "ev_to_ebitda": 2159.588,
+        "price_to_book": 46.044556,
+        "eps_trailing": 0.06,
+        "eps_forward": 1.61123
+      },
+      "profitability": {
+        "roe": 0.01461,
+        "roa": -0.0078100003,
+        "net_margin": 0.00834
+      },
+      "financial_health": {
+        "debt_to_equity": 15.958,
+        "current_ratio": 1.57,
+        "free_cash_flow": 1995385472
+      },
+      "shareholder_return": {
+        "dividend_yield": 0
+      },
+      "score": {
+        "overall": 41.8,
+        "label": "Débil",
+        "categories": {
+          "valuation": 7.5,
+          "profitability": 25.9,
+          "financial_health": 73.2,
+          "shareholder_return": 45,
+          "technical": 71.7
+        }
+      }
+    },
+    {
+      "ticker": "AMAT",
+      "market_cap": 240166404096,
+      "price": 338.92999267578125,
+      "momentum_12_1": 0.7318928189770733,
+      "return_1d": -0.03650111362226405,
+      "return_5d": -0.0838309294951115,
+      "return_3m": -0.31593343831825704,
+      "return_6m": -0.20487732830440797,
+      "return_1y": 0.45161441265472835,
+      "return_ytd": 0.3255395927096181,
+      "technical": {
+        "sma_50": 428.08123107910154,
+        "sma_200": 445.9741946411133,
+        "rsi_14": 36.97743971330418,
+        "macd": {
+          "macd": -22.938970376052794,
+          "signal": -23.609046887707553,
+          "histogram": 0.6700765116547593
+        },
+        "volume": 7189600,
+        "average_volume": 8124343.333333333
+      },
+      "name": "Applied Materials, Inc.",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 23.98019,
+        "per_forward": 12.289364,
+        "peg_ratio": 0.7147,
+        "ev_to_ebitda": 19.889,
+        "price_to_book": 9.192613,
+        "eps_trailing": 12.62,
+        "eps_forward": 24.62536
+      },
+      "profitability": {
+        "roe": 0.4337,
+        "roa": 0.17363001,
+        "net_margin": 0.29286
+      },
+      "financial_health": {
+        "debt_to_equity": 25.021,
+        "current_ratio": 2.344,
+        "free_cash_flow": 2520250112
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0063
+      },
+      "score": {
+        "overall": 69.9,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 63.4,
+          "profitability": 98.4,
+          "financial_health": 78.9,
+          "shareholder_return": 51.3,
+          "technical": 42.5
+        }
+      }
+    },
+    {
+      "ticker": "PANW",
+      "market_cap": 281865715712,
+      "price": 361.7300109863281,
+      "momentum_12_1": 0.7022511714307829,
+      "return_1d": 0.06416214608449478,
+      "return_5d": 0.1225484792350906,
+      "return_3m": 0.03481523490311389,
+      "return_6m": 0.43021514156701834,
+      "return_1y": 0.8095548875986727,
+      "return_ytd": 0.9637894515707814,
+      "technical": {
+        "sma_50": 367.16820068359374,
+        "sma_200": 280.44145011901855,
+        "rsi_14": 54.551617491511806,
+        "macd": {
+          "macd": -10.552002499131106,
+          "signal": -12.38593247342953,
+          "histogram": 1.8339299742984245
+        },
+        "volume": 19184200,
+        "average_volume": 6812886.666666667
+      },
+      "name": "Palo Alto Networks, Inc.",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 602.3158,
+        "per_forward": 69.87195,
+        "peg_ratio": 1.8471,
+        "ev_to_ebitda": 173.457,
+        "price_to_book": 9.809143,
+        "eps_trailing": 0.57,
+        "eps_forward": 4.91356
+      },
+      "profitability": {
+        "roe": 0.02438,
+        "roa": 0.0106,
+        "net_margin": 0.03654
+      },
+      "financial_health": {
+        "debt_to_equity": 9.461,
+        "current_ratio": 0.656,
+        "free_cash_flow": 4480000000
+      },
+      "shareholder_return": {
+        "dividend_yield": 0
+      },
+      "score": {
+        "overall": 47.6,
+        "label": "Neutral",
+        "categories": {
+          "valuation": 26.8,
+          "profitability": 35.4,
+          "financial_health": 59.6,
+          "shareholder_return": 45,
+          "technical": 78
+        }
+      }
+    },
+    {
+      "ticker": "MRK",
+      "market_cap": 329652666368,
+      "price": 132.80999755859375,
+      "momentum_12_1": 0.6060460041236051,
+      "return_1d": -0.03607200801811827,
+      "return_5d": -0.10117756838134251,
+      "return_3m": -0.1033361694569982,
+      "return_6m": 0.16115505620915482,
+      "return_1y": 0.43829373902441726,
+      "return_ytd": 0.2877756363764412,
+      "technical": {
+        "sma_50": 145.4469073486328,
+        "sma_200": 128.1116217803955,
+        "rsi_14": 31.935623960928623,
+        "macd": {
+          "macd": -1.4711531415890136,
+          "signal": -0.07052289513259907,
+          "histogram": -1.4006302464564144
+        },
+        "volume": 13593500,
+        "average_volume": 9757760
+      },
+      "name": "Merck & Co., Inc.",
+      "sector": "Healthcare",
+      "valuation": {
+        "per_trailing": 135.07071,
+        "per_forward": 14.915834,
+        "peg_ratio": 3.2146,
+        "ev_to_ebitda": 12.68,
+        "price_to_book": 7.3476567,
+        "eps_trailing": 0.99,
+        "eps_forward": 8.96497
+      },
+      "profitability": {
+        "roe": 0.05057,
+        "roa": 0.11289,
+        "net_margin": 0.03641
+      },
+      "financial_health": {
+        "debt_to_equity": 119.928,
+        "current_ratio": 1.352,
+        "free_cash_flow": 14024250368
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.026500002
+      },
+      "score": {
+        "overall": 55,
+        "label": "Neutral",
+        "categories": {
+          "valuation": 40.9,
+          "profitability": 55.3,
+          "financial_health": 68.8,
+          "shareholder_return": 73.7,
+          "technical": 48.8
+        }
+      }
+    },
+    {
+      "ticker": "XOM",
+      "market_cap": 652634816512,
+      "price": 158.92999267578125,
+      "momentum_12_1": 0.5460416415152225,
+      "return_1d": -0.010275309107353303,
+      "return_5d": -0.062470487400966834,
+      "return_3m": -0.03741700827881722,
+      "return_6m": 0.03656858331074209,
+      "return_1y": 0.39021313675865477,
+      "return_ytd": 0.3556714563265513,
+      "technical": {
+        "sma_50": 168.47768371582032,
+        "sma_200": 154.79533843994142,
+        "rsi_14": 34.99473926037517,
+        "macd": {
+          "macd": -2.3434123177351864,
+          "signal": -0.8162635818115364,
+          "histogram": -1.52714873592365
+        },
+        "volume": 12263500,
+        "average_volume": 13555300
+      },
+      "name": "ExxonMobil Holdings Corporation",
+      "sector": "Energy",
+      "valuation": {
+        "per_trailing": 16.459877,
+        "per_forward": 12.814332,
+        "peg_ratio": 1.2516,
+        "ev_to_ebitda": 8.741,
+        "price_to_book": 2.4554539,
+        "eps_trailing": 9.72,
+        "eps_forward": 12.48524
+      },
+      "profitability": {
+        "roe": 0.15528,
+        "roa": 0.06753,
+        "net_margin": 0.10463
+      },
+      "financial_health": {
+        "debt_to_equity": 12.568,
+        "current_ratio": 1.193,
+        "free_cash_flow": 28318750720
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0269
+      },
+      "score": {
+        "overall": 72.1,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 87,
+          "profitability": 68.3,
+          "financial_health": 78.1,
+          "shareholder_return": 74.2,
+          "technical": 51
+        }
+      }
+    },
+    {
+      "ticker": "CVX",
+      "market_cap": 406582722560,
+      "price": 206.5,
+      "momentum_12_1": 0.5294188048284423,
+      "return_1d": 0.0030114391999378487,
+      "return_5d": -0.05309554760846724,
+      "return_3m": 0.01188131248934532,
+      "return_6m": 0.09958614749919259,
+      "return_1y": 0.4108707820275459,
+      "return_ytd": 0.4042980711580211,
+      "technical": {
+        "sma_50": 213.78814971923828,
+        "sma_200": 193.12564086914062,
+        "rsi_14": 38.80043642349579,
+        "macd": {
+          "macd": -1.8392071877960632,
+          "signal": -0.2092868560581573,
+          "histogram": -1.6299203317379058
+        },
+        "volume": 8582400,
+        "average_volume": 8217220
+      },
+      "name": "Chevron Corporation",
+      "sector": "Energy",
+      "valuation": {
+        "per_trailing": 15.298825,
+        "per_forward": 12.612837,
+        "peg_ratio": 0.778,
+        "ev_to_ebitda": 7.453,
+        "price_to_book": 2.0922573,
+        "eps_trailing": 13.62,
+        "eps_forward": 16.52047
+      },
+      "profitability": {
+        "roe": 0.13853,
+        "roa": 0.0647,
+        "net_margin": 0.11923
+      },
+      "financial_health": {
+        "debt_to_equity": 16.769,
+        "current_ratio": 1.342,
+        "free_cash_flow": 26048374784
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0345
+      },
+      "score": {
+        "overall": 76.3,
+        "label": "Fuerte",
+        "categories": {
+          "valuation": 92.6,
+          "profitability": 68.1,
+          "financial_health": 84.3,
+          "shareholder_return": 84.3,
+          "technical": 53.9
+        }
+      }
+    },
+    {
+      "ticker": "ANET",
+      "market_cap": 211771506688,
+      "price": 189.58999633789062,
+      "momentum_12_1": 0.4517266724273761,
+      "return_1d": -0.022429648596244967,
+      "return_5d": -0.039028826652524384,
+      "return_3m": 0.03178229299532309,
+      "return_6m": 0.2759270543810153,
+      "return_1y": 0.5190289243366504,
+      "return_ytd": 0.44692053807640275,
+      "technical": {
+        "sma_50": 192.65240020751952,
+        "sma_200": 168.38245010375977,
+        "rsi_14": 51.184800910886615,
+        "macd": {
+          "macd": 0.7677163309586206,
+          "signal": -1.2514151589021565,
+          "histogram": 2.019131489860777
+        },
+        "volume": 6644800,
+        "average_volume": 7990746.666666667
+      },
+      "name": "Arista Networks, Inc.",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 44.938335,
+        "per_forward": 27.765446,
+        "peg_ratio": 1.3761,
+        "ev_to_ebitda": 37.218,
+        "price_to_book": 12.876018,
+        "eps_trailing": 3.73,
+        "eps_forward": 6.037
+      },
+      "profitability": {
+        "roe": 0.33519,
+        "roa": 0.15039,
+        "net_margin": 0.39966
+      },
+      "financial_health": {
+        "debt_to_equity": null,
+        "current_ratio": 3.293,
+        "free_cash_flow": 3001337600
+      },
+      "shareholder_return": {
+        "dividend_yield": 0
+      },
+      "score": {
+        "overall": 68.7,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 36.7,
+          "profitability": 96.9,
+          "financial_health": 76.4,
+          "shareholder_return": 45,
+          "technical": 77.7
+        }
+      }
+    },
+    {
+      "ticker": "UNH",
+      "market_cap": 304513286144,
+      "price": 330.4800109863281,
+      "momentum_12_1": 0.39255183128874704,
+      "return_1d": -0.05552854297513543,
+      "return_5d": -0.18892647642250027,
+      "return_3m": -0.13598811449682247,
+      "return_6m": -0.1256690094022419,
+      "return_1y": 0.09767336207572885,
+      "return_ytd": 0.0209141304792555,
+      "technical": {
+        "sma_50": 389.4374005126953,
+        "sma_200": 365.4654280090332,
+        "rsi_14": 24.23000927818724,
+        "macd": {
+          "macd": -7.489242927397299,
+          "signal": 0.1689458824832326,
+          "histogram": -7.6581888098805315
+        },
+        "volume": 19837200,
+        "average_volume": 6677063.333333333
+      },
+      "name": "UnitedHealth Group Incorporated",
+      "sector": "Healthcare",
+      "valuation": {
+        "per_trailing": 19.397831,
+        "per_forward": 14.477794,
+        "peg_ratio": 0.84,
+        "ev_to_ebitda": 12.377,
+        "price_to_book": 3.1041632,
+        "eps_trailing": 17.52,
+        "eps_forward": 23.47388
+      },
+      "profitability": {
+        "roe": 0.15773,
+        "roa": 0.05243,
+        "net_margin": 0.03529
+      },
+      "financial_health": {
+        "debt_to_equity": 70.426,
+        "current_ratio": 0.739,
+        "free_cash_flow": 26501249024
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.028099999
+      },
+      "score": {
+        "overall": 62.3,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 84.2,
+          "profitability": 58.3,
+          "financial_health": 69.9,
+          "shareholder_return": 75.8,
+          "technical": 25.4
+        }
+      }
+    },
+    {
+      "ticker": "CSCO",
+      "market_cap": 357343494144,
+      "price": 94.69999694824219,
+      "momentum_12_1": 0.3864720890906428,
+      "return_1d": -0.025519688713167343,
+      "return_5d": -0.009828549220045169,
+      "return_3m": -0.13252006173303266,
+      "return_6m": -0.19270076372835965,
+      "return_1y": 0.2304273613737864,
+      "return_ytd": 0.2521512759970439,
+      "technical": {
+        "sma_50": 106.55607604980469,
+        "sma_200": 102.05364315032959,
+        "rsi_14": 37.994059651175206,
+        "macd": {
+          "macd": -3.531683037299487,
+          "signal": -3.1832161688127574,
+          "histogram": -0.3484668684867298
+        },
+        "volume": 19329400,
+        "average_volume": 19141606.666666668
+      },
+      "name": "Cisco Systems, Inc.",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 24.106382,
+        "per_forward": 14.964874,
+        "peg_ratio": 0.8394,
+        "ev_to_ebitda": 18.031,
+        "price_to_book": 6.9111705,
+        "eps_trailing": 3.76,
+        "eps_forward": 6.05685
+      },
+      "profitability": {
+        "roe": 0.3038,
+        "roa": 0.09077,
+        "net_margin": 0.22341
+      },
+      "financial_health": {
+        "debt_to_equity": 60.965,
+        "current_ratio": 0.961,
+        "free_cash_flow": 10410250240
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0177
+      },
+      "score": {
+        "overall": 67.6,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 68.2,
+          "profitability": 86.2,
+          "financial_health": 66.6,
+          "shareholder_return": 62.7,
+          "technical": 47.2
+        }
+      }
+    },
+    {
+      "ticker": "KO",
+      "market_cap": 417241497600,
+      "price": 96.08999633789062,
+      "momentum_12_1": 0.3496741442224345,
+      "return_1d": -0.020389439032198586,
+      "return_5d": -0.031838827829817395,
+      "return_3m": 0.06810359259184495,
+      "return_6m": 0.19856431600502544,
+      "return_1y": 0.3872091832182898,
+      "return_ytd": 0.401178730692878,
+      "technical": {
+        "sma_50": 91.61172576904296,
+        "sma_200": 83.13642543792724,
+        "rsi_14": 54.768806197716394,
+        "macd": {
+          "macd": 1.885525219630452,
+          "signal": 1.968366677472577,
+          "histogram": -0.08284145784212504
+        },
+        "volume": 23048400,
+        "average_volume": 18031776.666666668
+      },
+      "name": "The Coca-Cola Company",
+      "sector": "Consumer Defensive",
+      "valuation": {
+        "per_trailing": 28.610619,
+        "per_forward": 27.447618,
+        "peg_ratio": 4.049,
+        "ev_to_ebitda": 25.527,
+        "price_to_book": 11.164959,
+        "eps_trailing": 3.39,
+        "eps_forward": 3.53364
+      },
+      "profitability": {
+        "roe": 0.40592998,
+        "roa": 0.09594,
+        "net_margin": 0.28654
+      },
+      "financial_health": {
+        "debt_to_equity": 107.449,
+        "current_ratio": 1.377,
+        "free_cash_flow": 4349000192
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.022099999999999998
+      },
+      "score": {
+        "overall": 66.8,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 35.1,
+          "profitability": 92.2,
+          "financial_health": 61.3,
+          "shareholder_return": 67.8,
+          "technical": 79.6
+        }
+      }
+    },
+    {
+      "ticker": "PM",
+      "market_cap": 286932893696,
+      "price": 186.42999267578125,
+      "momentum_12_1": 0.3300631637170164,
+      "return_1d": -0.032688233235183994,
+      "return_5d": -0.0629775513433003,
+      "return_3m": -0.018229394339904004,
+      "return_6m": 0.005983016680401798,
+      "return_1y": 0.24043858649887984,
+      "return_ytd": 0.19251877689550967,
+      "technical": {
+        "sma_50": 196.34649139404297,
+        "sma_200": 181.32388862609864,
+        "rsi_14": 34.80360590166501,
+        "macd": {
+          "macd": -1.717164376039591,
+          "signal": 0.05439141959568666,
+          "histogram": -1.7715557956352777
+        },
+        "volume": 9817000,
+        "average_volume": 5102186.666666667
+      },
+      "name": "Philip Morris International Inc.",
+      "sector": "Consumer Defensive",
+      "valuation": {
+        "per_trailing": 26.874453,
+        "per_forward": 20.358847,
+        "peg_ratio": 2.5405,
+        "ev_to_ebitda": 16.401,
+        "price_to_book": null,
+        "eps_trailing": 6.85,
+        "eps_forward": 9.04226
+      },
+      "profitability": {
+        "roe": null,
+        "roa": 0.16876,
+        "net_margin": 0.24825001
+      },
+      "financial_health": {
+        "debt_to_equity": null,
+        "current_ratio": 1.024,
+        "free_cash_flow": 11525125120
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0343
+      },
+      "score": {
+        "overall": 68,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 54,
+          "profitability": 94.1,
+          "financial_health": 63.2,
+          "shareholder_return": 84.1,
+          "technical": 49.7
+        }
+      }
+    },
+    {
+      "ticker": "CAT",
+      "market_cap": 233578954752,
+      "price": 537.3699951171875,
+      "momentum_12_1": 0.319216598918598,
+      "return_1d": -0.038298447780027445,
+      "return_5d": -0.10468179908695396,
+      "return_3m": -0.33939831716807156,
+      "return_6m": -0.37681476606425857,
+      "return_1y": -0.020195549794329692,
+      "return_ytd": -0.0539918353961889,
+      "technical": {
+        "sma_50": 719.2158728027343,
+        "sma_200": 801.9237252807617,
+        "rsi_14": 27.152210251518213,
+        "macd": {
+          "macd": -47.57321249980566,
+          "signal": -47.50300085744041,
+          "histogram": -0.07021164236525124
+        },
+        "volume": 4053200,
+        "average_volume": 3613230
+      },
+      "name": "Caterpillar Inc.",
+      "sector": "Industrials",
+      "valuation": {
+        "per_trailing": 20.03336,
+        "per_forward": 15.86362,
+        "peg_ratio": 0.9423,
+        "ev_to_ebitda": 16.028,
+        "price_to_book": 10.872667,
+        "eps_trailing": 25.48,
+        "eps_forward": 32.1774
+      },
+      "profitability": {
+        "roe": 0.56135,
+        "roa": 0.09094,
+        "net_margin": 0.15212
+      },
+      "financial_health": {
+        "debt_to_equity": 210.413,
+        "current_ratio": 1.422,
+        "free_cash_flow": 3973250048
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0121
+      },
+      "score": {
+        "overall": 60.6,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 66.8,
+          "profitability": 84,
+          "financial_health": 54.1,
+          "shareholder_return": 57.1,
+          "technical": 31.6
+        }
+      }
+    },
+    {
+      "ticker": "AMGN",
+      "market_cap": 235642683392,
+      "price": 438.82000732421875,
+      "momentum_12_1": 0.3175125779466288,
+      "return_1d": -0.011421764754573793,
+      "return_5d": -0.05765886857492997,
+      "return_3m": 0.01764805087994681,
+      "return_6m": 0.3081159523919341,
+      "return_1y": 0.3171524032637396,
+      "return_ytd": 0.36811930162544426,
+      "technical": {
+        "sma_50": 429.28160217285154,
+        "sma_200": 380.6459504699707,
+        "rsi_14": 42.79350542618774,
+        "macd": {
+          "macd": 5.52724240306361,
+          "signal": 9.812507393380706,
+          "histogram": -4.285264990317096
+        },
+        "volume": 2506500,
+        "average_volume": 2661590
+      },
+      "name": "Amgen Inc.",
+      "sector": "Healthcare",
+      "valuation": {
+        "per_trailing": 25.254494,
+        "per_forward": 17.342522,
+        "peg_ratio": 2.5813,
+        "ev_to_ebitda": 15.692,
+        "price_to_book": 16.41818,
+        "eps_trailing": 17.25,
+        "eps_forward": 25.11976
+      },
+      "profitability": {
+        "roe": 0.78353,
+        "roa": 0.08912,
+        "net_margin": 0.24139999
+      },
+      "financial_health": {
+        "debt_to_equity": 376.303,
+        "current_ratio": 1.479,
+        "free_cash_flow": 7376750080
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.023
+      },
+      "score": {
+        "overall": 63.1,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 46.5,
+          "profitability": 89,
+          "financial_health": 50.2,
+          "shareholder_return": 69,
+          "technical": 61.4
+        }
+      }
+    },
+    {
+      "ticker": "JNJ",
+      "market_cap": 651105206272,
+      "price": 267.1400146484375,
+      "momentum_12_1": 0.30958898156966397,
+      "return_1d": -0.020388695671830992,
+      "return_5d": -0.06512680787948377,
+      "return_3m": 0.004067475986682112,
+      "return_6m": 0.165155379336126,
+      "return_1y": 0.3488727617166514,
+      "return_ytd": 0.3116057027650849,
+      "technical": {
+        "sma_50": 267.3302014160156,
+        "sma_200": 249.2604759979248,
+        "rsi_14": 44.6214954473362,
+        "macd": {
+          "macd": 3.1473906948370427,
+          "signal": 4.120194865327762,
+          "histogram": -0.9728041704907193
+        },
+        "volume": 9836200,
+        "average_volume": 7925006.666666667
+      },
+      "name": "Johnson & Johnson",
+      "sector": "Healthcare",
+      "valuation": {
+        "per_trailing": 41.04249,
+        "per_forward": 23.292364,
+        "peg_ratio": 3.0058,
+        "ev_to_ebitda": 19.666,
+        "price_to_book": 7.985533,
+        "eps_trailing": 6.59,
+        "eps_forward": 11.61196
+      },
+      "profitability": {
+        "roe": 0.20018,
+        "roa": 0.0846,
+        "net_margin": 0.16203
+      },
+      "financial_health": {
+        "debt_to_equity": 54.767,
+        "current_ratio": 1.016,
+        "free_cash_flow": 18501875712
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.020099999999999996
+      },
+      "score": {
+        "overall": 62,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 39.4,
+          "profitability": 78.1,
+          "financial_health": 68.4,
+          "shareholder_return": 65.1,
+          "technical": 62
+        }
+      }
+    },
+    {
+      "ticker": "ABBV",
+      "market_cap": 505891782656,
+      "price": 283.5400085449219,
+      "momentum_12_1": 0.2783125837146594,
+      "return_1d": -0.008636065649335833,
+      "return_5d": -0.0389451590750618,
+      "return_3m": 0.08956577743493055,
+      "return_6m": 0.3394480202714105,
+      "return_1y": 0.25381478395401813,
+      "return_ytd": 0.27806901378633264,
+      "technical": {
+        "sma_50": 277.63898101806643,
+        "sma_200": 239.60299530029297,
+        "rsi_14": 45.81325301542328,
+        "macd": {
+          "macd": 3.2213928040205246,
+          "signal": 4.9183612510812305,
+          "histogram": -1.6969684470607058
+        },
+        "volume": 5045400,
+        "average_volume": 5256440
+      },
+      "name": "AbbVie Inc.",
+      "sector": "Healthcare",
+      "valuation": {
+        "per_trailing": 49.17526,
+        "per_forward": 17.647331,
+        "peg_ratio": 0.5705,
+        "ev_to_ebitda": 18.099,
+        "price_to_book": null,
+        "eps_trailing": 5.82,
+        "eps_forward": 16.21775
+      },
+      "profitability": {
+        "roe": null,
+        "roa": 0.10736,
+        "net_margin": 0.15666
+      },
+      "financial_health": {
+        "debt_to_equity": null,
+        "current_ratio": 0.87,
+        "free_cash_flow": 17693124608
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.024400001
+      },
+      "score": {
+        "overall": 67,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 59.9,
+          "profitability": 79.3,
+          "financial_health": 56.1,
+          "shareholder_return": 70.9,
+          "technical": 69.4
+        }
+      }
+    },
+    {
+      "ticker": "AAPL",
+      "market_cap": 4978144444416,
+      "price": 349.2099914550781,
+      "momentum_12_1": 0.26759055293375256,
+      "return_1d": -0.00919285186476293,
+      "return_5d": -0.01981642511663484,
+      "return_3m": 0.12263202357947423,
+      "return_6m": 0.14684658888469393,
+      "return_1y": 0.3048353737481502,
+      "return_ytd": 0.28899649570070274,
+      "technical": {
+        "sma_50": 341.3741979980469,
+        "sma_200": 302.4477136993408,
+        "rsi_14": 53.15603155007455,
+        "macd": {
+          "macd": 3.6122702953949215,
+          "signal": 3.6628685308681477,
+          "histogram": -0.05059823547322617
+        },
+        "volume": 40906900,
+        "average_volume": 45316783.333333336
+      },
+      "name": "Apple Inc.",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 38.146996,
+        "per_forward": 32.400333,
+        "peg_ratio": 2.8199,
+        "ev_to_ebitda": 29.274,
+        "price_to_book": 44.41333,
+        "eps_trailing": 8.98,
+        "eps_forward": 10.57273
+      },
+      "profitability": {
+        "roe": 1.42257,
+        "roa": 0.25868,
+        "net_margin": 0.27604
+      },
+      "financial_health": {
+        "debt_to_equity": 84.286,
+        "current_ratio": 1.023,
+        "free_cash_flow": 105658376192
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0031
+      },
+      "score": {
+        "overall": 64.5,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 26.3,
+          "profitability": 98.8,
+          "financial_health": 62.8,
+          "shareholder_return": 48.1,
+          "technical": 79.2
+        }
+      }
+    },
+    {
+      "ticker": "V",
+      "market_cap": 749809041408,
+      "price": 402.25,
+      "momentum_12_1": 0.26191356463009297,
+      "return_1d": -0.03123645581275636,
+      "return_5d": -0.05521892433854214,
+      "return_3m": 0.10189089724136213,
+      "return_6m": 0.21932604878940465,
+      "return_1y": 0.2508161522707357,
+      "return_ytd": 0.15598224297737606,
+      "technical": {
+        "sma_50": 393.40640625,
+        "sma_200": 347.5716923522949,
+        "rsi_14": 44.1400930009306,
+        "macd": {
+          "macd": 5.9182148900381435,
+          "signal": 9.036891635246363,
+          "histogram": -3.1186767452082194
+        },
+        "volume": 8276200,
+        "average_volume": 6982706.666666667
+      },
+      "name": "Visa Inc.",
+      "sector": "Financial Services",
+      "valuation": {
+        "per_trailing": 32.61932,
+        "per_forward": 23.445778,
+        "peg_ratio": 1.8206,
+        "ev_to_ebitda": 23.411,
+        "price_to_book": 20.966766,
+        "eps_trailing": 12.32,
+        "eps_forward": 17.1404
+      },
+      "profitability": {
+        "roe": 0.63507,
+        "roa": 0.19613001,
+        "net_margin": 0.51203996
+      },
+      "financial_health": {
+        "debt_to_equity": 63.568,
+        "current_ratio": 0.965,
+        "free_cash_flow": 20983375872
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.007799999999999999
+      },
+      "score": {
+        "overall": 65.7,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 39.6,
+          "profitability": 99.1,
+          "financial_health": 66,
+          "shareholder_return": 52.8,
+          "technical": 62.6
+        }
+      }
+    },
+    {
+      "ticker": "GILD",
+      "market_cap": 206429536256,
+      "price": 166.52999877929688,
+      "momentum_12_1": 0.252267597470202,
+      "return_1d": -0.014498739556086382,
+      "return_5d": -0.009221817199382198,
+      "return_3m": 0.1675120495815341,
+      "return_6m": 0.29171312175849984,
+      "return_1y": 0.33243964473436427,
+      "return_ytd": 0.38117868142021694,
+      "technical": {
+        "sma_50": 156.7719012451172,
+        "sma_200": 141.12776638031005,
+        "rsi_14": 54.64890765648823,
+        "macd": {
+          "macd": 3.600161227959177,
+          "signal": 4.327744550695186,
+          "histogram": -0.7275833227360096
+        },
+        "volume": 5116700,
+        "average_volume": 6376186.666666667
+      },
+      "name": "Gilead Sciences, Inc.",
+      "sector": "Healthcare",
+      "valuation": {
+        "per_trailing": null,
+        "per_forward": 16.398497,
+        "peg_ratio": 2.2392,
+        "ev_to_ebitda": 15.322,
+        "price_to_book": 15.8384075,
+        "eps_trailing": -3.13,
+        "eps_forward": 10.1491
+      },
+      "profitability": {
+        "roe": -0.22445999,
+        "roa": 0.13469,
+        "net_margin": -0.124630004
+      },
+      "financial_health": {
+        "debt_to_equity": 202.462,
+        "current_ratio": 1.379,
+        "free_cash_flow": 10676875264
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0197
+      },
+      "score": {
+        "overall": 53,
+        "label": "Neutral",
+        "categories": {
+          "valuation": 44.4,
+          "profitability": 30.1,
+          "financial_health": 62.8,
+          "shareholder_return": 64.7,
+          "technical": 76.6
+        }
+      }
+    },
+    {
+      "ticker": "LIN",
+      "market_cap": 230841090048,
+      "price": 510.2099914550781,
+      "momentum_12_1": 0.2311193156128073,
+      "return_1d": -0.003807368384297516,
+      "return_5d": -0.03012965474864915,
+      "return_3m": 0.06357953947240769,
+      "return_6m": -0.0019457762763224196,
+      "return_1y": 0.2515279387237508,
+      "return_ytd": 0.20836271984228638,
+      "technical": {
+        "sma_50": 493.935,
+        "sma_200": 495.69331939697264,
+        "rsi_14": 49.80221907753731,
+        "macd": {
+          "macd": 5.734355273809683,
+          "signal": 7.925168929441458,
+          "histogram": -2.190813655631775
+        },
+        "volume": 2472800,
+        "average_volume": 2029400
+      },
+      "name": "Linde plc",
+      "sector": "Basic Materials",
+      "valuation": {
+        "per_trailing": 33.388443,
+        "per_forward": 25.704033,
+        "peg_ratio": 2.0034,
+        "ev_to_ebitda": 18.467,
+        "price_to_book": 5.8556437,
+        "eps_trailing": 15.06,
+        "eps_forward": 19.5623
+      },
+      "profitability": {
+        "roe": 0.17723,
+        "roa": 0.071729995,
+        "net_margin": 0.19336
+      },
+      "financial_health": {
+        "debt_to_equity": 65.135,
+        "current_ratio": 0.858,
+        "free_cash_flow": 4192624896
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0125
+      },
+      "score": {
+        "overall": 62.4,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 53.9,
+          "profitability": 77.4,
+          "financial_health": 60.6,
+          "shareholder_return": 57.5,
+          "technical": 58.5
+        }
+      }
+    },
+    {
+      "ticker": "LLY",
+      "market_cap": 1199931523072,
+      "price": 1351.1199951171875,
+      "momentum_12_1": 0.22890780918892872,
+      "return_1d": -0.022874709732643272,
+      "return_5d": -0.06399723234001564,
+      "return_3m": 0.08707790238394741,
+      "return_6m": 0.30053105177061523,
+      "return_1y": 0.2950601121309955,
+      "return_ytd": 0.26483701947849303,
+      "technical": {
+        "sma_50": 1260.930849609375,
+        "sma_200": 1113.3548254394532,
+        "rsi_14": 50.392121061745996,
+        "macd": {
+          "macd": 40.20014260229095,
+          "signal": 50.170728140377214,
+          "histogram": -9.970585538086262
+        },
+        "volume": 3198300,
+        "average_volume": 2846693.3333333335
+      },
+      "name": "Eli Lilly and Company",
+      "sector": "Healthcare",
+      "valuation": {
+        "per_trailing": 43.72314,
+        "per_forward": 26.4812,
+        "peg_ratio": 1.2487,
+        "ev_to_ebitda": 26.771,
+        "price_to_book": 29.811892,
+        "eps_trailing": 30.81,
+        "eps_forward": 50.87043
+      },
+      "profitability": {
+        "roe": 0.86024004,
+        "roa": 0.21062,
+        "net_margin": 0.31898
+      },
+      "financial_health": {
+        "debt_to_equity": 122.925,
+        "current_ratio": 1.389,
+        "free_cash_flow": 9343699968
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0050999997
+      },
+      "score": {
+        "overall": 64.1,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 38.4,
+          "profitability": 99.3,
+          "financial_health": 58.3,
+          "shareholder_return": 50.1,
+          "technical": 65.1
+        }
+      }
+    },
+    {
+      "ticker": "TMO",
+      "market_cap": 248075190272,
+      "price": 688.75,
+      "momentum_12_1": 0.2021568193351575,
+      "return_1d": -0.005759722681846435,
+      "return_5d": -0.01638052495361919,
+      "return_3m": 0.09836338747179263,
+      "return_6m": 0.5354138049246127,
+      "return_1y": 0.20457034086268067,
+      "return_ytd": 0.19190779310188932,
+      "technical": {
+        "sma_50": 677.2806604003906,
+        "sma_200": 557.1104470825195,
+        "rsi_14": 49.609941215595285,
+        "macd": {
+          "macd": 5.381449790709553,
+          "signal": 8.766441251158183,
+          "histogram": -3.3849914604486298
+        },
+        "volume": 1980400,
+        "average_volume": 2199223.3333333335
+      },
+      "name": "Thermo Fisher Scientific Inc.",
+      "sector": "Healthcare",
+      "valuation": {
+        "per_trailing": 35.313293,
+        "per_forward": 24.09878,
+        "peg_ratio": 1.9951,
+        "ev_to_ebitda": 23.369,
+        "price_to_book": 4.5301323,
+        "eps_trailing": 18.96,
+        "eps_forward": 27.78315
+      },
+      "profitability": {
+        "roe": 0.13379,
+        "roa": 0.05193,
+        "net_margin": 0.14935
+      },
+      "financial_health": {
+        "debt_to_equity": 75.362,
+        "current_ratio": 1.808,
+        "free_cash_flow": 6441625088
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0027
+      },
+      "score": {
+        "overall": 63.2,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 52.1,
+          "profitability": 68.7,
+          "financial_health": 76.2,
+          "shareholder_return": 47.7,
+          "technical": 64.9
+        }
+      }
+    },
+    {
+      "ticker": "WMT",
+      "market_cap": 1015122821120,
+      "price": 126.04000091552734,
+      "momentum_12_1": 0.18121700374189875,
+      "return_1d": -0.01036431916220426,
+      "return_5d": -0.016004336645896733,
+      "return_3m": 0.2166963347353552,
+      "return_6m": 0.041220910342504746,
+      "return_1y": 0.2633058477786774,
+      "return_ytd": 0.13852112784769588,
+      "technical": {
+        "sma_50": 116.22920043945312,
+        "sma_200": 118.67337936401367,
+        "rsi_14": 59.821880653058166,
+        "macd": {
+          "macd": 3.1193692710914576,
+          "signal": 3.535738273548656,
+          "histogram": -0.41636900245719843
+        },
+        "volume": 32289300,
+        "average_volume": 21875660
+      },
+      "name": "Walmart Inc.",
+      "sector": "Consumer Defensive",
+      "valuation": {
+        "per_trailing": 46.358696,
+        "per_forward": 39.63386,
+        "peg_ratio": 4.2805,
+        "ev_to_ebitda": 24.518,
+        "price_to_book": 10.344409,
+        "eps_trailing": 2.76,
+        "eps_forward": 3.2283
+      },
+      "profitability": {
+        "roe": 0.22313999,
+        "roa": 0.06414,
+        "net_margin": 0.03
+      },
+      "financial_health": {
+        "debt_to_equity": 71.653,
+        "current_ratio": 0.767,
+        "free_cash_flow": 7127625216
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.007799999999999999
+      },
+      "score": {
+        "overall": 52.5,
+        "label": "Neutral",
+        "categories": {
+          "valuation": 28,
+          "profitability": 62.5,
+          "financial_health": 52.9,
+          "shareholder_return": 52.8,
+          "technical": 69.8
+        }
+      }
+    },
+    {
+      "ticker": "META",
+      "market_cap": 1433642336256,
+      "price": 596.219970703125,
+      "momentum_12_1": 0.1800462428729135,
+      "return_1d": -0.03270715146498038,
+      "return_5d": -0.07085981013461895,
+      "return_3m": 0.09318007163746578,
+      "return_6m": -0.01668881393166821,
+      "return_1y": 0.013420434071330423,
+      "return_ytd": -0.09443434754979185,
+      "technical": {
+        "sma_50": 678.3342333984375,
+        "sma_200": 628.4307913208008,
+        "rsi_14": 36.74381009611803,
+        "macd": {
+          "macd": -16.08841794300008,
+          "signal": -16.127612120056668,
+          "histogram": 0.039194177056586454
+        },
+        "volume": 15358500,
+        "average_volume": 21317986.666666668
+      },
+      "name": "Meta Platforms, Inc.",
+      "sector": "Communication Services",
+      "valuation": {
+        "per_trailing": 19.134768,
+        "per_forward": 15.720743,
+        "peg_ratio": 0.775,
+        "ev_to_ebitda": 12.628,
+        "price_to_book": 5.2627926,
+        "eps_trailing": 29.31,
+        "eps_forward": 35.67516
+      },
+      "profitability": {
+        "roe": 0.32264,
+        "roa": 0.14577,
+        "net_margin": 0.31145
+      },
+      "financial_health": {
+        "debt_to_equity": 42.161,
+        "current_ratio": 1.903,
+        "free_cash_flow": 16848499712
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0034999999
+      },
+      "score": {
+        "overall": 73.7,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 79.9,
+          "profitability": 96.2,
+          "financial_health": 76.1,
+          "shareholder_return": 48.5,
+          "technical": 47.8
+        }
+      }
+    },
+    {
+      "ticker": "AMZN",
+      "market_cap": 2668898811904,
+      "price": 257.3699951171875,
+      "momentum_12_1": 0.17935247206221216,
+      "return_1d": -0.03873158846427749,
+      "return_5d": -0.03483840252508752,
+      "return_3m": -0.010533967893126661,
+      "return_6m": -0.04130967999284296,
+      "return_1y": 0.15573214915611744,
+      "return_ytd": 0.11502463803181318,
+      "technical": {
+        "sma_50": 255.23120025634765,
+        "sma_200": 245.02990005493163,
+        "rsi_14": 48.96614811664436,
+        "macd": {
+          "macd": 2.249777863724546,
+          "signal": 2.2465255649387927,
+          "histogram": 0.0032522987857532826
+        },
+        "volume": 53117900,
+        "average_volume": 45945213.333333336
+      },
+      "name": "Amazon.com, Inc.",
+      "sector": "Consumer Cyclical",
+      "valuation": {
+        "per_trailing": 19.953114,
+        "per_forward": 22.589987,
+        "peg_ratio": 1.1945,
+        "ev_to_ebitda": 15.583,
+        "price_to_book": 4.348715,
+        "eps_trailing": 12.37,
+        "eps_forward": 10.92608
+      },
+      "profitability": {
+        "roe": 0.27416,
+        "roa": 0.06618,
+        "net_margin": 0.16900998
+      },
+      "financial_health": {
+        "debt_to_equity": 49.681,
+        "current_ratio": 0.989,
+        "free_cash_flow": -34731749376
+      },
+      "shareholder_return": {
+        "dividend_yield": 0
+      },
+      "score": {
+        "overall": 69.8,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 75.3,
+          "profitability": 79.2,
+          "financial_health": 55.5,
+          "shareholder_return": 45,
+          "technical": 78
+        }
+      }
+    },
+    {
+      "ticker": "MA",
+      "market_cap": 544999112704,
+      "price": 626.5,
+      "momentum_12_1": 0.17732915168505237,
+      "return_1d": -0.026221296058599464,
+      "return_5d": -0.05246601175655319,
+      "return_3m": 0.09340376003690776,
+      "return_6m": 0.25795912609836225,
+      "return_1y": 0.18886678999425066,
+      "return_ytd": 0.10448314939943337,
+      "technical": {
+        "sma_50": 605.5988818359375,
+        "sma_200": 542.6337347412109,
+        "rsi_14": 46.31613742329878,
+        "macd": {
+          "macd": 10.94039968562629,
+          "signal": 15.573784220944416,
+          "histogram": -4.633384535318127
+        },
+        "volume": 3640700,
+        "average_volume": 3236580
+      },
+      "name": "Mastercard Incorporated",
+      "sector": "Financial Services",
+      "valuation": {
+        "per_trailing": 32.736263,
+        "per_forward": 27.010551,
+        "peg_ratio": 1.6316,
+        "ev_to_ebitda": 24.25,
+        "price_to_book": 80.794266,
+        "eps_trailing": 19.11,
+        "eps_forward": 23.16095
+      },
+      "profitability": {
+        "roe": 2.31366,
+        "roa": 0.24451,
+        "net_margin": 0.46732
+      },
+      "financial_health": {
+        "debt_to_equity": 355.163,
+        "current_ratio": 1.012,
+        "free_cash_flow": 16629250048
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.005599999999999999
+      },
+      "score": {
+        "overall": 61.6,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 40.9,
+          "profitability": 99.9,
+          "financial_health": 43.2,
+          "shareholder_return": 50.6,
+          "technical": 63.8
+        }
+      }
+    },
+    {
+      "ticker": "GOOGL",
+      "market_cap": 3261475323904,
+      "price": 272.6600036621094,
+      "momentum_12_1": 0.16514117323372668,
+      "return_1d": -0.034626818774814994,
+      "return_5d": -0.07813499073597441,
+      "return_3m": -0.19912155931065734,
+      "return_6m": -0.29577921834807863,
+      "return_1y": -0.0663941527552665,
+      "return_ytd": -0.12718727702278676,
+      "technical": {
+        "sma_50": 323.7648004150391,
+        "sma_200": 337.03593734741213,
+        "rsi_14": 30.58108221223692,
+        "macd": {
+          "macd": -12.759828933810468,
+          "signal": -12.922948039401756,
+          "histogram": 0.16311910559128862
+        },
+        "volume": 49718500,
+        "average_volume": 36583753.333333336
+      },
+      "name": "Alphabet Inc.",
+      "sector": "Communication Services",
+      "valuation": {
+        "per_trailing": 13.853265,
+        "per_forward": 17.342186,
+        "peg_ratio": 0.9631,
+        "ev_to_ebitda": 17.086,
+        "price_to_book": 4.9451966,
+        "eps_trailing": 19.15,
+        "eps_forward": 15.29738
+      },
+      "profitability": {
+        "roe": 0.44286,
+        "roa": 0.12743,
+        "net_margin": 0.50031
+      },
+      "financial_health": {
+        "debt_to_equity": 22.187,
+        "current_ratio": 2.786,
+        "free_cash_flow": -1162499968
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0032
+      },
+      "score": {
+        "overall": 70.5,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 78.1,
+          "profitability": 96.1,
+          "financial_health": 76.1,
+          "shareholder_return": 48.2,
+          "technical": 34.6
+        }
+      }
+    },
+    {
+      "ticker": "PLTR",
+      "market_cap": 345738838016,
+      "price": 153.67999267578125,
+      "momentum_12_1": 0.1643090813410062,
+      "return_1d": -0.019084735610577996,
+      "return_5d": -0.08518371539648006,
+      "return_3m": -0.11657859999650899,
+      "return_6m": 0.11836408095425655,
+      "return_1y": -0.0709708960410812,
+      "return_ytd": -0.1354149497846343,
+      "technical": {
+        "sma_50": 183.73499908447266,
+        "sma_200": 153.90047451019288,
+        "rsi_14": 31.285984510096696,
+        "macd": {
+          "macd": -8.528280653752887,
+          "signal": -6.531578219190046,
+          "histogram": -1.9967024345628408
+        },
+        "volume": 21382600,
+        "average_volume": 24223356.666666668
+      },
+      "name": "Palantir Technologies Inc.",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 101.0493,
+        "per_forward": 56.519497,
+        "peg_ratio": 1.2389,
+        "ev_to_ebitda": 100.083,
+        "price_to_book": 30.785242,
+        "eps_trailing": 1.42,
+        "eps_forward": 2.53877
+      },
+      "profitability": {
+        "roe": 0.40907001,
+        "roa": 0.19313999,
+        "net_margin": 0.50343
+      },
+      "financial_health": {
+        "debt_to_equity": 1.986,
+        "current_ratio": 7.102,
+        "free_cash_flow": 2652487680
+      },
+      "shareholder_return": {
+        "dividend_yield": 0
+      },
+      "score": {
+        "overall": 58.9,
+        "label": "Neutral",
+        "categories": {
+          "valuation": 26.4,
+          "profitability": 99.1,
+          "financial_health": 81.4,
+          "shareholder_return": 45,
+          "technical": 33.9
+        }
+      }
+    },
+    {
+      "ticker": "NVDA",
+      "market_cap": 3031172907008,
+      "price": 145.97999572753906,
+      "momentum_12_1": 0.1633531941051083,
+      "return_1d": -0.032988942533417775,
+      "return_5d": -0.10359232265090079,
+      "return_3m": -0.32606255826630204,
+      "return_6m": -0.33345328502752036,
+      "return_1y": -0.21547423039031022,
+      "return_ytd": -0.21543382650220233,
+      "technical": {
+        "sma_50": 208.85560119628906,
+        "sma_200": 203.31508888244628,
+        "rsi_14": 19.644761694304094,
+        "macd": {
+          "macd": -17.75722904556332,
+          "signal": -14.040468241473533,
+          "histogram": -3.7167608040897875
+        },
+        "volume": 322940100,
+        "average_volume": 206562436.66666666
+      },
+      "name": "NVIDIA Corporation",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 13.483351,
+        "per_forward": 7.5596437,
+        "peg_ratio": 0.1782,
+        "ev_to_ebitda": 12.224,
+        "price_to_book": 11.347857,
+        "eps_trailing": 9.31,
+        "eps_forward": 16.60528
+      },
+      "profitability": {
+        "roe": 1.17364,
+        "roa": 0.56036,
+        "net_margin": 0.62535
+      },
+      "financial_health": {
+        "debt_to_equity": 14.306,
+        "current_ratio": 4.084,
+        "free_cash_flow": 99241377792
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0069
+      },
+      "score": {
+        "overall": 71.7,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 76.1,
+          "profitability": 100,
+          "financial_health": 88.9,
+          "shareholder_return": 51.9,
+          "technical": 23.3
+        }
+      }
+    },
+    {
+      "ticker": "GOOG",
+      "market_cap": 3245615874048,
+      "price": 271.0199890136719,
+      "momentum_12_1": 0.15115930440169434,
+      "return_1d": -0.029298076059157796,
+      "return_5d": -0.07349925067512264,
+      "return_3m": -0.19811966611491083,
+      "return_6m": -0.29235886672658773,
+      "return_1y": -0.07257078569407827,
+      "return_ytd": -0.13463881566664548,
+      "technical": {
+        "sma_50": 320.70299926757815,
+        "sma_200": 334.9012532043457,
+        "rsi_14": 29.63820649328231,
+        "macd": {
+          "macd": -12.628279769666335,
+          "signal": -12.719652988460796,
+          "histogram": 0.0913732187944607
+        },
+        "volume": 29259000,
+        "average_volume": 23978116.666666668
+      },
+      "name": "Alphabet Inc.",
+      "sector": "Communication Services",
+      "valuation": {
+        "per_trailing": 13.785901,
+        "per_forward": 17.257856,
+        "peg_ratio": 0.9862,
+        "ev_to_ebitda": 16.983,
+        "price_to_book": 4.9211497,
+        "eps_trailing": 19.15,
+        "eps_forward": 15.29738
+      },
+      "profitability": {
+        "roe": 0.44286,
+        "roa": 0.12743,
+        "net_margin": 0.50031
+      },
+      "financial_health": {
+        "debt_to_equity": 22.187,
+        "current_ratio": 2.786,
+        "free_cash_flow": -1162499968
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0032
+      },
+      "score": {
+        "overall": 70.3,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 78.1,
+          "profitability": 96.1,
+          "financial_health": 76.1,
+          "shareholder_return": 48.2,
+          "technical": 33.6
+        }
+      }
+    },
+    {
+      "ticker": "GS",
+      "market_cap": 228062347264,
+      "price": 847.530029296875,
+      "momentum_12_1": 0.14786801098369717,
+      "return_1d": -0.02937534482472992,
+      "return_5d": -0.07531418395477796,
+      "return_3m": -0.14997665882995914,
+      "return_6m": -0.13432460280728076,
+      "return_1y": 0.09950453957606231,
+      "return_ytd": -0.02168783417844622,
+      "technical": {
+        "sma_50": 909.2047998046875,
+        "sma_200": 949.2552752685547,
+        "rsi_14": 37.495156353114375,
+        "macd": {
+          "macd": -9.536673285742495,
+          "signal": -6.103207069580632,
+          "histogram": -3.4334662161618628
+        },
+        "volume": 2814600,
+        "average_volume": 2304796.6666666665
+      },
+      "name": "The Goldman Sachs Group, Inc.",
+      "sector": "Financial Services",
+      "valuation": {
+        "per_trailing": 11.368655,
+        "per_forward": 10.649418,
+        "peg_ratio": 1.0639,
+        "ev_to_ebitda": null,
+        "price_to_book": 2.1548972,
+        "eps_trailing": 69.55,
+        "eps_forward": 74.24725
+      },
+      "profitability": {
+        "roe": 0.17712,
+        "roa": 0.01112,
+        "net_margin": 0.31208
+      },
+      "financial_health": {
+        "debt_to_equity": 756.014,
+        "current_ratio": 1.606,
+        "free_cash_flow": null
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.023599999
+      },
+      "score": {
+        "overall": 61.1,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 90.8,
+          "profitability": 71.1,
+          "financial_health": 41.6,
+          "shareholder_return": 69.8,
+          "technical": 26.7
+        }
+      }
+    },
+    {
+      "ticker": "MS",
+      "market_cap": 258949464064,
+      "price": 174.97999572753906,
+      "momentum_12_1": 0.12991062165230227,
+      "return_1d": -0.03416681847970171,
+      "return_5d": -0.08219249237140558,
+      "return_3m": -0.1513833001989543,
+      "return_6m": -0.11717804951860267,
+      "return_1y": 0.10263702375505979,
+      "return_ytd": 0.007981498302757073,
+      "technical": {
+        "sma_50": 189.17273834228516,
+        "sma_200": 192.50473327636718,
+        "rsi_14": 36.71895678898336,
+        "macd": {
+          "macd": -1.8483312107557026,
+          "signal": -1.2590720656582992,
+          "histogram": -0.5892591450974034
+        },
+        "volume": 8256000,
+        "average_volume": 6402913.333333333
+      },
+      "name": "Morgan Stanley",
+      "sector": "Financial Services",
+      "valuation": {
+        "per_trailing": 13.137986,
+        "per_forward": 12.147569,
+        "peg_ratio": 1.5222,
+        "ev_to_ebitda": null,
+        "price_to_book": 2.4153314,
+        "eps_trailing": 12.61,
+        "eps_forward": 13.63812
+      },
+      "profitability": {
+        "roe": 0.18035,
+        "roa": 0.01353,
+        "net_margin": 0.25634
+      },
+      "financial_health": {
+        "debt_to_equity": 489.762,
+        "current_ratio": 2.124,
+        "free_cash_flow": null
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.026300002
+      },
+      "score": {
+        "overall": 62.6,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 83.5,
+          "profitability": 69.8,
+          "financial_health": 48.1,
+          "shareholder_return": 73.4,
+          "technical": 36.7
+        }
+      }
+    },
+    {
+      "ticker": "RTX",
+      "market_cap": 256623099904,
+      "price": 193.44000244140625,
+      "momentum_12_1": 0.12913453749588966,
+      "return_1d": -0.020308911465251045,
+      "return_5d": -0.025883771488839913,
+      "return_3m": -0.08879359103525808,
+      "return_6m": 0.10746145156054476,
+      "return_1y": 0.12971858811955128,
+      "return_ytd": 0.06618526667070346,
+      "technical": {
+        "sma_50": 192.56959930419922,
+        "sma_200": 194.45827171325683,
+        "rsi_14": 46.85044270655136,
+        "macd": {
+          "macd": 0.8657151821379045,
+          "signal": 1.2852764343138305,
+          "histogram": -0.419561252175926
+        },
+        "volume": 4417900,
+        "average_volume": 5421283.333333333
+      },
+      "name": "RTX Corporation",
+      "sector": "Industrials",
+      "valuation": {
+        "per_trailing": 30.921951,
+        "per_forward": 23.502064,
+        "peg_ratio": 2.0667,
+        "ev_to_ebitda": 16.985,
+        "price_to_book": 3.705717,
+        "eps_trailing": 6.15,
+        "eps_forward": 8.09163
+      },
+      "profitability": {
+        "roe": 0.1285,
+        "roa": 0.045560002,
+        "net_margin": 0.08754
+      },
+      "financial_health": {
+        "debt_to_equity": 54.758,
+        "current_ratio": 1.045,
+        "free_cash_flow": 8301749760
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0150999995
+      },
+      "score": {
+        "overall": 61.1,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 60.7,
+          "profitability": 61,
+          "financial_health": 69.9,
+          "shareholder_return": 60.1,
+          "technical": 53.8
+        }
+      }
+    },
+    {
+      "ticker": "JPM",
+      "market_cap": 824646434816,
+      "price": 320.2200012207031,
+      "momentum_12_1": 0.126774951580924,
+      "return_1d": -0.012002049633367262,
+      "return_5d": -0.07501661237342816,
+      "return_3m": -0.08457527019853162,
+      "return_6m": 0.06688882991649314,
+      "return_1y": 0.07622700549028161,
+      "return_ytd": 0.012933205676149528,
+      "technical": {
+        "sma_50": 337.68654052734377,
+        "sma_200": 322.857216796875,
+        "rsi_14": 35.854592650167874,
+        "macd": {
+          "macd": -2.2727237109511975,
+          "signal": -0.19274305057194524,
+          "histogram": -2.079980660379252
+        },
+        "volume": 6968100,
+        "average_volume": 6983363.333333333
+      },
+      "name": "JPMorgan Chase & Co.",
+      "sector": "Financial Services",
+      "valuation": {
+        "per_trailing": 13.025587,
+        "per_forward": 12.142857,
+        "peg_ratio": 1.3612,
+        "ev_to_ebitda": null,
+        "price_to_book": 2.3472188,
+        "eps_trailing": 23.84,
+        "eps_forward": 25.57306
+      },
+      "profitability": {
+        "roe": 0.18013,
+        "roa": 0.01367,
+        "net_margin": 0.34592
+      },
+      "financial_health": {
+        "debt_to_equity": null,
+        "current_ratio": null,
+        "free_cash_flow": null
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.020599999
+      },
+      "score": {
+        "overall": 66.9,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 85.8,
+          "profitability": 72,
+          "financial_health": null,
+          "shareholder_return": 65.8,
+          "technical": 37.6
+        }
+      }
+    },
+    {
+      "ticker": "COST",
+      "market_cap": 488395014144,
+      "price": 1093.8299560546875,
+      "momentum_12_1": 0.12171558160878049,
+      "return_1d": -0.0025442168435035883,
+      "return_5d": -0.011191369920698024,
+      "return_3m": 0.1734706839733955,
+      "return_6m": 0.04449369421371818,
+      "return_1y": 0.23543855655623513,
+      "return_ytd": 0.2759253057297959,
+      "technical": {
+        "sma_50": 981.8075366210937,
+        "sma_200": 975.7747900390625,
+        "rsi_14": 67.9283548111564,
+        "macd": {
+          "macd": 35.293733254018434,
+          "signal": 33.62251457026182,
+          "histogram": 1.6712186837566136
+        },
+        "volume": 2130100,
+        "average_volume": 2353170
+      },
+      "name": "Costco Wholesale Corporation",
+      "sector": "Consumer Defensive",
+      "valuation": {
+        "per_trailing": 53.090076,
+        "per_forward": 44.009495,
+        "peg_ratio": 5.4781,
+        "ev_to_ebitda": 33.715,
+        "price_to_book": 13.645368,
+        "eps_trailing": 20.76,
+        "eps_forward": 25.04346
+      },
+      "profitability": {
+        "roe": 0.28402,
+        "roa": 0.0866,
+        "net_margin": 0.03043
+      },
+      "financial_health": {
+        "debt_to_equity": 28.436,
+        "current_ratio": 1.06,
+        "free_cash_flow": 6752750080
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0054
+      },
+      "score": {
+        "overall": 56.3,
+        "label": "Neutral",
+        "categories": {
+          "valuation": 17.4,
+          "profitability": 67.5,
+          "financial_health": 66.5,
+          "shareholder_return": 50.4,
+          "technical": 83.8
+        }
+      }
+    },
+    {
+      "ticker": "PG",
+      "market_cap": 392562900992,
+      "price": 167.85000610351562,
+      "momentum_12_1": 0.10800854186924913,
+      "return_1d": -0.014328423740773477,
+      "return_5d": -0.011484080760869042,
+      "return_3m": 0.18179466359377505,
+      "return_6m": 0.18704655720156094,
+      "return_1y": 0.17505907492423423,
+      "return_ytd": 0.20523297403859098,
+      "technical": {
+        "sma_50": 155.7700289916992,
+        "sma_200": 148.38878578186035,
+        "rsi_14": 59.057231044116826,
+        "macd": {
+          "macd": 4.2198607697338275,
+          "signal": 4.410110595446643,
+          "histogram": -0.19024982571281512
+        },
+        "volume": 9091600,
+        "average_volume": 10095106.666666666
+      },
+      "name": "The Procter & Gamble Company",
+      "sector": "Consumer Defensive",
+      "valuation": {
+        "per_trailing": 25.50753,
+        "per_forward": 22.80715,
+        "peg_ratio": 4.3127,
+        "ev_to_ebitda": 16.626,
+        "price_to_book": 7.2229095,
+        "eps_trailing": 6.64,
+        "eps_forward": 7.42618
+      },
+      "profitability": {
+        "roe": 0.29609,
+        "roa": 0.104890004,
+        "net_margin": 0.18229
+      },
+      "financial_health": {
+        "debt_to_equity": 70.343,
+        "current_ratio": 0.722,
+        "free_cash_flow": 12652999680
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.025899999
+      },
+      "score": {
+        "overall": 68.8,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 47.9,
+          "profitability": 85.3,
+          "financial_health": 60.5,
+          "shareholder_return": 72.9,
+          "technical": 80.5
+        }
+      }
+    },
+    {
+      "ticker": "MSFT",
+      "market_cap": 3598139523072,
+      "price": 498.29998779296875,
+      "momentum_12_1": 0.10085002587783709,
+      "return_1d": -0.017760363109312394,
+      "return_5d": -0.04699055097172178,
+      "return_3m": 0.03764437108082297,
+      "return_6m": 0.19354424652297308,
+      "return_1y": 0.03336006975687744,
+      "return_ytd": 0.03889413975126921,
+      "technical": {
+        "sma_50": 519.0753228759766,
+        "sma_200": 441.45549255371094,
+        "rsi_14": 39.53981292078423,
+        "macd": {
+          "macd": -3.5574901730027477,
+          "signal": 0.5658159219140625,
+          "histogram": -4.12330609491681
+        },
+        "volume": 29350600,
+        "average_volume": 25546550
+      },
+      "name": "Microsoft Corporation",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 25.2881,
+        "per_forward": 20.018377,
+        "peg_ratio": 1.4742,
+        "ev_to_ebitda": 17.847,
+        "price_to_book": 7.648182,
+        "eps_trailing": 19.16,
+        "eps_forward": 24.20376
+      },
+      "profitability": {
+        "roe": 0.34221,
+        "roa": 0.14408,
+        "net_margin": 0.41169998
+      },
+      "financial_health": {
+        "debt_to_equity": 28.465,
+        "current_ratio": 1.225,
+        "free_cash_flow": 2994125056
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.007900001
+      },
+      "score": {
+        "overall": 67.1,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 60.9,
+          "profitability": 96.5,
+          "financial_health": 63.9,
+          "shareholder_return": 52.9,
+          "technical": 48.5
+        }
+      }
+    },
+    {
+      "ticker": "DIS",
+      "market_cap": 201513353216,
+      "price": 120.25,
+      "momentum_12_1": 0.08232546304823996,
+      "return_1d": -0.017244202352292737,
+      "return_5d": 0.010759004506710301,
+      "return_3m": 0.1204808082551585,
+      "return_6m": 0.1698340409108452,
+      "return_1y": 0.1654843652334239,
+      "return_ytd": 0.06505592699666796,
+      "technical": {
+        "sma_50": 110.35800003051757,
+        "sma_200": 103.6203535079956,
+        "rsi_14": 62.80359798657705,
+        "macd": {
+          "macd": 2.912370892290909,
+          "signal": 2.774804409007553,
+          "histogram": 0.13756648328335563
+        },
+        "volume": 15011900,
+        "average_volume": 9054516.666666666
+      },
+      "name": "The Walt Disney Company",
+      "sector": "Communication Services",
+      "valuation": {
+        "per_trailing": 20.955595,
+        "per_forward": 13.833536,
+        "peg_ratio": 3.9106,
+        "ev_to_ebitda": 11.075,
+        "price_to_book": 1.8341807,
+        "eps_trailing": 5.63,
+        "eps_forward": 8.52855
+      },
+      "profitability": {
+        "roe": 0.09127,
+        "roa": 0.0525,
+        "net_margin": 0.09672
+      },
+      "financial_health": {
+        "debt_to_equity": 40.34,
+        "current_ratio": 0.741,
+        "free_cash_flow": 7451375104
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0166
+      },
+      "score": {
+        "overall": 67.1,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 67.6,
+          "profitability": 59.5,
+          "financial_health": 65.5,
+          "shareholder_return": 61.6,
+          "technical": 80.4
+        }
+      }
+    },
+    {
+      "ticker": "BRK-B",
+      "market_cap": 1210976043008,
+      "price": 572.0399780273438,
+      "momentum_12_1": 0.07692613974257245,
+      "return_1d": -0.0044899535549882685,
+      "return_5d": -0.03524812683915324,
+      "return_3m": 0.1513102179532253,
+      "return_6m": 0.19179958526155771,
+      "return_1y": 0.1412040994349688,
+      "return_ytd": 0.1380483138832973,
+      "technical": {
+        "sma_50": 535.6716009521484,
+        "sma_200": 502.2383999633789,
+        "rsi_14": 58.40816205876315,
+        "macd": {
+          "macd": 14.391632059472272,
+          "signal": 15.690903117742542,
+          "histogram": -1.2992710582702696
+        },
+        "volume": 5618700,
+        "average_volume": 5024273.333333333
+      },
+      "name": "Berkshire Hathaway Inc.",
+      "sector": "Financial Services",
+      "valuation": {
+        "per_trailing": 15.952981,
+        "per_forward": 24.98179,
+        "peg_ratio": 10.06,
+        "ev_to_ebitda": -2.04,
+        "price_to_book": 0.001062614,
+        "eps_trailing": 35.73,
+        "eps_forward": 22.81662
+      },
+      "profitability": {
+        "roe": 0.10574,
+        "roa": 0.05197,
+        "net_margin": 0.19497
+      },
+      "financial_health": {
+        "debt_to_equity": 17.127,
+        "current_ratio": 2.616,
+        "free_cash_flow": 52474249216
+      },
+      "shareholder_return": {
+        "dividend_yield": 0
+      },
+      "score": {
+        "overall": 66.9,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 48.2,
+          "profitability": 69.1,
+          "financial_health": 90,
+          "shareholder_return": 45,
+          "technical": 75.4
+        }
+      }
+    },
+    {
+      "ticker": "GE",
+      "market_cap": 319946424320,
+      "price": 318.8800048828125,
+      "momentum_12_1": 0.0022030610309102805,
+      "return_1d": -0.028101191859759456,
+      "return_5d": -0.038968062357729205,
+      "return_3m": -0.07333768652530415,
+      "return_6m": 0.05965996357078507,
+      "return_1y": 0.06573689331676968,
+      "return_ytd": 0.0396025714420456,
+      "technical": {
+        "sma_50": 314.1672204589844,
+        "sma_200": 323.5517138671875,
+        "rsi_14": 49.07397328408214,
+        "macd": {
+          "macd": 4.377005434447767,
+          "signal": 4.299146327061392,
+          "histogram": 0.07785910738637547
+        },
+        "volume": 5063600,
+        "average_volume": 4979023.333333333
+      },
+      "name": "GE Aerospace",
+      "sector": "Industrials",
+      "valuation": {
+        "per_trailing": 35.385143,
+        "per_forward": 33.24675,
+        "peg_ratio": 3.735,
+        "ev_to_ebitda": 28.492,
+        "price_to_book": 18.260202,
+        "eps_trailing": 8.75,
+        "eps_forward": 9.31279
+      },
+      "profitability": {
+        "roe": 0.50165004,
+        "roa": 0.050640002,
+        "net_margin": 0.17313999
+      },
+      "financial_health": {
+        "debt_to_equity": 115.989,
+        "current_ratio": 0.98,
+        "free_cash_flow": 6332375040
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0058999998
+      },
+      "score": {
+        "overall": 54.5,
+        "label": "Neutral",
+        "categories": {
+          "valuation": 26.2,
+          "profitability": 80,
+          "financial_health": 57.3,
+          "shareholder_return": 50.9,
+          "technical": 56.7
+        }
+      }
+    },
+    {
+      "ticker": "BAC",
+      "market_cap": 324585848832,
+      "price": 48.56999969482422,
+      "momentum_12_1": -0.005777809932476674,
+      "return_1d": -0.006951546793060981,
+      "return_5d": -0.048020398685955645,
+      "return_3m": -0.21083404942335127,
+      "return_6m": -0.04697121519883851,
+      "return_1y": -0.046418403432324395,
+      "return_ytd": -0.10274795609556198,
+      "technical": {
+        "sma_50": 53.004799880981444,
+        "sma_200": 54.41329210281372,
+        "rsi_14": 33.639841115044334,
+        "macd": {
+          "macd": -1.00722688562184,
+          "signal": -1.0650166488660862,
+          "histogram": 0.05778976324424612
+        },
+        "volume": 35760900,
+        "average_volume": 38969990
+      },
+      "name": "Bank of America Corporation",
+      "sector": "Financial Services",
+      "valuation": {
+        "per_trailing": 11.22673,
+        "per_forward": 9.080906,
+        "peg_ratio": 0.8846,
+        "ev_to_ebitda": null,
+        "price_to_book": 1.1983187,
+        "eps_trailing": 4.19,
+        "eps_forward": 5.1801
+      },
+      "profitability": {
+        "roe": 0.1073,
+        "roa": 0.00944,
+        "net_margin": 0.28064
+      },
+      "financial_health": {
+        "debt_to_equity": null,
+        "current_ratio": null,
+        "free_cash_flow": null
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.026400002
+      },
+      "score": {
+        "overall": 68.1,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 94.9,
+          "profitability": 64.3,
+          "financial_health": null,
+          "shareholder_return": 73.5,
+          "technical": 36.8
+        }
+      }
+    },
+    {
+      "ticker": "WFC",
+      "market_cap": 236005490688,
+      "price": 80.61000061035156,
+      "momentum_12_1": -0.00720989027541219,
+      "return_1d": -0.0038309140584326107,
+      "return_5d": -0.06321908481669858,
+      "return_3m": -0.031205277075822213,
+      "return_6m": 0.07420512159403914,
+      "return_1y": -0.02063897482243615,
+      "return_ytd": -0.11563276489340346,
+      "technical": {
+        "sma_50": 83.25506423950195,
+        "sma_200": 82.35725387573243,
+        "rsi_14": 38.39455445424003,
+        "macd": {
+          "macd": -0.09711733667030842,
+          "signal": 0.39378022024994846,
+          "histogram": -0.4908975569202569
+        },
+        "volume": 11363900,
+        "average_volume": 14361113.333333334
+      },
+      "name": "Wells Fargo & Company",
+      "sector": "Financial Services",
+      "valuation": {
+        "per_trailing": 11.088858,
+        "per_forward": 9.830695,
+        "peg_ratio": 1.2525,
+        "ev_to_ebitda": null,
+        "price_to_book": 1.4873813,
+        "eps_trailing": 7.09,
+        "eps_forward": 7.9974
+      },
+      "profitability": {
+        "roe": 0.1291,
+        "roa": 0.01079,
+        "net_margin": 0.2764
+      },
+      "financial_health": {
+        "debt_to_equity": null,
+        "current_ratio": null,
+        "free_cash_flow": null
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0248
+      },
+      "score": {
+        "overall": 69.6,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 90.1,
+          "profitability": 66.5,
+          "financial_health": null,
+          "shareholder_return": 71.4,
+          "technical": 46.9
+        }
+      }
+    },
+    {
+      "ticker": "HD",
+      "market_cap": 338256691200,
+      "price": 336.67999267578125,
+      "momentum_12_1": -0.03128995139808488,
+      "return_1d": -0.0028433299698078507,
+      "return_5d": -0.03444322946323408,
+      "return_3m": 0.013964759344979205,
+      "return_6m": 0.08899547318359757,
+      "return_1y": 0.03502049198591428,
+      "return_ytd": -0.0003211345109593866,
+      "technical": {
+        "sma_50": 314.35320251464844,
+        "sma_200": 328.77122680664064,
+        "rsi_14": 53.334564853061316,
+        "macd": {
+          "macd": 7.931322418676416,
+          "signal": 9.955433712912944,
+          "histogram": -2.024111294236528
+        },
+        "volume": 4803800,
+        "average_volume": 4821223.333333333
+      },
+      "name": "The Home Depot, Inc.",
+      "sector": "Consumer Cyclical",
+      "valuation": {
+        "per_trailing": 23.544445,
+        "per_forward": 21.494715,
+        "peg_ratio": 1.7753,
+        "ev_to_ebitda": 15.577,
+        "price_to_book": 26.35572,
+        "eps_trailing": 14.4,
+        "eps_forward": 15.77318
+      },
+      "profitability": {
+        "roe": 0.94803,
+        "roa": 0.12217,
+        "net_margin": 0.08375
+      },
+      "financial_health": {
+        "debt_to_equity": 341.739,
+        "current_ratio": 1.084,
+        "free_cash_flow": 12039124992
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0277
+      },
+      "score": {
+        "overall": 61.8,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 51.3,
+          "profitability": 80.6,
+          "financial_health": 46.2,
+          "shareholder_return": 75.3,
+          "technical": 60.4
+        }
+      }
+    },
+    {
+      "ticker": "AVGO",
+      "market_cap": 1453140738048,
+      "price": 346.6499938964844,
+      "momentum_12_1": -0.049556637315609664,
+      "return_1d": -0.020900986164732016,
+      "return_5d": -0.001037479781588413,
+      "return_3m": -0.046009302374019345,
+      "return_6m": -0.16098402549586144,
+      "return_1y": -0.014650863759389066,
+      "return_ytd": 0.007109239839582893,
+      "technical": {
+        "sma_50": 343.7872088623047,
+        "sma_200": 366.9380133056641,
+        "rsi_14": 52.56042302409371,
+        "macd": {
+          "macd": 0.7954917642855435,
+          "signal": -2.8987575771766614,
+          "histogram": 3.694249341462205
+        },
+        "volume": 26075600,
+        "average_volume": 25810160
+      },
+      "name": "Broadcom Inc.",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 38.877396,
+        "per_forward": 15.67989,
+        "peg_ratio": 0.3425,
+        "ev_to_ebitda": 28.506,
+        "price_to_book": 14.577627,
+        "eps_trailing": 7.83,
+        "eps_forward": 19.41404
+      },
+      "profitability": {
+        "roe": 0.44245,
+        "roa": 0.15369001,
+        "net_margin": 0.42944
+      },
+      "financial_health": {
+        "debt_to_equity": 59.604,
+        "current_ratio": 2.504,
+        "free_cash_flow": 30596499456
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.0075
+      },
+      "score": {
+        "overall": 72,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 47.4,
+          "profitability": 98.4,
+          "financial_health": 80.7,
+          "shareholder_return": 52.5,
+          "technical": 70.9
+        }
+      }
+    },
+    {
+      "ticker": "AXP",
+      "market_cap": 202305552384,
+      "price": 311.1099853515625,
+      "momentum_12_1": -0.06591075931786561,
+      "return_1d": -0.013601802878695946,
+      "return_5d": -0.029600812761335304,
+      "return_3m": -0.05761067661089525,
+      "return_6m": 0.010418024328843645,
+      "return_1y": -0.08712542147164193,
+      "return_ytd": -0.14957938412890515,
+      "technical": {
+        "sma_50": 314.441943359375,
+        "sma_200": 322.05073333740233,
+        "rsi_14": 41.67452267007219,
+        "macd": {
+          "macd": -0.12478459722564139,
+          "signal": 1.3813123077251375,
+          "histogram": -1.5060969049507789
+        },
+        "volume": 3922200,
+        "average_volume": 2914180
+      },
+      "name": "American Express Company",
+      "sector": "Financial Services",
+      "valuation": {
+        "per_trailing": 16.997183,
+        "per_forward": 14.923447,
+        "peg_ratio": 1.2863,
+        "ev_to_ebitda": null,
+        "price_to_book": 5.6552143,
+        "eps_trailing": 17.75,
+        "eps_forward": 20.21651
+      },
+      "profitability": {
+        "roe": 0.35933998,
+        "roa": 0.04033,
+        "net_margin": 0.16823
+      },
+      "financial_health": {
+        "debt_to_equity": 167.573,
+        "current_ratio": 1.578,
+        "free_cash_flow": null
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.012200001
+      },
+      "score": {
+        "overall": 63.5,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 75.5,
+          "profitability": 77,
+          "financial_health": 61.5,
+          "shareholder_return": 57.2,
+          "technical": 37
+        }
+      }
+    },
+    {
+      "ticker": "TSLA",
+      "market_cap": 1366942810112,
+      "price": 374.4100036621094,
+      "momentum_12_1": -0.07495234909590187,
+      "return_1d": -0.0242624766209123,
+      "return_5d": -0.04051560019767375,
+      "return_3m": 0.08483759268985835,
+      "return_6m": -0.10396075579006858,
+      "return_1y": -0.07321960268150407,
+      "return_ytd": -0.16745974685176357,
+      "technical": {
+        "sma_50": 376.027998046875,
+        "sma_200": 381.91984893798826,
+        "rsi_14": 47.22627263552214,
+        "macd": {
+          "macd": 1.1640212620797001,
+          "signal": 2.5418751385627147,
+          "histogram": -1.3778538764830146
+        },
+        "volume": 26532900,
+        "average_volume": 36398130
+      },
+      "name": "Tesla, Inc.",
+      "sector": "Consumer Cyclical",
+      "valuation": {
+        "per_trailing": 380.02197,
+        "per_forward": 160.1597,
+        "peg_ratio": 4.4749,
+        "ev_to_ebitda": 136.205,
+        "price_to_book": 15.3099,
+        "eps_trailing": 0.91,
+        "eps_forward": 2.15922
+      },
+      "profitability": {
+        "roe": 0.03844,
+        "roa": 0.01345,
+        "net_margin": 0.031070001
+      },
+      "financial_health": {
+        "debt_to_equity": 18.295,
+        "current_ratio": 1.739,
+        "free_cash_flow": 4967249920
+      },
+      "shareholder_return": {
+        "dividend_yield": 0
+      },
+      "score": {
+        "overall": 39.5,
+        "label": "Débil",
+        "categories": {
+          "valuation": 11.7,
+          "profitability": 37.1,
+          "financial_health": 72.7,
+          "shareholder_return": 45,
+          "technical": 41.3
+        }
+      }
+    },
+    {
+      "ticker": "IBM",
+      "market_cap": 212122927104,
+      "price": 223.8800048828125,
+      "momentum_12_1": -0.14446286642575978,
+      "return_1d": -0.020347411374097568,
+      "return_5d": -0.09408003698711132,
+      "return_3m": -0.03535457501117201,
+      "return_6m": -0.1024821486793418,
+      "return_1y": -0.20278595127171617,
+      "return_ytd": -0.22345572101354583,
+      "technical": {
+        "sma_50": 236.3535726928711,
+        "sma_200": 241.9627872467041,
+        "rsi_14": 33.38848312030632,
+        "macd": {
+          "macd": -1.5105688935641695,
+          "signal": 1.7826541659654562,
+          "histogram": -3.293223059529626
+        },
+        "volume": 3768100,
+        "average_volume": 4767356.666666667
+      },
+      "name": "International Business Machines Corporation",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 19.150171,
+        "per_forward": 16.953415,
+        "peg_ratio": 2.1094,
+        "ev_to_ebitda": 16.164,
+        "price_to_book": 5.969149,
+        "eps_trailing": 11.72,
+        "eps_forward": 13.23863
+      },
+      "profitability": {
+        "roe": 0.34769002,
+        "roa": 0.05328,
+        "net_margin": 0.15989
+      },
+      "financial_health": {
+        "debt_to_equity": 185.439,
+        "current_ratio": 0.855,
+        "free_cash_flow": 12354875392
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.030199999
+      },
+      "score": {
+        "overall": 59,
+        "label": "Neutral",
+        "categories": {
+          "valuation": 63.1,
+          "profitability": 78.4,
+          "financial_health": 55.9,
+          "shareholder_return": 78.6,
+          "technical": 23
+        }
+      }
+    },
+    {
+      "ticker": "NFLX",
+      "market_cap": 232951873536,
+      "price": 58.459999084472656,
+      "momentum_12_1": -0.37554543235085225,
+      "return_1d": -0.02273488159962722,
+      "return_5d": -0.05937252374595281,
+      "return_3m": -0.2705265843560283,
+      "return_6m": -0.3453527761853541,
+      "return_1y": -0.46854546286843035,
+      "return_ytd": -0.3764931980320133,
+      "technical": {
+        "sma_50": 67.81760040283203,
+        "sma_200": 80.05964973449707,
+        "rsi_14": 30.70929262057949,
+        "macd": {
+          "macd": -2.276198857738372,
+          "signal": -2.0465532393588317,
+          "histogram": -0.22964561837954012
+        },
+        "volume": 38018800,
+        "average_volume": 41908890
+      },
+      "name": "Netflix, Inc.",
+      "sector": "Communication Services",
+      "valuation": {
+        "per_trailing": 16.395954,
+        "per_forward": 15.042399,
+        "peg_ratio": 0.9327,
+        "ev_to_ebitda": 15.193,
+        "price_to_book": 7.9542904,
+        "eps_trailing": 3.46,
+        "eps_forward": 3.77134
+      },
+      "profitability": {
+        "roe": 0.53463,
+        "roa": 0.17124,
+        "net_margin": 0.29691
+      },
+      "financial_health": {
+        "debt_to_equity": 59.857,
+        "current_ratio": 1.075,
+        "free_cash_flow": 25475807232
+      },
+      "shareholder_return": {
+        "dividend_yield": 0
+      },
+      "score": {
+        "overall": 70.1,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 73.7,
+          "profitability": 98.5,
+          "financial_health": 79.9,
+          "shareholder_return": 45,
+          "technical": 32.9
+        }
+      }
+    },
+    {
+      "ticker": "ORCL",
+      "market_cap": 315480899584,
+      "price": 110.56999969482422,
+      "momentum_12_1": -0.41074527116140014,
+      "return_1d": -0.029150932589485756,
+      "return_5d": -0.11790984411019556,
+      "return_3m": -0.2188432441021514,
+      "return_6m": -0.4131578676708362,
+      "return_1y": -0.5031729793266977,
+      "return_ytd": -0.4251223981395911,
+      "technical": {
+        "sma_50": 132.91033950805664,
+        "sma_200": 152.36212100982667,
+        "rsi_14": 37.17525931309152,
+        "macd": {
+          "macd": -5.13293073180381,
+          "signal": -4.390113986159662,
+          "histogram": -0.7428167456441486
+        },
+        "volume": 27781200,
+        "average_volume": 37371443.333333336
+      },
+      "name": "Oracle Corporation",
+      "sector": "Technology",
+      "valuation": {
+        "per_trailing": 15.860501,
+        "per_forward": 9.15017,
+        "peg_ratio": 0.6008,
+        "ev_to_ebitda": 12.878,
+        "price_to_book": 4.9496183,
+        "eps_trailing": 6.38,
+        "eps_forward": 11.05881
+      },
+      "profitability": {
+        "roe": 0.41192,
+        "roa": 0.06357,
+        "net_margin": 0.2636
+      },
+      "financial_health": {
+        "debt_to_equity": 251.716,
+        "current_ratio": 1.171,
+        "free_cash_flow": -45853626368
+      },
+      "shareholder_return": {
+        "dividend_yield": 0.018099999
+      },
+      "score": {
+        "overall": 62,
+        "label": "Sólido",
+        "categories": {
+          "valuation": 83.3,
+          "profitability": 87,
+          "financial_health": 29.4,
+          "shareholder_return": 63.1,
+          "technical": 36.4
+        }
+      }
+    }
+  ]
+}
